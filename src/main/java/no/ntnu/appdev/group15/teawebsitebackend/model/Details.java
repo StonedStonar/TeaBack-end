@@ -4,6 +4,7 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagE
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
 
 /**
+ * Represents a basic object that describes anything in general terms.
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
