@@ -103,7 +103,7 @@ public class Tag {
      * @param tagDescription the tag description to check for.
      */
     private void checkIfTagDescriptionIsValid(String tagDescription){
-        checkString(tagDescription, "tag descrption");
+        checkString(tagDescription, "tag description");
     }
 
     /**
