@@ -14,7 +14,11 @@ public class Address {
   private int houseNumber;
   private String country;
 
-  public Address() {
+  public Address(){
+
+  }
+
+  public Address(String place) {
     this.postalCode = postalCode;
     this.place = place;
     this.address = address;

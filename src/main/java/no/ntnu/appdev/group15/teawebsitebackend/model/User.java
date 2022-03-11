@@ -1,16 +1,193 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotChangePasswordException;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.util.regex.Pattern;
+
 /**
- * @author
+ * Represents a user of the website.
+ * @author Steinar Hjelle Midthus
  * @version 0.1
  */
+@Entity
 public class User {
+
+    @Id
+    private long userIdD;
+
+    private String firstName;
+
+    private String lastName;
+
+    private Address address;
+
+    private String email;
+
+    @JsonIgnore
+    private String password;
 
     /**
      * Makes an instance of the User class.
      */
     public User() {
 
+    }
+
+    /**
+     * Makes an instance of the user object.
+     * @param firstName the first name of the user.
+     * @param lastName the last name of the user.
+     * @param address the address of the user
+     * @param email the email of the user.
+     * @param password the password of the user.
+     */
+    public User(String firstName, String lastName, Address address, String email, String password){
+        setFirstName(firstName);
+        setLastName(lastName);
+        setAddress(address);
+        setEmail(email);
+        checkIfPasswordIsNotNullOrEmpty(password);
+        this.password = password;
+    }
+
+    /**
+     * Makes an instance of the user object.
+     * @param firstName the first name of the user.
+     * @param lastName the last name of the user.
+     * @param address the address of the user
+     * @param email the email of the user.
+     */
+    public User(String firstName, String lastName, Address address, String email) {
+        setFirstName(firstName);
+        setLastName(lastName);
+        setAddress(address);
+        setEmail(email);
+    }
+
+    /**
+     * Changes the password of the user to a new one.
+     * @param oldPassword the old password.
+     * @param newPassword the new password.
+     * @throws CouldNotChangePasswordException gets thrown when the old password does not match the set password.
+     */
+    public void changePassword(String oldPassword, String newPassword) throws CouldNotChangePasswordException {
+        checkIfPasswordsMatch(newPassword);
+        if (checkIfPasswordsMatch(oldPassword)){
+            this.password = newPassword;
+        }else {
+            throw new CouldNotChangePasswordException("The old password does not match the set password.");
+        }
+    }
+
+    /**
+     * Checks if the input password matches the set password. This is case-sensitive.
+     * @param passwordToCheck the password to check.
+     * @return <code>true</code> if the input password matches the users set password.
+     *         <code>false</code> if the input password does not match the users set password.
+     */
+    public boolean checkIfPasswordsMatch(String passwordToCheck){
+        checkIfPasswordIsNotNullOrEmpty(passwordToCheck);
+        return password.equals(passwordToCheck);
+    }
+
+    /**
+     * Gets the user's id.
+     * @return the user id.
+     */
+    public long getUserIdD() {
+        return userIdD;
+    }
+
+    /**
+     * Gets the first name.
+     * @return the first name.
+     */
+    public String getFirstName() {
+        return firstName;
+    }
+
+    /**
+     * Sets the first name.
+     * @param firstName the new first name.
+     */
+    public void setFirstName(String firstName) {
+        checkString(firstName, "first name");
+        this.firstName = firstName;
+    }
+
+    /**
+     * Gets the last name.
+     * @return the last name.
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * Sets the last name to a new value.
+     * @param lastName the new last name.
+     */
+    public void setLastName(String lastName) {
+        checkString(lastName, "last name");
+        this.lastName = lastName;
+    }
+
+    /**
+     * Gets the address object.
+     * @return the address.
+     */
+    public Address getAddress() {
+        return address;
+    }
+
+    /**
+     * Sets the address to a new value.
+     * @param address the new address.
+     */
+    public void setAddress(Address address) {
+        checkIfObjectIsNull(address, "address");
+        this.address = address;
+    }
+
+    /**
+     * Gets the email of the user.
+     * @return the email of the user.
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * Sets the email to a new value.
+     * @param email the new email.
+     */
+    public void setEmail(String email) {
+        checkIfEmailIsNotInvalid(email);
+        this.email = email;
+    }
+
+    /**
+     * Checks if the email is not an invalid value. Also checks that the email contains "@" and "."
+     * @param email the email to check.
+     */
+    private void checkIfEmailIsNotInvalid(String email){
+        checkString(email, "email");
+        String reg = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+        Pattern pattern = Pattern.compile(reg);
+        if (!pattern.matcher(email).matches()){
+            throw new IllegalArgumentException("The email must be the correct format.");
+        }
+    }
+
+    /**
+     * Checks if the password is not null or empty.
+     * @param password the password to check.
+     */
+    private void checkIfPasswordIsNotNullOrEmpty(String password){
+        checkString(password, "password");
     }
 
     /**
