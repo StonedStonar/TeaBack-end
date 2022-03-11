@@ -3,7 +3,7 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
 
-public class TeaDetails implements Details{
+public class TeaDetails implements Details {
 
     public TeaDetails(){
 
