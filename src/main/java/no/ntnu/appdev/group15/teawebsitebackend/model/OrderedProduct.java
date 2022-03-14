@@ -1,10 +1,16 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+
 /**
  * Represents a product that has been ordered by a customer.
  * @author
  * @version 0.1
  */
+@Entity
+//Todo: Litt usikker på om denne trenger en ID. Tenk litt på det og hittl settes den bare som embeddable.
+@Embeddable
 public class OrderedProduct {
 
     private Product product;
@@ -13,9 +19,14 @@ public class OrderedProduct {
 
     private int returnedProductAmount;
 
-    private final float pricePerProduct;
+    private float pricePerProduct;
 
     private OrderState orderState;
+
+
+
+    public OrderedProduct() {
+    }
 
     /**
      * Makes an instance of the OrderedProduct class.

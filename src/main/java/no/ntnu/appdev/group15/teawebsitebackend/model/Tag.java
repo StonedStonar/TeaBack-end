@@ -1,5 +1,7 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import javax.persistence.*;
 
 /**
@@ -11,6 +13,7 @@ import javax.persistence.*;
 public class Tag {
 
     @Id //The primary key in the DB. Should only be set once.
+    @GeneratedValue
     private long tagID;
 
     private String tagName;
@@ -32,6 +35,7 @@ public class Tag {
      * @param tagDescription the description of the tag.
      * @throws IllegalArgumentException gets thrown if the input parameters are invalid format.
      */
+    @JsonCreator
     public Tag(long tagID, String tagName, String tagDescription) {
         checkIfTagIDIsAboveZero(tagID);
         checkIfTagNameIsValid(tagName);
