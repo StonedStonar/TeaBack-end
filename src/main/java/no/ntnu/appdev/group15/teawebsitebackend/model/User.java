@@ -43,6 +43,7 @@ public class User {
      * @param address the address of the user
      * @param email the email of the user.
      * @param password the password of the user.
+     * @throws IllegalArgumentException gets thrown if the input is invalid format.
      */
     public User(String firstName, String lastName, Address address, String email, String password){
         setFirstName(firstName);
@@ -59,6 +60,7 @@ public class User {
      * @param lastName the last name of the user.
      * @param address the address of the user
      * @param email the email of the user.
+     * @throws IllegalArgumentException gets thrown if the input is invalid format.
      */
     public User(String firstName, String lastName, Address address, String email) {
         setFirstName(firstName);
@@ -72,6 +74,7 @@ public class User {
      * @param oldPassword the old password.
      * @param newPassword the new password.
      * @throws CouldNotChangePasswordException gets thrown when the old password does not match the set password.
+     * @throws IllegalArgumentException gets throw if one of the input passwords are empty or null.
      */
     public void changePassword(String oldPassword, String newPassword) throws CouldNotChangePasswordException {
         checkIfPasswordsMatch(newPassword);
@@ -87,6 +90,7 @@ public class User {
      * @param passwordToCheck the password to check.
      * @return <code>true</code> if the input password matches the users set password.
      *         <code>false</code> if the input password does not match the users set password.
+     * @throws IllegalArgumentException gets thrown if the input password is empty or null.
      */
     public boolean checkIfPasswordsMatch(String passwordToCheck){
         checkIfPasswordIsNotNullOrEmpty(passwordToCheck);
@@ -129,6 +133,7 @@ public class User {
     /**
      * Sets the last name to a new value.
      * @param lastName the new last name.
+     * @throws IllegalArgumentException gets thrown when the input is empty or null.
      */
     public void setLastName(String lastName) {
         checkString(lastName, "last name");
@@ -146,6 +151,7 @@ public class User {
     /**
      * Sets the address to a new value.
      * @param address the new address.
+     * @throws IllegalArgumentException gets thrown if the address is null.
      */
     public void setAddress(Address address) {
         checkIfObjectIsNull(address, "address");
@@ -163,6 +169,7 @@ public class User {
     /**
      * Sets the email to a new value.
      * @param email the new email.
+     * @throws IllegalArgumentException gets thrown if the email is empty or null.
      */
     public void setEmail(String email) {
         checkIfEmailIsNotInvalid(email);
@@ -172,6 +179,7 @@ public class User {
     /**
      * Checks if the email is not an invalid value. Also checks that the email contains "@" and "."
      * @param email the email to check.
+     * @throws IllegalArgumentException gets thrown if the email is invalid format.
      */
     private void checkIfEmailIsNotInvalid(String email){
         checkString(email, "email");
@@ -185,6 +193,7 @@ public class User {
     /**
      * Checks if the password is not null or empty.
      * @param password the password to check.
+     * @throws IllegalArgumentException gets thrown if the password is empty or null.
      */
     private void checkIfPasswordIsNotNullOrEmpty(String password){
         checkString(password, "password");
@@ -192,9 +201,9 @@ public class User {
 
     /**
      * Checks if a string is of a valid format or not.
-     *
      * @param stringToCheck the string you want to check.
      * @param errorPrefix   the error the exception should have if the string is invalid.
+     * @throws IllegalArgumentException gets thrown if the string to check is empty or null.
      */
     private void checkString(String stringToCheck, String errorPrefix) {
         checkIfObjectIsNull(stringToCheck, errorPrefix);
@@ -205,9 +214,9 @@ public class User {
 
     /**
      * Checks if an object is null.
-     *
      * @param object the object you want to check.
      * @param error  the error message the exception should have.
+     * @throws IllegalArgumentException gets thrown if the object is null.
      */
     private void checkIfObjectIsNull(Object object, String error) {
         if (object == null) {
