@@ -27,6 +27,7 @@ public class Product {
      */
     public Product(long id, String productName, float price, int size, Details details, Company company) {
         checkIfObjectIsNull(id, "id");
+        checkIfIntegerNotNegative((int) id, "id");
         this.productID = id;
 
         setProductName(productName);
