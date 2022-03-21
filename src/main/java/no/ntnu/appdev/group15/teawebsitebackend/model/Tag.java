@@ -13,7 +13,7 @@ import javax.persistence.Id;
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
-@Entity
+@Entity //To say to JPA that this is a table.
 public class Tag {
 
     @Id //The primary key in the DB. Should only be set once.

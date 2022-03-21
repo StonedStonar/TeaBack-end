@@ -1,6 +1,8 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers;
 
+import no.ntnu.appdev.group15.teawebsitebackend.RegisterTestData;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.TagJPA;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.repositories.TagRepository;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,6 +27,11 @@ public class TagController {
     public TagController(TagRepository tagRepository) {
         tagsRegister = new TagJPA(tagRepository);
         System.out.println("Ello");
+        try {
+            RegisterTestData.addTestTags(tagsRegister);
+        }catch (CouldNotAddTagException couldNotAddTagException){
+            System.err.println("Could not add test tags to register.");
+        }
     }
 
     /**

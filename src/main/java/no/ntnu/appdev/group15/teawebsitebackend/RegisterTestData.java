@@ -1,6 +1,6 @@
 package no.ntnu.appdev.group15.teawebsitebackend;
 
-import no.ntnu.appdev.group15.teawebsitebackend.model.Tag;
+
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
 
@@ -20,8 +20,9 @@ public class RegisterTestData {
         if (tagsRegister.getAllTags().isEmpty()){
             tagsRegister.addTagWithDetails("Food", "Consumable that will keep ya alive.");
             tagsRegister.addTagWithDetails("Tools", "Things used to fix stuff");
-            tagsRegister.addTagWithDetails("Tea", "A herb that is crushed and used to make water taste not water.");
+            tagsRegister.addTagWithDetails("Tea", "A herb that is crushed and used to make water taste something more than minerals.");
             tagsRegister.addTagWithDetails("Crockery", "Stuff you use to eat on and drink from.");
+            tagsRegister.addTagWithDetails("Environmentally Friendly", "A product made in a sustainable way for the planets sake.");
         }
     }
 

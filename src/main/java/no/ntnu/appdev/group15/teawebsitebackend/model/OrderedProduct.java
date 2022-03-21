@@ -8,7 +8,6 @@ import javax.persistence.Entity;
  * @author
  * @version 0.1
  */
-@Entity
 //Todo: Litt usikker på om denne trenger en ID. Tenk litt på det og hittl settes den bare som embeddable.
 @Embeddable
 public class OrderedProduct {

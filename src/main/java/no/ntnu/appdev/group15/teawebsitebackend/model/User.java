@@ -3,9 +3,7 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotChangePasswordException;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.regex.Pattern;
 
 /**
@@ -24,8 +22,10 @@ public class User {
 
     private String lastName;
 
+    @Transient
     private Address address;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
     @JsonIgnore

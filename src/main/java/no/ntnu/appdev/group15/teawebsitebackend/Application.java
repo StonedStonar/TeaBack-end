@@ -1,6 +1,7 @@
-package no.ntnu.appdev.group15.teawebsitebackend.services;
+package no.ntnu.appdev.group15.teawebsitebackend;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import springfox.documentation.builders.PathSelectors;

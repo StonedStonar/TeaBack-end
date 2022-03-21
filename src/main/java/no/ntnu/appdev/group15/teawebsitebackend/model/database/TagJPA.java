@@ -7,6 +7,7 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetTagE
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.repositories.TagRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.Optional;
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
+@Service
 public class TagJPA implements TagsRegister {
 
     private TagRepository tagRepository;
@@ -28,11 +30,6 @@ public class TagJPA implements TagsRegister {
     public TagJPA(TagRepository tagRepository) {
         checkIfObjectIsNull(tagRepository, "tag repository");
         this.tagRepository = tagRepository;
-        try {
-            RegisterTestData.addTestTags(this);
-        }catch (CouldNotAddTagException couldNotAddTagException){
-            System.err.println("Could not add test tags to register.");
-        }
     }
 
     @Override
@@ -49,6 +46,12 @@ public class TagJPA implements TagsRegister {
     public void addTagWithDetails(String tagName, String tagDescription) throws CouldNotAddTagException {
         checkString(tagName, "tag name");
         checkString(tagDescription, "tag description");
+        if (tagRepository.getTagWithTagName(tagName).isEmpty()){
+            Tag tag = new Tag(Long.MAX_VALUE, tagName, tagDescription);
+            tagRepository.save(tag);
+        }else {
+            throw new CouldNotAddTagException("The tag with the name " + tagName + " is already in the system.");
+        }
     }
 
     @Override
