@@ -40,5 +40,5 @@ public enum OrderState {
     /**
      * The state when one of a product has been returned but not all of them.
      */
-    PARTIALRETURN;
+    PARTIALRETURN
 }

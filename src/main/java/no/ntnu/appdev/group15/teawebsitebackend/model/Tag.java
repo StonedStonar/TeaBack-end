@@ -2,20 +2,25 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 
 /**
  * Represents a basic tag class. This class is used to describe something by giving it tags.
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
-@Entity //Makes it possible for JPA to make this into a table.
+@Entity
 public class Tag {
 
     @Id //The primary key in the DB. Should only be set once.
     @GeneratedValue
     private long tagID;
 
+    @Column(unique = true)
     private String tagName;
 
     private String tagDescription;

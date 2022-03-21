@@ -23,8 +23,9 @@ public class OrderedProduct {
 
     private OrderState orderState;
 
-
-
+    /**
+     * Empty constructor for JPA.
+     */
     public OrderedProduct() {
     }
 
