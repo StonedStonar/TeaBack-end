@@ -27,6 +27,8 @@ public class TagTests {
         }catch (IllegalArgumentException exception){
             fail("Expected the test tag to be made since the input is valid.");
         }
+        //Over kan du se eksempelet jeg mente. Ignorer dette under. Det som er under er ikke et MUST men gjør tetsingen mindre smertefull
+        //for min del.
         stringBuilder = new StringBuilder();
         errors = 0;
     }
