@@ -40,7 +40,9 @@ public class Product {
         setPrice(price);
         setAmountOfProduct(size);
 
+        checkIfObjectIsNull(details, "details");
         this.details = details;
+        checkIfObjectIsNull(company, "company");
         this.company = company;
 
         this.reviews = new ArrayList<>();
