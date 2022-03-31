@@ -1,17 +1,17 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
-import javax.persistence.Entity;
 
 /**
  * Represents an address class.
  * @author Trine Merete Staverløkk
  * @version 0.1
  */
+
 public class Address {
 
   private int postalCode;
-  private String place;
-  private String address;
+  private String postalPlace;
+  private String streetName;
   private int houseNumber;
   private String country;
 
@@ -21,53 +21,76 @@ public class Address {
   /**
    * makes an instance of Address class
    * @param postalCode The postal code
-   * @param place The place
-   * @param address the address
-   * @param houseNumber The housenumber
+   * @param postalPlace The place
+   * @param streetName the address
+   * @param houseNumber The house number
    * @param country The country
    *
-   * @throws
+   * @throws IllegalArgumentException gets thrown if the input parameters are invalid
    */
 
 
-  public Address(int postalCode, String place, String address, int houseNumber, String country){
+  public Address(int postalCode, String postalPlace, String streetName, int houseNumber, String country){
     checkIfPostalCodeIsAboveZero(postalCode);
-    checkIfPlaceIsValid(place);
-    checkIfAddressIsValid(address);
+    checkIfPostalPlaceIsValid(postalPlace);
+    checkIfStreetNameIsValid(streetName);
     checkIfHouseNumberIsAboveZero(houseNumber);
     checkIfCountryIsValid(country);
     this.postalCode = postalCode;
-    this.place = place;
-    this.address = address;
+    this.postalPlace = postalPlace;
+    this.streetName = streetName;
     this.houseNumber = houseNumber;
     this.country = country;
   }
 
+  /**
+   * Gets the postal code.
+   * @return Returns the postal code of the address.
+   */
   public int getPostalCode() {
     return postalCode;
   }
 
-  public String getPlace() {
-    return place;
+  /**
+   * Gets the postal place.
+   * @return Returns the postal place of the address.
+   */
+  public String getPostalPlace() {
+    return postalPlace;
   }
 
-  public String getAddress() {
-    return address;
+  /**
+   * Gets the street name.
+   * @return Returns the street name of the address.
+   */
+  public String getStreetName() {
+    return streetName;
   }
 
+  /**
+   * Gets the house number.
+   * @return Returns the house number of the address.
+   */
   public int getHouseNumber() {
     return houseNumber;
   }
 
+  /**
+   * Gets the country.
+   * @return Returns the country of the address.
+   */
   public String getCountry() {
     return country;
   }
 
+  /**
+   * Gets the whole address as a string.
+   * @return the whole address.
+   */
   public String getWholeAddressAsString() {
-    String wholeAddress = getAddress()+getHouseNumber()+getPlace()+getPostalCode()+getCountry();
+    String wholeAddress = getStreetName()+getHouseNumber()+ getPostalPlace()+getPostalCode()+getCountry();
     return wholeAddress;
   }
-
 
 /**
  * Checks if postalCode is above zero.
@@ -98,16 +121,16 @@ public class Address {
 
   /**
    * Checks if address is valid
-   * @param address the address to check
+   * @param streetName the address to check
    */
-  private void checkIfAddressIsValid(String address) {
-    checkString(address, "address");
+  private void checkIfStreetNameIsValid(String streetName) {
+    checkString(streetName, "address");
   }
 
   /**
    * Checks if
    */
-  private void checkIfPlaceIsValid(String place) {
+  private void checkIfPostalPlaceIsValid(String postalPlace) {
   }
 
   /**
