@@ -20,7 +20,7 @@ public class Product {
 
     private Details details;
     private Company company;
-    List<Review> reviews;
+    private List<Review> reviews;
 
     /**
      * Makes an instance of the Product class.
@@ -38,7 +38,8 @@ public class Product {
 
         setProductName(productName);
         setPrice(price);
-        setAmountOfProduct(size);
+        checkIfNumberNotNegative(size, "amount of products");
+        this.amountOfProduct = size;
 
         checkIfObjectIsNull(details, "details");
         this.details = details;
@@ -103,14 +104,6 @@ public class Product {
         return amountOfProduct;
     }
 
-    /**
-     * Sets the amount of products in a collection.
-     * @param amountOfProduct amount of products to be set.
-     */
-    public void setAmountOfProduct(int amountOfProduct) {
-        checkIfNumberNotNegative(amountOfProduct, "amount of product(s)");
-        this.amountOfProduct = amountOfProduct;
-    }
 
     /**
      * Gets the details around a product.
@@ -136,8 +129,11 @@ public class Product {
      * @throws CouldNotAddReviewException gets thrown if the review could not be added.
      */
     public void addReview(Review review) throws CouldNotAddReviewException {
-        if (reviews.contains(review)) {
+        checkIfObjectIsNull(review, "review");
+        if (!reviews.contains(review)) {
             reviews.add(review);
+        } else {
+            throw new CouldNotAddReviewException("The review is already a part of the product.");
         }
     }
 
@@ -147,7 +143,18 @@ public class Product {
      * @throws CouldNotRemoveReviewException gets thrown if the review could not be removed.
      */
     public void removeReview(Review review) throws CouldNotRemoveReviewException {
-        reviews.remove(review);
+        checkIfObjectIsNull(review, "review");
+        if (!reviews.remove(review)) {
+            throw new CouldNotRemoveReviewException("The review was not part of the product.");
+        }
+    }
+
+    /**
+     * Gets all the reviews that have been made in form of a list.
+     * @return reviews from list.
+     */
+    public List<Review> getReviews() {
+        return reviews;
     }
 
     /**
@@ -217,7 +224,7 @@ public class Product {
      * @param error exception message to be displayed.
      */
     private void checkIfNumberNotNegative(long object, String error) {
-        if (object < 0) {
+        if (object <= 0) {
             throw new IllegalArgumentException("The " + error + " Cannot be negative values.");
         }
     }
