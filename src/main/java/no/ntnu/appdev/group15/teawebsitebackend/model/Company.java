@@ -77,11 +77,11 @@ public class Company {
 
     /**
      * Check to make sure that integer values cannot go bellow 0. (Negative value)
-     * @param object the object to be checked.
+     * @param number the object to be checked.
      * @param errorMessage exception to be displayed.
      */
-    public void checkIfNumberNotNegative(long object, String errorMessage) {
-        if(object < 0) {
+    public void checkIfNumberNotNegative(long number, String errorMessage) {
+        if(number <= 0) {
             throw new IllegalArgumentException("The " + errorMessage + " cannot be of negative value.");
         }
     }
