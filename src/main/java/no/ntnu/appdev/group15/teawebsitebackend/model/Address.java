@@ -88,7 +88,7 @@ public class Address {
    * @return the whole address.
    */
   public String getWholeAddressAsString() {
-    String wholeAddress = getStreetName()+getHouseNumber()+ getPostalPlace()+getPostalCode()+getCountry();
+    String wholeAddress = getStreetName()+" "+getHouseNumber()+ " "+getPostalPlace()+" "+getPostalCode()+" "+getCountry();
     return wholeAddress;
   }
 
