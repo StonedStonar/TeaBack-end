@@ -26,7 +26,7 @@ public class Address {
    * @param houseNumber The house number
    * @param country The country
    *
-   * @throws IllegalArgumentException gets thrown if the input parameters are invalid
+   * @throws IllegalArgumentException gets thrown if the input parameters are invalid.
    */
 
 
@@ -41,6 +41,11 @@ public class Address {
     this.streetName = streetName;
     this.houseNumber = houseNumber;
     this.country = country;
+  }
+
+  public static void main(String[] args) {
+    Address address = new Address(345, "dkfjgh", "dfhgj", 345, "Norwdlkfj");
+    System.out.println("the address is " + address.getWholeAddressAsString());
   }
 
   /**
@@ -124,13 +129,14 @@ public class Address {
    * @param streetName the address to check
    */
   private void checkIfStreetNameIsValid(String streetName) {
-    checkString(streetName, "address");
+    checkString(streetName, "Streetname");
   }
 
   /**
-   * Checks if
+   * Checks if postal value is valid.
    */
   private void checkIfPostalPlaceIsValid(String postalPlace) {
+    checkString(postalPlace, "postalPlace");
   }
 
   /**
@@ -139,7 +145,7 @@ public class Address {
    * @param prefix the prefix the error should have.
    * @throws IllegalArgumentException gets thrown if the number is below or equal to zero.
    */
-  private void checkIfIntIsAboveZero(int number, String prefix){
+  private void checkIfIntIsAboveZero(long number, String prefix){
     if (number <= 0){
       throw new IllegalArgumentException("The " + prefix + " must be above zero.");
     }

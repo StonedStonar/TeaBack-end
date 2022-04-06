@@ -13,16 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * <ul>
  *   <li> Successful creation of instance with valid parameters (positive)</li>
  *   <li> Creation of instance with invalid parameters (negative)</li>
- *   <li> Test postalCode with invalid parameters (null and below zero)(negative)</li>
- *   <li> Test postalCode with valid parameter (positive) </li>
- *   <li> Test postalPlace with invalid parameter (integer, null) (negative)</li>
- *   <li> Test postalPlace with valid parameter (positive) </li>
- *   <li> Test streetName with invalid parameter (integer, null) (negative)</li>
- *   <li> Test streetName with valid parameter (positive) </li>
- *   <li> Test houseNumber with invalid parameters (null and below zero)(negative)</li>
- *   <li> Test houseNumber with valid parameter (positive) </li>
- *   <li> Test country with invalid parameter (integer, null) (negative)</li>
- *   <li> Test country with valid parameter (positive) </li>
  * </ul>
  * @author Trine Merete Staverløkk
  * @version 0.1
@@ -30,10 +20,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AddressTests {
   private Address address;
   private StringBuilder stringBuilder;
+  private String expectedError;
   private int errors;
 
   /**
-   * Sets up te test address for testing
+   * Sets up the test address for testing
    */
   @BeforeEach
   public void setUpTestAddress() {
@@ -67,6 +58,24 @@ public class AddressTests {
     }
   }
 
+  /**
+   * Checks that creation of instance is succesfull with valid parameters (positive test)
+   */
+  @Test
+  @DisplayName("Testing creation of instance with valid parameters")
+  public void testConstructorWorksWithValidParameters() {
+    String errorPrefix = "Expected the creation to be successful since ";
+    try {
+      Address address = new Address(6015, "Ålesund", "Ålesundvegen", 666, "Norway");
+    } catch (IllegalArgumentException exception) {
+      addError(errorPrefix, "the input is valid");
+    }
+    checkIfTestsFailedAndDisplayResult();
+  }
+
+  /**
+   * Checks that creation of instance is not successful with invalid parameters (negative test9
+   */
   @Test
   @DisplayName("Testing creation of instance with invalid parameters")
   public void testConstructorWorksWithInvalidParameters() {
@@ -74,54 +83,39 @@ public class AddressTests {
     try {
       address = new Address(0, "Ålesund", "Ålesundvegen", 123, "Norway");
       addError(prefix, "the input postalCode is zero");
-    } catch (IllegalArgumentException exeption) {
+    } catch (IllegalArgumentException exception) {
     }
     try {
       address = new Address(-10, "Ålesund", "Ålesundvegen", 123, "Norway");
       addError(prefix, "the input postalCode is below zero");
-    } catch (IllegalArgumentException exeption) {
+    } catch (IllegalArgumentException exception) {
     }
     try {
       address = new Address(6015, null, "Ålesundvegen", 123, "Norway");
       addError(prefix, "the input postalPlace is null");
-    } catch (IllegalArgumentException exeption) {
+    } catch (IllegalArgumentException exception) {
     }
     try {
       address = new Address(6015, "Ålesund", null, 123, "Norway");
       addError(prefix, "the input postalPlace is null");
-    } catch (IllegalArgumentException exeption) {
+    } catch (IllegalArgumentException exception) {
     }
     try {
       address = new Address(6015, "Ålesund", "Ålesundvegen", 0, "Norway");
-      addError(prefix, "the input houseNumber is below accepted number");
-    } catch (IllegalArgumentException exeption) {
+      addError(prefix, "the input houseNumber is zero");
+    } catch (IllegalArgumentException exception) {
     }
     try {
       address = new Address(6015, "Ålesund", "Ålesundvegen", -10, "Norway");
       addError(prefix, "the input postalCode is below zero");
-    } catch (IllegalArgumentException exeption) {
+    } catch (IllegalArgumentException exception) {
     }
     try {
       address = new Address(6015, "Ålesund", "Ålesundvegen", 123, null);
       addError(prefix, "the input country is null");
-    } catch (IllegalArgumentException exeption) {
+    } catch (IllegalArgumentException exception) {
     }
-    try {
-      address = new Address(6015, "Ålesund", "Ålesundvegen", 123, "Norway");
-      addError(prefix, "the input  is ");
-    } catch (IllegalArgumentException exeption) {
-    }
-    try {
-      address = new Address(6015, "Ålesund", "Ålesundvegen", 123, "Norway");
-      addError(prefix, "the input  is ");
-    } catch (IllegalArgumentException exeption) {
-    }
-    try {
-      address = new Address(6015, "Ålesund", "Ålesundvegen", 123, "Norway");
-      addError(prefix, "the input  is ");
-    } catch (IllegalArgumentException exeption) {
-    }
+
+    checkIfTestsFailedAndDisplayResult();
   }
-
-
 }
