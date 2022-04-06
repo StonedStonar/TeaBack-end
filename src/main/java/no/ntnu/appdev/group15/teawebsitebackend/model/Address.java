@@ -26,7 +26,7 @@ public class Address {
    * @param houseNumber The house number
    * @param country The country
    *
-   * @throws IllegalArgumentException gets thrown if the input parameters are invalid
+   * @throws IllegalArgumentException gets thrown if the input parameters are invalid.
    */
 
 
