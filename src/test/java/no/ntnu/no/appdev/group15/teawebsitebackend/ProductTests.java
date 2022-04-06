@@ -32,7 +32,7 @@ public class ProductTests {
         try{
             product = new Product(4, "Lord title", 60000, 3, details, company);
         }catch (IllegalArgumentException exception){
-            fail("Expected the product to be made with valid input. ");
+            fail("Expected the product to be made with valid input.");
         }
     }
 
