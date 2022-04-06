@@ -92,7 +92,6 @@ public class TagJPA implements TagsRegister {
         }else {
             throw new CouldNotGetTagException("The tag with id and name " + tag.getTagID() + " " + tag.getTagName() + "could not be found.");
         }
-
     }
 
     @Override
