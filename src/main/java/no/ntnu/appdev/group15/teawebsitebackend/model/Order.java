@@ -1,10 +1,25 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import java.time.LocalDate;
+import java.util.List;
+
 /**
- * @author
+ * Represents the order class. Represents an order made by the user.
+ * @author Trine Merete Staverløkk
  * @version 0.1
  */
 public class Order {
+
+    private Long orderID;
+    private User user;
+    private List<OrderedProduct> orderedProductList; //many to many
+    private OrderState orderState;
+    private Address address;
+    private String deliveryMethod;
+    private LocalDate dateOfOrder;
+    private LocalDate shippedDate;
+    private String paymentMethod;
+    private Boolean cancelled;
 
     /**
      * Makes an instance of the Order class.
