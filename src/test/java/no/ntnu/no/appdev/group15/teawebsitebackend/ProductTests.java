@@ -114,7 +114,7 @@ public class ProductTests {
     @DisplayName("Test if constructor works with valid input.")
     public void testIfConstructorWorksWithValidInput() {
         try {
-            Product product = new Product(2, "Saus", 14.99f, 0, new TeaDetails(), new Company());
+            Product product = new Product(2, "Saus", 14.99f, 1, new TeaDetails(), new Company());
         } catch (IllegalArgumentException ex) {
             addError(expectedError, " You have used Invalid input on a positive test.");
         }
