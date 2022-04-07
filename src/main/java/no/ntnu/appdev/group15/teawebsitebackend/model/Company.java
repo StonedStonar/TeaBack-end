@@ -1,16 +1,65 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
 /**
- * @author
+ * Represents all information about a company.
+ * @author Kenneth Johansen Misund
  * @version 0.1
  */
+
 public class Company {
+
+    private long companyID;
+    private String companyName;
+    private Details details;
 
     /**
      * Makes an instance of the Company class.
+     * @param companyID The unique identified id for company.
+     * @param companyName company name.
+     * @param details details for a company.
      */
-    public Company() {
+    public Company(long companyID, String companyName, Details details) {
+        checkIfNumberNotNegative(companyID, "company id");
+        this.companyID = companyID;
 
+        setCompanyName(companyName);
+
+        checkIfObjectIsNull(details, "details");
+        this.details = details;
+    }
+
+    public Company() {}
+
+    /**
+     * Get the unique companyID for a company.
+     *
+     * @return companyID in long.
+     */
+    public long getCompanyID() {
+        return companyID;
+    }
+
+    /**
+     * Gets the company name.
+     *
+     * @return company name.
+     */
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        checkString(companyName, "Company name");
+        this.companyName = companyName;
+    }
+
+    /**
+     * Gets the details for a product.
+     *
+     * @return the details given.
+     */
+    public Details getDetails() {
+        return details;
     }
 
     /**
@@ -23,6 +72,17 @@ public class Company {
         checkIfObjectIsNull(stringToCheck, errorPrefix);
         if (stringToCheck.isEmpty()) {
             throw new IllegalArgumentException("The " + errorPrefix + " cannot be empty.");
+        }
+    }
+
+    /**
+     * Check to make sure that integer values cannot go bellow 0. (Negative value)
+     * @param number the object to be checked.
+     * @param errorMessage exception to be displayed.
+     */
+    public void checkIfNumberNotNegative(long number, String errorMessage) {
+        if(number <= 0) {
+            throw new IllegalArgumentException("The " + errorMessage + " cannot be of negative value.");
         }
     }
 

@@ -1,6 +1,5 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model.database;
 
-import no.ntnu.appdev.group15.teawebsitebackend.RegisterTestData;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Tag;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetTagException;
@@ -92,7 +91,6 @@ public class TagJPA implements TagsRegister {
         }else {
             throw new CouldNotGetTagException("The tag with id and name " + tag.getTagID() + " " + tag.getTagName() + "could not be found.");
         }
-
     }
 
     @Override

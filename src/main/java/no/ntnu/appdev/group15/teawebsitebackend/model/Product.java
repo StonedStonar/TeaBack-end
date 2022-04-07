@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Represents the product class. This class should hold all the information needed for a product.
- * @author Kenneth Misund
+ * @author Kenneth Johansen Misund
  * @version 0.1
  */
 public class Product {
@@ -20,21 +20,30 @@ public class Product {
 
     private Details details;
     private Company company;
-    List<Review> reviews;
+    private List<Review> reviews;
 
     /**
      * Makes an instance of the Product class.
+     * @param id Each product has to have an unique id.
+     * @param productName product name of the product.
+     * @param price price set for a product.
+     * @param size size of products in the collection.
+     * @param details details written for a product.
+     * @param company company information.
      */
     public Product(long id, String productName, float price, int size, Details details, Company company) {
         checkIfObjectIsNull(id, "id");
-        checkIfIntegerNotNegative((int) id, "id");
+        checkIfNumberNotNegative((int) id, "id");
         this.productID = id;
 
         setProductName(productName);
         setPrice(price);
-        setAmountOfProduct(size);
+        checkIfNumberNotNegative(size, "amount of products");
+        this.amountOfProduct = size;
 
+        checkIfObjectIsNull(details, "details");
         this.details = details;
+        checkIfObjectIsNull(company, "company");
         this.company = company;
 
         this.reviews = new ArrayList<>();
@@ -95,14 +104,6 @@ public class Product {
         return amountOfProduct;
     }
 
-    /**
-     * Sets the amount of products in a collection.
-     * @param amountOfProduct amount of products to be set.
-     */
-    public void setAmountOfProduct(int amountOfProduct) {
-        checkIfIntegerNotNegative(amountOfProduct, "amount of product(s)");
-        this.amountOfProduct = amountOfProduct;
-    }
 
     /**
      * Gets the details around a product.
@@ -129,6 +130,12 @@ public class Product {
      */
     public void addReview(Review review) throws CouldNotAddReviewException {
 
+        checkIfObjectIsNull(review, "review");
+        if (!reviews.contains(review)) {
+            reviews.add(review);
+        } else {
+            throw new CouldNotAddReviewException("The review is already a part of the product.");
+        }
     }
 
     /**
@@ -137,25 +144,41 @@ public class Product {
      * @throws CouldNotRemoveReviewException gets thrown if the review could not be removed.
      */
     public void removeReview(Review review) throws CouldNotRemoveReviewException {
+        checkIfObjectIsNull(review, "review");
+        if (!reviews.remove(review)) {
+            throw new CouldNotRemoveReviewException("The review was not part of the product.");
+        }
+    }
 
+    /**
+     * Gets all the reviews that have been made in form of a list.
+     * @return reviews from list.
+     */
+    public List<Review> getReviews() {
+        return reviews;
     }
 
     /**
      * The amount of product(s) to be added.
      * @param amountOfProduct amount to be added.
      */
-    public void addAmountOfProduct(int amountOfProduct) {
-        checkIfIntegerNotNegative(amountOfProduct, "amount to be added");
+    public void addAmountOfProduct(long amountOfProduct) {
+        checkIfNumberNotNegative(amountOfProduct, "amount to be added");
         this.amountOfProduct += amountOfProduct;
     }
 
     /**
-     * The amount of product(s) to be removed.
+     * The amount of product(s) to be removed. Should never be negative.
      * @param amountOfProduct amount to be removed.
      */
     public void removeAmountOfProduct(int amountOfProduct) {
-        checkIfIntegerNotNegative(amountOfProduct, "amount to be removed");
+        checkIfNumberNotNegative(amountOfProduct, "amount to be removed");
         int sum = this.amountOfProduct - amountOfProduct;
+        if(sum < 0) {
+            throw new IllegalArgumentException("Products should never reach negative amount");
+        } else {
+            this.amountOfProduct = sum;
+        }
     }
 
 
@@ -201,8 +224,8 @@ public class Product {
      * @param object the object to be checked.
      * @param error exception message to be displayed.
      */
-    private void checkIfIntegerNotNegative(int object, String error) {
-        if (object < 0) {
+    private void checkIfNumberNotNegative(long object, String error) {
+        if (object <= 0) {
             throw new IllegalArgumentException("The " + error + " Cannot be negative values.");
         }
     }
