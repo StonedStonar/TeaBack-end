@@ -12,6 +12,10 @@ public class Company {
     private String companyName;
     private Details details;
 
+    public Company() {
+        
+    }
+
     /**
      * Makes an instance of the Company class.
      * @param companyID The unique identified id for company.
@@ -27,8 +31,6 @@ public class Company {
         checkIfObjectIsNull(details, "details");
         this.details = details;
     }
-
-    public Company() {}
 
     /**
      * Get the unique companyID for a company.

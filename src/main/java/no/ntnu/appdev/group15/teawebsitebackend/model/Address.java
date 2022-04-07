@@ -1,14 +1,27 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.SQLInsert;
+import org.hibernate.service.spi.InjectService;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 /**
  * Represents an address class.
  * @author Trine Merete Staverløkk
  * @version 0.1
  */
-
+@Entity
+@DynamicInsert
 public class Address {
 
+  @Id
+  @GeneratedValue
+  private long addressID;
   private int postalCode;
   private String postalPlace;
   private String streetName;
@@ -20,16 +33,39 @@ public class Address {
 
   /**
    * makes an instance of Address class
+   * @param addressID the id of the address.
    * @param postalCode The postal code
    * @param postalPlace The place
    * @param streetName the address
    * @param houseNumber The house number
    * @param country The country
-   *
    * @throws IllegalArgumentException gets thrown if the input parameters are invalid.
    */
+  @JsonCreator
+  public Address(long addressID, int postalCode, String postalPlace, String streetName, int houseNumber, String country){
+    checkIfPostalCodeIsAboveZero(postalCode);
+    checkIfPostalPlaceIsValid(postalPlace);
+    checkIfStreetNameIsValid(streetName);
+    checkIfHouseNumberIsAboveZero(houseNumber);
+    checkIfCountryIsValid(country);
+    checkIfNumberIsAboveZero(addressID, "address id");
+    this.postalCode = postalCode;
+    this.postalPlace = postalPlace;
+    this.streetName = streetName;
+    this.houseNumber = houseNumber;
+    this.country = country;
+    this.addressID = addressID;
+  }
 
-
+  /**
+   * makes an instance of Address class
+   * @param postalCode The postal code
+   * @param postalPlace The place
+   * @param streetName the address
+   * @param houseNumber The house number
+   * @param country The country
+   * @throws IllegalArgumentException gets thrown if the input parameters are invalid.
+   */
   public Address(int postalCode, String postalPlace, String streetName, int houseNumber, String country){
     checkIfPostalCodeIsAboveZero(postalCode);
     checkIfPostalPlaceIsValid(postalPlace);
@@ -41,11 +77,15 @@ public class Address {
     this.streetName = streetName;
     this.houseNumber = houseNumber;
     this.country = country;
+    this.addressID = 0;
   }
 
-  public static void main(String[] args) {
-    Address address = new Address(345, "dkfjgh", "dfhgj", 345, "Norwdlkfj");
-    System.out.println("the address is " + address.getWholeAddressAsString());
+  /**
+   * Gets the id of the address.
+   * @return the id of the address.
+   */
+  public long getAddressID(){
+    return addressID;
   }
 
   /**
@@ -103,7 +143,7 @@ public class Address {
  * @throws IllegalArgumentException gets thrown if the postal code is zero or below zero.
  */
   private void checkIfPostalCodeIsAboveZero(int postalCode) {
-    checkIfIntIsAboveZero(postalCode, "postal Code");
+    checkIfNumberIsAboveZero(postalCode, "postal Code");
   }
 
   /**
@@ -121,7 +161,7 @@ public class Address {
    * @throws IllegalArgumentException gets thrown if housenumber is zero or below zero.
    */
   private void checkIfHouseNumberIsAboveZero(int houseNumber) {
-    checkIfIntIsAboveZero(houseNumber, "house number");
+    checkIfNumberIsAboveZero(houseNumber, "house number");
   }
 
   /**
@@ -145,7 +185,7 @@ public class Address {
    * @param prefix the prefix the error should have.
    * @throws IllegalArgumentException gets thrown if the number is below or equal to zero.
    */
-  private void checkIfIntIsAboveZero(long number, String prefix){
+  private void checkIfNumberIsAboveZero(long number, String prefix){
     if (number <= 0){
       throw new IllegalArgumentException("The " + prefix + " must be above zero.");
     }

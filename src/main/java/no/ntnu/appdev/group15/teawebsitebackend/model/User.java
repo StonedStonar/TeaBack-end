@@ -1,7 +1,10 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotChangePasswordException;
+import org.hibernate.annotations.SQLInsert;
+import org.hibernate.service.spi.InjectService;
 
 import javax.persistence.*;
 import java.util.regex.Pattern;
@@ -22,6 +25,7 @@ public class User {
 
     private String lastName;
 
+    //@OneToOne(targetEntity = Address.class, cascade = CascadeType.PERSIST)
     @Transient
     private Address address;
 
@@ -54,6 +58,7 @@ public class User {
         setEmail(email);
         checkIfPasswordIsNotNullOrEmpty(password);
         this.password = password;
+        this.userIdD = 0;
     }
 
     /**
@@ -64,6 +69,7 @@ public class User {
      * @param email the email of the user.
      * @throws IllegalArgumentException gets thrown if the input is invalid format.
      */
+    @JsonCreator
     public User(String firstName, String lastName, Address address, String email) {
         setFirstName(firstName);
         setLastName(lastName);

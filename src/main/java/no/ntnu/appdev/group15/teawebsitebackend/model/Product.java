@@ -3,6 +3,7 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddReviewException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveReviewException;
 
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +19,11 @@ public class Product {
     private float price;
     private int amountOfProduct;
 
+    @Transient
     private Details details;
+    @Transient
     private Company company;
+    @Transient
     private List<Review> reviews;
 
     /**
