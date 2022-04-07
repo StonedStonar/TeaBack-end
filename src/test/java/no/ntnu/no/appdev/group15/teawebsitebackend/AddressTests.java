@@ -29,7 +29,7 @@ public class AddressTests {
   @BeforeEach
   public void setUpTestAddress() {
     try {
-      address = new Address(6015, "Ålesund", "Ålesundvegen", 123, "Norway");
+      address = new Address(1, 6015, "Ålesund", "Ålesundvegen", 123, "Norway");
     } catch (IllegalArgumentException exception) {
         fail("Expected successful creation since the input is valid. ");
     }
@@ -66,7 +66,7 @@ public class AddressTests {
   public void testConstructorWorksWithValidParameters() {
     String errorPrefix = "Expected the creation to be successful since ";
     try {
-      Address address = new Address(6015, "Ålesund", "Ålesundvegen", 666, "Norway");
+      Address address = new Address(2, 6015, "Ålesund", "Ålesundvegen", 666, "Norway");
     } catch (IllegalArgumentException exception) {
       addError(errorPrefix, "the input is valid");
     }
@@ -81,37 +81,37 @@ public class AddressTests {
   public void testConstructorWorksWithInvalidParameters() {
     String prefix = "Expected an IllegalArgumentExeption since ";
     try {
-      address = new Address(0, "Ålesund", "Ålesundvegen", 123, "Norway");
+      address = new Address(8, 0, "Ålesund", "Ålesundvegen", 123, "Norway");
       addError(prefix, "the input postalCode is zero");
     } catch (IllegalArgumentException exception) {
     }
     try {
-      address = new Address(-10, "Ålesund", "Ålesundvegen", 123, "Norway");
+      address = new Address(9,-10, "Ålesund", "Ålesundvegen", 123, "Norway");
       addError(prefix, "the input postalCode is below zero");
     } catch (IllegalArgumentException exception) {
     }
     try {
-      address = new Address(6015, null, "Ålesundvegen", 123, "Norway");
+      address = new Address(10,6015, null, "Ålesundvegen", 123, "Norway");
       addError(prefix, "the input postalPlace is null");
     } catch (IllegalArgumentException exception) {
     }
     try {
-      address = new Address(6015, "Ålesund", null, 123, "Norway");
+      address = new Address(11,6015, "Ålesund", null, 123, "Norway");
       addError(prefix, "the input postalPlace is null");
     } catch (IllegalArgumentException exception) {
     }
     try {
-      address = new Address(6015, "Ålesund", "Ålesundvegen", 0, "Norway");
+      address = new Address(12,6015, "Ålesund", "Ålesundvegen", 0, "Norway");
       addError(prefix, "the input houseNumber is zero");
     } catch (IllegalArgumentException exception) {
     }
     try {
-      address = new Address(6015, "Ålesund", "Ålesundvegen", -10, "Norway");
+      address = new Address(13,6015, "Ålesund", "Ålesundvegen", -10, "Norway");
       addError(prefix, "the input postalCode is below zero");
     } catch (IllegalArgumentException exception) {
     }
     try {
-      address = new Address(6015, "Ålesund", "Ålesundvegen", 123, null);
+      address = new Address(14,6015, "Ålesund", "Ålesundvegen", 123, null);
       addError(prefix, "the input country is null");
     } catch (IllegalArgumentException exception) {
     }

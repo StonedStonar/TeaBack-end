@@ -77,7 +77,7 @@ public class TagJPATests {
      */
     private void addErrorWithException(String errorPrefix, String error, Exception exception){
         addError(errorPrefix, error);
-        stringBuilder.append(" ").append("and not a ").append(exception.getClass().getSimpleName());
+        stringBuilder.append(" and not a ").append(exception.getClass().getSimpleName());
     }
 
     /**
@@ -107,7 +107,7 @@ public class TagJPATests {
             addError(prefixIllegal, "the input is null.");
         }
         try {
-            tagJPA.addTag(new Tag(tag.getTagID(), "hei", "3"));
+            tagJPA.addTag(tag);
             addError(couldException, "the input tag has the same id as an old one.");
         }catch (IllegalArgumentException exception){
             addError(couldException, "the input tag has the same id as an old one.");
@@ -115,7 +115,7 @@ public class TagJPATests {
 
         }
         try{
-            tagJPA.addTag(tag);
+            tagJPA.addTag(new Tag(7000, "Pepe", "Clap"));
             addError(couldException, "since the tag is already in the system.");
         }catch (IllegalArgumentException exception){
             addError(couldException, "since the tag is already in the system.");
@@ -335,6 +335,7 @@ public class TagJPATests {
             addErrorWithException(prefixIllegal, "since the input is null", exception);
         }
         String getException = "Expected to get a CouldNotGetTagException since ";
+
         try {
             tagJPA.updateTag(new Tag(70000, "Hello", "Hello"));
             addError(getException, "the tag is not in the system");

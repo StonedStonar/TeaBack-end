@@ -1,5 +1,6 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotChangePasswordException;
 
@@ -22,7 +23,8 @@ public class User {
 
     private String lastName;
 
-    @Transient
+    @OneToOne(cascade = CascadeType.PERSIST, targetEntity = Address.class, orphanRemoval = true)
+    @JoinColumn(name = "addressID")
     private Address address;
 
     @Column(nullable = false, unique = true)
@@ -30,6 +32,7 @@ public class User {
 
     @JsonIgnore
     private String password;
+
 
     /**
      * Makes an instance of the User class.
@@ -54,6 +57,7 @@ public class User {
         setEmail(email);
         checkIfPasswordIsNotNullOrEmpty(password);
         this.password = password;
+        this.userIdD = 0;
     }
 
     /**
@@ -64,6 +68,7 @@ public class User {
      * @param email the email of the user.
      * @throws IllegalArgumentException gets thrown if the input is invalid format.
      */
+    @JsonCreator
     public User(String firstName, String lastName, Address address, String email) {
         setFirstName(firstName);
         setLastName(lastName);

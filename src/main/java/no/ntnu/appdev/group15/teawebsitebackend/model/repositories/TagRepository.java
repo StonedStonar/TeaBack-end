@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 /**
+ * Represents the connection to the database.
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
