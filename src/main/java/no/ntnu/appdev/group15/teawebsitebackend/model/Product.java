@@ -128,6 +128,7 @@ public class Product {
      * @throws CouldNotAddReviewException gets thrown if the review could not be added.
      */
     public void addReview(Review review) throws CouldNotAddReviewException {
+
     }
 
     /**
@@ -136,6 +137,7 @@ public class Product {
      * @throws CouldNotRemoveReviewException gets thrown if the review could not be removed.
      */
     public void removeReview(Review review) throws CouldNotRemoveReviewException {
+
     }
 
     /**
@@ -153,7 +155,7 @@ public class Product {
      */
     public void removeAmountOfProduct(int amountOfProduct) {
         checkIfIntegerNotNegative(amountOfProduct, "amount to be removed");
-        this.amountOfProduct -= amountOfProduct;
+        int sum = this.amountOfProduct - amountOfProduct;
     }
 
 
