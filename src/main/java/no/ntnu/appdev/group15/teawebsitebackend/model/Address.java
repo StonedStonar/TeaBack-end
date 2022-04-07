@@ -16,7 +16,6 @@ import javax.persistence.Id;
  * @version 0.1
  */
 @Entity
-@DynamicInsert
 public class Address {
 
   @Id

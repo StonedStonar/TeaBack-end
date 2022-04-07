@@ -3,8 +3,6 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotChangePasswordException;
-import org.hibernate.annotations.SQLInsert;
-import org.hibernate.service.spi.InjectService;
 
 import javax.persistence.*;
 import java.util.regex.Pattern;
@@ -25,8 +23,8 @@ public class User {
 
     private String lastName;
 
-    //@OneToOne(targetEntity = Address.class, cascade = CascadeType.PERSIST)
-    @Transient
+    @OneToOne(cascade = CascadeType.PERSIST, targetEntity = Address.class, orphanRemoval = true)
+    @JoinColumn(name = "addressID")
     private Address address;
 
     @Column(nullable = false, unique = true)
@@ -34,6 +32,7 @@ public class User {
 
     @JsonIgnore
     private String password;
+
 
     /**
      * Makes an instance of the User class.
