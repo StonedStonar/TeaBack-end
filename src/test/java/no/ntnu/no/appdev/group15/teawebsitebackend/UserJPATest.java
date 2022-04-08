@@ -5,6 +5,7 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.Address;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveUserException;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -34,6 +35,7 @@ public class UserJPATest {
      * Makes an instance of the UserJPATest class.
      * @param userJPA the connection to the database.
      */
+    @Autowired
     public UserJPATest(UserJPA userJPA) {
         checkIfObjectIsNull(userJPA, "user JPA");
         this.userJPA = userJPA;
@@ -42,12 +44,6 @@ public class UserJPATest {
     @BeforeEach
     public void addTestData(){
         try {
-            userJPA.getAllUsers().forEach(user -> {
-                try {
-                    userJPA.removeUserWithID(user.getUserIdD());
-                }catch (CouldNotRemoveUserException exception){
-                }
-            });
             Address address = new Address(2910, "Aurdal", "Raskebakkin", 9, "Norge");
             Address address1 = new Address(2900, "Fagernes", "Fagernesvegen", 33, "Norge");
         }catch (IllegalArgumentException exception){

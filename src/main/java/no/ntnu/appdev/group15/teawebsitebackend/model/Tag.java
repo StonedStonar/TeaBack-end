@@ -1,6 +1,7 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,7 +42,7 @@ public class Tag {
      * @throws IllegalArgumentException gets thrown if the input parameters are invalid format.
      */
     @JsonCreator
-    public Tag(long tagID, String tagName, String tagDescription) {
+    public Tag(@JsonProperty("tagID") long tagID, @JsonProperty("tagName") String tagName, @JsonProperty("tagDescription") String tagDescription) {
         checkIfTagIDIsAboveZero(tagID);
         checkIfTagNameIsValid(tagName);
         checkIfTagDescriptionIsValid(tagDescription);

@@ -1,13 +1,23 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import no.ntnu.appdev.group15.teawebsitebackend.RegisterTestData;
+import no.ntnu.appdev.group15.teawebsitebackend.model.Tag;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.TagJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetTagException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.repositories.TagRepository;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import javax.swing.text.html.parser.Entity;
+import java.util.List;
 
 /**
  * @author Steinar Hjelle Midthus
@@ -32,6 +42,54 @@ public class TagController {
         }catch (CouldNotAddTagException couldNotAddTagException){
             System.err.println("Could not add test tags to register.");
         }
+    }
+
+    @GetMapping
+    public List<Tag> getAllTags(){
+        return tagsRegister.getAllTags();
+    }
+
+    @GetMapping("/{id}")
+    public Tag getTagWithID(@PathVariable Long id) throws CouldNotGetTagException {
+        return tagsRegister.getTagWithID(id);
+    }
+
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    public void addTagWithDetails(@RequestBody String body) throws JsonProcessingException, CouldNotAddTagException {
+        tagsRegister.addTag(getTag(body));
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteTag(@PathVariable Long id) throws CouldNotRemoveTagException {
+        tagsRegister.removeTagWithTagId(id);
+    }
+
+    /**
+     * Gets the tag from the body.
+     * @param body the body of the html tag.
+     * @return the tag that this json object is.
+     * @throws JsonProcessingException gets thrown if the json format is invalid.
+     */
+    private Tag getTag(String body) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(body, Tag.class);
+    }
+
+    @ExceptionHandler(CouldNotRemoveTagException.class)
+    private ResponseEntity<String> handleCouldNotRemoveTagException(Exception exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(CouldNotAddTagException.class)
+    private ResponseEntity<String> handleCouldNotAddTagException(Exception exception){
+        return ResponseEntity.status(HttpStatus.IM_USED).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(CouldNotGetTagException.class)
+    private ResponseEntity<String> handleCouldNotGetTagException(Exception exception){
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(exception.getMessage());
     }
 
     /**

@@ -2,9 +2,6 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.SQLInsert;
-import org.hibernate.service.spi.InjectService;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

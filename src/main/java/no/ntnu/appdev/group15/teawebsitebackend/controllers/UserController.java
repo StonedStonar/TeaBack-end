@@ -1,9 +1,14 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers;
 
+import io.swagger.annotations.Authorization;
 import no.ntnu.appdev.group15.teawebsitebackend.RegisterTestData;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddUserException;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Steinar Hjelle Midthus
@@ -27,6 +32,28 @@ public class UserController {
             System.err.println("The users could not be added.");
         }
     }
+
+    @GetMapping(value = "/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    public String userPage(@PathVariable Long id){
+        return "You just wrote " + id + ".";
+    }
+
+    @GetMapping("")
+    public String normal(){
+        return "Page without any permissions needed.";
+    }
+
+    @GetMapping("user")
+    public String userPage(){
+        return "This is the user page.";
+    }
+
+    @GetMapping("admin")
+    public String adminPage(){
+        return "This is the admin page.";
+    }
+
 
     /**
      * Checks if a string is of a valid format or not.

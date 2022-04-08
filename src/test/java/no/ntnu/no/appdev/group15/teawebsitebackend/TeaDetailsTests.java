@@ -37,6 +37,8 @@ public class TeaDetailsTests {
       teaDetails = new TeaDetails();
     } catch (IllegalArgumentException exception){
     }
+    stringBuilder = new StringBuilder();
+    errors = 0;
   }
 
   /**

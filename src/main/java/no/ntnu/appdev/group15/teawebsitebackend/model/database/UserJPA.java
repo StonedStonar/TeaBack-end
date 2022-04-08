@@ -77,6 +77,15 @@ public class UserJPA implements UserRegister {
     }
 
     @Override
+    public User getUserWithEmail(String email) throws CouldNotGetUserException {
+        Optional<User> optionalUser = userRepository.getUserByEmail(email);
+        if (optionalUser.isEmpty()){
+            throw new CouldNotGetUserException("The user with email " + email + " could not be located.");
+        }
+        return optionalUser.get();
+    }
+
+    @Override
     public void updateUser(User user) throws CouldNotGetUserException {
         checkIfUserIsValid(user);
         if (userRepository.existsById(user.getUserIdD())){

@@ -3,6 +3,8 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotChangePasswordException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.regex.Pattern;
@@ -33,6 +35,11 @@ public class User {
     @JsonIgnore
     private String password;
 
+    private boolean active;
+
+    @Enumerated
+    private Role role;
+
 
     /**
      * Makes an instance of the User class.
@@ -48,16 +55,21 @@ public class User {
      * @param address the address of the user
      * @param email the email of the user.
      * @param password the password of the user.
+     * @param role the role of the user.
      * @throws IllegalArgumentException gets thrown if the input is invalid format.
      */
-    public User(String firstName, String lastName, Address address, String email, String password){
+    //Todo: Skriv tester for Role parameteren.
+    public User(String firstName, String lastName, Address address, String email, String password, Role role){
         setFirstName(firstName);
         setLastName(lastName);
         setAddress(address);
         setEmail(email);
+        checkIfObjectIsNull(role, "role");
         checkIfPasswordIsNotNullOrEmpty(password);
         this.password = password;
         this.userIdD = 0;
+        this.active = true;
+        this.role = role;
     }
 
     /**
@@ -66,14 +78,33 @@ public class User {
      * @param lastName the last name of the user.
      * @param address the address of the user
      * @param email the email of the user.
+     * @param role the role of the user.
      * @throws IllegalArgumentException gets thrown if the input is invalid format.
      */
     @JsonCreator
-    public User(String firstName, String lastName, Address address, String email) {
+    public User(String firstName, String lastName, Address address, String email, Role role) {
         setFirstName(firstName);
         setLastName(lastName);
         setAddress(address);
         setEmail(email);
+        this.active = true;
+    }
+
+    /**
+     * Gets the role of the user.
+     * @return the role of the user.
+     */
+    public Role getRole(){
+        return role;
+    }
+
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public String getPassword(){
+        return password;
     }
 
     /**
@@ -84,7 +115,8 @@ public class User {
      * @throws IllegalArgumentException gets throw if one of the input passwords are empty or null.
      */
     public void changePassword(String oldPassword, String newPassword) throws CouldNotChangePasswordException {
-        checkIfPasswordsMatch(newPassword);
+        checkIfPasswordIsNotNullOrEmpty(newPassword);
+        checkIfPasswordIsNotNullOrEmpty(oldPassword);
         if (checkIfPasswordsMatch(oldPassword)){
             this.password = newPassword;
         }else {

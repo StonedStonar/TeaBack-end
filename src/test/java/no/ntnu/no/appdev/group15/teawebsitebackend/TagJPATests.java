@@ -33,6 +33,7 @@ public class TagJPATests {
 
     private int errors;
 
+
     @Autowired
     public TagJPATests(TagJPA tagJPA){
         this.tagJPA = tagJPA;
@@ -115,7 +116,7 @@ public class TagJPATests {
 
         }
         try{
-            tagJPA.addTag(new Tag(7000, "Pepe", "Clap"));
+            tagJPA.addTag(tag);
             addError(couldException, "since the tag is already in the system.");
         }catch (IllegalArgumentException exception){
             addError(couldException, "since the tag is already in the system.");

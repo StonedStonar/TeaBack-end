@@ -2,6 +2,7 @@ package no.ntnu.appdev.group15.teawebsitebackend;
 
 
 import no.ntnu.appdev.group15.teawebsitebackend.model.Address;
+import no.ntnu.appdev.group15.teawebsitebackend.model.Role;
 import no.ntnu.appdev.group15.teawebsitebackend.model.User;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddUserException;
@@ -42,10 +43,10 @@ public class RegisterTestData {
             Address address1 = new Address(2900, "Fagernes", "Fagernesvegen", 33, "Norge");
             Address address2 = new Address(6015, "Ålesund", "Fagerlia", 15, "Noreg");
             Address address3 = new Address(6390, "Vestnes", "Kaigata", 15, "Noreg");
-            userRegister.addUser(new User("Bjarne", "Bjarnesen", address, "bjarne@bjarnesen.com", "pass"));
-            userRegister.addUser(new User("Arne", "Arnesen", address1, "arne@gmail.com", "password"));
-            userRegister.addUser(new User("Lise", "Fjell", address2, "lise@gmail.com", "passwoord"));
-            userRegister.addUser(new User("Fjell", "Bekken", address3, "fjell@lisemom.com", "123spel"));
+            userRegister.addUser(new User("Bjarne", "Bjarnesen", address, "bjarne@bjarnesen.com", "pass", Role.ROLE_ADMIN));
+            userRegister.addUser(new User("Arne", "Arnesen", address1, "arne@gmail.com", "password", Role.ROLE_USER));
+            userRegister.addUser(new User("Lise", "Fjell", address2, "lise@gmail.com", "passwoord", Role.ROLE_USER));
+            userRegister.addUser(new User("Fjell", "Bekken", address3, "fjell@lisemom.com", "123spel", Role.ROLE_USER));
         }
     }
 

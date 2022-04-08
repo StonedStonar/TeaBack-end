@@ -6,8 +6,15 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
  */
 public enum Role {
 
-    ADMIN,
-    USER
+    /**
+     * Represents a user that is an admin.
+     */
+    ROLE_ADMIN,
+
+    /**
+     * Represents a basic user.
+     */
+    ROLE_USER
 
 
 }
