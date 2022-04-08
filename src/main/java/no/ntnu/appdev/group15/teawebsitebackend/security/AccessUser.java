@@ -4,6 +4,8 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -33,7 +35,8 @@ public class AccessUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        return SecurityConfiguration.getPasswordEncoder().encode(user.getPassword());
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(user.getPassword());
     }
 
     @Override
