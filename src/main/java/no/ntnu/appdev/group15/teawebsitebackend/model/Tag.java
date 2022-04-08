@@ -52,6 +52,22 @@ public class Tag {
     }
 
     /**
+     * Makes an instance of the tag object.
+     * @param tagName the name of the tag.
+     * @param tagDescription the description of the tag.
+     * @throws IllegalArgumentException gets thrown if the input parameters are invalid format.
+     */
+    @JsonCreator
+    public Tag(@JsonProperty("tagName") String tagName, @JsonProperty("tagDescription") String tagDescription) {
+        checkIfTagIDIsAboveZero(tagID);
+        checkIfTagNameIsValid(tagName);
+        checkIfTagDescriptionIsValid(tagDescription);
+        this.tagID = tagID;
+        this.tagDescription = tagDescription;
+        this.tagName = tagName;
+    }
+
+    /**
      * Gets the tag's id.
      * @return the id of the tag.
      */
