@@ -2,6 +2,7 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotChangePasswordException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -78,15 +79,16 @@ public class User {
      * @param lastName the last name of the user.
      * @param address the address of the user
      * @param email the email of the user.
-     * @param role the role of the user.
      * @throws IllegalArgumentException gets thrown if the input is invalid format.
      */
     @JsonCreator
-    public User(String firstName, String lastName, Address address, String email, Role role) {
+    public User(@JsonProperty("firstName") String firstName, @JsonProperty("lastName") String lastName,
+                @JsonProperty("address") Address address, @JsonProperty("email") String email) {
         setFirstName(firstName);
         setLastName(lastName);
         setAddress(address);
         setEmail(email);
+        role = Role.ROLE_USER;
         this.active = true;
     }
 

@@ -2,6 +2,7 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,8 +38,9 @@ public class Address {
    * @param country The country
    * @throws IllegalArgumentException gets thrown if the input parameters are invalid.
    */
-  @JsonCreator
-  public Address(long addressID, int postalCode, String postalPlace, String streetName, int houseNumber, String country){
+  public Address(long addressID, int postalCode,
+                 String postalPlace, String streetName,
+                 int houseNumber, String country){
     checkIfPostalCodeIsAboveZero(postalCode);
     checkIfPostalPlaceIsValid(postalPlace);
     checkIfStreetNameIsValid(streetName);
@@ -62,7 +64,8 @@ public class Address {
    * @param country The country
    * @throws IllegalArgumentException gets thrown if the input parameters are invalid.
    */
-  public Address(int postalCode, String postalPlace, String streetName, int houseNumber, String country){
+  @JsonCreator
+  public Address(@JsonProperty("postalCode") int postalCode, @JsonProperty("postalPlace") String postalPlace, @JsonProperty("streetName") String streetName, @JsonProperty("houseNumber") int houseNumber, @JsonProperty("country") String country){
     checkIfPostalCodeIsAboveZero(postalCode);
     checkIfPostalPlaceIsValid(postalPlace);
     checkIfStreetNameIsValid(streetName);

@@ -7,7 +7,9 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotLoginTo
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveUserException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.repositories.UserRepository;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,9 @@ public class UserJPA implements UserRegister {
     @Override
     public void addUser(User user) throws CouldNotAddUserException {
         checkIfUserIsValid(user);
-        if (!userRepository.existsById(user.getUserIdD())){
+        //TOdo: Endre denne quickfixen senere. I JUST WANNA SLEEP SEND HELP
+        Optional<User> opUs = userRepository.getUserByEmail(user.getEmail());
+        if (!userRepository.existsById(user.getUserIdD()) && opUs.isEmpty()){
             userRepository.save(user);
         }else {
             throw new CouldNotAddUserException("The user id is already used.");
