@@ -12,7 +12,7 @@ import javax.persistence.Id;
  * @author Trine Merete Staverløkk
  * @version 0.1
  */
-@Entity
+@Entity(name = "address")
 public class Address {
 
   @Id

@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
-@Entity
+@Entity(name = "user")
 public class User {
 
     @Id
