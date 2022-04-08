@@ -7,6 +7,7 @@ import no.ntnu.appdev.group15.teawebsitebackend.RegisterTestData;
 import no.ntnu.appdev.group15.teawebsitebackend.model.User;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddUserException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveUserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -62,6 +63,17 @@ public class UserController {
     }
 
     /**
+     * Removes a user from the system.
+     * @param id the id of the user.
+     * @throws CouldNotRemoveUserException gets thrown if the user could not be removed.
+     */
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void removeUser(@PathVariable Long id) throws CouldNotRemoveUserException {
+        userJPA.removeUserWithID(id);
+    }
+
+    /**
      * Makes a new user.
      * @param body the json object.
      * @return the user from the json object.
@@ -93,6 +105,11 @@ public class UserController {
         return "This is the admin page.";
     }
 
+
+    @ExceptionHandler(CouldNotRemoveUserException.class)
+    private ResponseEntity<String> handleCouldNotRemoveUserException(Exception exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
 
     @ExceptionHandler(CouldNotAddUserException.class)
     private ResponseEntity<String> handleCouldNotAddUserException(Exception exception){
