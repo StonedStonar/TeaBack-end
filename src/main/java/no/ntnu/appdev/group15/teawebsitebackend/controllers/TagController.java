@@ -34,8 +34,8 @@ public class TagController {
      * Makes an instance of the TagController class.
      * @param tagRepository the tag repository to access the DB.
      */
-    public TagController(TagRepository tagRepository) {
-        tagsRegister = new TagJPA(tagRepository);
+    public TagController(TagJPA tagJPA) {
+        tagsRegister = tagJPA;
         try {
             RegisterTestData.addTestTags(tagsRegister);
         }catch (CouldNotAddTagException couldNotAddTagException){
