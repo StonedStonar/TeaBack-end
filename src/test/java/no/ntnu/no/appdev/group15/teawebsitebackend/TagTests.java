@@ -47,7 +47,7 @@ public class TagTests {
      * Checks if the tests failed and displays the results.
      */
     private void checkIfTestsFailedAndDisplayResult(){
-        if(stringBuilder.isEmpty()){
+        if(stringBuilder.length() == 0){
             assertTrue(true);
         }else {
             fail("\nAmount of errors " + errors + " listed errors: " + stringBuilder.toString());

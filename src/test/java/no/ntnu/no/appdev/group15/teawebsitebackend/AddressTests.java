@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 0.1
  */
 public class AddressTests {
+
   private Address address;
   private StringBuilder stringBuilder;
   private String expectedError;
@@ -51,7 +52,7 @@ public class AddressTests {
    * Checks if the tests failed and display the results.
    */
   private void checkIfTestsFailedAndDisplayResult() {
-    if (stringBuilder.isEmpty()){
+    if (stringBuilder.length() == 0){
       assertTrue(true);
     } else {
       fail("\nAmount of errors: " + errors + " listed errors: " + stringBuilder.toString());

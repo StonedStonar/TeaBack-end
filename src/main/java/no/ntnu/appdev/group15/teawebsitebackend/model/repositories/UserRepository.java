@@ -23,6 +23,11 @@ public interface UserRepository  extends CrudRepository<User, Long> {
     @Query(value = "SELECT * FROM `user` WHERE email = :email AND password = :password", nativeQuery = true)
     Optional<User> loginToUser(@Param("email") String email, @Param("password") String password);
 
+    /**
+     * Gets a user that has this email.
+     * @param email the email to look for.
+     * @return the user that matched this email.
+     */
     @Query(value = "SELECT * FROM `user` WHERE email = :email", nativeQuery = true)
     Optional<User> getUserByEmail(@Param("email") String email);
 }
