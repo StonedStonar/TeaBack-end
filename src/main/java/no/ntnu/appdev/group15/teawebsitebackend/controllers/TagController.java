@@ -29,37 +29,70 @@ public class TagController {
 
     /**
      * Makes an instance of the TagController class.
-     * @param tagRepository the tag repository to access the DB.
+     * @param tagJPA the tag repository to access the DB.
      */
     public TagController(TagJPA tagJPA) {
         tagsRegister = tagJPA;
         try {
             RegisterTestData.addTestTags(tagsRegister);
         }catch (CouldNotAddTagException couldNotAddTagException){
-
+            System.err.println("Could not add test tags.");
         }
     }
 
+    /**
+     * Gets all the tags in the system.
+     * @return a list with all the tags.
+     */
     @GetMapping
     public List<Tag> getAllTags(){
         return tagsRegister.getAllTags();
     }
 
+    /**
+     * Gets a tag with a specified ID.
+     * @param id the id of the tag.
+     * @return the tag with this id.
+     * @throws CouldNotGetTagException gets thrown if the tag could not be found.
+     */
     @GetMapping("/{id}")
     public Tag getTagWithID(@PathVariable Long id) throws CouldNotGetTagException {
         return tagsRegister.getTagWithID(id);
     }
 
+    /**
+     * Adds a tag to the system.
+     * @param body the tag as a JSON.
+     * @throws JsonProcessingException gets thrown if the format on the JSON is invalid.
+     * @throws CouldNotAddTagException gets thrown if the tag could not be added.
+     */
     @PostMapping
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public void addTagWithDetails(@RequestBody String body) throws JsonProcessingException, CouldNotAddTagException {
         tagsRegister.addTag(getTag(body));
     }
 
+    /**
+     * Deletes a tag from the service.
+     * @param id the id of the tag.
+     * @throws CouldNotRemoveTagException gets thrown if the tag could not be removed.
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteTag(@PathVariable Long id) throws CouldNotRemoveTagException {
         tagsRegister.removeTagWithTagId(id);
+    }
+
+    /**
+     * Makes it possible to update tags that are in the system.
+     * @param body the body of the request.
+     * @throws JsonProcessingException gets thrown if the format is invalid.
+     * @throws CouldNotGetTagException gets thrown if the tag could not be located.
+     */
+    @PutMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public void updateTag(@RequestBody String body) throws JsonProcessingException, CouldNotGetTagException {
+        tagsRegister.updateTag(getTag(body));
     }
 
     /**

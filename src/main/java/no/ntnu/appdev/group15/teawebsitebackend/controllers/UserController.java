@@ -34,7 +34,7 @@ public class UserController {
         try {
             RegisterTestData.addTestUsers(userJPA);
         }catch (CouldNotAddUserException exception){
-            System.err.println("The users could not be added.");
+            System.err.println("The test users could not be added.");
         }
     }
 
@@ -81,22 +81,39 @@ public class UserController {
         return objectMapper.readValue(body, User.class);
     }
 
+    /**
+     * Shows a page where you need to be logged in to see.
+     * @param id the id that should be shown on the page.
+     * @return string that is shown in the browser.
+     */
     @GetMapping(value = "/{id}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public String userPage(@PathVariable Long id){
         return "You just wrote " + id + ".";
     }
 
+    /**
+     * The normal page where no-one needs to log in to see.
+     * @return a string that is displayed.
+     */
     @GetMapping("")
     public String normal(){
         return "Page without any permissions needed.";
     }
 
+    /**
+     * Shows a page where users with "USER" role can see.
+     * @return a string that is displayed.
+     */
     @GetMapping("user")
     public String userPage(){
         return "This is the user page.";
     }
 
+    /**
+     * Shows a page where users with "ADMIN" role can see.
+     * @return a string that is displayed.
+     */
     @GetMapping("admin")
     public String adminPage(){
         return "This is the admin page.";
