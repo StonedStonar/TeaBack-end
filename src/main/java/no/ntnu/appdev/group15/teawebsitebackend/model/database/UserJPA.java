@@ -18,7 +18,7 @@ import java.util.Optional;
  * @version 0.1
  */
 @Service
-public class UserJPA implements UserRegister {
+public class UserJPA implements no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister {
 
     private UserRepository userRepository;
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.ntnu.appdev.group15.teawebsitebackend.RegisterTestData;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Tag;
-import no.ntnu.appdev.group15.teawebsitebackend.model.database.TagRegister;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.TagJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
@@ -31,8 +31,8 @@ public class TagController {
      * Makes an instance of the TagController class.
      * @param tagRepository the tag repository to access the DB.
      */
-    public TagController(TagRegister tagRegister) {
-        tagsRegister = tagRegister;
+    public TagController(TagJPA tagJPA) {
+        tagsRegister = tagJPA;
         try {
             RegisterTestData.addTestTags(tagsRegister);
         }catch (CouldNotAddTagException couldNotAddTagException){

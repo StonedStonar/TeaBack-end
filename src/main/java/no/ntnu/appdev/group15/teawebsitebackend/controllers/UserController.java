@@ -2,18 +2,15 @@ package no.ntnu.appdev.group15.teawebsitebackend.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.Authorization;
 import no.ntnu.appdev.group15.teawebsitebackend.RegisterTestData;
 import no.ntnu.appdev.group15.teawebsitebackend.model.User;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddUserException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveUserException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +22,7 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    private UserJPA userJPA;
+    private UserRegister userRegister;
 
     /**
      * Makes an instance of the UserController class.
@@ -33,7 +30,7 @@ public class UserController {
      */
     public UserController(UserJPA userJPA) {
         checkIfObjectIsNull(userJPA, "user jpa");
-        this.userJPA = userJPA;
+        this.userRegister = userJPA;
         try {
             RegisterTestData.addTestUsers(userJPA);
         }catch (CouldNotAddUserException exception){
@@ -48,7 +45,7 @@ public class UserController {
     @GetMapping("/users")
     @PreAuthorize("hasRole('ADMIN')")
     public List<User> getAllUsers(){
-        return userJPA.getAllUsers();
+        return userRegister.getAllUsers();
     }
 
     /**
@@ -59,7 +56,7 @@ public class UserController {
      */
     @PostMapping("/users")
     public void addUser(@RequestBody String body) throws JsonProcessingException, CouldNotAddUserException {
-        userJPA.addUser(makeUser(body));
+        userRegister.addUser(makeUser(body));
     }
 
     /**
@@ -70,7 +67,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public void removeUser(@PathVariable Long id) throws CouldNotRemoveUserException {
-        userJPA.removeUserWithID(id);
+        userRegister.removeUserWithID(id);
     }
 
     /**
@@ -114,20 +111,6 @@ public class UserController {
     @ExceptionHandler(CouldNotAddUserException.class)
     private ResponseEntity<String> handleCouldNotAddUserException(Exception exception){
         return ResponseEntity.status(HttpStatus.IM_USED).body(exception.getMessage());
-    }
-
-    /**
-     * Checks if a string is of a valid format or not.
-     *
-     * @param stringToCheck the string you want to check.
-     * @param errorPrefix   the error the exception should have if the string is invalid.
-     * @throws IllegalArgumentException gets thrown if the string to check is empty or null.
-     */
-    private void checkString(String stringToCheck, String errorPrefix) {
-        checkIfObjectIsNull(stringToCheck, errorPrefix);
-        if (stringToCheck.isEmpty()) {
-            throw new IllegalArgumentException("The " + errorPrefix + " cannot be empty.");
-        }
     }
 
     /**

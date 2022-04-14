@@ -1,6 +1,5 @@
 package no.ntnu.appdev.group15.teawebsitebackend.security;
 
-import no.ntnu.appdev.group15.teawebsitebackend.model.User;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetUserException;
 import org.springframework.security.core.userdetails.UserDetails;

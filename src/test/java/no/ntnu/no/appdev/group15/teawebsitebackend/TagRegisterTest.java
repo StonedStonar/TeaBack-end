@@ -2,10 +2,11 @@ package no.ntnu.no.appdev.group15.teawebsitebackend;
 
 import no.ntnu.appdev.group15.teawebsitebackend.Application;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Tag;
-import no.ntnu.appdev.group15.teawebsitebackend.model.database.TagRegister;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.TagJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,11 +22,11 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @SpringBootTest(classes = Application.class)
 @ActiveProfiles("test")
-public class TagRegisterTests {
+public class TagRegisterTest {
 
     private String prefixIllegal;
 
-    private TagRegister tagRegister;
+    private TagsRegister tagsRegister;
 
     private Tag tag;
 
@@ -35,20 +36,20 @@ public class TagRegisterTests {
 
 
     @Autowired
-    public TagRegisterTests(TagRegister tagRegister){
-        this.tagRegister = tagRegister;
+    public TagRegisterTest(TagJPA tagsJPA){
+        this.tagsRegister = tagsJPA;
         prefixIllegal = "Expected to get a IllegalArgumentException since ";
     }
 
     @BeforeEach
     private void addTestData(){
         try {
-            for (Tag tag1 : tagRegister.getAllTags()) {
-                tagRegister.removeTag(tag1);
+            for (Tag tag1 : tagsRegister.getAllTags()) {
+                tagsRegister.removeTag(tag1);
             }
-            tagRegister.addTag(new Tag(700, "hei", "hade"));
-            tagRegister.addTag(new Tag(800, "Hello", "Its me"));
-            this.tag = tagRegister.getAllTags().get(0);
+            tagsRegister.addTag(new Tag(700, "hei", "hade"));
+            tagsRegister.addTag(new Tag(800, "Hello", "Its me"));
+            this.tag = tagsRegister.getAllTags().get(0);
         } catch (CouldNotAddTagException | IllegalArgumentException | CouldNotRemoveTagException couldNotAddTagException) {
             fail("Expected the test data to be added before each test and not a " + couldNotAddTagException.getClass().getSimpleName());
         }
@@ -97,7 +98,7 @@ public class TagRegisterTests {
     public void testIfAddTagWorksWithInvalidInput(){
         String couldException = "Expected to get a CouldNotAddTagException since ";
         try {
-            tagRegister.addTag(null);
+            tagsRegister.addTag(null);
             addError(prefixIllegal, "the input is null.");
         }catch (IllegalArgumentException exception){
 
@@ -105,7 +106,7 @@ public class TagRegisterTests {
             addError(prefixIllegal, "the input is null.");
         }
         try {
-            tagRegister.addTag(tag);
+            tagsRegister.addTag(tag);
             addError(couldException, "the input tag has the same id as an old one.");
         }catch (IllegalArgumentException exception){
             addError(couldException, "the input tag has the same id as an old one.");
@@ -113,7 +114,7 @@ public class TagRegisterTests {
 
         }
         try{
-            tagRegister.addTag(tag);
+            tagsRegister.addTag(tag);
             addError(couldException, "since the tag is already in the system.");
         }catch (IllegalArgumentException exception){
             addError(couldException, "since the tag is already in the system.");
@@ -128,7 +129,7 @@ public class TagRegisterTests {
     @DisplayName("Tests if addTag works with valid input.")
     public void testIfAddTagWorksWithValidInput(){
         try {
-            tagRegister.addTag(new Tag(500, "Test", "Test 2"));
+            tagsRegister.addTag(new Tag(500, "Test", "Test 2"));
         }catch (CouldNotAddTagException | IllegalArgumentException exception){
             addError("Expected the tag to be added ", "since the input is valid.");
         }
@@ -142,14 +143,14 @@ public class TagRegisterTests {
     @DisplayName("Test if addTagWithDetails works with invalid input.")
     public void testIfAddTagWithDetailsWorksWithInvalidInput(){
         try {
-            tagRegister.addTagWithDetails("", "Hello");
+            tagsRegister.addTagWithDetails("", "Hello");
             addError(prefixIllegal, "the tagname is empty.");
         }catch (IllegalArgumentException exception){}
         catch (CouldNotAddTagException exception){
             addError(prefixIllegal, "the tagname is empty.");
         }
         try{
-            tagRegister.addTagWithDetails(null, "Hello");
+            tagsRegister.addTagWithDetails(null, "Hello");
             addError(prefixIllegal, "the tagname is null");
         }catch (IllegalArgumentException exception){
 
@@ -157,7 +158,7 @@ public class TagRegisterTests {
             addError(prefixIllegal, "the tagname is null and not a " + exception.getClass().getSimpleName());
         }
         try{
-            tagRegister.addTagWithDetails("Hello", "");
+            tagsRegister.addTagWithDetails("Hello", "");
             addError(prefixIllegal, "the descritpion is empty");
         }catch (IllegalArgumentException exception){
 
@@ -165,7 +166,7 @@ public class TagRegisterTests {
             addError(prefixIllegal, "the descritpion is empty and not a " + exception.getClass().getSimpleName());
         }
         try{
-            tagRegister.addTagWithDetails("hello", null);
+            tagsRegister.addTagWithDetails("hello", null);
             addError(prefixIllegal, "the description is null");
         }catch (IllegalArgumentException exception){}
         catch (CouldNotAddTagException exception){
@@ -182,7 +183,7 @@ public class TagRegisterTests {
     @DisplayName("Test if addTagWithDetails works with valid input.")
     public void testIfAddTagWithDetailsWorksWithValidInput(){
         try {
-            tagRegister.addTagWithDetails("Raiise", "Errras");
+            tagsRegister.addTagWithDetails("Raiise", "Errras");
         }catch (IllegalArgumentException | CouldNotAddTagException exception){
             addError("Expected the tag to be added since the input is valid ","and not a " + exception.getClass().getSimpleName());
         }
@@ -195,7 +196,7 @@ public class TagRegisterTests {
     @DisplayName("Test if removeTag works with invalid input.")
     public void testIfRemoveTagWorksWithInvalidInput(){
         try {
-            tagRegister.removeTag(null);
+            tagsRegister.removeTag(null);
             addError(prefixIllegal, "the input is invalid format.");
         }catch (IllegalArgumentException exception){
 
@@ -204,7 +205,7 @@ public class TagRegisterTests {
         }
 
         try{
-            tagRegister.removeTag(new Tag(700, "Pepe", "clasp"));
+            tagsRegister.removeTag(new Tag(700, "Pepe", "clasp"));
             addError("Expected to get a CouldNotRemoveTagException since ", "the input is invalid.");
         }catch (IllegalArgumentException exception){
             addErrorWithException("Expected to get a CouldNotRemoveTagException since ", "the input is invalid.", exception);
@@ -221,7 +222,7 @@ public class TagRegisterTests {
     @DisplayName("Tests if removeTag works with valid tag.")
     public void testIfRemoveTagWorksWithValidInput(){
         try {
-            tagRegister.removeTag(tag);
+            tagsRegister.removeTag(tag);
         } catch (CouldNotRemoveTagException | IllegalArgumentException exception) {
             addErrorWithException("Expected the ", "to be added since the input is valid", exception);
         }
@@ -235,14 +236,14 @@ public class TagRegisterTests {
     @DisplayName("Tests if removeTagWithID works with invalid input.")
     public void testIfRemoveTagWithIDWorksWithInvalidInput(){
         try {
-            tagRegister.removeTagWithTagId(0);
+            tagsRegister.removeTagWithTagId(0);
             addError(prefixIllegal, "the input is invalid");
         }catch (IllegalArgumentException exception){
         }catch (CouldNotRemoveTagException exception){
             addErrorWithException(prefixIllegal, "the input is invalid", exception);
         }
         try{
-            tagRegister.removeTagWithTagId(-5);
+            tagsRegister.removeTagWithTagId(-5);
             addError(prefixIllegal, "the input is negative");
         }catch (IllegalArgumentException exception){
 
@@ -250,7 +251,7 @@ public class TagRegisterTests {
             addErrorWithException(prefixIllegal, "the input is negative", exception);
         }
         try{
-            tagRegister.removeTagWithTagId(60000);
+            tagsRegister.removeTagWithTagId(60000);
             addError("Expected a CouldNotRemoveTagException since ", "the input tag id is not there");
         }catch (IllegalArgumentException exception){
             addErrorWithException("Expected a CouldNotRemoveTagException since ", "the input tag id is not there", exception);
@@ -266,7 +267,7 @@ public class TagRegisterTests {
     @DisplayName("Test if removeTagWithID works with valid input.")
     public void testIfRemoveTagWithIDWorksWithValidInput(){
         try {
-            tagRegister.removeTagWithTagId(tag.getTagID());
+            tagsRegister.removeTagWithTagId(tag.getTagID());
         } catch (CouldNotRemoveTagException | IllegalArgumentException exception) {
             addErrorWithException("Expected the tag to be removed since its in the regsiter", "", exception);
         }
@@ -280,21 +281,21 @@ public class TagRegisterTests {
     @DisplayName("Tests if getTagWithId works with invalid input")
     public void testIfGetTagWithIDWorksWithInvalidInput(){
         try {
-            tagRegister.getTagWithID(0);
+            tagsRegister.getTagWithID(0);
             addError(prefixIllegal, "the input is 0");
         }catch (IllegalArgumentException exception){}
         catch (CouldNotGetTagException exception){
             addErrorWithException(prefixIllegal, "the input is 0", exception);
         }
         try {
-            tagRegister.getTagWithID(-5);
+            tagsRegister.getTagWithID(-5);
             addError(prefixIllegal, "the input is negative");
         }catch (IllegalArgumentException exception){}
         catch (CouldNotGetTagException exception){
             addErrorWithException(prefixIllegal, "the input is 0", exception);
         }
         try {
-            tagRegister.getTagWithID(60000);
+            tagsRegister.getTagWithID(60000);
             addError("Expected to get a CouldNotGetTagException since ", "the id is not in the system");
         }catch (IllegalArgumentException exception){
             addErrorWithException("Expected to get a CouldNotGetTagException since ", "the id is not in the system", exception);
@@ -310,7 +311,7 @@ public class TagRegisterTests {
     @DisplayName("Tests if getTagWithId works with valid input")
     public void testIfGetTagWithIdWorksWithValidInput(){
         try {
-            tagRegister.getTagWithID(tag.getTagID());
+            tagsRegister.getTagWithID(tag.getTagID());
 
         }catch (IllegalArgumentException | CouldNotGetTagException exception){
             addErrorWithException("Expected to get the tag since its a valid input", "", exception);
@@ -325,7 +326,7 @@ public class TagRegisterTests {
     @DisplayName("Test if updateTag works with invalid input.")
     public void testIfUpdateTagWorksWithInvalidInput(){
         try {
-            tagRegister.updateTag(null);
+            tagsRegister.updateTag(null);
             addError(prefixIllegal, "since the input is null.");
         }catch (IllegalArgumentException exception){
 
@@ -335,7 +336,7 @@ public class TagRegisterTests {
         String getException = "Expected to get a CouldNotGetTagException since ";
 
         try {
-            tagRegister.updateTag(new Tag(70000, "Hello", "Hello"));
+            tagsRegister.updateTag(new Tag(70000, "Hello", "Hello"));
             addError(getException, "the tag is not in the system");
         }catch (IllegalArgumentException exception){
             addErrorWithException(getException, "the tag is not in the system", exception);
@@ -354,8 +355,8 @@ public class TagRegisterTests {
         try {
             String tagname = "halla";
             tag.setTagName(tagname);
-            tagRegister.updateTag(tag);
-            assertEquals(tagRegister.getTagWithID(tag.getTagID()).getTagName(), tagname);
+            tagsRegister.updateTag(tag);
+            assertEquals(tagsRegister.getTagWithID(tag.getTagID()).getTagName(), tagname);
         }catch (IllegalArgumentException | CouldNotGetTagException exception){
             addErrorWithException("Expected the tag to be updated since the input is valid", "", exception);
         }
