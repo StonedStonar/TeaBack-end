@@ -33,7 +33,6 @@ public class UserTest {
         }catch (IllegalArgumentException exception){
             fail("Expected the user to be made since the input is invalid. ");
         }
-
         //The stuff under is used for my new testing. For the old style we only need those above.
 
         stringBuilder = new StringBuilder();

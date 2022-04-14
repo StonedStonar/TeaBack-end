@@ -4,19 +4,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.ntnu.appdev.group15.teawebsitebackend.RegisterTestData;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Tag;
-import no.ntnu.appdev.group15.teawebsitebackend.model.database.TagJPA;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.TagRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
-import no.ntnu.appdev.group15.teawebsitebackend.model.repositories.TagRepository;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 /**
@@ -34,8 +31,8 @@ public class TagController {
      * Makes an instance of the TagController class.
      * @param tagRepository the tag repository to access the DB.
      */
-    public TagController(TagJPA tagJPA) {
-        tagsRegister = tagJPA;
+    public TagController(TagRegister tagRegister) {
+        tagsRegister = tagRegister;
         try {
             RegisterTestData.addTestTags(tagsRegister);
         }catch (CouldNotAddTagException couldNotAddTagException){

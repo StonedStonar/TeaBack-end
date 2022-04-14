@@ -62,6 +62,8 @@ public class UserJPA implements UserRegister {
 
     @Override
     public User loginToUser(String email, String password) throws CouldNotLoginToUserException {
+        checkString(email, "email");
+        checkString(password, "password");
         Optional<User> opUser = userRepository.loginToUser(email, password);
         if (opUser.isEmpty()){
             throw new CouldNotLoginToUserException("The email and password does not match any user in the system.");
@@ -71,6 +73,7 @@ public class UserJPA implements UserRegister {
 
     @Override
     public User getUserWithUserID(long userID) throws CouldNotGetUserException {
+        checkIfNumberIsAboveZero(userID, "userID");
         Optional<User> optionalUser = userRepository.findById(userID);
         if (optionalUser.isEmpty()){
             throw new CouldNotGetUserException("The user with the id " + userID + " is not in the system.");
@@ -80,6 +83,7 @@ public class UserJPA implements UserRegister {
 
     @Override
     public User getUserWithEmail(String email) throws CouldNotGetUserException {
+        checkString(email, "email");
         Optional<User> optionalUser = userRepository.getUserByEmail(email);
         if (optionalUser.isEmpty()){
             throw new CouldNotGetUserException("The user with email " + email + " could not be located.");

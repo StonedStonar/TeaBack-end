@@ -18,7 +18,7 @@ import java.util.Optional;
  * @version 0.1
  */
 @Service
-public class TagJPA implements TagsRegister {
+public class TagRegister implements TagsRegister {
 
     private TagRepository tagRepository;
 
@@ -26,7 +26,7 @@ public class TagJPA implements TagsRegister {
      * Makes an instance of the TagJPA class.
      * @param tagRepository the tag repository that is the connection to the DB.
      */
-    public TagJPA(TagRepository tagRepository) {
+    public TagRegister(TagRepository tagRepository) {
         checkIfObjectIsNull(tagRepository, "tag repository");
         this.tagRepository = tagRepository;
     }
