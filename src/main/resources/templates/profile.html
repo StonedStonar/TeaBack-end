@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang = "en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Account</title>
+        <link th:href = "@{css/basic.css}" rel = "stylesheet" type="text/css">
+        <link th:href = "@{css/profile.css}" rel = "stylesheet" type = "text/css">
+        <link th:href = "@{css/profileMenu.css}" rel = "stylesheet" type = "text/css">
+    </head>
+    <body>
+        <header id = "menu">
+            <div id = "hamburgerMenu" class = "mobileElement" th:onclick = "openMenu()">
+                <span class = "logoContainer">
+                    <img src = "#" srcset = "svg/Menu.svg" alt = "Hamburger menu" class = "svg logo">
+                    <span>
+                        Menu
+                    </span>
+                </span>
+            </div>
+            <div id = "search" th:onclick = "openSearch()">
+                <span class = "logoContainer">
+                    <img src = "#" srcset = "svg/search.svg" alt = "Looking glass logo" class = "svg logo">
+                    <span>
+                        Search
+                    </span>
+                </span>
+            </div>
+            <a href = "index.html" id = "companyHeader">
+                <h1>
+                    NORTE
+                </h1>
+            </a>
+            <nav id = "sideMenu">
+                <span id = "exit" class = "mobileElement" th:onclick = "closeMenu()">
+                    <img src = "#" srcset = "svg/cross.svg" alt = "Image of a cross logo" class = "svg logo">
+                </span>
+                <a href = "products.html" class = "menuOption">
+                    Products
+                </a>
+                <a href = "products.html" class = "menuOption">
+                    Sale
+                </a>
+                <a href = "contactUs.html" class = "menuOption">
+                    Contact us
+                </a>
+                <a href = "aboutUs.html" class = "menuOption">
+                     About us
+                </a> 
+            </nav>
+            <form id = "searchForm">
+                <label for = "productSearch">
+                    Search
+                </label>
+                <img src = "#" srcset = "svg/search.svg" alt = "Search button" class = "svg logo">
+                <input type = "search" id = "productSearch" name="productSearch" onsearch="search()">
+            </form>
+            <div id = "cartMenu">
+                <a href = "cart.html" class = "logoContainer">
+                    <img src = "#" srcset = "svg/shoppingcart.svg" alt = "A shoppingcart" class = "svg logo">
+                    <span>
+                        Cart
+                    </span>
+                </a>
+            </div>
+            <div id = "profileMenu" onmousedown = "openProfileMenu" >
+                <span class = "logoContainer" th:onclick = "openProfileMenu()">
+                    <img src = "#" srcset = "svg/profile.svg" alt = "A human looking logo" class = "svg logo">
+                    <span>
+                        Profile
+                    </span>
+                </span>
+                <div id = "profileMenuOptions">
+                    <div >
+                        <div id = "profileTriangle">
+
+                        </div>
+                    </div>
+                    <div class = "profileOption">
+                        <a href = "Login.html">
+                            Login
+                        </a>
+                    </div>
+                    <div class = "profileOption" sec:authorize="isAuthenticated()">
+                        <a href = "profile.html">
+                            My profile
+                        </a>
+                    </div>
+                    <div class = "profileOption">
+                        <a href = "formerOrder.html">
+                            My orders
+                        </a>
+                    </div>
+                    <div class = "profileOption">
+                        <a href="index.html">
+                            Logout
+                        </a>
+                    </div>
+                </div>   
+            </div> 
+        </header>
+        <section class = "mainSection">
+            <div id = "profileIntro">
+                <h2>
+                    Your profile page
+                </h2>
+                <figure>
+                    <img src = "Images/handsWithTea.jpg" id = "profileStandardPicture" alt = "Two people toasting with metal cups.">
+                    <figcaption>Picture taken from Nathan Dumalo on Nosplash</figcaption>
+                </figure>
+            </div>
+            
+            <div class = "personalInformation">
+                <h3 id = "aboutYouHeader">
+                    About you
+                </h3>
+                <p class = "closeText">
+                    First name
+                </p>
+                <p class = "closeText" th:text="${user.getFirstName()}">
+                    Test 
+                </p>
+                <p class = "closeText" >
+                    Last name
+                </p>
+                <p class = "closeText" th:text="${user.getLastName()}">
+                    Testesen
+                </p>
+                <p class = "closeText">
+                    Email
+                </p>
+                <p class = "closeText" th:text="${user.getEmail()}">
+                    Test@Testesen.com
+                </p>
+                <p class = "closeText">
+                    Phonenumber
+                </p>
+                <p class = "closeText" >
+                    44609832
+                </p>
+                <p>
+                    Main address
+                </p>
+                <p th:text="${address}">
+                    Testvegen 12
+                    6015
+                    Ålesund
+                    Norge
+                </p>
+                <a class = "button" id = "editProfile" href = "editProfile.html">
+                    <span>
+                        Edit profile
+                    </span>
+                </a>
+            </div>
+            <div id = "optionsForUser">
+                <div class = "profileMenuOptions">
+                    <a href = "formerOrder.html">
+                        <span>
+                            Your orders
+                        </span>
+                        <span>
+                            Overview of orders and returns.
+                        </span>
+                    </a>
+                </div>
+                <div class = "profileMenuOptions">
+                    <a>
+                        <span>
+                            Security
+                        </span>
+                        <span>
+                            Manage your password.
+                        </span>
+                    </a>
+                </div>
+                <div class = "profileMenuOptions">
+                    <a href = "contactUs.html">
+                        <span>
+                            Help and contact
+                        </span>
+                        <span>
+                            Contact information & help for the website
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <div id = "deleteProfile">
+                <h3>
+                    Delete profile
+                </h3>
+                <p>
+                    If you want to delete your profile you can do it here. All former orders will be deleted from your profile and should be saved if you need them. These receipts are also needed for return or to use the warranty of a product.
+                </p>
+                <p>
+                    After the deletion you cannot login to your account again.
+                </p>
+                <button class = "button" id = "deleteProfileButton">
+                    Delete my profile
+                </button>
+            </div>
+
+        </section>
+        <footer id= "footer">
+            <div class="sectionFooter">
+                <a href = "index.html" id="footerLogo">
+                    <span>
+                        NORTE
+                    </span>
+                    <span>
+                        For tea lovers
+                    </span>
+                </a>
+    
+                
+                <div id="addressFooter">
+                    <span>
+                        Contact Information
+                    </span>
+                    <span>
+                        NORTE AS,
+                    </span>
+                    <span>
+                        LegitAddress 69,
+                    </span> 
+                    <span>
+                        6015 Ålesund
+                    </span>
+                </div>
+                <div id="contactInformation">
+                    <a href="tel:82097082">
+                        <span>
+                            820 97 082
+                        </span>
+                     </a>   
+                    <a href = "mailto: norte@professionalemail.com">
+                        <span>
+                            norte@professionalemail.com
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <div class="sectionFooter" id = "pressButton">
+                <a href="contactUs.html" class="buttonFooter">
+                    <span>
+                        Home
+                    </span>
+                </a>
+                <a href="aboutUs.html" class="buttonFooter">
+                    <span>
+                        About us
+                    </span>
+                </a>
+                <a href="login.html" class="buttonFooter">
+                    <span>
+                        Log in
+                    </span>
+                </a>
+                
+            </div>
+            <div class="sectionFooter">
+                <div class="rightFooterDiv">
+                    <a href="https://twitter.com/">
+                        <img src="Images/twitterLogoBlack.png" alt="twitter logo" class = "logoSocials">
+                    </a>
+                    <a href="https://instagram.com/">
+                        <img src="Images/instagramLogo.png" alt="Instagram logo" class = "logoSocials">
+                    </a>
+                    <a href="https://facebook.com/">
+                        <img src="Images/facebookLogo.png" alt="Facebook logo" class = "logoSocials">
+                    </a>
+                </div>
+                <div class="rightFooterDiv" id="companies">
+                    <span>
+                        We cooperate with:
+                    </span>
+                    <a href="https://www.yogitea.com/nb/">
+                        <span>
+                            Yogi Tea
+                        </span>
+                    </a>
+                    <a href="https://www.ahmadtea.com/">
+                        <span>
+                            Ahmad Tea
+                        </span>
+                    </a>
+                    <a href="https://www.clipper-teas.com/">
+                        <span>
+                            Clipper Tea
+                        </span>
+                    </a>
+                    <a href="https://www.pukkaherbs.com/no/no">
+                        <span>
+                            Pukka Tea
+                        </span>
+                    </a>
+                </div>
+                <div class="rightFooterDiv" id="donators">
+                    <span>
+                        Feel free to support
+                    </span>
+                    <div id="fairtradeLogo">
+                        <a href="https://www.fairtrade.no/">
+                            <img src="Images/FairtradeLogo.jpg" alt="Fairtrade link" class="logoSupport">
+                        </a>
+                    </div>
+                    <div id="amnestyLogo">
+                        <a href="https://amnesty.no/">
+                            <img src="Images/Amnesty_logo_RGB_yellow.png" alt="Amnesty link" class="logoSupport">
+                        </a>
+                    </div>
+                </div>
+            
+            </div>
+    
+        </footer>
+
+        <script type="text/javascript" th:src="@{/javascript/profile.js}"></script>
+        <script type="text/javascript" th:src="@{/javascript/menu.js}"></script>
+    </body>
+</html>

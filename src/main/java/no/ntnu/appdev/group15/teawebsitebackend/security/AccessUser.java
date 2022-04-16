@@ -65,6 +65,14 @@ public class AccessUser implements UserDetails {
     }
 
     /**
+     * Gets the user of this access user object.
+     * @return the user.
+     */
+    public User getUser(){
+        return user;
+    }
+
+    /**
      * Checks if an object is null.
      * @param object the object you want to check.
      * @param error  the error message the exception should have.

@@ -1,0 +1,415 @@
+body{
+    background-color: #FDF7EE;
+    max-width: 1200px;
+    padding: 0 1em;
+    margin: 0 auto;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+}
+
+.mainSection{
+    padding: 0.5em 1em;
+    min-height: 70vh;
+}
+
+.button{
+    height: 40px;
+    border-radius: 10px;
+}
+
+.closeText{
+    margin: 0.25em 0;
+}
+
+/*Menu styling under*/
+.svg, .logoContainer>span{
+    pointer-events:none;
+}
+
+#menu>a>h1{
+    margin: 0;
+}
+
+#menu{
+    position:sticky;
+    padding-top: 0.5em;
+    width: 100%;
+    justify-content: space-evenly;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    border-bottom: 1px solid black;
+}
+
+/*The logos on the top*/
+.logoContainer{
+    width: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.2em;
+}
+
+.logoContainer>span{
+    font-size: 12px;
+}
+.logo{
+    height: 30px;
+}
+
+#menu>nav{
+    display: flex;
+    height: 100%;
+}
+
+.menuOption, .logoContainer, #menu>a{
+    text-decoration: none;
+    color: black;
+}
+
+.menuOption{
+    font-size: 1.2em;
+    padding: 0.25em 0.5em;
+}
+
+.menuOption:hover, .logoContainer:hover, #exit:hover{
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 0px 3px #564125;
+    border-radius: 5px;
+    /*box-shadow: 0px 2px 3px #564125;*/
+}
+
+#searchForm>input{
+    border: none;
+    height: 100%;
+    background-color: inherit;
+    font-size: 1.5em;
+}
+
+#searchForm>*{
+    /*display: inline-block;*/
+    height: 1.5em;
+}
+
+/*For the search*/
+#searchForm{
+    display: flex;
+    position: absolute;
+    top: 60px;
+    margin-top: 0.5em;
+}
+
+#searchForm>label{
+    display: none;
+}
+
+#searchForm{
+    visibility: hidden;
+    height: 0;
+    background-color: #eee2d1;
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding: 0 0.5em;
+    transition: visibility 0s,0.5s height, 0.5s padding, ease 0.5s;
+}
+
+#searchForm>input:focus{
+    background-color: white;
+}
+
+#searchForm>input{
+    width: 100%;
+}
+
+#search{
+    order: 1;
+}
+
+#cartMenu{
+    order: 2;
+}
+
+#profileMenu{
+    order: 3;
+    position: relative;
+}
+
+/*For profile menu*/
+#profileMenuOptions{
+    position:absolute;
+    visibility: hidden;
+    opacity: 0;
+    overflow: hidden;
+    left: -3em;
+    width: 300%;
+    flex-direction: column;
+    max-height: auto;
+}
+
+#profileMenuOptions{
+    transition: 0s visibility, 0.25s opacity linear;
+}
+
+#profileMenuOptions, #profileMenuOptions>*:first-child{
+    border-bottom: 1px solid black;
+    margin: 0 auto;
+}
+
+.profileOption{
+    background-color: #eee2d1;
+    border-top: 1px solid black;
+    padding: 0.25em;
+}
+
+.profileOption>a{
+    text-decoration: none;
+    color: black;
+    display: block;
+}
+
+.profileOption:hover{
+    background-color: white;
+    font-weight: 600;
+}
+
+#profileTriangle{
+    width: 0; 
+    height: 0; 
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid black;
+    margin: 0 auto;
+    position: relative;
+    top: 1px;
+}
+
+@media only screen and (min-width:800px){
+    #menu>nav {
+        max-width: 50%;
+        width: 100%;
+    }
+
+    #menu>nav{
+        transition: none;
+        justify-content: space-evenly;
+        align-items: center;
+        justify-content:space-around;
+        flex-flow: row nowrap;
+    }
+
+    .mobileElement{
+        display: none;
+    }
+}
+
+@media only screen and (max-width:800px) {
+    #exit{
+        display: flex;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        height: 30px;
+        width: 30px;
+        z-index: 1;
+        cursor: pointer;
+        padding: 0.25em;
+    }
+
+    #menu>nav {
+        order: 1;
+        width: 0; 
+        position: fixed;
+        visibility: hidden;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        /*Egentlige fargen #F2ECE3*/
+        background-color: #eee2d1;
+        overflow-x: hidden;
+        padding-top: 60px;;
+        flex-flow: column nowrap;
+        text-align: right;
+    }
+
+    .menuOption{
+        padding: 0.5em;
+        margin: 0.5em 0 0.5em 0.5em;
+        border-bottom: solid 1px #564125;
+    }
+
+    #search{
+        order: 0;
+    }
+}
+
+/* Footer styling under */
+#footer {
+    display: flex;
+    height: 300px;
+    justify-content: space-between;
+    background-color: white;
+    padding: 0 1em;
+}
+
+#addressFooter, #contactInformation, #companies, .sectionFooter {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.sectionFooter{
+    justify-content: space-evenly;
+}
+
+#pressButton{
+    align-items: center;
+    justify-content: center;
+}
+
+.buttonFooter {
+    background-color: red;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    background: #FDF7EE;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    width: 70%;
+    margin-bottom: 1em;
+    color: black;
+    font-weight: 700;
+}
+
+
+.buttonFooter:hover {
+    background-color: #eee2d1;
+}
+
+.sectionFooter {
+    width: 30%;
+}
+
+.logoSocials {
+    width: 40px;
+}
+
+.rightFooterDiv>a {
+    text-decoration: none;
+}
+
+.socialLogoContainer>a>img{
+    width: 100%;
+}
+ 
+
+/*Donators*/
+#fairtradeLogo>a>img,#amnestyLogo>a>img {
+    width: 100%;
+}
+
+#donators {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+#amnestyLogo {
+    width: 70%;
+}
+
+#donators>span:first-of-type {
+    width: 100%;
+    font-weight: 600;
+}
+
+#fairtradeLogo {
+    width: 25%;
+}
+
+/*Companies section */
+
+#companies>a {
+    text-decoration: none;
+    color: black;
+}
+
+#companies>span:first-of-type {
+    font-weight: 600;
+}
+
+/* Norte Logo */
+
+#footerLogo {
+    display: flex;
+    flex-flow: column nowrap;
+    text-decoration: none;
+    color: black;
+    width: 10em;
+
+}
+
+#footerLogo>span:last-of-type {
+    align-self: flex-end;
+}
+
+#addressFooter>span:first-of-type, #footerLogo>span:first-of-type {
+    font-weight: 600;
+}
+
+#footerLogo>span:first-of-type{
+    font-size: 2em;
+}
+
+#contactInformation>a{
+    color: black;
+}
+
+@media screen and (max-width:900px){
+    #footer {
+        flex-flow: column nowrap;
+        height: auto;
+        align-items: center;
+    }    
+    .sectionFooter {
+        width: 80%;
+        padding-top: 1.5em;
+    }
+    .buttonFooter {
+        width: 100%;
+    }
+
+    .sectionFooter> * {
+        margin: 0.5em 0;
+    }
+
+}
+
+/*The animations of the menus.*/
+.openSearch{
+    height: 1.5em !important;
+    padding: 0.5em 0 !important;
+    visibility: visible !important;
+    border-color: black !important;
+    border-bottom: 1px solid black !important;
+    border-top: 1px solid black !important;
+}
+
+.openMenu{
+    transition: 1s !important;
+    visibility: visible !important;
+    width: 200px !important;
+}
+
+.openProfileMenu{
+    visibility: visible !important;
+    opacity: 1 !important;
+}
