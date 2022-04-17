@@ -5,9 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Account</title>
-        <link th:href = "@{css/basic.css}" rel = "stylesheet" type="text/css">
-        <link th:href = "@{css/profile.css}" rel = "stylesheet" type = "text/css">
-        <link th:href = "@{css/profileMenu.css}" rel = "stylesheet" type = "text/css">
+        <link th:href = "@{/css/basic.css}" rel = "stylesheet" type="text/css">
+        <link th:href = "@{/css/profile.css}" rel = "stylesheet" type = "text/css">
+        <link th:href = "@{/css/profileMenu.css}" rel = "stylesheet" type = "text/css">
     </head>
     <body>
         <header id = "menu">
@@ -148,7 +148,7 @@
                     Ålesund
                     Norge
                 </p>
-                <a class = "button" id = "editProfile" href = "editProfile.html">
+                <a class = "button" id = "editProfile" th:href = "@{editProfile}">
                     <span>
                         Edit profile
                     </span>

@@ -40,6 +40,12 @@ public class ProfileController {
         return "login";
     }
 
+    @GetMapping("/editProfile")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public String getEditProfilePage(){
+        return "editProfile";
+    }
+
     /**
      * Checks if a string is of a valid format or not.
      * @param stringToCheck the string you want to check.

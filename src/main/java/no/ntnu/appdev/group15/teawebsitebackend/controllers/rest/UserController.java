@@ -20,6 +20,7 @@ import java.util.List;
  * @version 0.1
  */
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
     private UserRegister userRegister;
@@ -42,7 +43,7 @@ public class UserController {
      * Gets all the users in the system.
      * @return a list with all the users.
      */
-    @GetMapping("/users")
+    @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public List<User> getAllUsers(){
         return userRegister.getAllUsers();
@@ -54,7 +55,7 @@ public class UserController {
      * @throws JsonProcessingException gets thrown if the format on the json object is invalid.
      * @throws CouldNotAddUserException gets thrown if the user could not be added.
      */
-    @PostMapping("/users")
+    @PostMapping
     public void addUser(@RequestBody String body) throws JsonProcessingException, CouldNotAddUserException {
         userRegister.addUser(makeUser(body));
     }
@@ -81,6 +82,10 @@ public class UserController {
         return objectMapper.readValue(body, User.class);
     }
 
+    private void updateUser(){
+
+    }
+
     /**
      * Shows a page where you need to be logged in to see.
      * @param id the id that should be shown on the page.
@@ -96,7 +101,7 @@ public class UserController {
      * The normal page where no-one needs to log in to see.
      * @return a string that is displayed.
      */
-    @GetMapping("")
+    @GetMapping("/normal")
     public String normal(){
         return "Page without any permissions needed.";
     }
