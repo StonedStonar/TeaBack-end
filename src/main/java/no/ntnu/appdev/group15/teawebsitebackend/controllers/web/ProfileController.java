@@ -1,13 +1,16 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 
+import no.ntnu.appdev.group15.teawebsitebackend.model.Address;
 import no.ntnu.appdev.group15.teawebsitebackend.model.User;
 import no.ntnu.appdev.group15.teawebsitebackend.security.AccessUser;
+import org.springframework.boot.Banner;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.persistence.Access;
 import java.security.Principal;
 
 /**
@@ -27,11 +30,9 @@ public class ProfileController {
     @GetMapping("/profile")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String getUserPage(Model model, Authentication authentication){
-        AccessUser accessUser = (AccessUser) authentication.getPrincipal();
-        User user = accessUser.getUser();
-        model.addAttribute("user", user);
+        User user = getUser(authentication);
+        addUserToModel(model, user);
         model.addAttribute("address", user.getAddress().getWholeAddressAsString());
-
         return "profile";
     }
 
@@ -42,10 +43,36 @@ public class ProfileController {
 
     @GetMapping("/editProfile")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public String getEditProfilePage(){
+    public String getEditProfilePage(Model model, Authentication authentication){
+        User user = getUser(authentication);
+        addUserToModel(model, user);
+        addAddressToModel(model, user);
         return "editProfile";
     }
 
+    /**
+     * Adds the user to the input model.
+     * @param model the model to add user to.
+     * @param user the user that is logged in.
+     */
+    private void addUserToModel(Model model, User user){
+        model.addAttribute("user", user);
+
+    }
+
+    /**
+     * Adds the address object to the model.
+     * @param model the model to add to.
+     * @param user the user that is logged in.
+     */
+    private void addAddressToModel(Model model, User user){
+        model.addAttribute("address", user.getAddress());
+    }
+
+    private User getUser(Authentication authentication){
+        AccessUser accessUser = (AccessUser) authentication.getPrincipal();
+        return accessUser.getUser();
+    }
     /**
      * Checks if a string is of a valid format or not.
      * @param stringToCheck the string you want to check.
