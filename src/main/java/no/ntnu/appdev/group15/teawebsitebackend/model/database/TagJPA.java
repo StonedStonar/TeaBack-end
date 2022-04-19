@@ -34,11 +34,7 @@ public class TagJPA implements TagsRegister {
     @Override
     public void addTag(Tag tag) throws CouldNotAddTagException {
         checkIfTagIsValid(tag);
-        if (!checkIfTagIsInRegister(tag.getTagID())){
-            tagRepository.save(tag);
-        }else {
-            throw new CouldNotAddTagException("The tag with id " + tag.getTagID() + " is already in the system.");
-        }
+        addTagWithDetails(tag.getTagName(), tag.getTagDescription());
     }
 
     @Override

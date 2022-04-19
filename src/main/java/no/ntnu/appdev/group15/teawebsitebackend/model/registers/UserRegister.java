@@ -54,6 +54,14 @@ public interface UserRegister {
     User getUserWithUserID(long userID) throws CouldNotGetUserException;
 
     /**
+     * Gets the user that matches the input email.
+     * @param email the email to look for.
+     * @return a user that has this email.
+     * @throws CouldNotGetUserException gets thrown if there is no user with this email in the system.
+     */
+    User getUserWithEmail(String email) throws CouldNotGetUserException;
+
+    /**
      * Updates a users fields. Only the ID cannot be altered.
      * @param user the user to update.
      * @throws CouldNotGetUserException gets thrown if the user could not be located.

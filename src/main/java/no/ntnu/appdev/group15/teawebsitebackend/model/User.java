@@ -1,6 +1,8 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotChangePasswordException;
 
 import javax.persistence.*;
@@ -11,7 +13,7 @@ import java.util.regex.Pattern;
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
-@Entity
+@Entity(name = "user")
 public class User {
 
     @Id
@@ -22,7 +24,8 @@ public class User {
 
     private String lastName;
 
-    @Transient
+    @OneToOne(cascade = CascadeType.PERSIST, targetEntity = Address.class, orphanRemoval = true)
+    @JoinColumn(name = "addressID")
     private Address address;
 
     @Column(nullable = false, unique = true)
@@ -30,6 +33,12 @@ public class User {
 
     @JsonIgnore
     private String password;
+
+    private boolean active;
+
+    @Enumerated
+    private Role role;
+
 
     /**
      * Makes an instance of the User class.
@@ -45,15 +54,21 @@ public class User {
      * @param address the address of the user
      * @param email the email of the user.
      * @param password the password of the user.
+     * @param role the role of the user.
      * @throws IllegalArgumentException gets thrown if the input is invalid format.
      */
-    public User(String firstName, String lastName, Address address, String email, String password){
+    //Todo: Skriv tester for Role parameteren.
+    public User(String firstName, String lastName, Address address, String email, String password, Role role){
         setFirstName(firstName);
         setLastName(lastName);
         setAddress(address);
         setEmail(email);
+        checkIfObjectIsNull(role, "role");
         checkIfPasswordIsNotNullOrEmpty(password);
         this.password = password;
+        this.userIdD = 0;
+        this.active = true;
+        this.role = role;
     }
 
     /**
@@ -64,11 +79,32 @@ public class User {
      * @param email the email of the user.
      * @throws IllegalArgumentException gets thrown if the input is invalid format.
      */
-    public User(String firstName, String lastName, Address address, String email) {
+    @JsonCreator
+    public User(@JsonProperty("firstName") String firstName, @JsonProperty("lastName") String lastName,
+                @JsonProperty("address") Address address, @JsonProperty("email") String email) {
         setFirstName(firstName);
         setLastName(lastName);
         setAddress(address);
         setEmail(email);
+        role = Role.ROLE_USER;
+        this.active = true;
+    }
+
+    /**
+     * Gets the role of the user.
+     * @return the role of the user.
+     */
+    public Role getRole(){
+        return role;
+    }
+
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public String getPassword(){
+        return password;
     }
 
     /**
@@ -79,7 +115,8 @@ public class User {
      * @throws IllegalArgumentException gets throw if one of the input passwords are empty or null.
      */
     public void changePassword(String oldPassword, String newPassword) throws CouldNotChangePasswordException {
-        checkIfPasswordsMatch(newPassword);
+        checkIfPasswordIsNotNullOrEmpty(newPassword);
+        checkIfPasswordIsNotNullOrEmpty(oldPassword);
         if (checkIfPasswordsMatch(oldPassword)){
             this.password = newPassword;
         }else {

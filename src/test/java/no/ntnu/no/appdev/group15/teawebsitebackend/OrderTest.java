@@ -26,11 +26,11 @@ public class OrderTest {
   private StringBuilder stringBUilder;
   private int errors;
 
-  @BeforeEach
-  public void setUpTestOrder() {
-    try {
-      this.testOrder = new Order(203948, User, );
-    }
+//  @BeforeEach
+//  public void setUpTestOrder() {
+//    try {
+//      this.testOrder = new Order(203948, User, );
+//    }
 
-  }
+
 }

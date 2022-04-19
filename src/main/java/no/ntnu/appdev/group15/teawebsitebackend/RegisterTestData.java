@@ -1,8 +1,13 @@
 package no.ntnu.appdev.group15.teawebsitebackend;
 
 
+import no.ntnu.appdev.group15.teawebsitebackend.model.Address;
+import no.ntnu.appdev.group15.teawebsitebackend.model.Role;
+import no.ntnu.appdev.group15.teawebsitebackend.model.User;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddUserException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
 
 /**
  * @author Steinar Hjelle Midthus
@@ -23,6 +28,25 @@ public class RegisterTestData {
             tagsRegister.addTagWithDetails("Tea", "A herb that is crushed and used to make water taste something more than minerals.");
             tagsRegister.addTagWithDetails("Crockery", "Stuff you use to eat on and drink from.");
             tagsRegister.addTagWithDetails("Environmentally Friendly", "A product made in a sustainable way for the planets sake.");
+        }
+    }
+
+    /**
+     * Adds test users to the database.
+     * @param userRegister the user register to add users too.
+     * @throws CouldNotAddUserException gets thrown if a user could not be added to the register.
+     */
+    public static void addTestUsers(UserRegister userRegister) throws CouldNotAddUserException {
+        checkIfObjectIsNull(userRegister, "user register");
+        if (userRegister.getAllUsers().isEmpty()){
+            Address address = new Address(2910, "Aurdal", "Raskebakkin", 9, "Norge");
+            Address address1 = new Address(2900, "Fagernes", "Fagernesvegen", 33, "Norge");
+            Address address2 = new Address(6015, "Ålesund", "Fagerlia", 15, "Noreg");
+            Address address3 = new Address(6390, "Vestnes", "Kaigata", 15, "Noreg");
+            userRegister.addUser(new User("Bjarne", "Bjarnesen", address, "bjarne@bjarnesen.com", "pass", Role.ROLE_ADMIN));
+            userRegister.addUser(new User("Arne", "Arnesen", address1, "arne@gmail.com", "password", Role.ROLE_USER));
+            userRegister.addUser(new User("Lise", "Fjell", address2, "lise@gmail.com", "passwoord", Role.ROLE_USER));
+            userRegister.addUser(new User("Fjell", "Bekken", address3, "fjell@lisemom.com", "123spel", Role.ROLE_USER));
         }
     }
 

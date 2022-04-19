@@ -5,11 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
+ * Has all the tests for the tag class.
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
@@ -48,7 +47,7 @@ public class TagTests {
      * Checks if the tests failed and displays the results.
      */
     private void checkIfTestsFailedAndDisplayResult(){
-        if(stringBuilder.isEmpty()){
+        if(stringBuilder.length() == 0){
             assertTrue(true);
         }else {
             fail("\nAmount of errors " + errors + " listed errors: " + stringBuilder.toString());
@@ -169,6 +168,6 @@ public class TagTests {
             addError(errorPrefix, "since the input is valid.");
         }
         checkIfTestsFailedAndDisplayResult();
-        assertEquals(testTag.getTagDescription(), "hei");
+        assertEquals(testTag.getTagDescription(), parameter);
     }
 }

@@ -1,6 +1,7 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +14,7 @@ import javax.persistence.Id;
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
-@Entity //To say to JPA that this is a table.
+@Entity(name = "tag") //To say to JPA that this is a table.
 public class Tag {
 
     @Id //The primary key in the DB. Should only be set once.
@@ -41,7 +42,23 @@ public class Tag {
      * @throws IllegalArgumentException gets thrown if the input parameters are invalid format.
      */
     @JsonCreator
-    public Tag(long tagID, String tagName, String tagDescription) {
+    public Tag(@JsonProperty("tagID") long tagID, @JsonProperty("tagName") String tagName, @JsonProperty("tagDescription") String tagDescription) {
+        checkIfTagIDIsAboveZero(tagID);
+        checkIfTagNameIsValid(tagName);
+        checkIfTagDescriptionIsValid(tagDescription);
+        this.tagID = tagID;
+        this.tagDescription = tagDescription;
+        this.tagName = tagName;
+    }
+
+    /**
+     * Makes an instance of the tag object.
+     * @param tagName the name of the tag.
+     * @param tagDescription the description of the tag.
+     * @throws IllegalArgumentException gets thrown if the input parameters are invalid format.
+     */
+    @JsonCreator
+    public Tag(@JsonProperty("tagName") String tagName, @JsonProperty("tagDescription") String tagDescription) {
         checkIfTagIDIsAboveZero(tagID);
         checkIfTagNameIsValid(tagName);
         checkIfTagDescriptionIsValid(tagDescription);

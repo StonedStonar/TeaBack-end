@@ -37,6 +37,8 @@ public class TeaDetailsTests {
       teaDetails = new TeaDetails();
     } catch (IllegalArgumentException exception){
     }
+    stringBuilder = new StringBuilder();
+    errors = 0;
   }
 
   /**
@@ -53,7 +55,7 @@ public class TeaDetailsTests {
    * Checks if the tests failed and display the results.
    */
   private void checkIfTestsFailedAndDisplayResult() {
-    if (stringBuilder.isEmpty()){
+    if (stringBuilder.length() == 0){
       assertTrue(true);
     } else {
       fail("\nAmount of errors: " + errors + " listed errors: " + stringBuilder.toString());

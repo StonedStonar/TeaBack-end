@@ -1,5 +1,6 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import javax.persistence.Transient;
 import java.time.LocalDate;
 import java.util.List;
 import org.aspectj.weaver.ast.Or;
@@ -12,9 +13,12 @@ import org.aspectj.weaver.ast.Or;
 public class Order {
 
     private Long orderID;
+    @Transient
     private User user;
+    @Transient
     private List<OrderedProduct> orderedProductList; //many to many
     private OrderState orderState;
+    @Transient
     private Address address;
     private String deliveryMethod;
     private LocalDate dateOfOrder;
