@@ -43,10 +43,6 @@ public class Address {
     this.country = country;
   }
 
-  public static void main(String[] args) {
-    Address address = new Address(345, "dkfjgh", "dfhgj", 345, "Norwdlkfj");
-    System.out.println("the address is " + address.getWholeAddressAsString());
-  }
 
   /**
    * Gets the postal code.

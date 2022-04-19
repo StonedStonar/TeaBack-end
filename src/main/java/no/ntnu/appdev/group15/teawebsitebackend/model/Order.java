@@ -2,6 +2,7 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 
 import java.time.LocalDate;
 import java.util.List;
+import org.aspectj.weaver.ast.Or;
 
 /**
  * Represents the order class. Represents an order made by the user.
@@ -19,22 +20,38 @@ public class Order {
     private LocalDate dateOfOrder;
     private LocalDate shippedDate;
     private String paymentMethod;
-    private Boolean cancelled;
 
     /**
      * Makes an instance of the Order class.
      */
-    public Order() {
+    public Order(Long orderID, User user, List<OrderedProduct> orderedProductList,
+                 OrderState orderState, Address address, String deliveryMethod,
+                 LocalDate dateOfOrder, LocalDate shippedDate, String paymentMethod) {
+        checkIfObjectIsNull(orderID, "order ID");
         this.orderID = orderID;
+
+        checkIfObjectIsNull(user, "user");
         this.user = user;
+
         this.orderedProductList = orderedProductList;
+
+        checkIfObjectIsNull(orderState, "orderState");
         this.orderState = orderState;
+
+        checkIfObjectIsNull(address, "address");
         this.address = address;
+
+        checkString(deliveryMethod, "DeliveryMethod");
         this.deliveryMethod = deliveryMethod;
+
+        checkIfObjectIsNull(dateOfOrder, "Date of order");
         this.dateOfOrder = dateOfOrder;
+
+        checkIfObjectIsNull(shippedDate, "Shipped date");
         this.shippedDate = shippedDate;
+
+        checkString(paymentMethod, "Payment method");
         this.paymentMethod = paymentMethod;
-        this.cancelled = false;
     }
 
     /**
@@ -75,6 +92,7 @@ public class Order {
      */
     public void setOrderState(OrderState orderState) {
         checkIfObjectIsNull(orderState, "orderState");
+        this.orderState = orderState;
     }
 
     /**
@@ -108,9 +126,6 @@ public class Order {
     public String getPaymentMethod() {
         return paymentMethod;
     }
-
-
-
 
 
     /**
