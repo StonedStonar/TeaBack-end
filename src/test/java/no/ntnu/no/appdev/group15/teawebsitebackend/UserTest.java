@@ -166,15 +166,12 @@ public class UserTest {
     @DisplayName("Checks if the constructor works with valid input.")
     public void testIfConstructorWorksWithValidInput(){
         String prefix = "Expected a IllegalArgumentException since ";
-        User user = null;
         try {
-            user = new User("Lars", "Bjarnesen", new Address(), "lars@testesen.com", "pass", Role.ROLE_USER);
-            assertNotNull(user);
+            User user = new User("Lars", "Bjarnesen", new Address(), "lars@testesen.com", "pass", Role.ROLE_USER);
         }catch (IllegalArgumentException exception){
             addError(prefix, "the format is valid.");
         }
         checkIfTestsFailedAndDisplayResult();
-        assertNotNull(user);
     }
 
     /**

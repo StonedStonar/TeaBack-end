@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static no.ntnu.appdev.group15.teawebsitebackend.model.OrderState.ORDERED;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -39,7 +40,7 @@ public class OrderTest {
   @BeforeEach
   public void setUpTest(){
     try {
-      order = new Order(934857348L, new User(), makeListWithOrderedProducts(), OrderState.ORDERED,
+      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED,
           new Address(), "Posten", LocalDate.now().minusDays(1), "Klarna");
     } catch (IllegalArgumentException exception){
       fail("Expected the order to be made, since the input it valid.");
@@ -90,17 +91,17 @@ public class OrderTest {
     LocalDate orderedDate = LocalDate.now().minusDays(1);
     LocalDate shippedDate = LocalDate.now();
     try {
-      order = new Order(0L, new User(), makeListWithOrderedProducts(), OrderState.ORDERED,
+      order = new Order(0L, new User(), makeListWithOrderedProducts(), ORDERED,
           new Address(), "Posten", orderedDate, "Klarna");
       addError(prefix, "The input orderID cannot be 0");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, null, makeListWithOrderedProducts(), OrderState.ORDERED,
+      order = new Order(123L, null, makeListWithOrderedProducts(), ORDERED,
           new Address(), "Posten", orderedDate, "Klarna");
       addError(prefix, "The input user cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, new User(), null, OrderState.ORDERED,
+      order = new Order(123L, new User(), null, ORDERED,
           new Address(), "Posten", orderedDate, "Klarna");
       addError(prefix, "The input orderedProductList cannot be null");
     } catch (IllegalArgumentException exception){}
@@ -110,42 +111,42 @@ public class OrderTest {
       addError(prefix, "The input orderState cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), OrderState.ORDERED,
+      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED,
           null, "Posten", orderedDate, "Klarna");
       addError(prefix, "The input address cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), OrderState.ORDERED,
+      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED,
           new Address(), "", orderedDate, "Klarna");
       addError(prefix, "The input deliveryMethod cannot be empty");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), OrderState.ORDERED,
+      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED,
           new Address(), null, orderedDate, "Klarna");
       addError(prefix, "The input deliveryMethod cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), OrderState.ORDERED,
+      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED,
           new Address(), "Posten", null, "Klarna");
       addError(prefix, "The input dateOfOrder cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), OrderState.ORDERED,
+      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED,
           new Address(), "Posten", orderedDate, "Klarna");
       addError(prefix, "The input shippedDate cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), OrderState.ORDERED,
+      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED,
           new Address(), "Posten", orderedDate, "");
       addError(prefix, "The input paymentMethod cannot be empty");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), OrderState.ORDERED,
+      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED,
           new Address(), "Posten", orderedDate, null);
       addError(prefix, "The input paymentMethod cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), OrderState.ORDERED,
+      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED,
           new Address(), "Posten", orderedDate.plusDays(1), "Klarna");
       addError(prefix, "The input orderedDate cannot be after todays date");
     } catch (IllegalArgumentException exception){}
@@ -154,7 +155,71 @@ public class OrderTest {
 
   }
 
+  /**
+   * Tests is the constructor works with valid parameters.
+   */
+  @Test
+  @DisplayName("Checks if the constructor works with valid parameters")
+  public void testIfConstructorWorksWithValidParameters(){
+    String prefix = "Expected an IllegalArgumentException since ";
 
+    try {
+      Order order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED,
+          new Address(), "Posten", LocalDate.now().minusDays(1), "Klarna");
+    } catch (IllegalArgumentException exception) {
+      addError(prefix, "Valid format. ");
+    }
+    checkIfTestsFailedAndDisplayResult();
+  }
+
+  /**
+   * TODO Checks if setShippedDate works with invalid parameters.
+   * Parameters checked: date before orderDate
+   */
+  @Test
+  @DisplayName("Checks if setShippedDate works with invalid parameters. ")
+  public void testIfSetShippedDateWorksWithInvalidParameters(){
+  }
+
+  /**
+   * Checks if setShippedDate works with valid parameters.
+   */
+  @Test
+  @DisplayName("Checks if setShippedDate works with valid parameters. ")
+  public void testIfSetShippedDateWorksWithValidParameters(){
+  }
+
+  /**
+   * TODO Checks if setOrderState works with invalid parameters.
+   */
+  @Test
+  @DisplayName("Checks if setOrderState works with invalid parameters. ")
+  public void testIfSetOrderStateWorksWithInvalidParameters(){
+    String prefix = "Expected an IllegalArgumentException since ";
+    try {
+      order.setOrderState(null);
+      addError(prefix, "the orderState is null. ");
+    } catch (IllegalArgumentException exception) {}
+
+    checkIfTestsFailedAndDisplayResult();
+  }
+
+  /**
+   * Checks if setOrderState works with valid parameters.
+   */
+  @Test
+  @DisplayName("Checks if setOrderState works with valid parameters. ")
+  public void testIfSetOrderStateWorksWithValidParameters(){
+    try {
+      OrderState orderState = ORDERED;
+      order.setOrderState(orderState);
+      assertEquals(order.getOrderState(), orderState);
+    } catch (IllegalArgumentException e){
+      addError("Expected the orderState to be set because the input is valid. ", "");
+    }
+
+    checkIfTestsFailedAndDisplayResult();
+  }
 
 
 }
