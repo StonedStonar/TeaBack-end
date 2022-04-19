@@ -6,7 +6,7 @@ import java.util.List;
 import org.aspectj.weaver.ast.Or;
 
 /**
- * Represents the order class. Represents an order made by the user.
+ * Represents an order made by a user.
  * @author Trine Merete Staverløkk
  * @version 0.1
  */
