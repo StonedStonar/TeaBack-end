@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
+ * The security configuration of the application.
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
@@ -64,13 +65,6 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/perform_logout")
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true);
-
-//        http.csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers("/admin").hasRole("ADMIN")
-//                .antMatchers("/user").hasAnyRole("USER", "ADMIN")
-//                .antMatchers("/").permitAll()
-//                .and().formLogin();
     }
 
     /**

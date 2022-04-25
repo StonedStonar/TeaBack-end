@@ -29,7 +29,7 @@ public class UserTest {
     @BeforeEach
     public void setUpTestUser(){
         try {
-            user = new User("Lars", "Bjarnesen", new Address(), "lars@testesen.com", "pass", Role.ROLE_USER);
+            user = new User("Lars", "Bjarnesen", new Address(), "lars@testesen.com", "pass", 41560823 ,Role.ROLE_USER);
         }catch (IllegalArgumentException exception){
             fail("Expected the user to be made since the input is invalid. ");
         }
@@ -111,49 +111,49 @@ public class UserTest {
     public void testIfConstructorWorksWithInvalidParameters(){
         String prefix = "Expected a IllegalArgumentException since ";
         try {
-            user = new User("", "Bjarnesen", new Address(), "lars@testesen.com", "pass", Role.ROLE_USER);
+            user = new User("", "Bjarnesen", new Address(), "lars@testesen.com", "pass",56084322, Role.ROLE_USER);
             addError(prefix, "the input firstname is empty.");
         }catch (IllegalArgumentException exception){}
         try {
-            user = new User(null, "Bjarnesen", new Address(), "lars@testesen.com", "pass", Role.ROLE_USER);
+            user = new User(null, "Bjarnesen", new Address(), "lars@testesen.com", "pass", 68039743 ,Role.ROLE_USER);
             addError(prefix, "the input firstname is null.");
         }catch (IllegalArgumentException exception){
             //I do nothing in here since i except to get a exception. Only registers errors above the catch.
         }
         try {
-            user = new User("Lars", "", new Address(), "lars@testesen.com", "pass", Role.ROLE_USER);
+            user = new User("Lars", "", new Address(), "lars@testesen.com", "pass", 12345678 , Role.ROLE_USER);
             addError(prefix, "the input last name is empty");
         }catch (IllegalArgumentException exception){}
         try {
-            user = new User("Lars", null, new Address(), "lars@testesen.com", "pass", Role.ROLE_USER);
+            user = new User("Lars", null, new Address(), "lars@testesen.com", "pass",12345638 ,Role.ROLE_USER);
             addError(prefix, "the last name is null");
         }catch (IllegalArgumentException exception){}
         try {
-            user = new User("Lars", "Bjarnesen", null, "lars@testesen.com", "pass", Role.ROLE_USER);
+            user = new User("Lars", "Bjarnesen", null, "lars@testesen.com", "pass",12355678 ,Role.ROLE_USER);
             addError(prefix, "the address is null");
         }catch (IllegalArgumentException exception){}
         try {
-            user = new User("Lars", "Bjarnesen", new Address(), "", "pass", Role.ROLE_USER);
+            user = new User("Lars", "Bjarnesen", new Address(), "", "pass",12345678 , Role.ROLE_USER);
             addError(prefix, "the email is empty");
         }catch (IllegalArgumentException exception){}
         try {
-            user = new User("Lars", "Bjarnesen", new Address(), null, "pass", Role.ROLE_USER);
+            user = new User("Lars", "Bjarnesen", new Address(), null, "pass",12345678, Role.ROLE_USER);
             addError(prefix, "the email is null");
         }catch (IllegalArgumentException exception){}
         try {
-            user = new User("Lars", "Bjarnesen", new Address(), "larstestesen.com", "pass", Role.ROLE_USER);
+            user = new User("Lars", "Bjarnesen", new Address(), "larstestesen.com", "pass",12345678 ,Role.ROLE_USER);
             addError(prefix, "the email is missing @");
         }catch (IllegalArgumentException exception){}
         try {
-            user = new User("Lars", "Bjarnesen", new Address(), "lars@testesencom", "pass", Role.ROLE_USER);
+            user = new User("Lars", "Bjarnesen", new Address(), "lars@testesencom", "pass",12345678, Role.ROLE_USER);
             addError(prefix, "the email is missing a domain like .com");
         }catch (IllegalArgumentException exception){}
         try {
-            user = new User("Lars", "Bjarnesen", new Address(), "lars@testesen.com", "", Role.ROLE_USER);
+            user = new User("Lars", "Bjarnesen", new Address(), "lars@testesen.com", "", 12345678, Role.ROLE_USER);
             addError(prefix, "the password is empty");
         }catch (IllegalArgumentException exception){}
         try {
-            user = new User("Lars", "Bjarnesen", new Address(), "lars@testesen.com", null, Role.ROLE_USER);
+            user = new User("Lars", "Bjarnesen", new Address(), "lars@testesen.com", null,12345678, Role.ROLE_USER);
             addError(prefix, "the password is null.");
         }catch (IllegalArgumentException exception){}
         checkIfTestsFailedAndDisplayResult();
@@ -167,7 +167,7 @@ public class UserTest {
     public void testIfConstructorWorksWithValidInput(){
         String prefix = "Expected a IllegalArgumentException since ";
         try {
-            User user = new User("Lars", "Bjarnesen", new Address(), "lars@testesen.com", "pass", Role.ROLE_USER);
+            User user = new User("Lars", "Bjarnesen", new Address(), "lars@testesen.com", "pass", 12345678, Role.ROLE_USER);
         }catch (IllegalArgumentException exception){
             addError(prefix, "the format is valid.");
         }

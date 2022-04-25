@@ -12,7 +12,6 @@
     </head>
     <body>
         <header th:replace="components/menu :: header">
-
         </header>
         <script src = "javascript/menu.js">   
         </script>
@@ -23,7 +22,7 @@
             <div class = "editProfileContainer">
                 <div>
                     <h3>Profile details</h3>
-                    <form class = "editForm" action="/users/">
+                    <form class = "editForm" action="/users">
                         <label for="firstName">First name</label>
                         <input type = "text" id = "firstName" placeholder = "Enter first name" class = "input" th:value="${user.getFirstName()}">
                         <label for = "lastName">Last name</label>

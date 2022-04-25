@@ -1,9 +1,7 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 
-import no.ntnu.appdev.group15.teawebsitebackend.model.Address;
 import no.ntnu.appdev.group15.teawebsitebackend.model.User;
 import no.ntnu.appdev.group15.teawebsitebackend.security.AccessUser;
-import org.springframework.boot.Banner;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -31,6 +29,9 @@ public class ProfileController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String getUserPage(Model model, Authentication authentication){
         User user = getUser(authentication);
+        if (authentication != null){
+            authentication.getAuthorities().forEach(System.err::println);
+        }
         addUserToModel(model, user);
         model.addAttribute("address", user.getAddress().getWholeAddressAsString());
         return "profile";

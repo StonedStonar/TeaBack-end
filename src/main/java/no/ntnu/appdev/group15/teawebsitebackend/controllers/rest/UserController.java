@@ -110,7 +110,8 @@ public class UserController {
      * Shows a page where users with "USER" role can see.
      * @return a string that is displayed.
      */
-    @GetMapping("user")
+    @GetMapping("/user")
+    @PreAuthorize("hasRole('USER')")
     public String userPage(){
         return "This is the user page.";
     }
@@ -119,7 +120,8 @@ public class UserController {
      * Shows a page where users with "ADMIN" role can see.
      * @return a string that is displayed.
      */
-    @GetMapping("admin")
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
     public String adminPage(){
         return "This is the admin page.";
     }

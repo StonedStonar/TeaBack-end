@@ -13,14 +13,20 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * A class holding the details of the authenticated user.
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
 public class AccessUser implements UserDetails {
 
     private User user;
+
     private final List<GrantedAuthority> authorities = new LinkedList<>();
 
+    /**
+     * Makes an authenticated user.
+     * @param user the user.
+     */
     public AccessUser(User user) {
         checkIfObjectIsNull(user, "user");
         this.user = user;

@@ -28,7 +28,6 @@ public class CompanyDetails implements Details {
 
     /**
      * Gets the address for a company.
-     *
      * @return address.
      */
     public Address getAddress() {

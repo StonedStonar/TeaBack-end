@@ -59,10 +59,9 @@ public class Tag {
      */
     @JsonCreator
     public Tag(@JsonProperty("tagName") String tagName, @JsonProperty("tagDescription") String tagDescription) {
-        checkIfTagIDIsAboveZero(tagID);
         checkIfTagNameIsValid(tagName);
         checkIfTagDescriptionIsValid(tagDescription);
-        this.tagID = tagID;
+        this.tagID = 0;
         this.tagDescription = tagDescription;
         this.tagName = tagName;
     }

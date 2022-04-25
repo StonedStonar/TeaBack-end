@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * Represents a connection to an Object-Relational to the database.
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
@@ -34,7 +35,7 @@ public class UserJPA implements no.ntnu.appdev.group15.teawebsitebackend.model.r
     @Override
     public void addUser(User user) throws CouldNotAddUserException {
         checkIfUserIsValid(user);
-        //TOdo: Endre denne quickfixen senere. I JUST WANNA SLEEP SEND HELP
+        //Todo: Endre denne quickfixen senere. I JUST WANNA SLEEP SEND HELP
         Optional<User> opUs = userRepository.getUserByEmail(user.getEmail());
         if (!userRepository.existsById(user.getUserIdD()) && opUs.isEmpty()){
             userRepository.save(user);
@@ -144,7 +145,6 @@ public class UserJPA implements no.ntnu.appdev.group15.teawebsitebackend.model.r
 
     /**
      * Checks if an object is null.
-     *
      * @param object the object you want to check.
      * @param error  the error message the exception should have.
      * @throws IllegalArgumentException gets thrown if the object is null.

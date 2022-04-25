@@ -119,6 +119,7 @@ public class TeaDetailsTests {
       addError(prefix, "The input  is ");
     }catch (IllegalArgumentException exception) {
     }
+    checkIfTestsFailedAndDisplayResult();
   }
 
 

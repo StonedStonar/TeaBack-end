@@ -5,6 +5,8 @@ import java.util.List;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
 
+import javax.persistence.Transient;
+
 /**
  * Represents a tea-details class, containing details about a specific tea.
  * @author Trine Merete Staverløkk
@@ -14,7 +16,10 @@ public class TeaDetails implements Details {
 
 
     private String description;
+
     private String ingredients;
+
+    @Transient
     private List<Tag> tagList;
 
     /**

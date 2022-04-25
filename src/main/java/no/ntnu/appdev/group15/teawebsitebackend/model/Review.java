@@ -1,22 +1,41 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 /**
  * Represents the Review class. Users/customers should be able to add or delete their reviews for products.
  * @author Kenneth Johansen Misund
  * @version 0.1
  */
-
+@Entity
 public class Review {
 
+    @Id
+    private long reviewID;
+
     private String reviewTitle;
+
     private String customerName;
+
+    @ManyToOne
+    @JoinColumn(name = "userID")
     private User user;
+
     private String comment;
 
     private LocalDate dateOfReview;
+
     private int rating;
 
+
+    /**
+     * Just a normal constructor needed for JPA.
+     */
+    public Review() {
+    }
 
     /**
      * Makes an instance of the review class. Should hold all the information needed to make a review.

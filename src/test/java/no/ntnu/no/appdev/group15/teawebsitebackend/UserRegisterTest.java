@@ -60,8 +60,8 @@ public class UserRegisterTest {
             }
             Address address = makeValidAddress();
             Address address1 = new Address(2900, "Fagernes", "Fagernesvegen", 33, "Norge");
-            userRegister.addUser(new User("Bjarne", "Bjarnesen", address, "bjarne@bjarn.com", "pass", Role.ROLE_ADMIN));
-            userRegister.addUser(new User("Kjell", "Fjell", address1, "kjell@hoyfjell.com", "passs", Role.ROLE_USER));
+            userRegister.addUser(new User("Bjarne", "Bjarnesen", address, "bjarne@bjarn.com", "pass",12345678 , Role.ROLE_ADMIN));
+            userRegister.addUser(new User("Kjell", "Fjell", address1, "kjell@hoyfjell.com", "passs",72345678 , Role.ROLE_USER));
             //Since every user gets a new ID when they are in i just say that i want the first user when all is done.
             user = userRegister.getAllUsers().get(0);
         }catch (IllegalArgumentException | CouldNotAddUserException | CouldNotRemoveUserException exception){
@@ -116,7 +116,7 @@ public class UserRegisterTest {
      * @return the user.
      */
     private User makeUserNotInRegister(){
-        return new User("Pepe", "Clap", makeValidAddress(), "pepe@pepe.com", "pass", Role.ROLE_USER);
+        return new User("Pepe", "Clap", makeValidAddress(), "pepe@pepe.com", "pass",12345668 ,Role.ROLE_USER);
     }
 
     /**

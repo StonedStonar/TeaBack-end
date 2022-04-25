@@ -34,6 +34,8 @@ public class User {
     @JsonIgnore
     private String password;
 
+    private long phoneNumber;
+
     private boolean active;
 
     @Enumerated
@@ -53,12 +55,13 @@ public class User {
      * @param lastName the last name of the user.
      * @param address the address of the user
      * @param email the email of the user.
+     * @param phoneNumber the phone number of the user.
      * @param password the password of the user.
      * @param role the role of the user.
      * @throws IllegalArgumentException gets thrown if the input is invalid format.
      */
     //Todo: Skriv tester for Role parameteren.
-    public User(String firstName, String lastName, Address address, String email, String password, Role role){
+    public User(String firstName, String lastName, Address address, String email, String password,long phoneNumber, Role role){
         setFirstName(firstName);
         setLastName(lastName);
         setAddress(address);
@@ -77,15 +80,20 @@ public class User {
      * @param lastName the last name of the user.
      * @param address the address of the user
      * @param email the email of the user.
+     * @param phoneNumber the phone number of the user.
+     * @param password the password of the user.
      * @throws IllegalArgumentException gets thrown if the input is invalid format.
      */
     @JsonCreator
     public User(@JsonProperty("firstName") String firstName, @JsonProperty("lastName") String lastName,
-                @JsonProperty("address") Address address, @JsonProperty("email") String email) {
+                @JsonProperty("address") Address address, @JsonProperty("email") String email,@JsonProperty("phoneNumber") long phoneNumber , @JsonProperty("password") String password) {
         setFirstName(firstName);
         setLastName(lastName);
         setAddress(address);
         setEmail(email);
+        checkString(password, "password");
+        checkIfLongIsAboveZero(phoneNumber, "phone number");
+        this.password = password;
         role = Role.ROLE_USER;
         this.active = true;
     }
@@ -237,6 +245,19 @@ public class User {
     private void checkIfPasswordIsNotNullOrEmpty(String password){
         checkString(password, "password");
     }
+
+    /**
+     * Checks if the input long is above zero.
+     * @param number the number to check.
+     * @param prefix the prefix the error should have.
+     * @throws IllegalArgumentException gets thrown if the number is below or equal to zero.
+     */
+    private void checkIfLongIsAboveZero(long number, String prefix){
+        if (number <= 0){
+            throw new IllegalArgumentException("The " + prefix + " must be above zero.");
+        }
+    }
+
 
     /**
      * Checks if a string is of a valid format or not.

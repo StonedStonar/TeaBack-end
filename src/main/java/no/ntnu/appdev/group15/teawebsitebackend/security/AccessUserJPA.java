@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
+ * A class used to get users for security.
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
@@ -26,7 +27,6 @@ public class AccessUserJPA implements UserDetailsService {
 
     /**
      * Checks if a string is of a valid format or not.
-     *
      * @param stringToCheck the string you want to check.
      * @param errorPrefix   the error the exception should have if the string is invalid.
      */
