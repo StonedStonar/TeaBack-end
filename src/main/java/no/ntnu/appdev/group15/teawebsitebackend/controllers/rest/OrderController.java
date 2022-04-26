@@ -4,7 +4,9 @@ import no.ntnu.appdev.group15.teawebsitebackend.RegisterTestData;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.OrderJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddOrderException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddProductException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddUserException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,11 +19,11 @@ public class OrderController {
 
   private OrderJPA orderJPA;
 
-  public OrderController (OrderJPA orderJPA, UserJPA userJPA){
+  public OrderController (OrderJPA orderJPA, UserJPA userJPA, ProductRegister productRegister){
     this.orderJPA = orderJPA;
     try {
-      RegisterTestData.addTestOrder(orderJPA, userJPA);
-    } catch (CouldNotAddOrderException | CouldNotAddUserException e) {
+      RegisterTestData.addTestOrder(orderJPA, userJPA, productRegister);
+    } catch (CouldNotAddOrderException | CouldNotAddUserException | CouldNotAddProductException e) {
       System.err.println("Testdata could not be added for orders and users. ");
     }
   }

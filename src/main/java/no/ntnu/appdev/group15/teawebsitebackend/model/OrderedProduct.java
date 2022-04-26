@@ -2,8 +2,11 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 /**
@@ -14,11 +17,14 @@ import javax.persistence.OneToOne;
 //Todo: Litt usikker på om denne trenger en ID. Tenk litt på det og hittl settes den bare som embeddable.
 @Entity
 public class OrderedProduct {
+
     @Id
     @GeneratedValue
     private long orderedID;
 
-    @OneToOne(targetEntity = Product.class)
+
+    @ManyToOne(targetEntity = Product.class)
+    @JoinColumn(name = "productID")
     private Product product;
 
     private int amountOfProduct;
@@ -27,6 +33,7 @@ public class OrderedProduct {
 
     private float pricePerProduct;
 
+    @Enumerated
     private OrderState orderState;
 
     /**

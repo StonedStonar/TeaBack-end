@@ -1,6 +1,7 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -28,11 +29,14 @@ public class Order {
     @ManyToOne(optional = false, targetEntity = User.class)
     @JoinColumn(name = "userID", nullable = false)
     private User user;
-    @OneToMany(targetEntity = OrderedProduct.class)
+
+    @JoinColumn(name = "orderedProductID")
+    @OneToMany(cascade = CascadeType.PERSIST, targetEntity = OrderedProduct.class, orphanRemoval = true)
     private List<OrderedProduct> orderedProductList; //many to many
     @Enumerated
     private OrderState orderState;
-    @OneToOne(optional = false, targetEntity = Address.class)
+    @ManyToOne(optional = false, targetEntity = Address.class)
+    @JoinColumn(name = "addressID")
     private Address address;
     private String deliveryMethod;
     private LocalDate dateOfOrder;

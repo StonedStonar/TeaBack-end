@@ -87,9 +87,9 @@ public class RegisterTestData {
      * Makes an ordered list of products.
      * @return the list
      */
-    private static List<OrderedProduct> makeListWithOrderedProducts() {
+    private static List<OrderedProduct> makeListWithOrderedProducts(Product product) {
         List<OrderedProduct> orderedProductList = new ArrayList<>();
-        orderedProductList.add(new OrderedProduct(new Product(1, "Fjell laks Te", 399.99f, 100, new TeaDetails(), new Company()), 2));
+        orderedProductList.add(new OrderedProduct(product, 2));
         return orderedProductList;
     }
 
@@ -97,28 +97,32 @@ public class RegisterTestData {
      * Adds test orders to the database.
      * @param orderRegister the order register to add orders to
      * @param userRegister the user register to add users to
+     * @param productRegister the product register to get products from
      * @throws CouldNotAddOrderException gets thrown if order could not be added.
      * @throws CouldNotAddUserException gets thrown if user could not be added.
+     * @throws CouldNotAddProductException gets thrown if product could not be added
      */
-    public static void addTestOrder(OrderRegister orderRegister, UserRegister userRegister)
-        throws CouldNotAddOrderException, CouldNotAddUserException {
+    public static void addTestOrder(OrderRegister orderRegister, UserRegister userRegister, ProductRegister productRegister)
+        throws CouldNotAddOrderException, CouldNotAddUserException, CouldNotAddProductException {
         checkIfObjectIsNull(orderRegister, "order Register");
+        addTestProducts(productRegister);
         addTestUsers(userRegister);
+        List<Product> products = productRegister.getAllProducts();
         List<User> users = userRegister.getAllUsers();
         User user1 = users.get(0);
         User user2 = users.get(1);
         User user3 = users.get(2);
         User user4 = users.get(3);
         if (orderRegister.getAllOrders().isEmpty()){
-            Order order = new Order(123L, user1, makeListWithOrderedProducts(), OrderState.ORDERED,
+            Order order = new Order(123L, user1, makeListWithOrderedProducts(products.get(0)), OrderState.ORDERED,
                 user1.getAddress(), "Posten", LocalDate.now().minusDays(1), "Klarna", false);
-            Order order1 = new Order(124L, user2, makeListWithOrderedProducts(), OrderState.ORDERED,
+            Order order1 = new Order(124L, user2, makeListWithOrderedProducts(products.get(1)), OrderState.ORDERED,
                 user2.getAddress(), "Posten", LocalDate.now().minusDays(1), "Visa", false);
-            Order order2 = new Order(125L, user3, makeListWithOrderedProducts(), OrderState.ORDERED,
+            Order order2 = new Order(125L, user3, makeListWithOrderedProducts(products.get(2)), OrderState.ORDERED,
                 user3.getAddress(), "Posten", LocalDate.now().minusDays(1), "Mastercard", false);
-            Order order3 = new Order(126L, user4, makeListWithOrderedProducts(), OrderState.ORDERED,
+            Order order3 = new Order(126L, user4, makeListWithOrderedProducts(products.get(0)), OrderState.ORDERED,
                 user4.getAddress(), "Posten", LocalDate.now().minusDays(1), "nudes", false);
-            Order order4 = new Order(126L, user1, makeListWithOrderedProducts(), OrderState.ORDERED,
+            Order order4 = new Order(126L, user1, makeListWithOrderedProducts(products.get(2)), OrderState.ORDERED,
                 user4.getAddress(), "Posten", LocalDate.now().minusDays(1), "nudes", false);
             orderRegister.addOrder(order);
             orderRegister.addOrder(order1);
