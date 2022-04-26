@@ -1,5 +1,8 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.time.LocalDate;
 import java.util.List;
@@ -9,8 +12,11 @@ import java.util.List;
  * @author Trine Merete Staverløkk
  * @version 0.1
  */
+@Entity(name = "order")
 public class Order {
 
+    @Id
+    @GeneratedValue
     private Long orderID;
     @Transient
     private User user;
@@ -24,6 +30,8 @@ public class Order {
     private LocalDate shippedDate;
     private String paymentMethod;
     private boolean cancelled;
+
+    public Order(){}
 
     /**
      * Makes an instance of the Order class.
