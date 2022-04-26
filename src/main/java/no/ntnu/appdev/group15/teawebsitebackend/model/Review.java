@@ -1,5 +1,7 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import org.apache.tomcat.jni.Local;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -51,7 +53,11 @@ public class Review {
         checkIfObjectIsNull(user, "user");
         this.user = user;
 
+        
+        //Litt usikker her, for det må være mulig å sende bare rating og ikke en full review med kommentar kanskje?.
+        checkString(comment, "comment");
         this.comment = comment;
+        checkIfDateIsValid(date);
         this.dateOfReview = date;
 
         if (rating >= 0 && rating <= 5) {
@@ -107,6 +113,17 @@ public class Review {
      */
     private String getTitle() {
         return reviewTitle;
+    }
+
+    /**
+     * Checks if the date is null or above the current date.
+     * @param localDate the date object to check.
+     */
+    private void checkIfDateIsValid(LocalDate localDate){
+        checkIfObjectIsNull(localDate, "date");
+        if (LocalDate.now().isBefore(localDate)){
+            throw new IllegalArgumentException("The date cannot be above current date.");
+        }
     }
 
     /**
