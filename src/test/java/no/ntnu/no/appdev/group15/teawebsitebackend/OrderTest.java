@@ -186,13 +186,14 @@ public class OrderTest {
     String prefix = "Invalid input, ";
     try {
       order.setShippedDate(LocalDate.now().plusDays(1));
-    } catch (IllegalArgumentException exception) {
       addError(prefix, "date is after todays date. ");
+    } catch (IllegalArgumentException exception) {
+
     }
     try {
       order.setShippedDate(null);
-    } catch (IllegalArgumentException exception) {
       addError(prefix, "date cannot be null");
+    } catch (IllegalArgumentException exception) {
     }
     checkIfTestsFailedAndDisplayResult();
   }

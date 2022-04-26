@@ -51,8 +51,8 @@ public class Order {
         checkIfObjectIsNull(dateOfOrder, "Date of order");
         this.dateOfOrder = dateOfOrder;
 
-        checkIfObjectIsNull(shippedDate, "Shipped date");
-        this.shippedDate = shippedDate;
+        //checkIfObjectIsNull(shippedDate, "Shipped date");
+        //this.shippedDate = null;
 
         checkString(paymentMethod, "Payment method");
         this.paymentMethod = paymentMethod;
