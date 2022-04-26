@@ -23,13 +23,14 @@ public class Order {
     private LocalDate dateOfOrder;
     private LocalDate shippedDate;
     private String paymentMethod;
+    private boolean cancelled;
 
     /**
      * Makes an instance of the Order class.
      */
     public Order(Long orderID, User user, List<OrderedProduct> orderedProductList,
                  OrderState orderState, Address address, String deliveryMethod,
-                 LocalDate dateOfOrder, String paymentMethod) {
+                 LocalDate dateOfOrder, String paymentMethod, boolean cancelled) {
         checkIfObjectIsNull(orderID, "order ID");
         this.orderID = orderID;
 
@@ -55,6 +56,8 @@ public class Order {
 
         checkString(paymentMethod, "Payment method");
         this.paymentMethod = paymentMethod;
+
+        this.cancelled = false;
     }
 
     /**
