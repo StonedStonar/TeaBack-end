@@ -76,9 +76,12 @@ public class RegisterTestData {
      * @param orderRegister the order register to add orders to
      * @param userRegister the user register to add users to
      * @throws CouldNotAddOrderException gets thrown if order could not be added.
+     * @throws CouldNotAddUserException gets thrown if user could not be added.
      */
-    public static void addTestOrder(OrderRegister orderRegister, UserRegister userRegister) throws CouldNotAddOrderException {
+    public static void addTestOrder(OrderRegister orderRegister, UserRegister userRegister)
+        throws CouldNotAddOrderException, CouldNotAddUserException {
         checkIfObjectIsNull(orderRegister, "order Register");
+        addTestUsers(userRegister);
         List<User> users = userRegister.getAllUsers();
         User user1 = users.get(0);
         User user2 = users.get(1);
