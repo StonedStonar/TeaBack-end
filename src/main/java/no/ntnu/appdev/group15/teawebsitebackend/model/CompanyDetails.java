@@ -86,7 +86,6 @@ public class CompanyDetails implements Details {
 
     /**
      * Checks if a string is of a valid format or not.
-     *
      * @param stringToCheck the string you want to check.
      * @param errorPrefix   the error the exception should have if the string is invalid.
      */
@@ -99,7 +98,6 @@ public class CompanyDetails implements Details {
 
     /**
      * Checks if an object is null.
-     *
      * @param object the object you want to check.
      * @param error  the error message the exception should have.
      */

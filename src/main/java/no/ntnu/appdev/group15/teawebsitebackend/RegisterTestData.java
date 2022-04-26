@@ -1,13 +1,13 @@
 package no.ntnu.appdev.group15.teawebsitebackend;
 
 
-import no.ntnu.appdev.group15.teawebsitebackend.model.Address;
-import no.ntnu.appdev.group15.teawebsitebackend.model.Role;
-import no.ntnu.appdev.group15.teawebsitebackend.model.User;
+import no.ntnu.appdev.group15.teawebsitebackend.model.*;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddProductException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddUserException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
 
 /**
  * @author Steinar Hjelle Midthus
@@ -47,6 +47,26 @@ public class RegisterTestData {
             userRegister.addUser(new User("Arne", "Arnesen", address1, "arne@gmail.com", "password", 23456781 ,Role.ROLE_USER));
             userRegister.addUser(new User("Lise", "Fjell", address2, "lise@gmail.com", "passwoord", 34567812, Role.ROLE_USER));
             userRegister.addUser(new User("Fjell", "Bekken", address3, "fjell@lisemom.com", "123spel", 95852210 , Role.ROLE_USER));
+        }
+    }
+
+    public static void addTestProducts(ProductRegister productRegister) throws CouldNotAddProductException {
+        checkIfObjectIsNull(productRegister, "product register");
+        if (productRegister.getAllProducts().isEmpty()) {
+            Product product = new Product( "Green Leaf Tea", 11.99f, 7, new TeaDetails(), new Company());
+            Product product1 = new Product( "Black water Leaf Tea", 9.99f, 3, new TeaDetails(), new Company());
+            Product product2 = new Product( "Mushroom High Tea", 6.99f, 2, new TeaDetails(), new Company());
+            Product product3 = new Product( "Blue Herb Tea", 5.99f, 1, new TeaDetails(), new Company());
+            Product product4 = new Product( "Strawberry Tea", 8.99f, 9, new TeaDetails(), new Company());
+            Product product5 = new Product( "Hause Norsk Tea", 7.99f, 5, new TeaDetails(), new Company());
+            Product product6 = new Product( "Stor Troll Herb Tea", 13.99f, 11, new TeaDetails(), new Company());
+            productRegister.addProduct(product);
+            productRegister.addProduct(product1);
+            productRegister.addProduct(product2);
+            productRegister.addProduct(product3);
+            productRegister.addProduct(product4);
+            productRegister.addProduct(product5);
+            productRegister.addProduct(product6);
         }
     }
 

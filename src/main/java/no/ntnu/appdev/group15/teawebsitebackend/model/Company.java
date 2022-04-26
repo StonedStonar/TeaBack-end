@@ -13,7 +13,6 @@ public class Company {
     private Details details;
 
     public Company() {
-        
     }
 
     /**
@@ -34,7 +33,6 @@ public class Company {
 
     /**
      * Get the unique companyID for a company.
-     *
      * @return companyID in long.
      */
     public long getCompanyID() {
@@ -43,7 +41,6 @@ public class Company {
 
     /**
      * Gets the company name.
-     *
      * @return company name.
      */
     public String getCompanyName() {
@@ -57,7 +54,6 @@ public class Company {
 
     /**
      * Gets the details for a product.
-     *
      * @return the details given.
      */
     public Details getDetails() {
@@ -66,7 +62,6 @@ public class Company {
 
     /**
      * Checks if a string is of a valid format or not.
-     *
      * @param stringToCheck the string you want to check.
      * @param errorPrefix   the error the exception should have if the string is invalid.
      */
@@ -90,7 +85,6 @@ public class Company {
 
     /**
      * Checks if an object is null.
-     *
      * @param object the object you want to check.
      * @param error  the error message the exception should have.
      */
