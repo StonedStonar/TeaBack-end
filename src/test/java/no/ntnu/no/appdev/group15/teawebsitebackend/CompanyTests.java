@@ -35,7 +35,6 @@ public class CompanyTests {
 
     /**
      * Adds a new error to the StringBuilder.
-     *
      * @param expectedError the message it should say before error.
      * @param error         the error to appear.
      */

@@ -11,7 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author Steinar Hjelle Midthus
+ * @author
  * @version 0.1
  */
 public class OrderedProductTests {

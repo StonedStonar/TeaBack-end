@@ -1,5 +1,15 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import java.time.LocalDate;
 import java.util.List;
@@ -9,28 +19,40 @@ import java.util.List;
  * @author Trine Merete Staverløkk
  * @version 0.1
  */
+@Entity(name = "orders")
 public class Order {
 
+    @Id
+    @GeneratedValue
     private Long orderID;
-    @Transient
+
+    @ManyToOne(optional = false, targetEntity = User.class)
+    @JoinColumn(name = "userID", nullable = false)
     private User user;
-    @Transient
+
+    @JoinColumn(name = "orderedProductID")
+    @OneToMany(cascade = CascadeType.PERSIST, targetEntity = OrderedProduct.class, orphanRemoval = true)
     private List<OrderedProduct> orderedProductList; //many to many
+    @Enumerated
     private OrderState orderState;
-    @Transient
+    @ManyToOne(optional = false, targetEntity = Address.class)
+    @JoinColumn(name = "addressID")
     private Address address;
     private String deliveryMethod;
     private LocalDate dateOfOrder;
     private LocalDate shippedDate;
     private String paymentMethod;
+    private boolean cancelled;
+
+    public Order(){}
 
     /**
      * Makes an instance of the Order class.
      */
-    public Order(Long orderID, User user, List<OrderedProduct> orderedProductList,
+    public Order(long orderID, User user, List<OrderedProduct> orderedProductList,
                  OrderState orderState, Address address, String deliveryMethod,
-                 LocalDate dateOfOrder, String paymentMethod) {
-        checkIfObjectIsNull(orderID, "order ID");
+                 LocalDate dateOfOrder, String paymentMethod, boolean cancelled) {
+        //TODO orderID kan ikke være below zero
         this.orderID = orderID;
 
         checkIfObjectIsNull(user, "user");
@@ -50,11 +72,13 @@ public class Order {
         checkIfObjectIsNull(dateOfOrder, "Date of order");
         this.dateOfOrder = dateOfOrder;
 
-        checkIfObjectIsNull(shippedDate, "Shipped date");
-        this.shippedDate = shippedDate;
+        //checkIfObjectIsNull(shippedDate, "Shipped date");
+        //this.shippedDate = null;
 
         checkString(paymentMethod, "Payment method");
         this.paymentMethod = paymentMethod;
+
+        this.cancelled = false;
     }
 
     /**
@@ -90,6 +114,14 @@ public class Order {
      */
     public User getUser(){
         return user;
+    }
+
+    /**
+     * Gets the ID
+     * @return the ID
+     */
+    public long getID() {
+        return orderID;
     }
 
     /**

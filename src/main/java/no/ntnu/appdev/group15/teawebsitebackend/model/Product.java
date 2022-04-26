@@ -3,8 +3,12 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddReviewException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveReviewException;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -12,8 +16,11 @@ import java.util.List;
  * @author Kenneth Johansen Misund
  * @version 0.1
  */
+@Entity
 public class Product {
 
+    @Id
+    @GeneratedValue
     private long productID;
     private String productName;
     private float price;
@@ -26,6 +33,9 @@ public class Product {
     @Transient
     private List<Review> reviews;
 
+    public Product() {
+    }
+
     /**
      * Makes an instance of the Product class.
      * @param id Each product has to have an unique id.
@@ -37,7 +47,7 @@ public class Product {
      */
     public Product(long id, String productName, float price, int size, Details details, Company company) {
         checkIfObjectIsNull(id, "id");
-        checkIfNumberNotNegative((int) id, "id");
+        checkIfNumberNotNegative( id, "id");
         this.productID = id;
 
         setProductName(productName);
@@ -52,6 +62,32 @@ public class Product {
 
         this.reviews = new ArrayList<>();
     }
+
+    /**
+     * Makes another instance of the Product class since it could be nice that the database autogen the id.
+     * @param productName product name of the product.
+     * @param price price set for a product.
+     * @param size size of products in the collection.
+     * @param details details written for a product.
+     * @param company company information.
+     */
+    public Product(String productName, float price, int size, Details details, Company company) {
+        this.productID = 0;
+        setProductName(productName);
+        setPrice(price);
+        checkIfNumberNotNegative(size, "amount of products");
+        this.amountOfProduct = size;
+
+        checkIfObjectIsNull(details, "details");
+        this.details = details;
+        checkIfObjectIsNull(company, "company");
+        this.company = company;
+
+        this.reviews = new ArrayList<>();
+    }
+
+
+
 
     /**
      * Gets the unique productID for a product.
@@ -201,7 +237,6 @@ public class Product {
 
     /**
      * Checks if an object is null.
-     *
      * @param object the object you want to check.
      * @param error  the error message the exception should have.
      */
@@ -213,7 +248,6 @@ public class Product {
 
     /**
      * Checks if an float value is above or zero so that we cannot enter negative values.
-     *
      * @param product the product to be checked.
      * @param error   the message the exception should hold.
      */
