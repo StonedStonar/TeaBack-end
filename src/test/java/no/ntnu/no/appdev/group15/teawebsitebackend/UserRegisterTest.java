@@ -49,7 +49,16 @@ public class UserRegisterTest {
     public UserRegisterTest(UserJPA userJPA) {
         checkIfObjectIsNull(userJPA, "user JPA");
         this.userRegister = userJPA;
-        prefixIllegal = "Expected to get a IllegalArgumentException since";
+        prefixIllegal = makeExceptionString("IllegalArgumentException");
+    }
+
+    /**
+     * Makes an exception into the wanted string.
+     * @param exceptionName the name of the exception.
+     * @return the full exception string.
+     */
+    private String makeExceptionString(String exceptionName){
+        return "Expected to get a " +  exceptionName + " since";
     }
 
     @BeforeEach
@@ -80,7 +89,7 @@ public class UserRegisterTest {
     }
 
     /**
-     * Adds a new error to the stringbuilder.
+     * Adds a new error to the string builder.
      * @param errorPrefix what it should say before the error.
      * @param error the error to append.
      */
@@ -133,7 +142,7 @@ public class UserRegisterTest {
         }catch (CouldNotAddUserException exception){
             addErrorWithException(prefixIllegal, "the input is null", exception);
         }
-        String duplicatePrefix = "Expected to get a CouldNotAddUserException since";
+        String duplicatePrefix = makeExceptionString("CouldNotAddUserException");
         try {
             userRegister.addUser(user);
             addError(duplicatePrefix, "the user is already in the system");
@@ -212,14 +221,13 @@ public class UserRegisterTest {
         }catch (CouldNotRemoveUserException exception){
             addErrorWithException(prefixIllegal, "the input number is negative", exception);
         }
-        String removePrefix = "Expected to get a CouldNotRemoveUserException since";
+        String removePrefix = makeExceptionString("CouldNotAddUserException");
         try{
             userRegister.removeUserWithID(50000L);
             addError(removePrefix, "the input id is not used");
         }catch (IllegalArgumentException exception){
             addErrorWithException(removePrefix, "the input id is not used", exception);
         }catch (CouldNotRemoveUserException exception){
-
         }
         checkIfTestsFailedAndDisplayResult();
     }
@@ -276,7 +284,7 @@ public class UserRegisterTest {
         }catch (CouldNotLoginToUserException exception){
             addErrorWithException(prefixIllegal, "the input password is null", exception);
         }
-        String loginPrefix = "Expected to get a CouldNotLoginToUserException since";
+        String loginPrefix = makeExceptionString("CouldNotLoginToUserException");
         try {
             User user2 = makeUserNotInRegister();
             userRegister.loginToUser(user2.getEmail(), user2.getPassword());
@@ -318,7 +326,7 @@ public class UserRegisterTest {
         }catch (CouldNotGetUserException exception){
             addErrorWithException(prefixIllegal, "the input is negative", exception);
         }
-        String getPrefix = "Expected to get a CouldNotGetUserException since";
+        String getPrefix = makeExceptionString("CouldNotGetUserException");
         try {
             userRegister.getUserWithUserID(5000);
             addError(prefixIllegal, "the input id is not in the system");
@@ -367,7 +375,7 @@ public class UserRegisterTest {
         }catch (CouldNotGetUserException exception){
             addErrorWithException(prefixIllegal, "the input is null", exception);
         }
-        String getPrefix = "Expected to get a CouldNotGetUserException since";
+        String getPrefix = makeExceptionString("CouldNotGetUserException");
         try {
             userRegister.getUserWithEmail(makeUserNotInRegister().getEmail());
             addError(getPrefix, "the user is not in the system");
@@ -407,7 +415,7 @@ public class UserRegisterTest {
         }catch (CouldNotGetUserException exception){
             addErrorWithException(prefixIllegal, "the input is null", exception);
         }
-        String getPrefix = "Expected to get a CouldNotGetUserException since";
+        String getPrefix = makeExceptionString("CouldNotGetUserException");
         try {
             userRegister.updateUser(makeUserNotInRegister());
             addError(getPrefix, "the user is not in the system");

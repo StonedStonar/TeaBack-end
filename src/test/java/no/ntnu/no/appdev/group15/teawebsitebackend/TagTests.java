@@ -20,6 +20,24 @@ public class TagTests {
 
     private int errors;
 
+    private String illegalPrefix;
+
+    /**
+     * Makes a tag test instance.
+     */
+    public TagTests(){
+        this.illegalPrefix = makeExceptionString("IllegalArgumentException");
+    }
+
+    /**
+     * Makes an exception into the wanted string.
+     * @param exceptionName the name of the exception.
+     * @return the full exception string.
+     */
+    private String makeExceptionString(String exceptionName){
+        return "Expected to get a " +  exceptionName + " since";
+    }
+
     @BeforeEach
     public void makeTestTag(){
         try {
@@ -60,26 +78,28 @@ public class TagTests {
     @DisplayName("Tests if the constructor works with invalid parameters.")
     @Test
     public void testIfTagConstructorWorksWithInvalidParameters(){
-        String errorPrefix = "Excepted to get a IllegalArgumentException ";
+        long tagId = 1;
+        String tagName = "hei";
+        String tagDesc = "hei";
         try {
-            Tag tag = new Tag(0, "hei", "nei");
-            addError(errorPrefix, "since tag id is zero.");
+            Tag tag = new Tag(0, tagName, tagDesc);
+            addError(illegalPrefix, "since tag id is zero.");
         }catch (IllegalArgumentException exception){}
         try{
-            Tag tag = new Tag(1, "", "Hello");
-            addError(errorPrefix, "since the tag name is invalid.");
+            Tag tag = new Tag(tagId, "", tagDesc);
+            addError(illegalPrefix, "since the tag name is invalid.");
         }catch (IllegalArgumentException exception){}
         try {
-            Tag tag = new Tag(1, null, "Hello");
-            addError(errorPrefix, "the tag name is null");
+            Tag tag = new Tag(tagId, null, tagDesc);
+            addError(illegalPrefix, "the tag name is null");
         }catch (IllegalArgumentException exception){};
         try{
-            Tag tag = new Tag(1, "Hei", "");
-            addError(errorPrefix, "since the tag description is invalid.");
+            Tag tag = new Tag(tagId, tagName, "");
+            addError(illegalPrefix, "since the tag description is invalid.");
         }catch (IllegalArgumentException exception){}
         try {
-            Tag tag = new Tag(1, "hei", null);
-            addError(errorPrefix, "since the tag description is invalid");
+            Tag tag = new Tag(tagId, tagName, null);
+            addError(illegalPrefix, "since the tag description is invalid");
         }catch (IllegalArgumentException exception){}
 
         //Checks if there are any errors and displays the result.
@@ -107,15 +127,15 @@ public class TagTests {
     @DisplayName("Tests if setTagName works with invalid input.")
     @Test
     public void testIfSetTagNameWorksWithInvalidParameters(){
-        String errorPrefix = "Expected to get a IllegalArgumentException ";
         try {
             testTag.setTagName("");
-            addError(errorPrefix, "since the string is empty.");
+            addError(illegalPrefix, "since the string is empty.");
         }catch (IllegalArgumentException exception){}
         try{
             testTag.setTagName(null);
-            addError(errorPrefix, "since the input is null.");
+            addError(illegalPrefix, "since the input is null.");
         }catch (IllegalArgumentException exception){}
+
         checkIfTestsFailedAndDisplayResult();
     }
 
@@ -125,12 +145,11 @@ public class TagTests {
     @DisplayName("Tests if setTagName works with valid input.")
     @Test
     public void testIfSetNameWorksWithValidInput(){
-        String errorPrefix = "Expected the name to be set ";
         String parameter = "Heeeeerrr";
         try {
             testTag.setTagName(parameter);
         }catch (IllegalArgumentException exception){
-            addError(errorPrefix,"since the input is valid");
+            addError(illegalPrefix,"since the input is valid");
         }
         checkIfTestsFailedAndDisplayResult();
         assertEquals(testTag.getTagName(), parameter);
@@ -142,14 +161,13 @@ public class TagTests {
     @DisplayName("Tests if setDescription works with invalid input.")
     @Test
     public void testIfSetDescriptionWorksWithInvalidInput(){
-        String errorPrefix = "Expected to get a IllegalArgumentException ";
         try {
             testTag.setTagDescription("");
-            addError(errorPrefix, "since the input is empty.");
+            addError(illegalPrefix, "since the input is empty.");
         }catch (IllegalArgumentException exception){}
         try {
             testTag.setTagDescription(null);
-            addError(errorPrefix, "since the input is null");
+            addError(illegalPrefix, "since the input is null");
         }catch (IllegalArgumentException exception){}
         checkIfTestsFailedAndDisplayResult();
     }
@@ -160,12 +178,11 @@ public class TagTests {
     @DisplayName("Tests if setDescription works with valid input")
     @Test
     public void testIfSetDescriptionWorksWithValidInput(){
-        String errorPrefix = "Expected the description to be changed ";
         String parameter = "hei";
         try {
             testTag.setTagDescription(parameter);
         }catch (IllegalArgumentException exception){
-            addError(errorPrefix, "since the input is valid.");
+            addError(illegalPrefix, "since the input is valid.");
         }
         checkIfTestsFailedAndDisplayResult();
         assertEquals(testTag.getTagDescription(), parameter);
