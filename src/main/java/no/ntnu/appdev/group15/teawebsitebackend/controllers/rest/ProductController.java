@@ -25,11 +25,7 @@ public class ProductController {
      */
     public ProductController(ProductJPA productJPA) {
         productRegister = productJPA;
-        try {
-            RegisterTestData.addTestProducts(productRegister);
-        } catch (CouldNotAddProductException couldNotAddProductException) {
-            System.err.println("Could not add test tags.");
-        }
+
     }
 
 }

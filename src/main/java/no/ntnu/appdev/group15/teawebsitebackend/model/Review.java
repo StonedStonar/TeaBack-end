@@ -1,7 +1,5 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
-import org.apache.tomcat.jni.Local;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;

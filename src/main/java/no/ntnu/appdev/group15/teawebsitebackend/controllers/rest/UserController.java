@@ -20,6 +20,7 @@ import java.util.List;
  * @version 0.1
  */
 @RestController
+
 @RequestMapping("/users")
 public class UserController {
 
@@ -32,11 +33,6 @@ public class UserController {
     public UserController(UserJPA userJPA) {
         checkIfObjectIsNull(userJPA, "user jpa");
         this.userRegister = userJPA;
-        try {
-            RegisterTestData.addTestUsers(userJPA);
-        }catch (CouldNotAddUserException exception){
-            System.err.println("The test users could not be added.");
-        }
     }
 
     /**

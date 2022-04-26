@@ -4,10 +4,8 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.Address;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Review;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Role;
 import no.ntnu.appdev.group15.teawebsitebackend.model.User;
-import org.apache.tomcat.jni.Local;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -30,6 +28,9 @@ public class ReviewTests {
 
     private StringBuilder stringBuilder;
 
+    /**
+     * Makes the basic reivew test object.
+     */
     private ReviewTests(){
         this.illegalPrefix = makeExceptionString("IllegalArgumentException");
     }
@@ -49,7 +50,7 @@ public class ReviewTests {
     @BeforeEach
     private void setUpTests() {
         try {
-            this.user = new User("Lars", "Bjarnesen", new Address(), "lars@testesen.com", "pass", 41560823, Role.ROLE_USER);
+            this.user = new User("Lars", lastName, address "lars@testesen.com", "pass", 41560823, Role.ROLE_USER);
         } catch (IllegalArgumentException exception) {
             fail("Expected the test objects to be made since the input is valid.");
         }
@@ -113,13 +114,11 @@ public class ReviewTests {
         try {
             Review review = new Review(null, validName, user, comment, date, rating);
             addError(illegalPrefix, "the input title is null");
-        }catch (IllegalArgumentException exception){
-        }
+        }catch (IllegalArgumentException exception){}
         try {
             Review review = new Review("", validName, user, comment, date, rating);
             addError(illegalPrefix, "the input title is empty");
-        }catch (IllegalArgumentException exception){
-        }
+        }catch (IllegalArgumentException exception){}
         try {
             Review review = new Review(validTitle, null, user, comment, date, rating);
             addError(illegalPrefix, "the input name is null");
@@ -167,7 +166,7 @@ public class ReviewTests {
     @DisplayName("Tests if constructor works with valid input.")
     public void testIfConstructorWorksWithValidInput(){
         try {
-            makeReview();
+            Review review = makeReview();
         }catch (IllegalArgumentException exception){
             addError("Expected the reivew to be made since the input is valid", "");
         }
