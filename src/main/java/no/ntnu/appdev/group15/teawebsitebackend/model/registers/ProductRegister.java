@@ -16,6 +16,7 @@ public interface ProductRegister {
 
     /**
      * Adds a new product to the register.
+     *
      * @param product the new product to add.
      * @throws CouldNotAddProductException gets thrown if the product could not be added to the register.
      */
@@ -23,6 +24,7 @@ public interface ProductRegister {
 
     /**
      * Removes a product from the register.
+     *
      * @param product the product to remove.
      * @throws CouldNotRemoveProductException gets thrown if the product could not be located.
      */
@@ -30,6 +32,7 @@ public interface ProductRegister {
 
     /**
      * Removes a product with a given product id.
+     *
      * @param productId the id of the product to remove.
      * @throws CouldNotRemoveProductException gets thrown if the product could not be removed.
      */
@@ -37,6 +40,7 @@ public interface ProductRegister {
 
     /**
      * Gets a product that matches the given product id.
+     *
      * @param productID the id of the product to find.
      * @return the product that matches that product id.
      * @throws CouldNotGetProductException gets thrown if the product could not be located.
@@ -45,6 +49,7 @@ public interface ProductRegister {
 
     /**
      * Updates a product and its details. The product id must be in the register.
+     *
      * @param product the product to update fields of.
      * @throws CouldNotGetProductException gets thrown if the product could not be located.
      */
@@ -52,7 +57,9 @@ public interface ProductRegister {
 
     /**
      * Gets a list of all the products in the register.
+     *
      * @return the list with all the products.
      */
     List<Product> getAllProducts();
+
 }

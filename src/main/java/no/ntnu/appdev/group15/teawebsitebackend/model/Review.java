@@ -53,7 +53,7 @@ public class Review {
         checkIfObjectIsNull(user, "user");
         this.user = user;
 
-        
+
         //Litt usikker her, for det må være mulig å sende bare rating og ikke en full review med kommentar kanskje?.
         checkString(comment, "comment");
         this.comment = comment;
