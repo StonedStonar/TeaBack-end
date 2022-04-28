@@ -2,6 +2,7 @@ package no.ntnu.appdev.group15.teawebsitebackend.model.repositories;
 
 import java.util.Optional;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -9,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 /**
  * Represents the connection to the database
  */
-public interface OrderRepository extends CrudRepository<Order, Long>{
+public interface OrderRepository extends JpaRepository<Order, Long> {
 
   /**
    * Gets all orders by userID

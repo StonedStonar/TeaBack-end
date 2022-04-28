@@ -1,18 +1,32 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
 /**
  * Represents all information about a company.
  * @author Kenneth Johansen Misund
  * @version 0.1
  */
-
+@Entity
 public class Company {
 
+    @Id
+    @GeneratedValue
     private long companyID;
+
     private String companyName;
+
+    @Transient
     private Details details;
 
+    /**
+     * Empty constructor for JPA
+     */
     public Company() {
+
     }
 
     /**
@@ -27,6 +41,17 @@ public class Company {
 
         setCompanyName(companyName);
 
+        checkIfObjectIsNull(details, "details");
+        this.details = details;
+    }
+
+    /**
+     * Makes an instance of the Company class without the ID.
+     * @param companyName company name.
+     * @param details details for a company.
+     */
+    public Company(String companyName, Details details){
+        setCompanyName(companyName);
         checkIfObjectIsNull(details, "details");
         this.details = details;
     }

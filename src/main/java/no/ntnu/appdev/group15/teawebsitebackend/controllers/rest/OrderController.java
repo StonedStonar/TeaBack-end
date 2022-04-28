@@ -21,10 +21,5 @@ public class OrderController {
 
   public OrderController (OrderJPA orderJPA, UserJPA userJPA, ProductRegister productRegister){
     this.orderJPA = orderJPA;
-    try {
-      RegisterTestData.addTestOrder(orderJPA, userJPA, productRegister);
-    } catch (CouldNotAddOrderException | CouldNotAddUserException | CouldNotAddProductException e) {
-      System.err.println("Testdata could not be added for orders and users. ");
-    }
   }
 }

@@ -3,10 +3,7 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 
 /**
@@ -14,7 +11,8 @@ import javax.persistence.Id;
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
-@Entity(name = "tag") //To say to JPA that this is a table.
+@Entity
+@Table(name = "tag")//To say to JPA that this is a table.
 public class Tag {
 
     @Id //The primary key in the DB. Should only be set once.

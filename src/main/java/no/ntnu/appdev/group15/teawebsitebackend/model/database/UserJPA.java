@@ -5,7 +5,6 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddUser
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetUserException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotLoginToUserException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveUserException;
-import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +36,7 @@ public class UserJPA implements no.ntnu.appdev.group15.teawebsitebackend.model.r
         checkIfUserIsValid(user);
         //Todo: Endre denne quickfixen senere. I JUST WANNA SLEEP SEND HELP
         Optional<User> opUs = userRepository.getUserByEmail(user.getEmail());
-        if (!userRepository.existsById(user.getUserIdD()) && opUs.isEmpty()){
+        if (!userRepository.existsById(user.getUserId()) && opUs.isEmpty()){
             userRepository.save(user);
         }else {
             throw new CouldNotAddUserException("The user id is already used.");
@@ -47,7 +46,7 @@ public class UserJPA implements no.ntnu.appdev.group15.teawebsitebackend.model.r
     @Override
     public void removeUser(User user) throws CouldNotRemoveUserException {
         checkIfUserIsValid(user);
-        removeUserWithID(user.getUserIdD());
+        removeUserWithID(user.getUserId());
     }
 
     @Override
@@ -95,10 +94,10 @@ public class UserJPA implements no.ntnu.appdev.group15.teawebsitebackend.model.r
     @Override
     public void updateUser(User user) throws CouldNotGetUserException {
         checkIfUserIsValid(user);
-        if (userRepository.existsById(user.getUserIdD())){
+        if (userRepository.existsById(user.getUserId())){
             userRepository.save(user);
         }else {
-            throw new CouldNotGetUserException("The user with the id " + user.getUserIdD() + " is not in the system.");
+            throw new CouldNotGetUserException("The user with the id " + user.getUserId() + " is not in the system.");
         }
     }
 

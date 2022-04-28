@@ -163,11 +163,11 @@ public class UserTest {
             addError(illegalPrefix, "the email is null");
         }catch (IllegalArgumentException exception){}
         try {
-            user = new User(firstName, lastName, address, email, password,phoneNumber, role);
+            user = new User(firstName, lastName, address, "larstestesen.com", password,phoneNumber, role);
             addError(illegalPrefix, "the email is missing @");
         }catch (IllegalArgumentException exception){}
         try {
-            user = new User(firstName, lastName, address, email, password,phoneNumber, role);
+            user = new User(firstName, lastName, address, "lars@testesen", password,phoneNumber, role);
             addError(illegalPrefix, "the email is missing a domain like .com");
         }catch (IllegalArgumentException exception){}
         try {

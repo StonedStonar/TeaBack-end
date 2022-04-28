@@ -13,18 +13,19 @@ import java.util.regex.Pattern;
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
-@Entity(name = "user")
+@Entity
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue
-    private long userIdD;
+    private long userId;
 
     private String firstName;
 
     private String lastName;
 
-    @OneToOne(cascade = CascadeType.PERSIST, targetEntity = Address.class, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, targetEntity = Address.class)
     @JoinColumn(name = "addressID")
     private Address address;
 
@@ -39,6 +40,7 @@ public class User {
     private boolean active;
 
     @Enumerated
+    @Column(nullable = false)
     private Role role;
 
 
@@ -68,10 +70,12 @@ public class User {
         setEmail(email);
         checkIfObjectIsNull(role, "role");
         checkIfPasswordIsNotNullOrEmpty(password);
+        checkIfLongIsAboveZero(phoneNumber, "phonenumber");
         this.password = password;
-        this.userIdD = 0;
+        this.userId = 0;
         this.active = true;
         this.role = role;
+        this.phoneNumber = phoneNumber;
     }
 
     /**
@@ -93,6 +97,7 @@ public class User {
         setEmail(email);
         checkString(password, "password");
         checkIfLongIsAboveZero(phoneNumber, "phone number");
+        this.phoneNumber = phoneNumber;
         this.password = password;
         role = Role.ROLE_USER;
         this.active = true;
@@ -148,8 +153,8 @@ public class User {
      * Gets the user's id.
      * @return the user id.
      */
-    public long getUserIdD() {
-        return userIdD;
+    public long getUserId() {
+        return userId;
     }
 
     /**

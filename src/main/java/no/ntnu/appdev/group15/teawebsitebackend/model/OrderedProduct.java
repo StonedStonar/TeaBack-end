@@ -1,29 +1,22 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 /**
  * Represents a product that has been ordered by a customer.
- * @author
+ * @author Steinar Hjelle Midthus
  * @version 0.1
  */
 //Todo: Litt usikker på om denne trenger en ID. Tenk litt på det og hittl settes den bare som embeddable.
 @Entity
+@Table(name = "orderedProduct")
 public class OrderedProduct {
 
     @Id
     @GeneratedValue
-    private long orderedID;
+    private long orderedProductID;
 
-
-    @ManyToOne(targetEntity = Product.class)
+    @OneToOne(targetEntity = Product.class)
     @JoinColumn(name = "productID")
     private Product product;
 
@@ -44,18 +37,21 @@ public class OrderedProduct {
 
     /**
      * Makes an instance of the OrderedProduct class.
+     * @param orderedID the id of the order.
      * @param product the product that was ordered.
      * @param amountOfProduct the amount of the product that was ordered.
      * @throws IllegalArgumentException if any of the input arguments are invalid format.
      */
-    public OrderedProduct(Product product, int amountOfProduct, OrderState orderState) {
+    public OrderedProduct(long orderedID, Product product, int amountOfProduct, OrderState orderState) {
         checkIfProductIsValid(product);
         checkIfAmountIsValid(amountOfProduct);
         checkOrderState(orderState);
+        checkIfLongIsAboveZero(orderedID, "ordered id");
         this.product = product;
         this.pricePerProduct = product.getPrice();
         this.amountOfProduct = amountOfProduct;
         this.returnedProductAmount = 0;
+        this.orderedProductID = orderedID;
         this.orderState = orderState;
     }
 
@@ -71,8 +67,9 @@ public class OrderedProduct {
         this.product = product;
         this.pricePerProduct = product.getPrice();
         this.amountOfProduct = amountOfProduct;
-        this.orderState = OrderState.ORDERED;
         this.returnedProductAmount = 0;
+        this.orderedProductID = 0;
+        this.orderState = OrderState.ORDERED;
     }
 
     /**
@@ -192,5 +189,9 @@ public class OrderedProduct {
         if (object == null) {
             throw new IllegalArgumentException("The " + error + " cannot be null.");
         }
+    }
+
+    public long getOrderedProductID() {
+        return orderedProductID;
     }
 }

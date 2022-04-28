@@ -239,7 +239,7 @@ public class UserRegisterTest {
     @DisplayName("Tests if removeUserWithID works with invalid input.")
     public void testIfRemoveUserWithIdWorksWithValidInput(){
         try {
-            userRegister.removeUserWithID(user.getUserIdD());
+            userRegister.removeUserWithID(user.getUserId());
         }catch (IllegalArgumentException | CouldNotRemoveUserException exception){
             addErrorWithException("Expected the user to be removed since", "the input is valid", exception);
         }
@@ -345,7 +345,7 @@ public class UserRegisterTest {
     @DisplayName("Tests if getUserWithID works with valid input.")
     public void testIfGetUserWithIdWorksWithValidInput(){
         try {
-            userRegister.getUserWithUserID(user.getUserIdD());
+            userRegister.getUserWithUserID(user.getUserId());
         }catch (IllegalArgumentException | CouldNotGetUserException exception){
             addErrorWithException("Expected to get a user since the input is valid", "", exception);
         }
