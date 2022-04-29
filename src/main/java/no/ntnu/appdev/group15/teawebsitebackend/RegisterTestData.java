@@ -17,6 +17,8 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.registers.OrderRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,7 +27,9 @@ import org.springframework.stereotype.Component;
  * @version 0.1
  */
 @Component
+@Profile("!test")
 public class RegisterTestData {
+
 
     /**
      * Makes an instance of the RegisterTestData class.
@@ -93,13 +97,13 @@ public class RegisterTestData {
         //Todo: Vi må legge til mer reivews.
         if (productRegister.getAllProducts().isEmpty()) {
             //Todo: Gjorde bare om på denne så vi kunne generere random reviews til databasen.
-            products.add(new Product( "Green Leaf Tea", 11.99f, 7, new TeaDetails(), new Company()));
-            products.add(new Product( "Black water Leaf Tea", 9.99f, 3, new TeaDetails(), new Company()));
-            products.add(new Product( "Mushroom High Tea", 6.99f, 2, new TeaDetails(), new Company()));
-            products.add(new Product( "Blue Herb Tea", 5.99f, 1, new TeaDetails(), new Company()));
-            products.add(new Product( "Strawberry Tea", 8.99f, 9, new TeaDetails(), new Company()));
-            products.add(new Product( "Hause Norsk Tea", 7.99f, 5, new TeaDetails(), new Company()));
-            products.add(new Product( "Stor Troll Herb Tea", 13.99f, 11, new TeaDetails(), new Company()));
+            products.add(new Product( "Green Leaf Tea", 11.99f, 7, new ProductDetails("Lul", "Tea"), new Company()));
+            products.add(new Product( "Black water Leaf Tea", 9.99f, 3, new ProductDetails("Lul", "Tea"), new Company()));
+            products.add(new Product( "Mushroom High Tea", 6.99f, 2, new ProductDetails("Lul", "Tea"), new Company()));
+            products.add(new Product( "Blue Herb Tea", 5.99f, 1, new ProductDetails("Lul", "Tea"), new Company()));
+            products.add(new Product( "Strawberry Tea", 8.99f, 9, new ProductDetails("Lul", "Tea"), new Company()));
+            products.add(new Product( "Hause Norsk Tea", 7.99f, 5, new ProductDetails("Lul", "Tea"), new Company()));
+            products.add(new Product( "Stor Troll Herb Tea", 13.99f, 11, new ProductDetails("Lul", "Tea"), new Company()));
             addRandomProductReviews(userRegister.getAllUsers(), products);
             for (Product product : products){
                 productRegister.addProduct(product);

@@ -24,8 +24,8 @@ public class Product {
     private float price;
     private int amountOfProduct;
 
-    @Transient
-    private Details details;
+    @OneToOne(targetEntity = ProductDetails.class, cascade = CascadeType.ALL)
+    private ProductDetails productDetails;
 
     //Todo: Must be fixed when company thing is up.
     //OneToOne(targetEntity = Company.class, cascade = CascadeType.ALL)
@@ -52,11 +52,10 @@ public class Product {
      * @param productName product name of the product.
      * @param price price set for a product.
      * @param size size of products in the collection.
-     * @param details details written for a product.
+     * @param productDetails details written for a product.
      * @param company company information.
      */
-    public Product(long id, String productName, float price, int size, Details details, Company company) {
-        checkIfObjectIsNull(id, "id");
+    public Product(long id, String productName, float price, int size, ProductDetails productDetails, Company company) {
         checkIfNumberNotNegative( id, "id");
         this.productID = id;
 
@@ -65,8 +64,8 @@ public class Product {
         checkIfNumberNotNegative(size, "amount of products");
         this.amountOfProduct = size;
 
-        checkIfObjectIsNull(details, "details");
-        this.details = details;
+        checkIfObjectIsNull(productDetails, "details");
+        this.productDetails = productDetails;
         checkIfObjectIsNull(company, "company");
         this.company = company;
 
@@ -78,26 +77,23 @@ public class Product {
      * @param productName product name of the product.
      * @param price price set for a product.
      * @param size size of products in the collection.
-     * @param details details written for a product.
+     * @param productDetails details written for a product.
      * @param company company information.
      */
-    public Product(String productName, float price, int size, Details details, Company company) {
+    public Product(String productName, float price, int size, ProductDetails productDetails, Company company) {
         this.productID = 0;
         setProductName(productName);
         setPrice(price);
         checkIfNumberNotNegative(size, "amount of products");
         this.amountOfProduct = size;
 
-        checkIfObjectIsNull(details, "details");
-        this.details = details;
+        checkIfObjectIsNull(productDetails, "details");
+        this.productDetails = productDetails;
         checkIfObjectIsNull(company, "company");
         this.company = company;
 
         this.reviews = new ArrayList<>();
     }
-
-
-
 
     /**
      * Gets the unique productID for a product.
@@ -160,8 +156,8 @@ public class Product {
      *
      * @return the details given.
      */
-    public Details getDetails() {
-        return details;
+    public ProductDetails getProductDetails() {
+        return productDetails;
     }
 
     /**

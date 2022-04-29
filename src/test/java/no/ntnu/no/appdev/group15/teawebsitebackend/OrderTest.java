@@ -10,7 +10,7 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
 import no.ntnu.appdev.group15.teawebsitebackend.model.OrderState;
 import no.ntnu.appdev.group15.teawebsitebackend.model.OrderedProduct;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Product;
-import no.ntnu.appdev.group15.teawebsitebackend.model.TeaDetails;
+import no.ntnu.appdev.group15.teawebsitebackend.model.ProductDetails;
 import no.ntnu.appdev.group15.teawebsitebackend.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -41,13 +41,22 @@ public class OrderTest {
   public void setUpTest(){
     try {
       order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED,
-          new Address(), "Posten", LocalDate.now().minusDays(1), "Klarna", false);
+          makeAddress(),
+              "Posten", LocalDate.now().minusDays(1), "Klarna", false);
     } catch (IllegalArgumentException exception){
       fail("Expected the order to be made, since the input it valid.");
     }
 
     this.stringBuilder = new StringBuilder();
     this.errors = 0;
+  }
+
+  /**
+   * Makes a default address.
+   * @return the default address.
+   */
+  private Address makeAddress(){
+    return new Address(2910, "Aurdal", "HeiStreet", 15, "Country");
   }
 
   /**
@@ -77,7 +86,7 @@ public class OrderTest {
    */
   private List<OrderedProduct> makeListWithOrderedProducts() {
     List<OrderedProduct> orderedProductList = new ArrayList<>();
-    orderedProductList.add(new OrderedProduct(new Product(1, "Fjell laks Te", 399.99f, 100, new TeaDetails(), new Company()), 2));
+    orderedProductList.add(new OrderedProduct(new Product(1, "Fjell laks Te", 399.99f, 100, new ProductDetails("Lul", "Tea"), new Company()), 2));
     return orderedProductList;
   }
 
@@ -91,48 +100,47 @@ public class OrderTest {
     LocalDate orderedDate = LocalDate.now().minusDays(1);
     LocalDate shippedDate = LocalDate.now();
     try {
-        order = new Order(0L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", orderedDate, "Klarna", false);
+        order = new Order(0L, new User(), makeListWithOrderedProducts(), ORDERED, makeAddress(), "Posten", orderedDate, "Klarna", false);
         addError(prefix, "The input orderID cannot be 0");
     }catch (IllegalArgumentException exception){}
     try {
-        order = new Order(123L, null, makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", orderedDate, "Klarna", false);
+        order = new Order(123L, null, makeListWithOrderedProducts(), ORDERED, makeAddress(), "Posten", orderedDate, "Klarna", false);
         addError(prefix, "The input user cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-        order = new Order(123L, new User(), null, ORDERED, new Address(), "Posten", orderedDate, "Klarna", false);
+        order = new Order(123L, new User(), null, ORDERED, makeAddress(), "Posten", orderedDate, "Klarna", false);
         addError(prefix, "The input orderedProductList cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-        order = new Order(123L, new User(), makeListWithOrderedProducts(), null, new Address(), "Posten", orderedDate, "Klarna", false);
+        order = new Order(123L, new User(), makeListWithOrderedProducts(), null, makeAddress(), "Posten", orderedDate, "Klarna", false);
         addError(prefix, "The input orderState cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED,
-          null, "Posten", orderedDate, "Klarna", false);
+        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, null, "Posten", orderedDate, "Klarna", false);
         addError(prefix, "The input address cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "", orderedDate, "Klarna", false);
+        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, makeAddress(), "", orderedDate, "Klarna", false);
         addError(prefix, "The input deliveryMethod cannot be empty");
     } catch (IllegalArgumentException exception){}
     try {
-        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), null, orderedDate, "Klarna", false);
+        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, makeAddress(), null, orderedDate, "Klarna", false);
         addError(prefix, "The input deliveryMethod cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", null, "Klarna", false);
+        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, makeAddress(), "Posten", null, "Klarna", false);
         addError(prefix, "The input dateOfOrder cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", orderedDate, "", false);
+        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, makeAddress(), "Posten", orderedDate, "", false);
         addError(prefix, "The input paymentMethod cannot be empty");
     } catch (IllegalArgumentException exception){}
     try {
-        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", orderedDate, null, false);
+        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, makeAddress(), "Posten", orderedDate, null, false);
         addError(prefix, "The input paymentMethod cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", orderedDate.plusDays(1), "Klarna", false);
+        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, makeAddress(), "Posten", orderedDate.plusDays(2), "Klarna", false);
         addError(prefix, "The input orderedDate cannot be after todays date");
     } catch (IllegalArgumentException exception){}
 
@@ -149,7 +157,7 @@ public class OrderTest {
     String prefix = "Expected an IllegalArgumentException since ";
 
     try {
-      Order order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", LocalDate.now().minusDays(1), "Klarna", false);
+      Order order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, makeAddress(), "Posten", LocalDate.now().minusDays(1), "Klarna", false);
     } catch (IllegalArgumentException exception) {
       addError(prefix, "Valid format. ");
     }
@@ -164,7 +172,7 @@ public class OrderTest {
   public void testIfSetShippedDateWorksWithInvalidParameters(){
     String prefix = "Invalid input, ";
     try {
-      order.setShippedDate(LocalDate.now().plusDays(1));
+      order.setShippedDate(LocalDate.now().minusDays(1));
       addError(prefix, "date is after todays date. ");
     } catch (IllegalArgumentException exception) {
 
@@ -184,7 +192,7 @@ public class OrderTest {
   @DisplayName("Checks if setShippedDate works with valid parameters. ")
   public void testIfSetShippedDateWorksWithValidParameters(){
     try {
-      order.setShippedDate(LocalDate.now().minusDays(1));
+      order.setShippedDate(LocalDate.now().plusDays(1));
     } catch (IllegalArgumentException exception) {
       addError("Expected shipped date to be set since, ", "date is a valid input. ");
     }

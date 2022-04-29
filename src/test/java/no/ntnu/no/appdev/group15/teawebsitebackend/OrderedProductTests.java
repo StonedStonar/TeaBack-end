@@ -5,9 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -53,7 +50,7 @@ public class OrderedProductTests {
      * @return the product that was made.
      */
     private Product makeProduct(){
-        return new Product(1, "Fjell laks Te", 399.99f, 100, new TeaDetails(), new Company());
+        return new Product(1, "Fjell laks Te", 399.99f, 100, new ProductDetails("Lul", "Tea"), new Company());
     }
 
     /**

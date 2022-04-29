@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ProductTests {
 
     private Product product;
-    private Details details;
+    private ProductDetails details;
     private Company company;
     private Review review;
 
@@ -36,7 +36,7 @@ public class ProductTests {
     @BeforeEach
     public void setupTestProduct(){
         try{
-            details = new TeaDetails();
+            details = new ProductDetails("Lul", "Tea");
             company = new Company();
             this.product = makeProduct();
         }catch (IllegalArgumentException | CouldNotAddReviewException exception){
@@ -76,23 +76,23 @@ public class ProductTests {
     @DisplayName("Tests if constructor works with invalid input.")
     public void testIfConstructorWorksWithInvalidInput() {
         try {
-            Product product = new Product(-4, "Ost", 12.99f, 3, new TeaDetails(), new Company());
+            Product product = new Product(-4, "Ost", 12.99f, 3, new ProductDetails("Lul", "Tea"), new Company());
             addError(expectedError, "The id is negative");
         } catch (IllegalArgumentException ex) {}
         try {
-            Product product = new Product(1, "", 12.99f, 3, new TeaDetails(), new Company());
+            Product product = new Product(1, "", 12.99f, 3, new ProductDetails("Lul", "Tea"), new Company());
             addError(expectedError, "The productName is an empty String");
         } catch (IllegalArgumentException ex) {}
         try {
-            Product product = new Product(3, null, 12.99f, 3, new TeaDetails(), new Company());
+            Product product = new Product(3, null, 12.99f, 3, new ProductDetails("Lul", "Tea"), new Company());
             addError(expectedError, "The product name is null");
         } catch (IllegalArgumentException ex) {}
         try {
-            Product product = new Product(3, "Kremost", -2.22f, 3, new TeaDetails(), new Company());
+            Product product = new Product(3, "Kremost", -2.22f, 3, new ProductDetails("Lul", "Tea"), new Company());
             addError(expectedError, "The price is null");
         } catch (IllegalArgumentException ex) {}
         try {
-            Product product = new Product(3, "Kremost", 3.29f, -5, new TeaDetails(), new Company());
+            Product product = new Product(3, "Kremost", 3.29f, -5, new ProductDetails("Lul", "Tea"), new Company());
             addError(expectedError, "The size is negative");
         } catch (IllegalArgumentException ex) {}
         try {
@@ -100,7 +100,7 @@ public class ProductTests {
             addError(expectedError, "Details should be set to null in negative test");
         } catch (IllegalArgumentException ex) {}
         try {
-            Product product = new Product(3, "Kremost", 3.29f, 3, new TeaDetails(), null);
+            Product product = new Product(3, "Kremost", 3.29f, 3, new ProductDetails("Lul", "Tea"), null);
             addError(expectedError, "Company should be set to null in negative test");
         } catch (IllegalArgumentException ex) {}
         checkIfTestsFailedAndDisplayResult();
@@ -114,7 +114,7 @@ public class ProductTests {
     @DisplayName("Test if constructor works with valid input.")
     public void testIfConstructorWorksWithValidInput() {
         try {
-            Product product = new Product(2, "Saus", 14.99f, 1, new TeaDetails(), new Company());
+            Product product = new Product(2, "Saus", 14.99f, 1, new ProductDetails("Lul", "Tea"), new Company());
         } catch (IllegalArgumentException ex) {
             addError(expectedError, " You have used Invalid input on a positive test.");
         }

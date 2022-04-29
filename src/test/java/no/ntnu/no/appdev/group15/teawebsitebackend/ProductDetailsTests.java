@@ -2,7 +2,7 @@ package no.ntnu.no.appdev.group15.teawebsitebackend;
 
 
 import no.ntnu.appdev.group15.teawebsitebackend.model.Tag;
-import no.ntnu.appdev.group15.teawebsitebackend.model.TeaDetails;
+import no.ntnu.appdev.group15.teawebsitebackend.model.ProductDetails;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,8 +24,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 0.1
  */
 
-public class TeaDetailsTests {
-  private TeaDetails teaDetails;
+public class ProductDetailsTests {
+  private ProductDetails productDetails;
   private StringBuilder stringBuilder;
   private int errors;
   private String prefixIllegal;
@@ -36,7 +36,7 @@ public class TeaDetailsTests {
   @BeforeEach
   public void setUpTestTeaDetails() {
     try {
-      teaDetails = new TeaDetails();
+      productDetails = new ProductDetails("Lul", "Tea");
     } catch (IllegalArgumentException exception) {
     }
     stringBuilder = new StringBuilder();
@@ -85,7 +85,7 @@ public class TeaDetailsTests {
   public void testConstructorWorksWithValidParameters() {
     String errorPrefix = "Expected the creation to be successful since ";
     try {
-      TeaDetails teaDetails = new TeaDetails("warm", "herbs");
+      ProductDetails productDetails = new ProductDetails("warm", "herbs");
     } catch (IllegalArgumentException exception) {
       addError(errorPrefix, "the input is valid");
     }
@@ -100,22 +100,22 @@ public class TeaDetailsTests {
   public void testConstructorWorksWithInvalidParameters() {
     String prefix = "Expected an IllegalArgumentException  since ";
     try {
-      teaDetails = new TeaDetails("", "herbs");
+      productDetails = new ProductDetails("", "herbs");
       addError(prefix, "The input ingredients is empty");
     } catch (IllegalArgumentException exception) {
     }
     try {
-      teaDetails = new TeaDetails(null, "herbs");
+      productDetails = new ProductDetails(null, "herbs");
       addError(prefix, "The input ingredients is null");
     } catch (IllegalArgumentException exception) {
     }
     try {
-      teaDetails = new TeaDetails("warm", "");
+      productDetails = new ProductDetails("warm", "");
       addError(prefix, "The input herbs is empty");
     } catch (IllegalArgumentException exception) {
     }
     try {
-      teaDetails = new TeaDetails("warm", null);
+      productDetails = new ProductDetails("warm", null);
       addError(prefix, "The input herbs is null");
     } catch (IllegalArgumentException exception) {
     }
@@ -130,14 +130,16 @@ public class TeaDetailsTests {
   public void testIfSetDescriptionWorksWithInvalidParameters() {
     String errorPrefix = "Expected to get an IllegalArgumentException since,  ";
     try {
-      teaDetails.setDescription(null);
-    } catch (IllegalArgumentException exception) {
+      productDetails.setDescription(null);
       addError(errorPrefix, "the input is null");
+    } catch (IllegalArgumentException exception) {
+
     }
     try {
-      teaDetails.setDescription("");
-    } catch (IllegalArgumentException exception) {
+      productDetails.setDescription("");
       addError(errorPrefix, "the input is empty");
+    } catch (IllegalArgumentException exception) {
+
     }
     checkIfTestsFailedAndDisplayResult();
   }
@@ -151,12 +153,12 @@ public class TeaDetailsTests {
     String errorPrefix = "Expected the description to be set since ";
     String parameter = "Warm";
     try {
-      teaDetails.setDescription(parameter);
+      productDetails.setDescription(parameter);
     } catch (IllegalArgumentException exception) {
       addError(errorPrefix, "the input is valid.");
     }
     checkIfTestsFailedAndDisplayResult();
-    assertEquals(teaDetails.getDescription(), parameter);
+    assertEquals(productDetails.getDescription(), parameter);
   }
 
 
@@ -168,8 +170,10 @@ public class TeaDetailsTests {
   public void testIfAddTagWorksWithInvalidParameters() {
     String errorPrefix = "Expected to get an IllegalArgumentException since,  ";
     try {
-      teaDetails.addTag(null);
-    } catch (CouldNotAddTagException exception) {
+      productDetails.addTag(null);
+    }catch (IllegalArgumentException exception){
+
+    }catch (CouldNotAddTagException exception) {
       addError(errorPrefix, "the input is null");
     }
   }
@@ -182,7 +186,7 @@ public class TeaDetailsTests {
   public void testIfAddTagWorksWithValidParameters() {
     String errorPrefix = "Expected the description to be set since ";
     try {
-      teaDetails.addTag(new Tag());
+      productDetails.addTag(new Tag());
     } catch (IllegalArgumentException | CouldNotAddTagException exception) {
       addErrorWithException(errorPrefix, "the input is valid. ", exception);
     }
@@ -197,8 +201,10 @@ public class TeaDetailsTests {
   public void testIfRemoveTagWorksWithInvalidParameters() {
     String errorPrefix = "Expected to get an IllegalArgumentException since,  ";
     try {
-      teaDetails.removeTag(null);
-    } catch (CouldNotRemoveTagException couldNotRemoveTagException) {
+      productDetails.removeTag(null);
+    } catch (IllegalArgumentException exception){
+
+    }catch (CouldNotRemoveTagException couldNotRemoveTagException) {
       addError(errorPrefix, "the input is invalid");
     }
   }
@@ -212,7 +218,7 @@ public class TeaDetailsTests {
   public void testIfRemoveTagWorksWithValidParameters() {
     String errorPrefix = "Expected the description to be set since ";
     try {
-      teaDetails.removeTag(new Tag());
+      productDetails.removeTag(new Tag());
     } catch (IllegalArgumentException | CouldNotRemoveTagException exception) {
       addErrorWithException(errorPrefix, "The input is valid", exception);
     }

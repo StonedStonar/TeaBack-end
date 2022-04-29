@@ -14,18 +14,14 @@ import javax.persistence.Transient;
  * @version 0.1
  */
 @Entity
-public class CompanyDetails implements Details {
-
-    @Id
-    @GeneratedValue
-    private int companyDetailsID;
-
-    private String description;
+public class CompanyDetails extends Details{
 
     @Transient
     private Address address;
 
-
+    /**
+     * Makes an instance of the CompanyDetails.
+     */
     public CompanyDetails() {
 
     }
@@ -36,11 +32,9 @@ public class CompanyDetails implements Details {
      * @param address the address for a company.
      */
     public CompanyDetails(String description, Address address) {
-        setDescription(description);
-
+        super(description);
         checkIfObjectIsNull(address, "address");
         this.address = address;
-        this.companyDetailsID = 0;
     }
 
     /**
@@ -49,68 +43,6 @@ public class CompanyDetails implements Details {
      */
     public Address getAddress() {
         return address;
-    }
-
-    /**
-     * Gets the description about a company.
-     * @return description.
-     */
-    @Override
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * Sets the description for a company.
-     * @param description a new description.
-     */
-    @Override
-    public void setDescription(String description) {
-        checkString(description, "description for company details");
-        this.description = description;
-    }
-
-    /**
-     * Adds a tag for the company.
-     * @param tag the tag to add.
-     * @throws CouldNotAddTagException
-     */
-    @Override
-    public void addTag(Tag tag) throws CouldNotAddTagException {
-
-    }
-
-    /**
-     * Removes a tag for the company.
-     * @param tag the tag to remove.
-     * @throws CouldNotRemoveTagException
-     */
-    @Override
-    public void removeTag(Tag tag) throws CouldNotRemoveTagException {
-
-    }
-
-    /**
-     * Checks if the tag is part of the details given for a company.
-     * @param tag the tag to check for.
-     * @return tag.
-     */
-    @Override
-    public boolean checkIfTagIsPartOfDetails(Tag tag) {
-       return false;
-    }
-
-
-    /**
-     * Checks if a string is of a valid format or not.
-     * @param stringToCheck the string you want to check.
-     * @param errorPrefix   the error the exception should have if the string is invalid.
-     */
-    private void checkString(String stringToCheck, String errorPrefix) {
-        checkIfObjectIsNull(stringToCheck, errorPrefix);
-        if (stringToCheck.isEmpty()) {
-            throw new IllegalArgumentException("The " + errorPrefix + " cannot be empty.");
-        }
     }
 
     /**

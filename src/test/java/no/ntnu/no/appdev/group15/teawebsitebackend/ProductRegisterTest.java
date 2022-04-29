@@ -2,9 +2,10 @@ package no.ntnu.no.appdev.group15.teawebsitebackend;
 
 import no.ntnu.appdev.group15.teawebsitebackend.Application;
 import no.ntnu.appdev.group15.teawebsitebackend.model.*;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.CompanyJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddCompanyException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddProductException;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddReviewException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetProductException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveProductException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
@@ -13,10 +14,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.parameters.P;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,15 +39,40 @@ public class ProductRegisterTest {
     private StringBuilder stringBuilder;
     private int errors;
 
+    private List<Company> companies;
+
     /**
      * Makes an instance of the ProductRegisterTest class.
      * @param productJPA the connection to the database.
+     * @param companyJPA the connection to the database.
      */
     @Autowired
-    public ProductRegisterTest (ProductJPA productJPA) {
+    public ProductRegisterTest (ProductJPA productJPA, CompanyJPA companyJPA) {
         checkIfObjectIsNull(productJPA, "productJPA");
+        checkIfObjectIsNull(companyJPA, "companyJPA");
         this.productRegister = productJPA;
+        List<Company> companies = makeCompanies();
+        try {
+            for (Company company : companies) {
+                companyJPA.addCompany(company);
+            }
+        }catch (CouldNotAddCompanyException exception){
+            fail("Expected the test data to be added since its valid.");
+        }
+        this.companies = companyJPA.getAllCompanies();
         expectedError = "Expected to get an IllegalArgumentException since ";
+    }
+
+    /**
+     * Makes a list with test companies.
+     * @return the list with the companies.
+     */
+    private List<Company> makeCompanies(){
+        List<Company> companies = new ArrayList<>();
+        companies.add(new Company("PepeINC", new CompanyDetails("pepe", new Address(6015, "Ålesund", "Ålesundvegen", 123, "Norway"))));
+        companies.add(new Company("LuliClapAS", new CompanyDetails("Luli", new Address(6015, "Ålesund", "Ålesundvegen", 123, "Norway"))));
+        companies.add(new Company("CompanyINC", new CompanyDetails("Nja", new Address(6015, "Ålesund", "Ålesundvegen", 123, "Norway"))));
+        return companies;
     }
 
    @BeforeEach
@@ -55,10 +81,10 @@ public class ProductRegisterTest {
             for (Product product : productRegister.getAllProducts()) {
                 productRegister.removeProduct(product);
             }
-            Product product = new Product( "Green Leaf Tea", 11.99f, 7, new TeaDetails(), new Company());
-            Product product1 = new Product( "Black water Leaf Tea", 9.99f, 3, new TeaDetails(), new Company());
-            Product product2 = new Product( "Mushroom High Tea", 6.99f, 2, new TeaDetails(), new Company());
-            Product product3 = new Product( "Blue Herb Tea", 5.99f, 1, new TeaDetails(), new Company());
+            Product product = new Product( "Green Leaf Tea", 11.99f, 7, new ProductDetails("Lul", "Tea"), companies.get(0));
+            Product product1 = new Product( "Black water Leaf Tea", 9.99f, 3, new ProductDetails("Lul", "Tea"), companies.get(1));
+            Product product2 = new Product( "Mushroom High Tea", 6.99f, 2, new ProductDetails("Lul", "Tea"), companies.get(2));
+            Product product3 = new Product( "Blue Herb Tea", 5.99f, 1, new ProductDetails("Lul", "Tea"), companies.get(0));
             productRegister.addProduct(product);
             productRegister.addProduct(product1);
             productRegister.addProduct(product2);
@@ -137,7 +163,7 @@ public class ProductRegisterTest {
     @DisplayName("Tests if product works with valid input.")
     public void testIfAddProductWorksWithValidInput() {
         try {
-            productRegister.addProduct(new Product("Green Leaf Tea", 11.99f, 7, new TeaDetails(), new Company()));
+            productRegister.addProduct(new Product("Green Leaf Tea", 11.99f, 7, new ProductDetails("Lul", "Tea"), new Company()));
         } catch (IllegalArgumentException | CouldNotAddProductException ex) {
             addErrorWithException("Expected the add method to work since", "the input user is not in the system.", ex);
         }
@@ -159,7 +185,7 @@ public class ProductRegisterTest {
             addErrorWithException(expectedError, "the input is null", ex);
         }
         try {
-            productRegister.removeProduct(new Product("Pepehang hard", 1000000000.99f, 3, new TeaDetails(), new Company()));
+            productRegister.removeProduct(new Product("Pepehang hard", 1000000000.99f, 3, new ProductDetails("Lul", "Tea"), new Company()));
                 addError(expectedError, "the product is not found in the system");
             } catch (IllegalArgumentException ex) {
 
@@ -285,7 +311,7 @@ public class ProductRegisterTest {
         }
         String getException = "Expected to get a CouldNotGetProductException";
         try {
-            productRegister.updateProduct(new Product(90000, "Pepeppepepe", 2992.2f, 2, new TeaDetails(), new Company()));
+            productRegister.updateProduct(new Product(90000, "Pepeppepepe", 2992.2f, 2, new ProductDetails("Lul", "Tea"), new Company()));
             addError(expectedError, "the product do not exist in the system");
         } catch (IllegalArgumentException ex) {
             addErrorWithException(getException, "the product do not exist in the system", ex);

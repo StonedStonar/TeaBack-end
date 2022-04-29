@@ -1,9 +1,6 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 /**
  * Represents all information about a company.
@@ -19,7 +16,7 @@ public class Company {
 
     private String companyName;
 
-    @Transient
+    @OneToOne(targetEntity = CompanyDetails.class, cascade = CascadeType.ALL)
     private Details details;
 
     /**

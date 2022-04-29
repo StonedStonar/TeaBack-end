@@ -5,6 +5,7 @@ import java.util.List;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
 
+import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 /**
@@ -12,42 +13,41 @@ import javax.persistence.Transient;
  * @author Trine Merete Staverløkk
  * @version 0.1
  */
-public class TeaDetails implements Details {
-
-
-    private String description;
+@Entity
+public class ProductDetails extends Details{
 
     private String ingredients;
 
     @Transient
     private List<Tag> tagList;
 
-    /**
-     * Constructor for the JPA-shit.
-     */
-    public TeaDetails() {}
+    public ProductDetails() {
+        super();
+    }
 
     /**
      * makes an instance of teaDetails.
      * @param description the description of the tea.
      * @param ingredients the ingredients in the tea
      */
-    public TeaDetails(String description, String ingredients){
-        checkString(description, "description");
-        this.description = description;
-
+    public ProductDetails(String description, String ingredients){
+        super(description);
         checkString(ingredients, "ingredients");
         this.ingredients = ingredients;
-
         this.tagList = new ArrayList<>();
     }
 
     /**
-     * Gets the description of the tea.
-     * @return the description of the tea
+     * makes an instance of teaDetails.
+     * @param detailsId the details' id.
+     * @param description the description of the tea.
+     * @param ingredients the ingredients in the tea
      */
-    public String getDescription() {
-        return description;
+    public ProductDetails(long detailsId, String description, String ingredients){
+        super(detailsId, description);
+        checkString(ingredients, "ingredients");
+        this.ingredients = ingredients;
+        this.tagList = new ArrayList<>();
     }
 
     /**
@@ -59,20 +59,10 @@ public class TeaDetails implements Details {
     }
 
     /**
-     * Sets a description of the tea.
-     * @param description a new description.
-     */
-    public void setDescription(String description) {
-        checkString(description, "ingredients");
-        this.description = description;
-    }
-
-    /**
      * Adding a tag to tagList.
      * @param tagToAdd the tag to add.
      * @throws CouldNotAddTagException
      */
-    @Override
     public void addTag(Tag tagToAdd) throws CouldNotAddTagException {
         checkIfObjectIsNull(tagToAdd, "tag to add");
         if (!checkIfTagIsPartOfDetails(tagToAdd)) {
@@ -87,7 +77,6 @@ public class TeaDetails implements Details {
      * @param tagToRemove the tag to remove.
      * @throws CouldNotRemoveTagException
      */
-    @Override
     public void removeTag(Tag tagToRemove) throws CouldNotRemoveTagException {
         checkIfObjectIsNull(tagToRemove, "tag to remove");
         if (!checkIfTagIsPartOfDetails(tagToRemove)) {
@@ -127,7 +116,6 @@ public class TeaDetails implements Details {
      * @param tag the tag to check for.
      * @return
      */
-    @Override
     public boolean checkIfTagIsPartOfDetails(Tag tag) {
         boolean valid = tagList.stream().anyMatch(tag1 -> tag.getTagID() == tag1.getTagID());
         return valid;

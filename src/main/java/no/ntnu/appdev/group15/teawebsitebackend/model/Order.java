@@ -48,12 +48,13 @@ public class Order {
                  OrderState orderState, Address address, String deliveryMethod,
                  LocalDate dateOfOrder, String paymentMethod, boolean cancelled) {
         //TODO orderID kan ikke være below zero
+        checkIfNumberNotNegative(orderID, "order ID");
         this.orderID = orderID;
 
         checkIfObjectIsNull(user, "user");
         this.user = user;
 
-        //Tood: Sjekk at denne ikke kan være null.
+        checkIfObjectIsNull(orderedProductList, "ordered products");
         this.orderedProductList = orderedProductList;
 
         checkIfObjectIsNull(orderState, "orderState");
@@ -66,7 +67,7 @@ public class Order {
         this.deliveryMethod = deliveryMethod;
 
         //Todo: Laget vi ikke en metode for å sjekke før datoen idag?
-        checkIfObjectIsNull(dateOfOrder, "Date of order");
+        checkIfDateIsBeforeOrEqualToCurrentDate(dateOfOrder);
         this.dateOfOrder = dateOfOrder;
 
         //checkIfObjectIsNull(shippedDate, "Shipped date");
@@ -76,17 +77,6 @@ public class Order {
         this.paymentMethod = paymentMethod;
 
         this.cancelled = cancelled;
-    }
-
-    /**
-     * Checks if date is after current date.
-     * @param date the date to check.
-     */
-    private void checkIfDateIsAfterCurrentDate(LocalDate date){
-        checkIfObjectIsNull(date, "date");
-        if (date.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Date cannot be later than the current date");
-        }
     }
 
     /**
@@ -103,7 +93,6 @@ public class Order {
             throw new IllegalArgumentException("The shipped date cannot be before the ordered date");
         }
     }
-
 
     /**
      * Gets the user.
@@ -201,8 +190,41 @@ public class Order {
     }
 
     /**
+     * Check to make sure that integer values cannot be negative.
+     * @param object the object to be checked.
+     * @param error exception message to be displayed.
+     */
+    private void checkIfNumberNotNegative(long object, String error) {
+        if (object <= 0) {
+            throw new IllegalArgumentException("The " + error + " Cannot be negative values.");
+        }
+    }
+
+    /**
+     * Checks if an input date is before or equal to today's date.
+     * @param localDate the date to check.
+     */
+    private void checkIfDateIsBeforeOrEqualToCurrentDate(LocalDate localDate){
+        checkIfObjectIsNull(localDate, "date");
+        if (LocalDate.now().isBefore(localDate)){
+            throw new IllegalArgumentException("The set date is after current date.");
+        }
+    }
+
+    /**
      * TODO cancelled order, later not now.
      */
+
+    /**
+     * Checks if date is after current date.
+     * @param date the date to check.
+     */
+    private void checkIfDateIsAfterCurrentDate(LocalDate date){
+        checkIfObjectIsNull(date, "date");
+        if (LocalDate.now().isAfter(date)) {
+            throw new IllegalArgumentException("Date cannot be later than the current date");
+        }
+    }
 
     /**
      * Checks if an object is null.

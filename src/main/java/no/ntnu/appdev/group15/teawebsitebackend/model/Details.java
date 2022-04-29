@@ -1,52 +1,107 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
-
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.SecondaryTable;
+import javax.persistence.*;
 
 /**
- * Represents a basic object that describes anything in general terms.
+ * Represents details for a thing.
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public interface Details {
+@MappedSuperclass
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Details {
+
+    @Id
+    @GeneratedValue
+    private long detailsID;
+
+    private String description;
+
+    public Details(){
+
+    }
+
 
     /**
-     * Gets the description of the details object. This can be product description and so on.
-     * @return the description.
+     * Makes an instance of the Details class.
+     * @param description the description.
      */
-    String getDescription();
+    public Details(String description) {
+        checkString(description, "description");
+        this.description = description;
+        this.detailsID = 0;
+    }
 
     /**
-     * Sets the description of the details object.
+     * Makes an instance of the Details class.
+     * @param detailsID the id of the details.
+     * @param description the description.
+     */
+    public Details(long detailsID, String description){
+        checkString(description, "description");
+        checkIfNumberIsAboveZero(detailsID, "detailsID");
+        this.description = description;
+        this.detailsID = detailsID;
+    }
+
+    /**
+     * Gets the description of the tea.
+     * @return the description of the tea
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Gets the details' id.
+     * @return the details' id.
+     */
+    public long getDetailsID(){
+        return detailsID;
+    }
+
+    /**
+     * Sets a description of the tea.
      * @param description a new description.
      */
-    void setDescription(String description);
+    public void setDescription(String description) {
+        checkString(description, "ingredients");
+        this.description = description;
+    }
 
     /**
-     * Adds a tag to the details object.
-     * @param tag the tag to add.
-     * @throws CouldNotAddTagException gets thrown if the tag could not be added.
+     * Checks if the input number is above zero.
+     * @param numberToCheck the number to check.
      */
-    void addTag(Tag tag) throws CouldNotAddTagException;
+    private void checkIfNumberIsAboveZero(long numberToCheck, String prefix){
+        if (numberToCheck <= 0){
+            throw new IllegalArgumentException("The " + prefix + " must be larger than zero.");
+        }
+    }
 
     /**
-     * Removes a tag from the details object.
-     * @param tag the tag to remove.
-     * @throws CouldNotRemoveTagException gets thrown if the tag could not be found.
+     * Checks if a string is of a valid format or not.
+     * @param stringToCheck the string you want to check.
+     * @param errorPrefix   the error the exception should have if the string is invalid.
+     * @throws IllegalArgumentException gets thrown if the string to check is empty or null.
      */
-    void removeTag(Tag tag) throws CouldNotRemoveTagException;
+    private void checkString(String stringToCheck, String errorPrefix) {
+        checkIfObjectIsNull(stringToCheck, errorPrefix);
+        if (stringToCheck.isEmpty()) {
+            throw new IllegalArgumentException("The " + errorPrefix + " cannot be empty.");
+        }
+    }
 
     /**
-     * Checks if the tag is a part of this details object
-     * @param tag the tag to check for.
-     * @return <code>true</code> if the tag is a part of this details object.
-     *         <code>false</code> if the tag is not a part of this details object.
+     * Checks if an object is null.
+     *
+     * @param object the object you want to check.
+     * @param error  the error message the exception should have.
+     * @throws IllegalArgumentException gets thrown if the object is null.
      */
-    boolean checkIfTagIsPartOfDetails(Tag tag);
-
+    private void checkIfObjectIsNull(Object object, String error) {
+        if (object == null) {
+            throw new IllegalArgumentException("The " + error + " cannot be null.");
+        }
+    }
 }
