@@ -3,17 +3,17 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.DynamicInsert;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Represents an address class.
  * @author Trine Merete Staverløkk
  * @version 0.1
  */
-@Entity(name = "address")
+@Entity
+@Table(name = "address")
 public class Address {
 
   @Id

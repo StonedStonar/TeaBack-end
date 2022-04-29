@@ -50,7 +50,7 @@ public class ReviewTests {
     @BeforeEach
     private void setUpTests() {
         try {
-            this.user = new User("Lars", lastName, address "lars@testesen.com", "pass", 41560823, Role.ROLE_USER);
+            this.user = new User("Lars", "Larsen", new Address(), "lars@testesen.com", "pass", 41560823, Role.ROLE_USER);
         } catch (IllegalArgumentException exception) {
             fail("Expected the test objects to be made since the input is valid.");
         }

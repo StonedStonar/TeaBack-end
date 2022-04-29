@@ -1,16 +1,7 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -19,24 +10,29 @@ import java.util.List;
  * @author Trine Merete Staverløkk
  * @version 0.1
  */
-@Entity(name = "orders")
+@Entity
+@Table(name = "orders")
 public class Order {
 
     @Id
     @GeneratedValue
     private Long orderID;
 
-    @ManyToOne(optional = false, targetEntity = User.class)
-    @JoinColumn(name = "userID", nullable = false)
+    @OneToOne(targetEntity = User.class)
     private User user;
 
-    @JoinColumn(name = "orderedProductID")
-    @OneToMany(cascade = CascadeType.PERSIST, targetEntity = OrderedProduct.class, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, targetEntity = OrderedProduct.class)
+    @JoinTable(name = "orderedProducts",
+            joinColumns = @JoinColumn(name= "orderID", referencedColumnName = "orderID"),
+            inverseJoinColumns = @JoinColumn(name= "orderedProductID", referencedColumnName = "orderedProductID")
+    )
     private List<OrderedProduct> orderedProductList; //many to many
+
     @Enumerated
     private OrderState orderState;
-    @ManyToOne(optional = false, targetEntity = Address.class)
-    @JoinColumn(name = "addressID")
+
+    //Todo: Må tenke litt på denne.
+    @Transient
     private Address address;
     private String deliveryMethod;
     private LocalDate dateOfOrder;
@@ -58,6 +54,7 @@ public class Order {
         checkIfObjectIsNull(user, "user");
         this.user = user;
 
+        //Tood: Sjekk at denne ikke kan være null.
         this.orderedProductList = orderedProductList;
 
         checkIfObjectIsNull(orderState, "orderState");
@@ -69,6 +66,7 @@ public class Order {
         checkString(deliveryMethod, "DeliveryMethod");
         this.deliveryMethod = deliveryMethod;
 
+        //Todo: Laget vi ikke en metode for å sjekke før datoen idag?
         checkIfObjectIsNull(dateOfOrder, "Date of order");
         this.dateOfOrder = dateOfOrder;
 
@@ -78,7 +76,7 @@ public class Order {
         checkString(paymentMethod, "Payment method");
         this.paymentMethod = paymentMethod;
 
-        this.cancelled = false;
+        this.cancelled = cancelled;
     }
 
     /**

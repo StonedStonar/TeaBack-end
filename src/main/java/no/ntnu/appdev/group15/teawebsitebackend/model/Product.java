@@ -3,12 +3,8 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddReviewException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveReviewException;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -17,20 +13,30 @@ import java.util.List;
  * @version 0.1
  */
 @Entity
+@Table(name = "product")
 public class Product {
 
     @Id
     @GeneratedValue
     private long productID;
+
     private String productName;
     private float price;
     private int amountOfProduct;
 
     @Transient
     private Details details;
+
+    //Todo: Must be fixed when company thing is up.
+    //OneToOne(targetEntity = Company.class, cascade = CascadeType.ALL)
     @Transient
     private Company company;
-    @Transient
+
+    @OneToMany(targetEntity = Review.class, cascade = CascadeType.ALL)
+    @JoinTable(name = "productReviews",
+            joinColumns = @JoinColumn(name= "productID", referencedColumnName = "productID"),
+            inverseJoinColumns = @JoinColumn(name= "reviewID", referencedColumnName = "reviewID")
+    )
     private List<Review> reviews;
 
     public Product() {

@@ -3,6 +3,8 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
 
+import javax.persistence.Inheritance;
+
 /**
  * Represents a basic object that describes anything in general terms.
  * @author Steinar Hjelle Midthus

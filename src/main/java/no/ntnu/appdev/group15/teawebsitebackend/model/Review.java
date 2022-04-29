@@ -1,9 +1,8 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import org.hibernate.annotations.LazyToOne;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 /**
  * Represents the Review class. Users/customers should be able to add or delete their reviews for products.
@@ -11,18 +10,21 @@ import java.time.LocalDate;
  * @version 0.1
  */
 @Entity
+@Table(name = "review")
 public class Review {
 
     @Id
+    @GeneratedValue
     private long reviewID;
 
     private String reviewTitle;
 
     private String customerName;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinColumn(name = "userID")
     private User user;
+
     private String comment;
     private LocalDate dateOfReview;
     private int rating;

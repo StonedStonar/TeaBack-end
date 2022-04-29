@@ -91,58 +91,49 @@ public class OrderTest {
     LocalDate orderedDate = LocalDate.now().minusDays(1);
     LocalDate shippedDate = LocalDate.now();
     try {
-      order = new Order(0L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", orderedDate, "Klarna", false);
-      addError(prefix, "The input orderID cannot be 0");
+        order = new Order(0L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", orderedDate, "Klarna", false);
+        addError(prefix, "The input orderID cannot be 0");
+    }catch (IllegalArgumentException exception){}
+    try {
+        order = new Order(123L, null, makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", orderedDate, "Klarna", false);
+        addError(prefix, "The input user cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, null, makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", orderedDate, "Klarna", false);
-      addError(prefix, "The input user cannot be null");
+        order = new Order(123L, new User(), null, ORDERED, new Address(), "Posten", orderedDate, "Klarna", false);
+        addError(prefix, "The input orderedProductList cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, new User(), null, ORDERED, new Address(), "Posten", orderedDate, "Klarna", false);
-      addError(prefix, "The input orderedProductList cannot be null");
+        order = new Order(123L, new User(), makeListWithOrderedProducts(), null, new Address(), "Posten", orderedDate, "Klarna", false);
+        addError(prefix, "The input orderState cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), null, new Address(), "Posten", orderedDate, "Klarna", false);
-      addError(prefix, "The input orderState cannot be null");
-    } catch (IllegalArgumentException exception){}
-    try {
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED,
+        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED,
           null, "Posten", orderedDate, "Klarna", false);
-      addError(prefix, "The input address cannot be null");
+        addError(prefix, "The input address cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "", orderedDate, "Klarna", false);
-      addError(prefix, "The input deliveryMethod cannot be empty");
+        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "", orderedDate, "Klarna", false);
+        addError(prefix, "The input deliveryMethod cannot be empty");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), null, orderedDate, "Klarna", false);
-      addError(prefix, "The input deliveryMethod cannot be null");
+        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), null, orderedDate, "Klarna", false);
+        addError(prefix, "The input deliveryMethod cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", null, "Klarna", false);
-      addError(prefix, "The input dateOfOrder cannot be null");
+        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", null, "Klarna", false);
+        addError(prefix, "The input dateOfOrder cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", orderedDate, "Klarna", false);
-      addError(prefix, "The input shippedDate cannot be null");
+        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", orderedDate, "", false);
+        addError(prefix, "The input paymentMethod cannot be empty");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", orderedDate, "", false);
-      addError(prefix, "The input paymentMethod cannot be empty");
+        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", orderedDate, null, false);
+        addError(prefix, "The input paymentMethod cannot be null");
     } catch (IllegalArgumentException exception){}
     try {
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", orderedDate, null, false);
-      addError(prefix, "The input paymentMethod cannot be null");
-    } catch (IllegalArgumentException exception){}
-    try {
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", orderedDate.plusDays(1), "Klarna", false);
-      addError(prefix, "The input orderedDate cannot be after todays date");
-    } catch (IllegalArgumentException exception){}
-    try { //TODO hvordan kan en boolean fucke opp
-      order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED,
-          new Address(), "Posten", orderedDate.plusDays(1), "Klarna", false);
-      addError(prefix, "The input cancelled cannot be null");
+        order = new Order(123L, new User(), makeListWithOrderedProducts(), ORDERED, new Address(), "Posten", orderedDate.plusDays(1), "Klarna", false);
+        addError(prefix, "The input orderedDate cannot be after todays date");
     } catch (IllegalArgumentException exception){}
 
     checkIfTestsFailedAndDisplayResult();

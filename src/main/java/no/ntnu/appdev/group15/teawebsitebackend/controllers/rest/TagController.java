@@ -33,11 +33,6 @@ public class TagController {
      */
     public TagController(TagJPA tagJPA) {
         tagsRegister = tagJPA;
-        try {
-            RegisterTestData.addTestTags(tagsRegister);
-        }catch (CouldNotAddTagException couldNotAddTagException){
-            System.err.println("Could not add test tags.");
-        }
     }
 
     /**

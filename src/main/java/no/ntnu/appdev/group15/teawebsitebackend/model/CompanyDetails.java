@@ -3,16 +3,32 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
 /**
  * Represents the CompanyDetails class. Should give the information for a company.
  * @author Kenneth Johansen Misund
  * @version 0.1
  */
+@Entity
 public class CompanyDetails implements Details {
 
+    @Id
+    @GeneratedValue
+    private int companyDetailsID;
+
     private String description;
+
+    @Transient
     private Address address;
 
+
+    public CompanyDetails() {
+
+    }
 
     /**
      * Makes an instance of the CompanyDetails Class.
@@ -24,6 +40,7 @@ public class CompanyDetails implements Details {
 
         checkIfObjectIsNull(address, "address");
         this.address = address;
+        this.companyDetailsID = 0;
     }
 
     /**
