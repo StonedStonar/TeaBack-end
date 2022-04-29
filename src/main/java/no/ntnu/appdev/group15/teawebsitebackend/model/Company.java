@@ -45,8 +45,7 @@ public class Company {
         this.details = details;
     }
 
-    /**
-     * Makes an instance of the Company class without the ID.
+     /** Makes an instance of the Company class without the ID.
      * @param companyName company name.
      * @param details details for a company.
      */

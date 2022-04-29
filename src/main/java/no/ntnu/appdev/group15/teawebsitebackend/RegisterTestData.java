@@ -3,14 +3,16 @@ package no.ntnu.appdev.group15.teawebsitebackend;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import no.ntnu.appdev.group15.teawebsitebackend.model.*;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.*;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.*;
+import java.util.Random;
+
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.OrderJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.TagJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.*;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.OrderRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
@@ -71,6 +73,7 @@ public class RegisterTestData {
             Address address1 = new Address(2900, "Fagernes", "Fagernesvegen", 33, "Norge");
             Address address2 = new Address(6015, "Ålesund", "Fagerlia", 15, "Noreg");
             Address address3 = new Address(6390, "Vestnes", "Kaigata", 15, "Noreg");
+            userRegister.addUser(new User("Bjarne", "lastName", address, "bjarne@bjarnesen.com", "pass",12345678, Role.ROLE_ADMIN));
             userRegister.addUser(new User("Bjarne", "Bjarnesen", address, "bjarne@bjarnesen.com", "pass",12345678, Role.ROLE_ADMIN));
             userRegister.addUser(new User("Arne", "Arnesen", address1, "arne@gmail.com", "password", 23456781 ,Role.ROLE_USER));
             userRegister.addUser(new User("Lise", "Fjell", address2, "lise@gmail.com", "passwoord", 34567812, Role.ROLE_USER));
@@ -78,8 +81,7 @@ public class RegisterTestData {
         }
     }
 
-    /**
-     * Adds test products to the classes.
+     /** Adds test products to the classes.
      * @param productRegister the product register.
      * @param userRegister the user register.
      * @throws CouldNotAddProductException gets thrown if the product could not be added.
@@ -109,7 +111,7 @@ public class RegisterTestData {
      * Makes a list with test companies.
      * @return the list with the companies.
      */
-    private static List<Company> makeCompanies(){
+    private List<Company> makeCompanies(){
         List<Company> companies = new ArrayList<>();
         companies.add(new Company("PepeINC", new CompanyDetails("pepe", new Address(1, 6015, "Ålesund", "Ålesundvegen", 123, "Norway"))));
         companies.add(new Company("LuliClapAS", new CompanyDetails("Luli", new Address(1, 6015, "Ålesund", "Ålesundvegen", 123, "Norway"))));
@@ -123,7 +125,7 @@ public class RegisterTestData {
      * @param products the products to be added in DB.
      * @throws CouldNotAddReviewException gets thrown if the review could not be added.
      */
-    private static void addRandomProductReviews(List<User> users, List<Product> products) throws CouldNotAddReviewException {
+    private void addRandomProductReviews(List<User> users, List<Product> products) throws CouldNotAddReviewException {
         Random random = new Random();
         int amountOfUsers = users.size();
         int maxAmountOfRandomReviews = 5;
@@ -135,6 +137,15 @@ public class RegisterTestData {
             }
         }
     }
+
+    public void addTestCompanies(CompanyRegister companyRegister) throws CouldNotAddCompanyException {
+        checkIfObjectIsNull(companyRegister, "companyRegister");
+        if (companyRegister.getAllCompanies().isEmpty()) {
+            Company company = new Company("Salty Salt Tea", new CompanyDetails("Veldig Salt Tea", new Address()));
+            companyRegister.addCompany(company);
+        }
+    }
+
 
     /**
      * Makes an ordered list of products.
