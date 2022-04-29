@@ -5,14 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import no.ntnu.appdev.group15.teawebsitebackend.model.*;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.*;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.*;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.*;
 import java.util.Random;
 
-import no.ntnu.appdev.group15.teawebsitebackend.model.database.OrderJPA;
-import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
-import no.ntnu.appdev.group15.teawebsitebackend.model.database.TagJPA;
-import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.OrderRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
@@ -34,7 +31,7 @@ public class RegisterTestData {
      * @param productJPA the productJPA.
      * @param orderJPA the orderJPA.
      */
-    public RegisterTestData(TagJPA tagJPA, UserJPA userJPA, ProductJPA productJPA, OrderJPA orderJPA, CompanyJPA companyJPA){
+    public RegisterTestData(TagJPA tagJPA, UserJPA userJPA, ProductJPA productJPA, OrderJPA orderJPA, CompanyJPA companyJPA) {
         try{
             addTestTags(tagJPA);
             addTestCompanies(companyJPA);
