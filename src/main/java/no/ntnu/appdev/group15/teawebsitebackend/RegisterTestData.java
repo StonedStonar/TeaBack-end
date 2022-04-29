@@ -5,14 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import no.ntnu.appdev.group15.teawebsitebackend.model.*;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.*;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.*;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.*;
 import java.util.Random;
 
-import no.ntnu.appdev.group15.teawebsitebackend.model.database.OrderJPA;
-import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
-import no.ntnu.appdev.group15.teawebsitebackend.model.database.TagJPA;
-import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.OrderRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
@@ -34,13 +31,14 @@ public class RegisterTestData {
      * @param productJPA the productJPA.
      * @param orderJPA the orderJPA.
      */
-    public RegisterTestData(TagJPA tagJPA, UserJPA userJPA, ProductJPA productJPA, OrderJPA orderJPA){
+    public RegisterTestData(TagJPA tagJPA, UserJPA userJPA, ProductJPA productJPA, OrderJPA orderJPA, CompanyJPA companyJPA){
         try{
             addTestTags(tagJPA);
+            addTestCompanies(companyJPA);
             addTestUsers(userJPA);
             addTestProducts(productJPA, userJPA);
             addTestOrder(orderJPA, userJPA.getAllUsers(), productJPA.getAllProducts());
-        } catch (CouldNotAddOrderException | CouldNotAddProductException | CouldNotAddReviewException | CouldNotAddTagException |CouldNotAddUserException e) {
+        } catch (CouldNotAddOrderException | CouldNotAddProductException | CouldNotAddReviewException | CouldNotAddTagException | CouldNotAddUserException | CouldNotAddCompanyException e) {
             System.err.println("Test data could not be added but got an " + e.getClass().getSimpleName() + ".");
         }
     }
@@ -140,8 +138,14 @@ public class RegisterTestData {
 
     public void addTestCompanies(CompanyRegister companyRegister) throws CouldNotAddCompanyException {
         checkIfObjectIsNull(companyRegister, "companyRegister");
+        List<Company> companies = new ArrayList<>();
         if (companyRegister.getAllCompanies().isEmpty()) {
-            Company company = new Company("Salty Salt Tea", new CompanyDetails("Veldig Salt Tea", new Address()));
+            companies.add(new Company("Yogi Tea", new CompanyDetails("Best i Verden", new Address(6015, "Ålesund", "Ålesundvegen", 123, "Norway"))));
+            companies.add(new Company("Ahmad Tea", new CompanyDetails("Best i Norge", new Address(6015, "Ålesund", "Ålesundvegen", 123, "Norway"))));
+            companies.add(new Company("Clipper Tea", new CompanyDetails("Tea of great quality", new Address(6015, "Ålesund", "Ålesundvegen", 123, "Norway"))));
+            companies.add(new Company("Pukka Tea", new CompanyDetails("Veldig Salt Tea", new Address(6015, "Ålesund", "Ålesundvegen", 123, "Norway"))));
+            companies.add(new Company("Fair Trade", new CompanyDetails("Vi er et firma som opprett holder orden, slik at tea blir solgt og opprettholdt inn for rettighetene.", new Address(6015, "Ålesund", "Ålesundvegen", 123, "Norway"))));
+            for (Company company : companies)
             companyRegister.addCompany(company);
         }
     }

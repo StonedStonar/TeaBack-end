@@ -1,9 +1,6 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 /**
  * Represents all information about a company.

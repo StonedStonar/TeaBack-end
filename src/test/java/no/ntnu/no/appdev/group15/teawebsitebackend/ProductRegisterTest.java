@@ -4,7 +4,6 @@ import no.ntnu.appdev.group15.teawebsitebackend.Application;
 import no.ntnu.appdev.group15.teawebsitebackend.model.*;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddProductException;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddReviewException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetProductException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveProductException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
@@ -13,10 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.parameters.P;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.time.LocalDate;
 
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,6 +45,9 @@ public class ProductRegisterTest {
         expectedError = "Expected to get an IllegalArgumentException since ";
     }
 
+    /**
+     * Adds some test data to be used for testing.
+     */
    @BeforeEach
    public void addTestData() {
         try {
@@ -119,7 +118,7 @@ public class ProductRegisterTest {
             addErrorWithException(expectedError, "the input is null", ex);
         }
 
-        String duplicateErrorMessage = "Expected to get a CouldNotAddUserException since";
+        String duplicateErrorMessage = "Expected to get a CouldNotAddProductException since";
         try {
             productRegister.addProduct(product);
             addError(duplicateErrorMessage, "the user is already in the system");
@@ -134,12 +133,12 @@ public class ProductRegisterTest {
      * Tests if the addProduct method works with valid input.
      */
     @Test
-    @DisplayName("Tests if product works with valid input.")
+    @DisplayName("Tests if addProduct works with valid input.")
     public void testIfAddProductWorksWithValidInput() {
         try {
             productRegister.addProduct(new Product("Green Leaf Tea", 11.99f, 7, new TeaDetails(), new Company()));
         } catch (IllegalArgumentException | CouldNotAddProductException ex) {
-            addErrorWithException("Expected the add method to work since", "the input user is not in the system.", ex);
+            addErrorWithException("Expected the add method to work since", "the input product is not in the system.", ex);
         }
         checkIfTestsFailedAndDisplayResult();
     }
@@ -218,13 +217,13 @@ public class ProductRegisterTest {
         try {
             productRegister.removeProductWithProductID(product.getProductID());
         } catch (IllegalArgumentException | CouldNotRemoveProductException ex) {
-            addErrorWithException("Expected the user to be removed since ", "the input is valid", ex);
+            addErrorWithException("Expected the product to be removed since ", "the input is valid", ex);
         }
         checkIfTestsFailedAndDisplayResult();
     }
 
     /**
-     * Tests if getProductWithID works with invalid input
+     * Tests if getProductWithID works with invalid input.
      */
     @Test
     @DisplayName("Tests if getProductWithID works with invalid input")
@@ -285,7 +284,8 @@ public class ProductRegisterTest {
         }
         String getException = "Expected to get a CouldNotGetProductException";
         try {
-            productRegister.updateProduct(new Product(90000, "Pepeppepepe", 2992.2f, 2, new TeaDetails(), new Company()));
+            productRegister.updateProduct(new Product(90000, "Pepeppepepe", 2992.2f, 2, new TeaDetails(),
+                    new Company()));
             addError(expectedError, "the product do not exist in the system");
         } catch (IllegalArgumentException ex) {
             addErrorWithException(getException, "the product do not exist in the system", ex);
