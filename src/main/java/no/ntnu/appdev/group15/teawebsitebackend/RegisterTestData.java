@@ -3,23 +3,10 @@ package no.ntnu.appdev.group15.teawebsitebackend;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import no.ntnu.appdev.group15.teawebsitebackend.model.Address;
-import no.ntnu.appdev.group15.teawebsitebackend.model.Company;
-import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
-import no.ntnu.appdev.group15.teawebsitebackend.model.OrderState;
-import no.ntnu.appdev.group15.teawebsitebackend.model.OrderedProduct;
-import no.ntnu.appdev.group15.teawebsitebackend.model.Product;
-import no.ntnu.appdev.group15.teawebsitebackend.model.Role;
-import no.ntnu.appdev.group15.teawebsitebackend.model.TeaDetails;
-import no.ntnu.appdev.group15.teawebsitebackend.model.User;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddOrderException;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddProductException;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddUserException;
-import no.ntnu.appdev.group15.teawebsitebackend.model.registers.OrderRegister;
-import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
-import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
-import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
+
+import no.ntnu.appdev.group15.teawebsitebackend.model.*;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.*;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.*;
 
 /**
  * @author Steinar Hjelle Midthus
@@ -55,13 +42,18 @@ public class RegisterTestData {
             Address address1 = new Address(2900, "Fagernes", "Fagernesvegen", 33, "Norge");
             Address address2 = new Address(6015, "Ålesund", "Fagerlia", 15, "Noreg");
             Address address3 = new Address(6390, "Vestnes", "Kaigata", 15, "Noreg");
-            userRegister.addUser(new User("Bjarne", lastName, address, "bjarne@bjarnesen.com", "pass",12345678, Role.ROLE_ADMIN));
+            userRegister.addUser(new User("Bjarne", "lastName", address, "bjarne@bjarnesen.com", "pass",12345678, Role.ROLE_ADMIN));
             userRegister.addUser(new User("Arne", "Arnesen", address1, "arne@gmail.com", "password", 23456781 ,Role.ROLE_USER));
             userRegister.addUser(new User("Lise", "Fjell", address2, "lise@gmail.com", "passwoord", 34567812, Role.ROLE_USER));
             userRegister.addUser(new User("Fjell", "Bekken", address3, "fjell@lisemom.com", "123spel", 95852210 , Role.ROLE_USER));
         }
     }
 
+    /**
+     * Adds test products to the database used for testing.
+     * @param productRegister the productRegister where the products get added.
+     * @throws CouldNotAddProductException get thrown if a product do not get added to the register.
+     */
     public static void addTestProducts(ProductRegister productRegister) throws
         CouldNotAddProductException {
         checkIfObjectIsNull(productRegister, "product register");
@@ -82,6 +74,15 @@ public class RegisterTestData {
             productRegister.addProduct(product6);
         }
     }
+
+    public static void addTestCompanies(CompanyRegister companyRegister) throws CouldNotAddCompanyException {
+        checkIfObjectIsNull(companyRegister, "companyRegister");
+        if (companyRegister.getAllCompanies().isEmpty()) {
+            Company company = new Company("Salty Salt Tea", new CompanyDetails("Veldig Salt Tea", new Address()));
+            companyRegister.addCompany(company);
+        }
+    }
+
 
     /**
      * Makes an ordered list of products.

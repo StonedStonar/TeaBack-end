@@ -32,6 +32,17 @@ public class Company {
     }
 
     /**
+     * Makes another instance of the company class so that the database can autogen CompanyID.
+     * @param companyName company name.
+     * @param details details for a company.
+     */
+    public Company(String companyName, Details details) {
+        setCompanyName(companyName);
+        checkIfObjectIsNull(details, "details");
+        this.details = details;
+    }
+
+    /**
      * Get the unique companyID for a company.
      * @return companyID in long.
      */

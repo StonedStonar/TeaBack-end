@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Represents a register that has the database as its implementation.
+ * @author Kenneth Johansen Misund
+ * @version 0.1
+ */
 @Service
 public class ProductJPA implements ProductRegister {
 
@@ -34,7 +39,7 @@ public class ProductJPA implements ProductRegister {
         if(!productRepository.existsById(product.getProductID())) {
             productRepository.save(product);
         } else {
-            throw new CouldNotAddProductException("The user id is already in use.");
+            throw new CouldNotAddProductException("The productID is already in use.");
         }
 
     }
@@ -47,7 +52,7 @@ public class ProductJPA implements ProductRegister {
 
     @Override
     public void removeProductWithProductID(long productId) throws CouldNotRemoveProductException {
-        checkIfNumberIsAboveZero(productId, "product id");
+        checkIfNumberIsAboveZero(productId, "productID");
         if (productRepository.existsById(productId)) {
             productRepository.deleteById(productId);
         } else {
@@ -71,7 +76,7 @@ public class ProductJPA implements ProductRegister {
        if (productRepository.existsById(product.getProductID())) {
            productRepository.save(product);
        } else {
-          throw new CouldNotGetProductException("The user with the id " + product.getProductID() + " is not found in the system.");
+          throw new CouldNotGetProductException("The product with the id " + product.getProductID() + " is not found in the system.");
        }
     }
 
