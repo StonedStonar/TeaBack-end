@@ -18,6 +18,7 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
 import org.springframework.stereotype.Component;
 
 /**
+ * A class that holds test data for the database.
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */

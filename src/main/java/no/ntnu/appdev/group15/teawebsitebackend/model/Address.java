@@ -3,7 +3,6 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
@@ -14,6 +13,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "address")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Address {
 
   @Id
@@ -55,7 +55,33 @@ public class Address {
     this.addressID = addressID;
   }
 
-
+  /**
+   * makes an instance of Address class
+   * @param postalCode The postal code
+   * @param postalPlace The place
+   * @param streetName the address
+   * @param houseNumber The house number
+   * @param country The country
+   * @throws IllegalArgumentException gets thrown if the input parameters are invalid.
+   */
+  @JsonCreator
+  public Address(@JsonProperty("postalCode") int postalCode,
+                 @JsonProperty("postalPlace") String postalPlace,
+                 @JsonProperty("streetName") String streetName,
+                 @JsonProperty("houseNumber") int houseNumber,
+                 @JsonProperty("country") String country) {
+    checkIfPostalCodeIsAboveZero(postalCode);
+    checkIfPostalPlaceIsValid(postalPlace);
+    checkIfStreetNameIsValid(streetName);
+    checkIfHouseNumberIsAboveZero(houseNumber);
+    checkIfCountryIsValid(country);
+    this.postalCode = postalCode;
+    this.postalPlace = postalPlace;
+    this.streetName = streetName;
+    this.houseNumber = houseNumber;
+    this.country = country;
+    this.addressID = 0;
+  }
 
   /**
    * Gets the id of the address.
@@ -191,33 +217,5 @@ public class Address {
     if (object == null) {
       throw new IllegalArgumentException("The " + error + " cannot be null.");
     }
-  }
-
-  /**
-   * makes an instance of Address class
-   * @param postalCode The postal code
-   * @param postalPlace The place
-   * @param streetName the address
-   * @param houseNumber The house number
-   * @param country The country
-   * @throws IllegalArgumentException gets thrown if the input parameters are invalid.
-   */
-  @JsonCreator
-  public Address(@JsonProperty("postalCode") int postalCode,
-                 @JsonProperty("postalPlace") String postalPlace,
-                 @JsonProperty("streetName") String streetName,
-                 @JsonProperty("houseNumber") int houseNumber,
-                 @JsonProperty("country") String country) {
-    checkIfPostalCodeIsAboveZero(postalCode);
-    checkIfPostalPlaceIsValid(postalPlace);
-    checkIfStreetNameIsValid(streetName);
-    checkIfHouseNumberIsAboveZero(houseNumber);
-    checkIfCountryIsValid(country);
-    this.postalCode = postalCode;
-    this.postalPlace = postalPlace;
-    this.streetName = streetName;
-    this.houseNumber = houseNumber;
-    this.country = country;
-    this.addressID = 0;
   }
 }
