@@ -11,6 +11,7 @@ import no.ntnu.appdev.group15.teawebsitebackend.Application;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Address;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Company;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
+import no.ntnu.appdev.group15.teawebsitebackend.model.OrderState;
 import no.ntnu.appdev.group15.teawebsitebackend.model.OrderedProduct;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Product;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Role;
@@ -97,13 +98,7 @@ public class OrderRegisterTest {
     this.errors = 0;
   }
 
-  /**
-   * Creates an order that does not exist in register.
-   * @return
-   */
-  public Order makeOrderNotInRegister() {
-    return new Order()
-  }
+
 
 
   /**
@@ -181,7 +176,7 @@ public class OrderRegisterTest {
   @DisplayName("Tests if addOrder works with valid input.")
   public void testsIfAddOrderWorksWithValidInput() {
     try {
-      orderRegister.addOrder(order);
+      orderRegister.addOrder(new Order(123L, user, makeListWithOrderedProducts(), ORDERED, user.getAddress(), "Posten", LocalDate.now().minusDays(1), "Klarna", false));
     } catch (IllegalArgumentException | CouldNotAddOrderException e) {
       addErrorWithException("Expected the method to work since ", "the input is valid", e);
     }
