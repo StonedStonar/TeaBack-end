@@ -39,12 +39,16 @@ public class Product {
     )
     private List<Review> reviews;
 
+    /**
+     * A constructor for the JPA.
+     */
     public Product() {
+
     }
 
     /**
      * Makes an instance of the Product class.
-     * @param id Each product has to have an unique id.
+     * @param id Each product has to have a unique id.
      * @param productName product name of the product.
      * @param price price set for a product.
      * @param size size of products in the collection.

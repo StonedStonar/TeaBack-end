@@ -31,9 +31,8 @@ public class Order {
     @Enumerated
     private OrderState orderState;
 
-    //Todo: Må tenke litt på denne.
-    @Transient
-    private Address address;
+    @OneToOne(targetEntity = OrderAddress.class, cascade = CascadeType.ALL)
+    private OrderAddress orderAddress;
     private String deliveryMethod;
     private LocalDate dateOfOrder;
     private LocalDate shippedDate;
@@ -61,7 +60,7 @@ public class Order {
         this.orderState = orderState;
 
         checkIfObjectIsNull(address, "address");
-        this.address = address;
+        this.orderAddress = new OrderAddress(address);
 
         checkString(deliveryMethod, "DeliveryMethod");
         this.deliveryMethod = deliveryMethod;
@@ -135,7 +134,7 @@ public class Order {
      * @return the address of the user.
      */
     public Address getAddress() {
-        return address;
+        return orderAddress;
     }
 
     /**
@@ -148,7 +147,7 @@ public class Order {
 
     /**
      * Sets the order state.
-     * @param orderState the orderstate.
+     * @param orderState the order state.
      */
     public void setOrderState(OrderState orderState) {
         checkIfObjectIsNull(orderState, "orderState");
