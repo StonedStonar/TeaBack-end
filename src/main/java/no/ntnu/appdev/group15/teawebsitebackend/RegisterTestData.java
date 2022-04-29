@@ -74,7 +74,7 @@ public class RegisterTestData {
             Address address2 = new Address(6015, "Ålesund", "Fagerlia", 15, "Noreg");
             Address address3 = new Address(6390, "Vestnes", "Kaigata", 15, "Noreg");
             userRegister.addUser(new User("Bjarne", "lastName", address, "bjarne@bjarnesen.com", "pass",12345678, Role.ROLE_ADMIN));
-            userRegister.addUser(new User("Bjarne", "Bjarnesen", address, "bjarne@bjarnesen.com", "pass",12345678, Role.ROLE_ADMIN));
+            userRegister.addUser(new User("Prell", "Prellesen", new Address(2910, "Aurdal", "Raskebakkin", 9, "Norge"), "prell@pirk.com", "pass",82345678, Role.ROLE_ADMIN));
             userRegister.addUser(new User("Arne", "Arnesen", address1, "arne@gmail.com", "password", 23456781 ,Role.ROLE_USER));
             userRegister.addUser(new User("Lise", "Fjell", address2, "lise@gmail.com", "passwoord", 34567812, Role.ROLE_USER));
             userRegister.addUser(new User("Fjell", "Bekken", address3, "fjell@lisemom.com", "123spel", 95852210 , Role.ROLE_USER));
