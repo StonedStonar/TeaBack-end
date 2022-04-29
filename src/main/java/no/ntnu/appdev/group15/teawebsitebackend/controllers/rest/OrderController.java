@@ -19,7 +19,7 @@ public class OrderController {
 
   private OrderJPA orderJPA;
 
-  public OrderController (OrderJPA orderJPA, UserJPA userJPA, ProductRegister productRegister){
+  public OrderController (OrderJPA orderJPA){
     this.orderJPA = orderJPA;
   }
 }
