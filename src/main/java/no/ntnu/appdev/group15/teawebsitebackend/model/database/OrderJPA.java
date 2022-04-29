@@ -1,10 +1,8 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model.database;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.List;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
-import no.ntnu.appdev.group15.teawebsitebackend.model.User;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddOrderException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetOrderException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveOrderException;
@@ -40,7 +38,6 @@ public class OrderJPA implements OrderRegister {
     } else {
       throw new CouldNotAddOrderException("Order does already exist");
     }
-
   }
 
   @Override

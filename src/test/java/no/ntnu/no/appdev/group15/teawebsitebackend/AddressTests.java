@@ -21,7 +21,6 @@ public class AddressTests {
 
   private Address address;
   private StringBuilder stringBuilder;
-  private String expectedError;
   private int errors;
 
   /**
