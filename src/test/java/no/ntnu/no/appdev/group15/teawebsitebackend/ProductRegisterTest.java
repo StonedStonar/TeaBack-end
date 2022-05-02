@@ -54,10 +54,14 @@ public class ProductRegisterTest {
             for (Product product : productRegister.getAllProducts()) {
                 productRegister.removeProduct(product);
             }
-            Product product = new Product( "Green Leaf Tea", 11.99f, 7, new TeaDetails(), new Company());
-            Product product1 = new Product( "Black water Leaf Tea", 9.99f, 3, new TeaDetails(), new Company());
-            Product product2 = new Product( "Mushroom High Tea", 6.99f, 2, new TeaDetails(), new Company());
-            Product product3 = new Product( "Blue Herb Tea", 5.99f, 1, new TeaDetails(), new Company());
+            Product product = new Product( "Green Leaf Tea", 11.99f, 7, new TeaDetails("Tea of pure quality",
+                    "Sugar, Black Peppercorn, cardamom"), new Company("Cocus Tea Life", new CompanyDetails()));
+            Product product1 = new Product( "Black water Leaf Tea", 9.99f, 3, new TeaDetails("Tea tea",
+                    "Something something"), new Company("Jaus Pause", new CompanyDetails()));
+            Product product2 = new Product( "Mushroom High Tea", 6.99f, 2, new TeaDetails("Pepeheng Tea",
+                    "Sticks and Stones"), new Company("Flue Tea", new TeaDetails()));
+            Product product3 = new Product( "Blue Herb Tea", 5.99f, 1, new TeaDetails("PepeSad Tea",
+                    "Veldig lite ingredientser"), new Company("Steinars stein Tea", new TeaDetails()));
             productRegister.addProduct(product);
             productRegister.addProduct(product1);
             productRegister.addProduct(product2);
