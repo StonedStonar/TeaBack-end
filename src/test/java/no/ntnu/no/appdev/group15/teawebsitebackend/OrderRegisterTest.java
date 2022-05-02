@@ -8,25 +8,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import no.ntnu.appdev.group15.teawebsitebackend.Application;
-import no.ntnu.appdev.group15.teawebsitebackend.model.Address;
-import no.ntnu.appdev.group15.teawebsitebackend.model.Company;
-import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
-import no.ntnu.appdev.group15.teawebsitebackend.model.OrderState;
-import no.ntnu.appdev.group15.teawebsitebackend.model.OrderedProduct;
-import no.ntnu.appdev.group15.teawebsitebackend.model.Product;
-import no.ntnu.appdev.group15.teawebsitebackend.model.Role;
-import no.ntnu.appdev.group15.teawebsitebackend.model.TeaDetails;
-import no.ntnu.appdev.group15.teawebsitebackend.model.User;
+import no.ntnu.appdev.group15.teawebsitebackend.model.*;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.CompanyJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.OrderJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddOrderException;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddProductException;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddUserException;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotLoginToUserException;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveOrderException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.*;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.OrderRegister;
-import no.ntnu.appdev.group15.teawebsitebackend.model.repositories.OrderRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,157 +33,170 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class OrderRegisterTest {
 
-  private Product product;
-  private OrderRegister orderRegister;
+    private Product product;
+    private OrderRegister orderRegister;
 
-  private Order order;
-  private StringBuilder stringBuilder;
-  private int errors;
-  private User user;
+    private Order order;
+    private StringBuilder stringBuilder;
+    private int errors;
+    private User user;
 
-  private String prefixIllegal;
-  private String prefixAdd;
+    private String prefixIllegal;
+    private String prefixAdd;
 
-  @Autowired
-  public OrderRegisterTest(OrderJPA orderJPA, UserJPA userJPA, ProductJPA productJPA) {
-    checkIfObjectIsNull(orderJPA, "OrderJPA");
-    this.orderRegister = orderJPA;
-    prefixIllegal = makeExceptionString("IllegalArgumentException");
-    prefixAdd = makeExceptionString("CouldNotAddOrderException");
-
-    try {
-      userJPA.addUser(new User("Bjarne", "Bjarnesen", new Address(2910, "Aurdal", "Raskebakkin", 9, "Norge"), "bjarne@bjarn.com", "pass",12345678 , Role.ROLE_ADMIN));
-      user = userJPA.loginToUser("bjarne@bjarn.com", "pass");
-      productJPA.addProduct(new Product( "Green Leaf Tea", 11.99f, 7, new TeaDetails(), new Company()));
-      product = productJPA.getAllProducts().get(0);
-    } catch (CouldNotAddUserException | CouldNotLoginToUserException | CouldNotAddProductException | IndexOutOfBoundsException e) {
-      fail("Default product or user could not be added " + e.getClass().getSimpleName());
-    }
-  }
-
-  /**
-   * Makes an exception into a desired string
-   * @param exceptionName the name of the exception
-   * @returnthe exception string
-   */
-  private String makeExceptionString(String exceptionName) {
-    return "Expected to a " + exceptionName + " since";
-  }
-
-  @BeforeEach
-  public void addTestData(){
-    try {
-      for (Order order1 : orderRegister.getAllOrders()) {
-        orderRegister.removeOrder(order1);
+    @Autowired
+    public OrderRegisterTest(OrderJPA orderJPA, UserJPA userJPA, ProductJPA productJPA, CompanyJPA companyJPA) {
+      checkIfObjectIsNull(orderJPA, "OrderJPA");
+      this.orderRegister = orderJPA;
+      prefixIllegal = makeExceptionString("IllegalArgumentException");
+      prefixAdd = makeExceptionString("CouldNotAddOrderException");
+      try {
+        if (userJPA.getAllUsers().isEmpty()){
+            userJPA.addUser(new User("Bjarne", "Bjarnesen", new Address(2910, "Aurdal", "Raskebakkin", 9, "Norge"), "bjarne@bjarn.com", "pass",12345678 , Role.ROLE_ADMIN));
+        }
+        user = userJPA.loginToUser("bjarne@bjarn.com", "pass");
+        if (companyJPA.getAllCompanies().isEmpty()){
+            companyJPA.addCompany(new Company("hei", new CompanyDetails("Faa", user.getAddress())));
+        }
+        Company company = companyJPA.getAllCompanies().get(0);
+        if (productJPA.getAllProducts().isEmpty()){
+            productJPA.addProduct(new Product("Hei", 333.9f, 5, new ProductDetails("the", "hei"), company));
+        }
+        product = productJPA.getAllProducts().get(0);
+      } catch (CouldNotAddUserException | CouldNotAddProductException | IllegalArgumentException | CouldNotAddCompanyException | CouldNotLoginToUserException e) {
+        fail("Default product or user could not be added " + e.getClass().getSimpleName());
       }
-      orderRegister.addOrder(new Order(123L, user, makeListWithOrderedProducts(), ORDERED,
-          user.getAddress(), "Posten", LocalDate.now().minusDays(1), "Klarna", false));
-        order = orderRegister.getAllOrders().get(0);
-    } catch (IllegalArgumentException | CouldNotAddOrderException | CouldNotRemoveOrderException | IndexOutOfBoundsException exception){
-      fail("Expected the order to be made, since the input it valid. " + exception.getClass().getSimpleName());
     }
 
-    this.stringBuilder = new StringBuilder();
-    this.errors = 0;
-  }
-
-
-
-
-  /**
-   * Makes an ordered list of products.
-   * @return the list
-   */
-  private List<OrderedProduct> makeListWithOrderedProducts() {
-    List<OrderedProduct> orderedProductList = new ArrayList<>();
-    orderedProductList.add(new OrderedProduct(product, 2));
-    return orderedProductList;
-  }
-
-
-  /**
-   * Adds a new error to the string builder.
-   * @param errorPrefix what it should say before the error.
-   * @param error the error to append.
-   */
-  private void addError(String errorPrefix, String error){
-    stringBuilder.append("\n").append(errorPrefix).append(" ").append(error);
-    errors++;
-  }
-
-  /**
-   * Adds an error with an exception in the title.
-   * @param errorPrefix what it should say before the main error.
-   * @param error what it should say after the error.
-   * @param exception the exception that was not expected.
-   */
-  private void addErrorWithException(String errorPrefix, String error, Exception exception){
-    addError(errorPrefix, error);
-    stringBuilder.append(" and not a ").append(exception.getClass().getSimpleName());
-  }
-
-  /**
-   * Checks if the tests failed and displays the results.
-   */
-  private void checkIfTestsFailedAndDisplayResult(){
-    if(stringBuilder.length() == 0){
-      assertTrue(true);
-    }else {
-      fail("\nAmount of errors " + errors + " listed errors: " + stringBuilder.toString());
+    /**
+     * Makes an exception into a desired string
+     * @param exceptionName the name of the exception
+     * @returnthe exception string
+     */
+    private String makeExceptionString(String exceptionName) {
+      return "Expected to a " + exceptionName + " since";
     }
-  }
 
+    @BeforeEach
+    public void addTestData(){
+      try {
+        for (Order order1 : orderRegister.getAllOrders()) {
+          orderRegister.removeOrder(order1);
+        }
+        orderRegister.addOrder(makeOrder());
+          order = orderRegister.getAllOrders().get(0);
+      } catch (IllegalArgumentException | CouldNotAddOrderException | CouldNotRemoveOrderException | IndexOutOfBoundsException exception){
+        fail("Expected the order to be made, since the input it valid " + exception.getClass().getSimpleName());
+      }
 
-  /**
-   * Tests if addOrder works with invalid input.
-   */
-  @Test
-  @DisplayName("Tests if addOrder works with invalid input.")
-  public void testsIfAddOrderWorksWithInvalidInput() {
-    try {
-      orderRegister.addOrder(null);
-      addError(prefixIllegal, "input cannot be null");
-    } catch (IllegalArgumentException exception) {
-
-    }catch (CouldNotAddOrderException e) {
-      addErrorWithException(prefixIllegal, "input cannot be null", e);
+      this.stringBuilder = new StringBuilder();
+      this.errors = 0;
     }
-    try {
-      orderRegister.addOrder(order);
-      addError(prefixAdd, "the order is already in the system");
-    } catch (IllegalArgumentException exception){
-      addErrorWithException(prefixAdd, "the order is already in the system", exception);
-    }catch (CouldNotAddOrderException exception) {
+
+    /**
+     * Makes a prefixed order.
+     * @return the order.
+     */
+    private Order makeOrder(){
+      return new Order(123L, user, makeListWithOrderedProducts(), ORDERED,
+              user.getAddress(), "Posten", LocalDate.now().minusDays(1), "Klarna", false);
     }
-    checkIfTestsFailedAndDisplayResult();
-  }
 
-  /**
-   * Tests if addOrder works with valid input.
-   */
-  @Test
-  @DisplayName("Tests if addOrder works with valid input.")
-  public void testsIfAddOrderWorksWithValidInput() {
-    try {
-      orderRegister.addOrder(new Order(123L, user, makeListWithOrderedProducts(), ORDERED, user.getAddress(), "Posten", LocalDate.now().minusDays(1), "Klarna", false));
-    } catch (IllegalArgumentException | CouldNotAddOrderException e) {
-      addErrorWithException("Expected the method to work since ", "the input is valid", e);
+
+
+    /**
+     * Makes an ordered list of products.
+     * @return the list
+     */
+    private List<OrderedProduct> makeListWithOrderedProducts() {
+      List<OrderedProduct> orderedProductList = new ArrayList<>();
+      orderedProductList.add(new OrderedProduct(product, 2));
+      return orderedProductList;
     }
-    checkIfTestsFailedAndDisplayResult();
-  }
 
 
-  /**
-   * Checks if an object is null.
-   *
-   * @param object the object you want to check.
-   * @param error  the error message the exception should have.
-   * @throws IllegalArgumentException gets thrown if the object is null.
-   */
-  private void checkIfObjectIsNull(Object object, String error) {
-    if (object == null) {
-      throw new IllegalArgumentException("The " + error + " cannot be null.");
+    /**
+     * Adds a new error to the string builder.
+     * @param errorPrefix what it should say before the error.
+     * @param error the error to append.
+     */
+    private void addError(String errorPrefix, String error){
+      stringBuilder.append("\n").append(errorPrefix).append(" ").append(error);
+      errors++;
     }
-  }
 
+    /**
+     * Adds an error with an exception in the title.
+     * @param errorPrefix what it should say before the main error.
+     * @param error what it should say after the error.
+     * @param exception the exception that was not expected.
+     */
+    private void addErrorWithException(String errorPrefix, String error, Exception exception){
+      addError(errorPrefix, error);
+      stringBuilder.append(" and not a ").append(exception.getClass().getSimpleName());
+    }
+
+    /**
+     * Checks if the tests failed and displays the results.
+     */
+    private void checkIfTestsFailedAndDisplayResult(){
+      if(stringBuilder.length() == 0){
+        assertTrue(true);
+      }else {
+        fail("\nAmount of errors " + errors + " listed errors: " + stringBuilder.toString());
+      }
+    }
+
+
+    /**
+     * Tests if addOrder works with invalid input.
+     */
+    @Test
+    @DisplayName("Tests if addOrder works with invalid input.")
+    public void testsIfAddOrderWorksWithInvalidInput() {
+      try {
+        orderRegister.addOrder(null);
+        addError(prefixIllegal, "input cannot be null");
+      } catch (IllegalArgumentException exception) {
+
+      }catch (CouldNotAddOrderException e) {
+        addErrorWithException(prefixIllegal, "input cannot be null", e);
+      }
+      try {
+        orderRegister.addOrder(order);
+        addError(prefixAdd, "the order is already in the system");
+      } catch (IllegalArgumentException exception){
+        addErrorWithException(prefixAdd, "the order is already in the system", exception);
+      }catch (CouldNotAddOrderException exception) {
+      }
+      checkIfTestsFailedAndDisplayResult();
+    }
+
+    /**
+     * Tests if addOrder works with valid input.
+     */
+    @Test
+    @DisplayName("Tests if addOrder works with valid input.")
+    public void testsIfAddOrderWorksWithValidInput() {
+      try {
+        orderRegister.addOrder(makeOrder());
+      } catch (IllegalArgumentException | CouldNotAddOrderException e) {
+        addErrorWithException("Expected the method to work since ", "the input is valid", e);
+      }
+      checkIfTestsFailedAndDisplayResult();
+    }
+
+
+    /**
+     * Checks if an object is null.
+     *
+     * @param object the object you want to check.
+     * @param error  the error message the exception should have.
+     * @throws IllegalArgumentException gets thrown if the object is null.
+     */
+    private void checkIfObjectIsNull(Object object, String error) {
+      if (object == null) {
+        throw new IllegalArgumentException("The " + error + " cannot be null.");
+      }
+    }
 }

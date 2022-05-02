@@ -27,9 +27,7 @@ public class Product {
     @OneToOne(targetEntity = ProductDetails.class, cascade = CascadeType.ALL)
     private ProductDetails productDetails;
 
-    //Todo: Must be fixed when company thing is up.
-    //OneToOne(targetEntity = Company.class, cascade = CascadeType.ALL)
-    @Transient
+    @OneToOne(targetEntity = Company.class)
     private Company company;
 
     @OneToMany(targetEntity = Review.class, cascade = CascadeType.ALL)

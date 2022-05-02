@@ -44,10 +44,11 @@ public class Order {
     /**
      * Makes an instance of the Order class.
      */
+    //Todo: Skriv dokumentasjon
     public Order(long orderID, User user, List<OrderedProduct> orderedProductList,
                  OrderState orderState, Address address, String deliveryMethod,
                  LocalDate dateOfOrder, String paymentMethod, boolean cancelled) {
-        //TODO orderID kan ikke være below zero
+
         checkIfNumberNotNegative(orderID, "order ID");
         this.orderID = orderID;
 
@@ -66,7 +67,6 @@ public class Order {
         checkString(deliveryMethod, "DeliveryMethod");
         this.deliveryMethod = deliveryMethod;
 
-        //Todo: Laget vi ikke en metode for å sjekke før datoen idag?
         checkIfDateIsBeforeOrEqualToCurrentDate(dateOfOrder);
         this.dateOfOrder = dateOfOrder;
 
