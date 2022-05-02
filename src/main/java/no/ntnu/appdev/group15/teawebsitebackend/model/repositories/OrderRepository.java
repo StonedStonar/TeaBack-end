@@ -1,6 +1,6 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model.repositories;
 
-import java.util.Optional;
+
 import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

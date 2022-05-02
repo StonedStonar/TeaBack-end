@@ -16,9 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 
+=======
+>>>>>>> 4ee75959af55317b7562b86e56c4211d5827ad75
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -75,6 +78,9 @@ public class ProductRegisterTest {
         return companies;
     }
 
+    /*
+     * Adds some test data to be used for testing.
+     */
    @BeforeEach
    public void addTestData() {
         try {
@@ -145,7 +151,7 @@ public class ProductRegisterTest {
             addErrorWithException(expectedError, "the input is null", ex);
         }
 
-        String duplicateErrorMessage = "Expected to get a CouldNotAddUserException since";
+        String duplicateErrorMessage = "Expected to get a CouldNotAddProductException since";
         try {
             productRegister.addProduct(product);
             addError(duplicateErrorMessage, "the user is already in the system");
@@ -160,12 +166,12 @@ public class ProductRegisterTest {
      * Tests if the addProduct method works with valid input.
      */
     @Test
-    @DisplayName("Tests if product works with valid input.")
+    @DisplayName("Tests if addProduct works with valid input.")
     public void testIfAddProductWorksWithValidInput() {
         try {
             productRegister.addProduct(new Product("Green Leaf Tea", 11.99f, 7, new ProductDetails("Lul", "Tea"), new Company()));
         } catch (IllegalArgumentException | CouldNotAddProductException ex) {
-            addErrorWithException("Expected the add method to work since", "the input user is not in the system.", ex);
+            addErrorWithException("Expected the add method to work since", "the input product is not in the system.", ex);
         }
         checkIfTestsFailedAndDisplayResult();
     }
@@ -244,13 +250,13 @@ public class ProductRegisterTest {
         try {
             productRegister.removeProductWithProductID(product.getProductID());
         } catch (IllegalArgumentException | CouldNotRemoveProductException ex) {
-            addErrorWithException("Expected the user to be removed since ", "the input is valid", ex);
+            addErrorWithException("Expected the product to be removed since ", "the input is valid", ex);
         }
         checkIfTestsFailedAndDisplayResult();
     }
 
     /**
-     * Tests if getProductWithID works with invalid input
+     * Tests if getProductWithID works with invalid input.
      */
     @Test
     @DisplayName("Tests if getProductWithID works with invalid input")
