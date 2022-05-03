@@ -7,9 +7,7 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagE
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -22,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @SpringBootTest(classes = Application.class)
 @ActiveProfiles("test")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TagRegisterTest {
 
     private String prefixIllegal;
@@ -55,11 +54,25 @@ public class TagRegisterTest {
         }
         stringBuilder = new StringBuilder();
         errors = 0;
+    }
 
+
+    /**
+     * Cleans up the DB after all the tests.
+     */
+    @AfterAll
+    public void cleanUp(){
+        try {
+            for (Tag tag : tagsRegister.getAllTags()){
+                tagsRegister.removeTag(tag);
+            }
+        } catch (CouldNotRemoveTagException exception) {
+            exception.printStackTrace();
+        }
     }
 
     /**
-     * Adds a new error to the stringbuilder.
+     * Adds a new error to the stringBuilder.
      * @param errorPrefix what it should say before the error.
      * @param error the error to append.
      */

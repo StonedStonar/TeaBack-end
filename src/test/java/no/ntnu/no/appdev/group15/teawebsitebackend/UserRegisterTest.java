@@ -10,12 +10,12 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetUser
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotLoginToUserException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveUserException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 @SpringBootTest(classes = Application.class)
 //Setter profilen som
 @ActiveProfiles("test")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserRegisterTest {
 
     private UserRegister userRegister;
@@ -64,7 +65,8 @@ public class UserRegisterTest {
     @BeforeEach
     public void addTestData(){
         try {
-            for (User user : userRegister.getAllUsers()) {
+            List<User> users = userRegister.getAllUsers();
+            for (User user : users) {
                 userRegister.removeUser(user);
             }
             Address address = makeValidAddress();
@@ -78,6 +80,20 @@ public class UserRegisterTest {
         }
         stringBuilder = new StringBuilder();
         errors = 0;
+    }
+
+    /**
+     * Cleans up after the tests.
+     */
+    @AfterAll
+    public void cleanUp(){
+        try {
+            for (User user : userRegister.getAllUsers()){
+                userRegister.removeUser(user);
+            }
+        }catch (CouldNotRemoveUserException exception){
+            exception.printStackTrace();
+        }
     }
 
     /**
@@ -257,7 +273,7 @@ public class UserRegisterTest {
             addError(prefixIllegal, "the input email is empty");
         }catch (IllegalArgumentException exception){
 
-        }catch (CouldNotLoginToUserException exception){
+        }catch (CouldNotLoginToUserException | CouldNotGetUserException exception){
             addErrorWithException(prefixIllegal, "the input email is empty", exception);
         }
         try {
@@ -265,7 +281,7 @@ public class UserRegisterTest {
             addError(prefixIllegal, "the input email is null");
         }catch (IllegalArgumentException exception){
 
-        }catch (CouldNotLoginToUserException exception){
+        }catch (CouldNotLoginToUserException | CouldNotGetUserException exception){
             addErrorWithException(prefixIllegal, "the input email is null", exception);
         }
         try {
@@ -273,7 +289,7 @@ public class UserRegisterTest {
             addError(prefixIllegal, "the input password is empty");
         }catch (IllegalArgumentException exception){
 
-        }catch (CouldNotLoginToUserException exception){
+        }catch (CouldNotLoginToUserException | CouldNotGetUserException exception){
             addErrorWithException(prefixIllegal, "the input password is empty", exception);
         }
         try {
@@ -281,16 +297,25 @@ public class UserRegisterTest {
             addError(prefixIllegal, "the input password is null");
         }catch (IllegalArgumentException exception){
 
-        }catch (CouldNotLoginToUserException exception){
+        }catch (CouldNotLoginToUserException | CouldNotGetUserException exception){
             addErrorWithException(prefixIllegal, "the input password is null", exception);
         }
         String loginPrefix = makeExceptionString("CouldNotLoginToUserException");
+        String getUserPrefix = makeExceptionString("CouldNotGetUserException");
         try {
             User user2 = makeUserNotInRegister();
             userRegister.loginToUser(user2.getEmail(), user2.getPassword());
-            addError(loginPrefix, "the input user is not in the system");
-        }catch (IllegalArgumentException exception){
-            addErrorWithException(loginPrefix, "the input user is not in the system", exception);
+            addError(getUserPrefix, "the input user is not in the system");
+        }catch (IllegalArgumentException | CouldNotLoginToUserException exception){
+            addErrorWithException(getUserPrefix, "the input user is not in the system", exception);
+        }catch (CouldNotGetUserException exception) {
+
+        }
+        try {
+            User user = userRegister.loginToUser(this.user.getEmail(), "p");
+            addError(loginPrefix, "the input user and password does not match ones in the system");
+        }catch (IllegalArgumentException | CouldNotGetUserException exception){
+            addErrorWithException(loginPrefix, "the input user and password does not match ones in the system", exception);
         }catch (CouldNotLoginToUserException exception){
 
         }
@@ -305,8 +330,8 @@ public class UserRegisterTest {
     @DisplayName("Tests if loginToUser works with valid input.")
     public void testIfLoginToUserWorksWithValidInput(){
         try {
-            userRegister.loginToUser(user.getEmail(), user.getPassword());
-        }catch (IllegalArgumentException | CouldNotLoginToUserException exception){
+            userRegister.loginToUser(user.getEmail(), "pass");
+        }catch (IllegalArgumentException | CouldNotLoginToUserException | CouldNotGetUserException exception){
             addErrorWithException("Expected the user to be logged in since the input is valid", "", exception);
         }
         checkIfTestsFailedAndDisplayResult();

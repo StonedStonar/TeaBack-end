@@ -7,9 +7,7 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.*;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -28,7 +26,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @SpringBootTest(classes = Application.class)
 @ActiveProfiles("test")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ProductRegisterTest {
+
+    private CompanyJPA companyJPA;
+
+    private UserJPA userJPA;
 
     private ProductRegister productRegister;
     private String expectedError;
@@ -50,7 +53,10 @@ public class ProductRegisterTest {
     public ProductRegisterTest (ProductJPA productJPA, CompanyJPA companyJPA, UserJPA userJPA) {
         checkIfObjectIsNull(productJPA, "productJPA");
         checkIfObjectIsNull(companyJPA, "companyJPA");
+        checkIfObjectIsNull(userJPA, "userJPA");
         this.productRegister = productJPA;
+        this.companyJPA = companyJPA;
+        this.userJPA =  userJPA;
         if (companyJPA.getAllCompanies().isEmpty()){
             List<Company> companies = makeCompanies();
             try {
@@ -67,6 +73,26 @@ public class ProductRegisterTest {
         this.companies = companyJPA.getAllCompanies();
         this.user = userJPA.getAllUsers().get(0);
         expectedError = "Expected to get an IllegalArgumentException since ";
+    }
+
+    /**
+     * Cleans up the databases.
+     */
+    @AfterAll
+    public void cleanUp(){
+        try {
+            for (Product product1 : productRegister.getAllProducts()) {
+                productRegister.removeProduct(product1);
+            }
+            for (Company company : companyJPA.getAllCompanies()) {
+                companyJPA.removeCompany(company);
+            }
+            for (User user : userJPA.getAllUsers()){
+                userJPA.removeUser(user);
+            }
+        } catch (CouldNotRemoveCompanyException | CouldNotRemoveProductException | CouldNotRemoveUserException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

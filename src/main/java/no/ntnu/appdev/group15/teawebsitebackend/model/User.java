@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotChangePasswordException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.regex.Pattern;
@@ -69,9 +72,8 @@ public class User {
         setAddress(address);
         setEmail(email);
         checkIfObjectIsNull(role, "role");
-        checkIfPasswordIsNotNullOrEmpty(password);
+        setPassword(password);
         checkIfLongIsAboveZero(phoneNumber, "phonenumber");
-        this.password = password;
         this.userId = 0;
         this.active = true;
         this.role = role;
@@ -95,12 +97,22 @@ public class User {
         setLastName(lastName);
         setAddress(address);
         setEmail(email);
-        checkString(password, "password");
+        setPassword(password);
         checkIfLongIsAboveZero(phoneNumber, "phone number");
         this.phoneNumber = phoneNumber;
         this.password = password;
         role = Role.ROLE_USER;
         this.active = true;
+    }
+
+    /**
+     * Sets the password of the user.
+     * @param newPassword the new password.
+     */
+    private void setPassword(String newPassword){
+        checkString(newPassword, "password");
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        this.password = passwordEncoder.encode(newPassword);
     }
 
     /**
@@ -131,7 +143,7 @@ public class User {
         checkIfPasswordIsNotNullOrEmpty(newPassword);
         checkIfPasswordIsNotNullOrEmpty(oldPassword);
         if (checkIfPasswordsMatch(oldPassword)){
-            this.password = newPassword;
+            setPassword(newPassword);
         }else {
             throw new CouldNotChangePasswordException("The old password does not match the set password.");
         }
@@ -146,7 +158,7 @@ public class User {
      */
     public boolean checkIfPasswordsMatch(String passwordToCheck){
         checkIfPasswordIsNotNullOrEmpty(passwordToCheck);
-        return password.equals(passwordToCheck);
+        return BCrypt.checkpw(passwordToCheck, password);
     }
 
     /**

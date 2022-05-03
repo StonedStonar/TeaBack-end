@@ -42,8 +42,9 @@ public interface UserRegister {
      * @param password the password of the user.
      * @return the user that matches the mail and password.
      * @throws CouldNotLoginToUserException gets thrown if the email or password does not match anyone in the register or the set details.
+     * @throws CouldNotGetUserException gets thrown if there is no user with that email in the system.
      */
-    User loginToUser(String email, String password) throws CouldNotLoginToUserException;
+    User loginToUser(String email, String password) throws CouldNotLoginToUserException, CouldNotGetUserException;
 
     /**
      * Gets a user with its user id.

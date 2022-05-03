@@ -4,17 +4,19 @@ import no.ntnu.appdev.group15.teawebsitebackend.Application;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Address;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Company;
 import no.ntnu.appdev.group15.teawebsitebackend.model.CompanyDetails;
+import no.ntnu.appdev.group15.teawebsitebackend.model.Product;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.CompanyJPA;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddCompanyException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetCompanyException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveCompanyException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.CompanyRegister;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.List;
 
 import static org.aspectj.bridge.MessageUtil.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = Application.class)
 @ActiveProfiles("test")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CompanyRegisterTest {
 
     private CompanyRegister companyRegister;
@@ -44,6 +47,24 @@ public class CompanyRegisterTest {
         checkIfObjectIsNull(companyJPA, "companyJPA");
         this.companyRegister = companyJPA;
         expectedError = "Expected to get an IllegalArgumentException since";
+    }
+
+    /**
+     * Cleans up the DB after the tests.
+     */
+    @AfterAll
+    public void removeAllCompanies(){
+        if (companyRegister instanceof CompanyJPA){
+            List<Company> companies = companyRegister.getAllCompanies();
+            System.out.println("REmoiving all companies");
+            try {
+                for (Company company1 : companies) {
+                    companyRegister.removeCompany(company1);
+                }
+            }catch (CouldNotRemoveCompanyException exception){
+                exception.printStackTrace();
+            }
+        }
     }
 
     /**

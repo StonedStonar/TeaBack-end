@@ -9,16 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 import no.ntnu.appdev.group15.teawebsitebackend.Application;
 import no.ntnu.appdev.group15.teawebsitebackend.model.*;
+import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.CompanyJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.OrderJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.*;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.OrderRegister;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -31,7 +29,15 @@ import org.springframework.test.context.ActiveProfiles;
  */
 @SpringBootTest(classes = Application.class)
 @ActiveProfiles("test")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class OrderRegisterTest {
+
+    private ProductJPA productJPA;
+
+    private UserJPA userJPA;
+
+    private CompanyJPA companyJPA;
+
 
     private Product product;
     private OrderRegister orderRegister;
@@ -47,7 +53,13 @@ public class OrderRegisterTest {
     @Autowired
     public OrderRegisterTest(OrderJPA orderJPA, UserJPA userJPA, ProductJPA productJPA, CompanyJPA companyJPA) {
       checkIfObjectIsNull(orderJPA, "OrderJPA");
+      checkIfObjectIsNull(userJPA, "userJPA");
+      checkIfObjectIsNull(productJPA, "productJPA");
+      checkIfObjectIsNull(companyJPA, "companyJPA");
       this.orderRegister = orderJPA;
+      this.productJPA = productJPA;
+      this.companyJPA = companyJPA;
+      this.userJPA = userJPA;
       prefixIllegal = makeExceptionString("IllegalArgumentException");
       prefixAdd = makeExceptionString("CouldNotAddOrderException");
       try {
@@ -63,9 +75,32 @@ public class OrderRegisterTest {
             productJPA.addProduct(new Product("Hei", 333.9f, 5, new ProductDetails("the", "hei"), company));
         }
         product = productJPA.getAllProducts().get(0);
-      } catch (CouldNotAddUserException | CouldNotAddProductException | IllegalArgumentException | CouldNotAddCompanyException | CouldNotLoginToUserException e) {
+      } catch (CouldNotAddUserException | CouldNotAddProductException | IllegalArgumentException | CouldNotAddCompanyException | CouldNotLoginToUserException | CouldNotGetUserException e) {
         fail("Default product or user could not be added " + e.getClass().getSimpleName());
       }
+    }
+
+    /**
+     * Cleans up the DB after the tests.
+     */
+    @AfterAll
+    public void cleanUp(){
+        try {
+            for (Order order: orderRegister.getAllOrders()){
+                orderRegister.removeOrder(order);
+            }
+            for (Product product : productJPA.getAllProducts()){
+                productJPA.removeProduct(product);
+            }
+            for (Company company : companyJPA.getAllCompanies()){
+                companyJPA.removeCompany(company);
+            }
+            for (User user : userJPA.getAllUsers()){
+                userJPA.removeUser(user);
+            }
+        } catch (CouldNotRemoveOrderException | CouldNotRemoveProductException | CouldNotRemoveCompanyException | CouldNotRemoveUserException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

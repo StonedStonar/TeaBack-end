@@ -40,7 +40,7 @@ public class RegisterTestData {
             addTestTags(tagJPA);
             addTestCompanies(companyJPA);
             addTestUsers(userJPA);
-            addTestProducts(productJPA, userJPA);
+            addTestProducts(productJPA, userJPA, companyJPA);
             addTestOrder(orderJPA, userJPA.getAllUsers(), productJPA.getAllProducts());
         } catch (CouldNotAddOrderException | CouldNotAddProductException | CouldNotAddReviewException | CouldNotAddTagException | CouldNotAddUserException | CouldNotAddCompanyException e) {
             System.err.println("Test data could not be added but got an " + e.getClass().getSimpleName() + ".");
@@ -86,22 +86,24 @@ public class RegisterTestData {
      /** Adds test products to the classes.
      * @param productRegister the product register.
      * @param userRegister the user register.
+      * @param companyRegister the company register
      * @throws CouldNotAddProductException gets thrown if the product could not be added.
      * @throws CouldNotAddReviewException gets thrown if the review could not be added.
      */
-    public void addTestProducts(ProductRegister productRegister, UserRegister userRegister) throws CouldNotAddProductException, CouldNotAddReviewException {
+    public void addTestProducts(ProductRegister productRegister, UserRegister userRegister, CompanyRegister companyRegister) throws CouldNotAddProductException, CouldNotAddReviewException {
         checkIfObjectIsNull(productRegister, "product register");
         List<Product> products = new ArrayList<>();
         //Todo: Vi må legge til mer reivews.
+        List<Company> companies = companyRegister.getAllCompanies();
         if (productRegister.getAllProducts().isEmpty()) {
             //Todo: Gjorde bare om på denne så vi kunne generere random reviews til databasen.
-            products.add(new Product( "Green Leaf Tea", 11.99f, 7, new ProductDetails("Lul", "Tea"), new Company()));
-            products.add(new Product( "Black water Leaf Tea", 9.99f, 3, new ProductDetails("Lul", "Tea"), new Company()));
-            products.add(new Product( "Mushroom High Tea", 6.99f, 2, new ProductDetails("Lul", "Tea"), new Company()));
-            products.add(new Product( "Blue Herb Tea", 5.99f, 1, new ProductDetails("Lul", "Tea"), new Company()));
-            products.add(new Product( "Strawberry Tea", 8.99f, 9, new ProductDetails("Lul", "Tea"), new Company()));
-            products.add(new Product( "Hause Norsk Tea", 7.99f, 5, new ProductDetails("Lul", "Tea"), new Company()));
-            products.add(new Product( "Stor Troll Herb Tea", 13.99f, 11, new ProductDetails("Lul", "Tea"), new Company()));
+            products.add(new Product( "Green Leaf Tea", 11.99f, 7, new ProductDetails("Lul", "Tea"), companies.get(0)));
+            products.add(new Product( "Black water Leaf Tea", 9.99f, 3, new ProductDetails("Lul", "Tea"), companies.get(1)));
+            products.add(new Product( "Mushroom High Tea", 6.99f, 2, new ProductDetails("Lul", "Tea"), companies.get(2)));
+            products.add(new Product( "Blue Herb Tea", 5.99f, 1, new ProductDetails("Lul", "Tea"), companies.get(3)));
+            products.add(new Product( "Strawberry Tea", 8.99f, 9, new ProductDetails("Lul", "Tea"), companies.get(1)));
+            products.add(new Product( "Hause Norsk Tea", 7.99f, 5, new ProductDetails("Lul", "Tea"), companies.get(1)));
+            products.add(new Product( "Stor Troll Herb Tea", 13.99f, 11, new ProductDetails("Lul", "Tea"), companies.get(0)));
             addRandomProductReviews(userRegister.getAllUsers(), products);
             for (Product product : products){
                 productRegister.addProduct(product);
@@ -149,8 +151,9 @@ public class RegisterTestData {
             companies.add(new Company("Clipper Tea", new CompanyDetails("Tea of great quality", new Address(6015, "Ålesund", "Ålesundvegen", 123, "Norway"))));
             companies.add(new Company("Pukka Tea", new CompanyDetails("Veldig Salt Tea", new Address(6015, "Ålesund", "Ålesundvegen", 123, "Norway"))));
             companies.add(new Company("Fair Trade", new CompanyDetails("Vi er et firma som opprett holder orden, slik at tea blir solgt og opprettholdt inn for rettighetene.", new Address(6015, "Ålesund", "Ålesundvegen", 123, "Norway"))));
-            for (Company company : companies)
-            companyRegister.addCompany(company);
+            for (Company company : companies){
+                companyRegister.addCompany(company);
+            }
         }
     }
 

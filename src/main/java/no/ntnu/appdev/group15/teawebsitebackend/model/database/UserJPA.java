@@ -61,14 +61,14 @@ public class UserJPA implements no.ntnu.appdev.group15.teawebsitebackend.model.r
     }
 
     @Override
-    public User loginToUser(String email, String password) throws CouldNotLoginToUserException {
+    public User loginToUser(String email, String password) throws CouldNotLoginToUserException, CouldNotGetUserException {
         checkString(email, "email");
         checkString(password, "password");
-        Optional<User> opUser = userRepository.loginToUser(email, password);
-        if (opUser.isEmpty()){
+        User user = getUserWithEmail(email);
+        if (!user.checkIfPasswordsMatch(password)){
             throw new CouldNotLoginToUserException("The email and password does not match any user in the system.");
         }
-        return opUser.get();
+        return user;
     }
 
     @Override

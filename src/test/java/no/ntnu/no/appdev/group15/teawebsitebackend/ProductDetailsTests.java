@@ -28,7 +28,6 @@ public class ProductDetailsTests {
   private ProductDetails productDetails;
   private StringBuilder stringBuilder;
   private int errors;
-  private String prefixIllegal;
 
   /**
    * Sets up the test teaDetails for testing
@@ -81,7 +80,7 @@ public class ProductDetailsTests {
    * Checks that creation of instance is successful with valid parameters (positive test)
    */
   @Test
-  @DisplayName("")
+  @DisplayName("Checks that creation of instance is successful with valid parameters (positive test)")
   public void testConstructorWorksWithValidParameters() {
     String errorPrefix = "Expected the creation to be successful since ";
     try {
