@@ -65,7 +65,7 @@ public class OrderJPA implements OrderRegister {
     checkIfNumberIsAboveZero(orderID, "orderID");
     Order orderIDToFind = null;
     if(orderRepository.existsById(orderID)) {
-      orderIDToFind = getOrderWithId(orderID);
+      orderIDToFind = orderRepository.getById(orderID);
     } else {
       throw new CouldNotGetOrderException("The order with id " + orderID + " is not in the system");
     }
@@ -74,6 +74,7 @@ public class OrderJPA implements OrderRegister {
 
   @Override
   public List<Order> getAllOrdersOfUser(long userID) {
+    checkIfNumberIsAboveZero(userID, "user ID");
     List<Order> ordersOfUser = new ArrayList<>();
     Iterable<Order> iteratedOrders = orderRepository.getAllOrdersForUser(userID);
     iteratedOrders.forEach(order -> ordersOfUser.add(order));

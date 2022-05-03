@@ -25,7 +25,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 
 /**
- * Represents a test-class for OrderRepository methods.
+ * Represents a test-class for OrderRegister methods.
  * @author Trine Merete Staverløkk
  * @version 0.1
  */
@@ -44,6 +44,13 @@ public class OrderRegisterTest {
     private String prefixIllegal;
     private String prefixAdd;
 
+  /**
+   * Makes an instance of the order register test class.
+   * @param orderJPA
+   * @param userJPA
+   * @param productJPA
+   * @param companyJPA
+   */
     @Autowired
     public OrderRegisterTest(OrderJPA orderJPA, UserJPA userJPA, ProductJPA productJPA, CompanyJPA companyJPA) {
       checkIfObjectIsNull(orderJPA, "OrderJPA");
@@ -158,8 +165,7 @@ public class OrderRegisterTest {
         orderRegister.addOrder(null);
         addError(prefixIllegal, "input cannot be null");
       } catch (IllegalArgumentException exception) {
-
-      }catch (CouldNotAddOrderException e) {
+      } catch (CouldNotAddOrderException e) {
         addErrorWithException(prefixIllegal, "input cannot be null", e);
       }
       try {
@@ -167,7 +173,7 @@ public class OrderRegisterTest {
         addError(prefixAdd, "the order is already in the system");
       } catch (IllegalArgumentException exception){
         addErrorWithException(prefixAdd, "the order is already in the system", exception);
-      }catch (CouldNotAddOrderException exception) {
+      } catch (CouldNotAddOrderException exception) {
       }
       checkIfTestsFailedAndDisplayResult();
     }
@@ -188,6 +194,162 @@ public class OrderRegisterTest {
 
 
     /**
+     * Test if removeOrder works with invalid input
+     */
+    @Test
+    @DisplayName("Test if removeOrder works with invalid input")
+    public void testsIfRemoveOrderWorksWithInvalidInput() {
+
+      try {
+        orderRegister.removeOrder(null);
+        addError(prefixIllegal, "input cannot be null");
+      } catch (IllegalArgumentException exception) {
+
+      }catch (CouldNotRemoveOrderException e) {
+        addErrorWithException(prefixIllegal, "input cannot be null", e);
+      }
+      try {
+        orderRegister.removeOrder(makeOrder());
+        addError(prefixAdd, "the order is not in the system");
+      } catch (IllegalArgumentException exception){
+        addErrorWithException(prefixAdd, "the order is not in the system", exception);
+      }catch (CouldNotRemoveOrderException exception) {
+      }
+      checkIfTestsFailedAndDisplayResult();
+    }
+
+
+    /**
+     * Tests if removeOrder works with valid input
+     */
+    @Test
+    @DisplayName("Test if removeOrder works with valid input")
+    public void testsIfRemoveOrderWorksWithValidInput() {
+      try {
+        orderRegister.removeOrder(order);
+      } catch (IllegalArgumentException | CouldNotRemoveOrderException e) {
+        addErrorWithException("Expected the method to work since ", "the input is valid", e);
+      }
+
+      checkIfTestsFailedAndDisplayResult();
+    }
+
+
+    /**
+     * Test if removeOrderWithOrderID works with invalid input
+     */
+    @Test
+    @DisplayName("Test if removeOrderWithOrderID works with invalid input")
+    public void testsIfRemoveOrderWithOrderIDWorksWithInvalidInput() {
+      try {
+        orderRegister.removeOrderWithOrderID(0L);
+        addError(prefixIllegal, "input cannot be zero");
+      } catch (IllegalArgumentException exception) {
+      } catch (CouldNotRemoveOrderException e) {
+        addErrorWithException(prefixIllegal, "input cannot be zero", e);
+      }
+      try {
+        orderRegister.removeOrderWithOrderID(-12L);
+        addError(prefixIllegal, "input cannot be below zero");
+      } catch (IllegalArgumentException exception) {
+      } catch (CouldNotRemoveOrderException e) {
+        addErrorWithException(prefixIllegal, "input cannot be below zero", e);
+      }
+      try {
+        orderRegister.removeOrderWithOrderID(538475983475L);
+        addError(prefixIllegal, "the order ID is not in the system");
+      } catch (IllegalArgumentException | CouldNotRemoveOrderException exception) {}
+
+      checkIfTestsFailedAndDisplayResult();
+    }
+
+
+    /**
+     * Tests if removeOrderWithOrderID works with valid input.
+     */
+    @Test
+    @DisplayName("Test if removeOrderWithOrderID works with valid input")
+    public void testsIfRemoveOrderWithOrderIDWorksWithValidInput() {
+      try {
+        orderRegister.removeOrderWithOrderID(order.getID());
+      } catch (CouldNotRemoveOrderException | IllegalArgumentException exception) {
+        addErrorWithException("Expected the order to be removed since its in the register", "", exception);
+      }
+      checkIfTestsFailedAndDisplayResult();
+    }
+
+
+    /**
+     * Test if getOrderWithId works with invalid input
+     */
+    @Test
+    @DisplayName("Test if getOrderWithId works with invalid input")
+    public void testsIfGetOrderWithIdWorksWithInvalidInput() {
+      try {
+        orderRegister.getOrderWithId(0L);
+        addError(prefixIllegal, "input cannot be zero");
+      } catch (IllegalArgumentException | CouldNotGetOrderException exception) {}
+      try {
+        orderRegister.getOrderWithId(-10L);
+        addError(prefixIllegal, "input cannot be below zero");
+      } catch (IllegalArgumentException | CouldNotGetOrderException exception) {}
+      try {
+        orderRegister.getOrderWithId(538475983475L);
+        addError("Expected to get a CouldNotGetOrderException since ", "the order ID is not in the system");
+      } catch (IllegalArgumentException | CouldNotGetOrderException exception) {}
+
+      checkIfTestsFailedAndDisplayResult();
+    }
+
+
+    /** TODO Why does it fail??
+     * Tests if getOrderWithId works with valid input
+     */
+    @Test
+    @DisplayName("Test if getOrderWithId works with valid input")
+    public void testsIfGetOrderWithIdWorksWithValidInput() {
+      try {
+        orderRegister.getOrderWithId(order.getID());
+      } catch (CouldNotGetOrderException | IllegalArgumentException exception) {
+        addErrorWithException("Expected to get the order since its in the register", "", exception);
+      }
+      checkIfTestsFailedAndDisplayResult();
+    }
+
+
+    /**
+     * Test if getAllOrdersOfUser works with invalid input
+     */
+    @Test
+    @DisplayName("Test if getAllOrdersOfUser works with invalid input")
+    public void testsIfGetAllOrdersOfUserWorksWithInvalidInput() {
+      try {
+        orderRegister.getAllOrdersOfUser(0L);
+        addError(prefixIllegal, "input cannot be zero");
+      } catch (IllegalArgumentException exception) {}
+
+
+      checkIfTestsFailedAndDisplayResult();
+    }
+
+
+    /**
+     * Tests if getAllOrdersOfUser works with valid input
+     */
+    @Test
+    @DisplayName("Test if getAllOrdersOfUser works with valid input")
+    public void testsIfGetAllOrdersOfUserWorksWithValidInput() {
+      try {
+        orderRegister.getAllOrdersOfUser(order.getUser().getUserId());
+      } catch (IllegalArgumentException exception) {
+        addErrorWithException("Expected to get the orders since its in the register", "", exception);
+      }
+      checkIfTestsFailedAndDisplayResult();
+    }
+
+
+
+  /**
      * Checks if an object is null.
      *
      * @param object the object you want to check.

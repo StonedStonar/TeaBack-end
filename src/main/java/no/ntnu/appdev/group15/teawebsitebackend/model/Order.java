@@ -19,6 +19,7 @@ public class Order {
     private Long orderID;
 
     @OneToOne(targetEntity = User.class)
+    @JoinColumn(name = "userID")
     private User user;
 
     @OneToMany(cascade = CascadeType.ALL, targetEntity = OrderedProduct.class)
@@ -32,6 +33,7 @@ public class Order {
     private OrderState orderState;
 
     @OneToOne(targetEntity = OrderAddress.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "orderAddressID")
     private OrderAddress orderAddress;
     private String deliveryMethod;
     private LocalDate dateOfOrder;

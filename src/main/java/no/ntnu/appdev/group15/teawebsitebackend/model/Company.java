@@ -17,7 +17,8 @@ public class Company {
     private String companyName;
 
     @OneToOne(targetEntity = CompanyDetails.class, cascade = CascadeType.ALL)
-    private Details details;
+    @JoinColumn(name = "companyDetailsID")
+    private CompanyDetails details;
 
     /**
      * Empty constructor for JPA
@@ -32,7 +33,7 @@ public class Company {
      * @param companyName company name.
      * @param details details for a company.
      */
-    public Company(long companyID, String companyName, Details details) {
+    public Company(long companyID, String companyName, CompanyDetails details) {
         checkIfNumberNotNegative(companyID, "company id");
         this.companyID = companyID;
 
@@ -46,7 +47,7 @@ public class Company {
      * @param companyName company name.
      * @param details details for a company.
      */
-    public Company(String companyName, Details details){
+    public Company(String companyName, CompanyDetails details){
         setCompanyName(companyName);
         checkIfObjectIsNull(details, "details");
         this.details = details;

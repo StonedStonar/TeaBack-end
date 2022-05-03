@@ -25,9 +25,11 @@ public class Product {
     private int amountOfProduct;
 
     @OneToOne(targetEntity = ProductDetails.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "productDetailsID")
     private ProductDetails productDetails;
 
     @OneToOne(targetEntity = Company.class)
+    @JoinColumn(name = "companyID")
     private Company company;
 
     @OneToMany(targetEntity = Review.class, cascade = CascadeType.ALL)
