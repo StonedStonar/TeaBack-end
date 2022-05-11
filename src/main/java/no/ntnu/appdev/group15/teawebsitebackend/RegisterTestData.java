@@ -34,6 +34,7 @@ public class RegisterTestData {
      * @param userJPA the userJPA.
      * @param productJPA the productJPA.
      * @param orderJPA the orderJPA.
+     * @param companyJPA the company JPA.
      */
     public RegisterTestData(TagJPA tagJPA, UserJPA userJPA, ProductJPA productJPA, OrderJPA orderJPA, CompanyJPA companyJPA) {
         try{
