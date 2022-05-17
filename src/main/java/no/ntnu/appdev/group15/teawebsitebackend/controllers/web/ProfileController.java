@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Map;
+
 /**
  * @author Steinar Hjelle Midthus
  * @version 0.1
@@ -31,17 +33,28 @@ public class ProfileController {
     }
 
     @PostMapping("/user")
-    public void updateProfile(){
+    public String updateProfile(@RequestParam Map<String, String> map){
+        System.err.println("Hei");
 
+        return "redirect:/profile?error=true";
     }
+
+//    @PostMapping("/address")
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+//    public String updateAddress(@RequestParam("streetName") String streetName, @RequestParam("houseNumber") int houseNumber,
+//                                @RequestParam("postalCode") int postalCode, @RequestParam("postalPlace") String postalPlace,
+//                                @RequestParam("country") String country, BindingResult bindingResult){
+//        System.err.println(streetName + houseNumber);
+//        bindingResult.addError(new ObjectError("streetname", "luli"));
+//        return "errors/profile";
+//        //return "redirect:/profile";
+//    }
 
     @PostMapping("/address")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public String updateAddress(@RequestParam("streetName") String streetName, @RequestParam("houseNumber") int houseNumber,
-                                @RequestParam("postalCode") int postalCode, @RequestParam("postalPlace") String postalPlace,
-                                @RequestParam("country") String country, BindingResult bindingResult){
-        System.err.println(streetName + houseNumber);
-        bindingResult.addError(new ObjectError("streetname", "luli"));
+    public String updateAddress(@RequestParam Map<String, String> map, Authentication authentication){
+        System.err.println("Hei");
+
         return "errors/profile";
         //return "redirect:/profile";
     }
@@ -59,6 +72,7 @@ public class ProfileController {
         }
         addUserToModel(model, user);
         addAddressToModel(model, user);
+
         return "profile";
     }
 
