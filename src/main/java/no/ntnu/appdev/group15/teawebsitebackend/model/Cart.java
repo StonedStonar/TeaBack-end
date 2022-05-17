@@ -23,34 +23,16 @@ public class Cart {
     @Column(name = "cartID")
     private long cartID;
 
-    @OneToOne(targetEntity = User.class)
-    @JoinColumn(name = "userID")
-    private User user;
-
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "cartProducts", joinColumns = @JoinColumn(name = "cartID"))
     @Column(name = "cartID")
     private List<CartProduct> cartProductList;
-
-    public User getUser() {
-        return user;
-    }
 
     /**
      * Makes an instance of the Cart class.
      */
     public Cart() {
         this.cartProductList = new ArrayList<>();
-    }
-
-    /**
-     * Makes an instance of the Cart class.
-     * @param user the user of the cart.
-     */
-    public Cart(User user) {
-        this.cartProductList = new ArrayList<>();
-        checkIfObjectIsNull(user, "user");
-        this.user = user;
     }
 
     /**

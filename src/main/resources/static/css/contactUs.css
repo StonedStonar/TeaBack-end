@@ -1,0 +1,97 @@
+
+.contactUsOption>a{
+    display: flex;
+    flex-flow: column nowrap;
+    text-decoration: none;
+    color: var(--main-font-color);
+}
+
+.contactUsOption>a>span:first-child{
+    font-weight: bold;
+}
+
+.mainSection > figure > figcaption{
+    color: var(--figcap-color);
+}
+
+.mainSection > figure>img{
+    width: 100%;
+}
+
+.mainSection > figure{
+    width: fit-content;
+    margin: 0;
+}
+
+#contactUsOption{
+    background-color: var(--main-secbg-color);
+}
+
+
+.socialLogoContainer{
+    display: flex;
+    align-items: center;
+
+}
+
+.socialLogoContainer {
+    width: 10em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1em;
+}
+
+.socialLogoContainer>a {
+    text-decoration: none;
+}
+
+.socialLogoContainer>a>img{
+    width: 40px;
+
+}
+
+.mainSection>div:last-child:hover{
+    background-color: var(--main-secbg-color);
+}
+
+.FAQOpener {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.FAQOpener > p {
+    margin: 0.5em 0;
+}
+
+#FAQContainer {
+    border-top: 1px solid var(--main-border-color);
+}
+
+.info {
+    max-height: 0;
+    visibility: hidden;
+    overflow: hidden;
+    transition: 0s visibility, 0.25s max-height;
+}
+
+.infoAnimation {
+    max-height: 9999px !important;
+    visibility: visible !important;
+}
+
+.FAQ {
+    
+    border-bottom: 1px solid var(--main-border-color);
+}
+
+.headerThree {
+    margin-top: 3em;
+}
+
+
+
+
+
+

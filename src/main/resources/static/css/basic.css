@@ -1,25 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+:root{
+    /*Figcaption color*/
+    --figcap-color: gray;
+    
+    /*Backgrounds*/
+    --main-bg-color: #e9e2d8; /*Orginal #FDF7EE*/
+    --main-secbg-color: #fdf6ee; /*Orginal white*/
+    --third-background-color: #fdf6ee; /*Not original but this was set first #FDF7EE*/
+
+    /*Background container*/
+    --hover-container-color: #c0c0c0;
+
+    /*Shadow color*/
+    --main-shadow-color: #797676;
+    --second-shadow-color: #00000040;
+
+    /*Border*/
+    --main-border-color: #464343;
+    --second-border-color: #a39c9c;
+
+    /*Font color*/
+    --main-font-color: black;
+    --main-secondfont-color: white;
+
+    /*Buttton*/
+    --main-button-color: #267f29;
+    --main-hoverbutton-color: #0f4911;
+    --active-button-color: #34ac38;
+
+    /*Login colors*/
+    --main-link-color: #1080BF;
+
+    /*Product color*/
+    --main-star-color: #f0c508;
+
+    /*Menu colors*/
+    --main-menubg-color: #eee2d1;
+}
+
 body{
-    background-color: #FDF7EE;
-    max-width: 1200px;
-    padding: 0 1em;
-    margin: 0 auto;
+    background-color: var(--main-bg-color);
     font-size: 16px;
     font-family: 'Roboto', sans-serif;
     min-height: 100vh;
-
-    display: flex;
-    flex-flow: column;
-    justify-content: space-between;
+    margin: 0;
 }
 
+#footerWrapper, #headerWrapper{
+    background-color: var(--main-secbg-color);
+}
+
+#headerWrapper{
+    box-shadow: 0 0px 3px var(--main-shadow-color);
+}
+
+#footerWrapper{
+    box-shadow: 0 0px 3px var(--main-shadow-color);
+}
+
+.mainSection, #menu, #footer{
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
 .mainSection{
-    padding: 0.5em 1em;
+    box-shadow: 0 0px 3px var(--main-shadow-color);
+    background-color: var(--third-background-color);
+    margin: 1em auto;
     min-height: 70vh;
+    padding: 0 1em 1em 1em;
+}
+
+.mainHeaderText{
+    padding-top: 1em;
+    margin: 0;
+    margin-bottom: 1em;
 }
 
 .button{
+    border-radius: 0.5em;
     height: 40px;
-    border-radius: 10px;
+}
+
+.greenButton{
+    background-color: var(--main-button-color);
+    color: var(--main-secondfont-color);
+}
+
+.greenButton:hover{
+    cursor: pointer;
+    background-color: var(--main-hoverbutton-color);
 }
 
 .closeText{
@@ -36,14 +107,12 @@ body{
 }
 
 #menu{
-    position:sticky;
     padding-top: 0.5em;
     width: 100%;
     justify-content: space-evenly;
     display: flex;
     align-items: center;
     height: 60px;
-    border-bottom: 1px solid black;
 }
 
 /*The logos on the top*/
@@ -70,30 +139,33 @@ body{
 
 .menuOption, .logoContainer, #menu>a{
     text-decoration: none;
-    color: black;
+    color: var(--main-font-color);
 }
 
 .menuOption{
     font-size: 1.2em;
     padding: 0.25em 0.5em;
+    border-bottom: 1px solid transparent;
 }
 
 .menuOption:hover, .logoContainer:hover, #exit:hover{
     cursor: pointer;
-    transition: 0.2s;
-    box-shadow: 0 0px 3px #564125;
-    border-radius: 5px;
+    transition: border-color 0.6s linear;
+    border-color: var(--main-border-color);
+    /*box-shadow: 0 0 2px var(--main-border-color);*/
+    /*box-shadow: 2px 2px var(--main-shadow-color);
+    /*border-radius: 5px;*/
     /*box-shadow: 0px 2px 3px #564125;*/
 }
 
-#searchForm>input{
+#searchForm>form>input{
     border: none;
     height: 100%;
     background-color: inherit;
     font-size: 1.5em;
 }
 
-#searchForm>*{
+#searchForm>form>*{
     /*display: inline-block;*/
     height: 1.5em;
 }
@@ -101,32 +173,39 @@ body{
 /*For the search*/
 #searchForm{
     display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     top: 60px;
     margin-top: 0.5em;
 }
 
-#searchForm>label{
+#searchForm>form>label{
     display: none;
+}
+
+#searchForm>form{
+    max-width: 1200px;
+    width: 100%;
 }
 
 #searchForm{
     visibility: hidden;
-    height: 0;
-    background-color: #eee2d1;
+    max-height: 0;
+    background-color: var(--main-menubg-color);
     width: 100%;
     overflow-y: hidden;
     overflow-x: hidden;
     padding: 0 0.5em;
-    transition: visibility 0s,0.5s height, 0.5s padding, ease 0.5s;
+    transition: visibility 0s,0.5s max-height, ease 0.5s;
 }
 
-#searchForm>input:focus{
-    background-color: white;
+#searchForm>form>input:focus{
+    background-color: var(--main-secbg-color);
 }
 
-#searchForm>input{
-    width: 100%;
+#searchForm>form>input{
+    width: 95%;
 }
 
 #search{
@@ -155,28 +234,27 @@ body{
 }
 
 #profileMenuOptions{
-    transition: 0s visibility, 0.25s opacity linear;
+    transition: 0s visibility, 0.25s, opacity linear;
 }
 
 #profileMenuOptions, #profileMenuOptions>*:first-child{
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--main-border-color);
     margin: 0 auto;
 }
 
 .profileOption{
-    background-color: #eee2d1;
-    border-top: 1px solid black;
+    background-color: var(--main-menubg-color);
     padding: 0.25em;
 }
 
 .profileOption>a{
     text-decoration: none;
-    color: black;
+    color: var(--main-font-color);
     display: block;
 }
 
 .profileOption:hover{
-    background-color: white;
+    background-color: var(--main-secbg-color);
     font-weight: 600;
 }
 
@@ -185,7 +263,7 @@ body{
     height: 0; 
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-bottom: 5px solid black;
+    border-bottom: 5px solid var(--main-border-color);
     margin: 0 auto;
     position: relative;
     top: 1px;
@@ -231,8 +309,7 @@ body{
         z-index: 1;
         top: 0;
         left: 0;
-        /*Egentlige fargen #F2ECE3*/
-        background-color: #eee2d1;
+        background-color: var(--main-menubg-color);
         overflow-x: hidden;
         padding-top: 60px;;
         flex-flow: column nowrap;
@@ -242,7 +319,7 @@ body{
     .menuOption{
         padding: 0.5em;
         margin: 0.5em 0 0.5em 0.5em;
-        border-bottom: solid 1px #564125;
+        border-bottom: solid 2px var(--second-border-color);
     }
 
     #search{
@@ -250,12 +327,14 @@ body{
     }
 }
 
+
+
 /* Footer styling under */
 #footer {
     display: flex;
     height: 300px;
     justify-content: space-between;
-    background-color: white;
+    background-color: var(--main-secbg-color);
     padding: 0 1em;
 }
 
@@ -266,40 +345,39 @@ body{
 
 .sectionFooter{
     justify-content: space-evenly;
-}
-
-#pressButton{
-    align-items: center;
-    justify-content: center;
-}
-
-.buttonFooter {
-    background-color: red;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    background: #FDF7EE;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 5px;
-    width: 70%;
-    margin-bottom: 1em;
-    color: black;
-    font-weight: 700;
-}
-
-
-.buttonFooter:hover {
-    background-color: #eee2d1;
-}
-
-.sectionFooter {
     width: 30%;
 }
 
+.shortcutFooter:hover, #companies>a:hover{
+    cursor: pointer;
+    font-weight: bold;
+}
+
+
+
+.shortcutFooter {
+    text-decoration: none;
+    color: var(--main-font-color);
+    margin-top: 0.3em;
+    width: fit-content;
+}
+
+#shortcutContainer> h3 {
+    margin-bottom: 0em;
+    margin-top: 1.8em;
+}
+
+#shortcutContainer {
+    justify-content: flex-start;
+}
+
+
 .logoSocials {
     width: 40px;
+}
+
+#socialContainer {
+    margin-top: 1.8em;
 }
 
 .rightFooterDiv>a {
@@ -340,7 +418,10 @@ body{
 #companies>a {
     text-decoration: none;
     color: black;
+    width: fit-content;
 }
+
+
 
 #companies>span:first-of-type {
     font-weight: 600;
@@ -352,7 +433,7 @@ body{
     display: flex;
     flex-flow: column nowrap;
     text-decoration: none;
-    color: black;
+    color: var(--main-font-color);
     width: 10em;
 
 }
@@ -370,7 +451,7 @@ body{
 }
 
 #contactInformation>a{
-    color: black;
+    color: var(--main-font-color);
 }
 
 @media screen and (max-width:900px){
@@ -383,9 +464,8 @@ body{
         width: 80%;
         padding-top: 1.5em;
     }
-    .buttonFooter {
-        width: 100%;
-    }
+    
+    
 
     .sectionFooter> * {
         margin: 0.5em 0;
@@ -395,13 +475,16 @@ body{
 
 /*The animations of the menus.*/
 .openSearch{
-    height: 1.5em !important;
+    max-height: 9999px !important;
     padding: 0.5em 0 !important;
     visibility: visible !important;
-    border-color: black !important;
-    border-bottom: 1px solid black !important;
-    border-top: 1px solid black !important;
+    border-color: var(--main-border-color) !important;
+    border-bottom: 1px solid var(--main-border-color) !important;
+    border-top: 1px solid var(--main-border-color) !important;
+    box-shadow: 0 1px 3px var(--main-shadow-color);
 }
+
+
 
 .openMenu{
     transition: 1s !important;
@@ -412,4 +495,12 @@ body{
 .openProfileMenu{
     visibility: visible !important;
     opacity: 1 !important;
+}
+
+.rotatableLogo{
+    transition: 0.5s;
+}
+
+.rotateLogo{
+    transform: rotate(180deg) !important;
 }

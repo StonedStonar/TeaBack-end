@@ -11,8 +11,11 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -65,6 +68,16 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public void removeUser(@PathVariable Long id) throws CouldNotRemoveUserException {
         userRegister.removeUserWithID(id);
+    }
+
+    /**
+     *
+     * @param httpServletRequest
+     */
+    @PostMapping("/address")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public void updateAddress(HttpServletRequest httpServletRequest){
+        System.err.println("faren din");
     }
 
     /**

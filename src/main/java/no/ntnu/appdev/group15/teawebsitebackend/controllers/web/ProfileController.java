@@ -1,15 +1,18 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 
+import no.ntnu.appdev.group15.teawebsitebackend.controllers.rest.UserController;
 import no.ntnu.appdev.group15.teawebsitebackend.model.User;
 import no.ntnu.appdev.group15.teawebsitebackend.security.AccessUser;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import javax.persistence.Access;
-import java.security.Principal;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Steinar Hjelle Midthus
@@ -18,22 +21,44 @@ import java.security.Principal;
 @Controller
 public class ProfileController {
 
+    private UserController userController;
+
     /**
      * Makes an instance of the LoginController class.
      */
-    public ProfileController() {
+    public ProfileController(UserController userController) {
+        this.userController = userController;
+    }
 
+    @PostMapping("/user")
+    public void updateProfile(){
+
+    }
+
+    @PostMapping("/address")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public String updateAddress(@RequestParam("streetName") String streetName, @RequestParam("houseNumber") int houseNumber,
+                                @RequestParam("postalCode") int postalCode, @RequestParam("postalPlace") String postalPlace,
+                                @RequestParam("country") String country, BindingResult bindingResult){
+        System.err.println(streetName + houseNumber);
+        bindingResult.addError(new ObjectError("streetname", "luli"));
+        return "errors/profile";
+        //return "redirect:/profile";
     }
 
     @GetMapping("/profile")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String getUserPage(Model model, Authentication authentication){
+        return getProfilePage(authentication, model);
+    }
+
+    private String getProfilePage(Authentication authentication, Model model){
         User user = getUser(authentication);
         if (authentication != null){
             authentication.getAuthorities().forEach(System.err::println);
         }
         addUserToModel(model, user);
-        model.addAttribute("address", user.getAddress().getWholeAddressAsString());
+        addAddressToModel(model, user);
         return "profile";
     }
 

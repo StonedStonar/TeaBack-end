@@ -1,0 +1,256 @@
+
+.mainSection {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+#product-info, .card-prices {
+    width: 48%;
+    align-self: center;
+    justify-self: center;
+}
+
+#product-info{
+    margin-bottom: 1em;
+}
+
+figure {
+    margin: 0;
+}
+
+#pictureOfTeaType {
+    width: 100%;
+}
+
+.card-prices {
+    max-width: 350px;
+    height: 200px;;
+}
+
+.Add-To-Cart {
+    width: 100%;
+    height: 45px;
+    /*What if this is one?*/
+    margin: 0 0 1.5em 0;
+    font-size: 16px;
+}
+
+
+.star-rating {
+    user-select: none;
+    text-decoration: none;
+    /*Removed this, since there is another way*/
+    /*margin-top: 1.6rem;*/
+}
+
+
+.price-and-review>.star-rating{
+    /*La til denne så stjerna og reveiws havner på samme plass istedet for å bruke margin.*/
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /*50% basert på objektet den er*/
+    width: 55%;
+}
+
+.inStock{
+    height: fit-content;
+}
+
+
+.amount-to-add {
+    height: 30px;
+    min-width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 8px;
+}
+.amount-to-add>span {
+    width: 100%;
+    text-align: center;
+    width: 100%;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.amount-to-add>span.num-to-change {
+   border-right: 2px solid rgba(0,0,0,0.1); 
+   border-left: 2px solid rgba(0,0,0,0.1); 
+   pointer-events: none;
+}
+
+.amount-on-storage {
+    text-align: center;
+}
+
+.dropdown {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+    width: 100%;
+    border-top: 1px solid var(--main-border-color);
+}
+
+.dropdown>div{
+    align-items: center;
+}
+
+.dropdown>div:first-of-type{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dropdown>img {
+    width: 24px;
+    height: 24px;
+}
+
+.dropdown:hover {
+    cursor: pointer;
+}
+
+.drop-down-meny li {
+    list-style-type: none;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.drop-down-meny {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+}
+
+#productReviews>h4 {
+    font-size: 1.4em;
+}
+
+.review-form {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+}
+
+.review-form>span, #productReviews {
+    font-weight: 600;
+    margin-left: 0.2em;
+}
+
+.review-form> button {
+    width: 20%;
+    height: 40px;
+    background-color:  var(--main-button-color);
+    border-radius: 10px;
+    color: var(--main-secondfont-color);
+    font-size: 1em;
+}
+
+.review-form> input, .review-form> textarea {
+    display: flex;
+    width: 85%;
+    padding: 6px;
+    margin: 5px 0;
+    outline: none;
+    font-size: large;
+}
+
+#description {
+    visibility: hidden;
+    overflow: hidden;
+    max-height: 0;
+    transition: visibility 0.05s, max-height 0.25s;
+}
+
+#ingredients {
+    visibility: hidden;
+    overflow: hidden;
+    max-height: 0;
+    transition: visibility 0.05s, max-height 0.20s;  
+}
+
+#productReviews, #hiddenReview {
+    visibility: hidden;
+    overflow: hidden;
+    max-height: 0;
+    transition: visibility 0.05s, max-height 0.20s;
+}
+
+#reviewButton {
+    margin-bottom: 20px;
+    font-size: 1em;
+}
+
+#productReviews{
+    margin-bottom: 1em;
+}
+
+.last {
+    border-bottom: 1px solid black;
+}
+
+
+
+.price-and-review {
+    display: flex;
+    justify-content: space-between;
+}
+
+.amount {
+    display: flex;
+    justify-content: space-between;
+}
+
+.circle {
+    height: 16px;
+    width: 16px;
+    background-color: var(--main-button-color);
+    border-radius: 50%;
+    display: inline-block;
+}
+
+#relatedProducts{
+    border-bottom: 1px solid var(--main-border-color);
+    width: 100%;
+}
+
+
+
+@media screen and (max-width:800px) {
+   
+    .mainSection{
+        justify-content: none;
+    }
+
+    .mainSection>div{
+        width: 100%;
+    }
+    
+    .card-prices, #product-info{
+        max-width: none;
+        width: 100%;
+    }
+
+    .price-and-review>.star-rating{
+        /*La til denne for at det ikke skulle bli rart med stjernene*/
+        width: auto;
+    }
+    
+}
+
+
+.containerAnimation{
+    visibility: visible !important;
+    max-height: 9999px !important;
+}
+
+.instantAnimation {
+    transition: visibility 0s, max-height 0s !important; 
+    max-height: 9999px !important;
+}
+
+

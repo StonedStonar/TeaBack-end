@@ -48,6 +48,7 @@ public class User {
     private Role role;
 
     @OneToOne(cascade = CascadeType.ALL, targetEntity = Cart.class)
+    @JoinColumn(name = "cartID")
     private Cart cart;
 
 
@@ -55,7 +56,7 @@ public class User {
      * Makes an instance of the User class.
      */
     public User() {
-        cart = new Cart(this);
+        cart = new Cart();
     }
 
     /**
@@ -82,7 +83,7 @@ public class User {
         this.active = true;
         this.role = role;
         this.phoneNumber = phoneNumber;
-        cart = new Cart(this);
+        cart = new Cart();
     }
 
     /**
@@ -108,7 +109,7 @@ public class User {
         this.password = password;
         role = Role.ROLE_USER;
         this.active = true;
-        cart = new Cart(this);
+        cart = new Cart();
     }
 
     /**

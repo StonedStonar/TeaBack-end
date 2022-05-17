@@ -9,17 +9,16 @@
         <link th:href="@{/css/login.css}" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <header th:replace="components/menu :: header">
+        <header id = "headerWrapper" th:replace="components/menu :: header">
         </header>
-
         <section class="mainSection">
-            <h2>
+            <h2  class="mainHeaderText">
                 Log in
             </h2>
             <div class = "enter-details">
                 <form class="enter-account-details" action="login" method="POST">
                     <label for="email" class="email">Email</label>
-                    <input type="email" id = "email" name = "username" placeholder="Enter email adress">
+                    <input type="text" id = "email" name = "username" placeholder="Enter email adress">
                     <label for="password" class="password">Password</label>
                     <input type="password" id="password" name = "password" placeholder="Enter password">
                     <span th:unless="${param.error}">
@@ -28,20 +27,19 @@
                     <span th:if="${param.error}">
                         Wrong password smartass
                     </span>
-                    
+
                     <a href="forgotPassword.html">
                         Forgot Password?
                     </a>
-                    <input name="submit" type="submit" value="Sign in" id="sign-in" class="button">
+                    <input type="submit" value="Sign in" id="sign-in" class="button">
                 </form>
                 <h3>Not a member yet?</h3>
                 <a href="registerPage.html">
                     Register here
                 </a>
             </div>
-
         </section>
-        <footer id= "footer" th:replace="/components/footer :: footer">
+        <footer id= "footerWrapper" th:replace="/components/footer :: footer">
         </footer>
         <script type="text/javascript" th:src="@{/javascript/menu.js}"></script>
     </body>

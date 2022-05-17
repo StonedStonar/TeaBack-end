@@ -84,6 +84,10 @@ public class Address {
     this.addressID = 0;
   }
 
+  private void setPostalCode(int postalCode){
+    this.postalCode = postalCode;
+  }
+
   /**
    * Gets the id of the address.
    * @return the id of the address.
@@ -142,7 +146,7 @@ public class Address {
   }
 
 /**
- * Checks if postalCode is above zero.
+ * Checks if postalCode is above zero.g
  * @param postalCode the postal code to check
  * @throws IllegalArgumentException gets thrown if the postal code is zero or below zero.
  */

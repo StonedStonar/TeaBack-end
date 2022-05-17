@@ -1,0 +1,161 @@
+
+
+.orderContainer{
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1fr;
+    border-bottom: 1px solid var(--main-border-color);
+}
+
+.orderContainer>a{
+    justify-self: end;
+    align-self: center;
+    height: fit-content;
+    width: fit-content;
+    margin: 0 1em;
+}
+
+.orderContainer>h3{
+    margin: 0;
+}
+
+
+
+
+/*For the product inside the menus.*/
+.order{
+    grid-column: 1/5;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s;
+}
+
+.orderBox:first-child>*, .orderBox:first-child{
+    pointer-events: none;
+}
+
+
+
+
+.product{
+    display: flex;
+    flex-flow: row wrap;
+    border-bottom: 1px solid var(--main-border-color);
+    padding: 1em 0;
+}
+
+.order>div:nth-child(3) {
+    border-top: 1px solid var(--main-border-color);
+}
+
+
+
+.product>*{
+    width: 50%;
+}
+
+
+
+.productSummation, .product{
+    width: 100%;
+}
+
+.orderContainer>p{
+    font-size: 14px;
+    margin: 0.7em 0;
+}
+
+.orderDeatils{
+    grid-column: 1/5;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 0.5em;
+    min-width: 48%;
+}
+
+.orderDeatils>p:first-child{
+    margin: 0;
+}
+
+.orderHeader{
+    grid-column: 1/3;
+    font-weight: bold;
+    font-size: 1.3em;
+    border-bottom: 1px solid var(--main-border-color);
+}
+
+.wholeText{
+    grid-column: 1/3;
+}
+
+.underHeader{
+    font-size: 1em;
+    font-weight: bold;
+    margin: 0.5em 0;
+}
+
+
+.productPicture>img{
+    width: 100px;
+    height: 100px;
+}
+
+.productHeader{
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.productSummary{
+    grid-column: 1/3;
+}
+
+.productDetails{
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+}
+
+.reviewButton{
+    background-color: var(--main-button-color);
+    width: 70%;
+    margin: auto 0;
+    align-self: center;
+    color: var(--main-secondfont-color);
+}
+.returnButton{
+    grid-column: 1/3;
+    margin: 0.5em 0;
+}
+
+.returnButton, .reviewButton{
+    border: none;
+}
+
+.reviewButton:hover{
+    background-color: var(--main-hoverbutton-color);
+}
+
+.returnButton:hover{
+    background-color: gray;
+}
+
+@media screen and (max-width:900px){
+    .orderDeatils{
+        width: 100%;
+    }
+}
+
+.openOrder{
+    background-color: var(--main-secbg-color) !important;
+}
+
+.openContainer{
+    max-height: 9999px !important;
+    /*Look at this one later.*/
+    /**border-top: 1px solid black !important;
+    **/
+}
+
+

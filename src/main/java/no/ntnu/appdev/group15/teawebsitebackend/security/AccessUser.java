@@ -31,6 +31,8 @@ public class AccessUser implements UserDetails {
         checkIfObjectIsNull(user, "user");
         this.user = user;
         System.err.println("Role: " + user.getRole());
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        System.out.println("The passwords does: " + bCryptPasswordEncoder.matches("pass", user.getPassword()));
         authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
     }
 
@@ -41,8 +43,7 @@ public class AccessUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        return passwordEncoder.encode(user.getPassword());
+        return user.getPassword();
     }
 
     @Override
