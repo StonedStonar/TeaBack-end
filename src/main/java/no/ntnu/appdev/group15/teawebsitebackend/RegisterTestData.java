@@ -14,7 +14,6 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.registers.OrderRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -43,7 +42,8 @@ public class RegisterTestData {
             addTestUsers(userJPA);
             addTestProducts(productJPA, userJPA, companyJPA);
             addTestOrder(orderJPA, userJPA.getAllUsers(), productJPA.getAllProducts());
-        } catch (CouldNotAddOrderException | CouldNotAddProductException | CouldNotAddReviewException | CouldNotAddTagException | CouldNotAddUserException | CouldNotAddCompanyException e) {
+            addTestCarts(userJPA, productJPA);
+        } catch (CouldNotAddOrderException | CouldNotAddProductException | CouldNotAddReviewException | CouldNotAddTagException | CouldNotAddUserException | CouldNotAddCompanyException | CouldNotAddCartProductException | CouldNotGetUserException e) {
             System.err.println("Test data could not be added but got an " + e.getClass().getSimpleName() + ".");
         }
     }
@@ -109,6 +109,26 @@ public class RegisterTestData {
             for (Product product : products){
                 productRegister.addProduct(product);
             }
+        }
+    }
+
+    /**
+     * Adds cart products to a user.
+     * @param userRegister the userregister
+     * @param productRegister the product register.
+     * @throws CouldNotAddCartProductException gets thrown if the ordered product could not be added.
+     * @throws CouldNotGetUserException gets thrown if the user is not found in the register.
+     */
+    public void addTestCarts(UserRegister userRegister, ProductRegister productRegister) throws CouldNotAddCartProductException, CouldNotGetUserException {
+        List<User> users = userRegister.getAllUsers();
+        Cart cart = users.get(0).getCart();
+        List<Product> products = productRegister.getAllProducts();
+        cart.addCartProduct(new CartProduct(products.get(0), 1, cart));
+        users.get(2).getCart().addCartProduct(new CartProduct(products.get(2), 3, cart));
+        users.get(1).getCart().addCartProduct(new CartProduct(products.get(3), 5, cart));
+        users.get(1).getCart().addCartProduct(new CartProduct(products.get(0), 2, cart));
+        for (User user : users){
+            userRegister.updateUser(user);
         }
     }
 

@@ -22,6 +22,7 @@ public class User {
 
     @Id
     @GeneratedValue
+    @Column(name = "userID")
     private long userId;
 
     private String firstName;
@@ -46,12 +47,15 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
+    @OneToOne(cascade = CascadeType.ALL, targetEntity = Cart.class)
+    private Cart cart;
+
 
     /**
      * Makes an instance of the User class.
      */
     public User() {
-
+        cart = new Cart(this);
     }
 
     /**
@@ -78,6 +82,7 @@ public class User {
         this.active = true;
         this.role = role;
         this.phoneNumber = phoneNumber;
+        cart = new Cart(this);
     }
 
     /**
@@ -103,6 +108,7 @@ public class User {
         this.password = password;
         role = Role.ROLE_USER;
         this.active = true;
+        cart = new Cart(this);
     }
 
     /**
@@ -113,6 +119,22 @@ public class User {
         checkString(newPassword, "password");
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         this.password = passwordEncoder.encode(newPassword);
+    }
+
+    /**
+     * Gets the phone number.
+     * @return the phone number.
+     */
+    public long getPhoneNumber(){
+        return phoneNumber;
+    }
+
+    /**
+     * Gets the cart of this user.
+     * @return the cart.
+     */
+    public Cart getCart(){
+        return cart;
     }
 
     /**

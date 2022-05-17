@@ -4,6 +4,7 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddCart
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetCartProductException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveCartProductException;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -13,15 +14,43 @@ import java.util.Optional;
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
+@Entity
+@Table(name = "carts")
 public class Cart {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cartID")
+    private long cartID;
+
+    @OneToOne(targetEntity = User.class)
+    @JoinColumn(name = "userID")
+    private User user;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "cartProducts", joinColumns = @JoinColumn(name = "cartID"))
+    @Column(name = "cartID")
     private List<CartProduct> cartProductList;
+
+    public User getUser() {
+        return user;
+    }
 
     /**
      * Makes an instance of the Cart class.
      */
     public Cart() {
         this.cartProductList = new ArrayList<>();
+    }
+
+    /**
+     * Makes an instance of the Cart class.
+     * @param user the user of the cart.
+     */
+    public Cart(User user) {
+        this.cartProductList = new ArrayList<>();
+        checkIfObjectIsNull(user, "user");
+        this.user = user;
     }
 
     /**

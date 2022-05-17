@@ -1,19 +1,19 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 /**
  * Represents a product that is in the
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
+@Embeddable
 public class CartProduct {
-
-    private long cartProductId;
 
     private int amount;
 
     @OneToOne(targetEntity = Product.class)
+    @JoinColumn(name = "productID")
     private Product product;
 
     /**
@@ -29,7 +29,7 @@ public class CartProduct {
      * @param product the product that is in the cart.
      * @param amount the amount of that product.
      */
-    public CartProduct(Product product, int amount) {
+    public CartProduct(Product product, int amount, Cart cart) {
         checkIfObjectIsNull(product, "product");
         checkIfNumberNotNegative(amount, "amount");
         this.product = product;

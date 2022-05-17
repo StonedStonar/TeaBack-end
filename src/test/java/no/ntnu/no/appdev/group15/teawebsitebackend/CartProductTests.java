@@ -41,7 +41,7 @@ public class CartProductTests {
     private void setUpTests(){
         try {
             Product product = makeProductWithId(1);
-            cartProduct = new CartProduct(product, 3);
+            cartProduct = new CartProduct(product, 3, null);
         }catch (IllegalArgumentException exception){
             fail("Expected the test data to be made since the input is valid.");
         }
@@ -111,15 +111,15 @@ public class CartProductTests {
         int amount = 2;
 
         try {
-            CartProduct cartProduct = new CartProduct(null, amount);
+            CartProduct cartProduct = new CartProduct(null, amount, null);
             addError(illegalPrefix, "the product is null");
         }catch (IllegalArgumentException exception){}
         try {
-            CartProduct cartProduct = new CartProduct(product, 0);
+            CartProduct cartProduct = new CartProduct(product, 0, null);
             addError(illegalPrefix, "the amount is zero");
         }catch (IllegalArgumentException exception){}
         try {
-            CartProduct cartProduct = new CartProduct(product, -1);
+            CartProduct cartProduct = new CartProduct(product, -1, null);
             addError(illegalPrefix, "the amount is -1");
         }catch (IllegalArgumentException exception){}
     }
@@ -131,7 +131,7 @@ public class CartProductTests {
     @DisplayName("Tests if constructor works with valid input.")
     public void testIfConstructorWorksWithValidInput(){
         try{
-            CartProduct cartProduct = new CartProduct(makeProductWithId(1), 1);
+            CartProduct cartProduct = new CartProduct(makeProductWithId(1), 1, null);
         }catch (IllegalArgumentException exception){
             addErrorWithException("Expected the cart product to be made since the input is valid", "", exception);
         }

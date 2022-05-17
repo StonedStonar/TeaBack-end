@@ -74,9 +74,9 @@ public class CartTests {
      */
     private List<CartProduct> makeCartProducts(){
         List<CartProduct> cartProductList = new ArrayList<>();
-        cartProductList.add(new CartProduct(makeProductWithId(1), 2));
-        cartProductList.add(new CartProduct(makeProductWithId(2), 5));
-        cartProductList.add(new CartProduct(makeProductWithId(3), 4));
+        cartProductList.add(new CartProduct(makeProductWithId(1), 2, null));
+        cartProductList.add(new CartProduct(makeProductWithId(2), 5, null));
+        cartProductList.add(new CartProduct(makeProductWithId(3), 4, null));
         return cartProductList;
     }
 
@@ -162,7 +162,7 @@ public class CartTests {
     @DisplayName("Tests if addCartProduct works with valid input.")
     public void testIfAddCartProductWorksWithValidInput(){
         try {
-            cart.addCartProduct(new CartProduct(makeProductWithId(20), 2));
+            cart.addCartProduct(new CartProduct(makeProductWithId(20), 2, null));
         }catch (IllegalArgumentException | CouldNotAddCartProductException exception){
             addErrorWithException("Expected the", "the product to be added since the input is valid", exception);
         }
