@@ -2,7 +2,7 @@
 :root{
     /*Figcaption color*/
     --figcap-color: gray;
-    
+
     /*Backgrounds*/
     --main-bg-color: #e9e2d8; /*Orginal #FDF7EE*/
     --main-secbg-color: #fdf6ee; /*Orginal white*/
@@ -117,12 +117,25 @@ body{
 
 /*The logos on the top*/
 .logoContainer{
+    outline: none;
+    border: none;
+    background-color: transparent;
     width: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     padding: 0.2em;
+
+}
+
+.topMenuLogo{
+    transition: border-color 0.4s linear;
+    border-bottom: 1px solid transparent;
+}
+
+.topMenuLogo:hover{
+    border-bottom: 1px solid var(--main-border-color);
 }
 
 .logoContainer>span{
@@ -148,10 +161,11 @@ body{
     border-bottom: 1px solid transparent;
 }
 
-.menuOption:hover, .logoContainer:hover, #exit:hover{
+.menuOption:hover, #exit:hover{
     cursor: pointer;
-    transition: border-color 0.6s linear;
+    transition: border-color 0.4s linear, font-weight 0.4s ease-in-out;
     border-color: var(--main-border-color);
+    font-weight: 600;
     /*box-shadow: 0 0 2px var(--main-border-color);*/
     /*box-shadow: 2px 2px var(--main-shadow-color);
     /*border-radius: 5px;*/
@@ -259,8 +273,8 @@ body{
 }
 
 #profileTriangle{
-    width: 0; 
-    height: 0; 
+    width: 0;
+    height: 0;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-bottom: 5px solid var(--main-border-color);
@@ -303,7 +317,7 @@ body{
 
     #menu>nav {
         order: 1;
-        width: 0; 
+        width: 0;
         position: fixed;
         visibility: hidden;
         z-index: 1;
@@ -387,7 +401,7 @@ body{
 .socialLogoContainer>a>img{
     width: 100%;
 }
- 
+
 
 /*Donators*/
 #fairtradeLogo>a>img,#amnestyLogo>a>img {
@@ -459,13 +473,13 @@ body{
         flex-flow: column nowrap;
         height: auto;
         align-items: center;
-    }    
+    }
     .sectionFooter {
         width: 80%;
         padding-top: 1.5em;
     }
-    
-    
+
+
 
     .sectionFooter> * {
         margin: 0.5em 0;

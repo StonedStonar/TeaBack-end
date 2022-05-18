@@ -16,7 +16,7 @@
                 Log in
             </h2>
             <div class = "enter-details">
-                <form class="enter-account-details" action="login" method="POST">
+                <form class="enter-account-details" action="login" method="POST" onsubmit="return false">
                     <label for="email" class="email">Email</label>
                     <input type="text" id = "email" name = "username" placeholder="Enter email adress">
                     <label for="password" class="password">Password</label>
@@ -25,7 +25,7 @@
                         Password must be at least 6 characters long
                     </span>
                     <span th:if="${param.error}">
-                        Wrong password smartass
+                        The credentials entered is not valid. Please try again.
                     </span>
 
                     <a href="forgotPassword.html">
