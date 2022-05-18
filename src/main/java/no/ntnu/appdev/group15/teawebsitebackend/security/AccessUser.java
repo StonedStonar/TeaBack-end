@@ -30,9 +30,6 @@ public class AccessUser implements UserDetails {
     public AccessUser(User user) {
         checkIfObjectIsNull(user, "user");
         this.user = user;
-        System.err.println("Role: " + user.getRole());
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        System.out.println("The passwords does: " + bCryptPasswordEncoder.matches("pass", user.getPassword()));
         authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
     }
 

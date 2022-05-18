@@ -16,7 +16,7 @@
                 Log in
             </h2>
             <div class = "enter-details">
-                <form class="enter-account-details" action="login" method="POST" onsubmit="return false">
+                <form class="enter-account-details" action="login" method="POST">
                     <label for="email" class="email">Email</label>
                     <input type="text" id = "email" name = "username" placeholder="Enter email adress">
                     <label for="password" class="password">Password</label>
@@ -31,10 +31,10 @@
                     <a href="forgotPassword.html">
                         Forgot Password?
                     </a>
-                    <input type="submit" value="Sign in" id="sign-in" class="button">
+                    <input type="submit" value="Sign in" id="sign-in" class="button greenButton">
                 </form>
                 <h3>Not a member yet?</h3>
-                <a href="registerPage.html">
+                <a th:href="@{/registerUser}">
                     Register here
                 </a>
             </div>

@@ -47,11 +47,11 @@
                         Search
                     </label>
                     <img src = "#" srcset = "svg/search.svg" alt = "Search button" class = "svg logo">
-                    <input type = "search" id = "productSearch" name="productSearch" onsearch="search()">
+                    <input type = "search" id = "productSearch" name="productSearch">
                 </form>
             </div>
             <div id = "cartMenu" class = "topMenuLogo">
-                <a href = "cart.html" class = "logoContainer">
+                <a th:href = "@{/cart}" class = "logoContainer">
                     <img src = "#" srcset = "svg/shoppingcart.svg" alt = "A shoppingcart" class = "svg logo">
                     <span>
                         Cart
@@ -72,22 +72,22 @@
                         </div>
                     </div>
                     <div class = "profileOption">
-                        <a href = "Login.html">
+                        <a th:href = "@{/login}">
                             Login
                         </a>
                     </div>
                     <div class = "profileOption">
-                        <a href = "profile.html">
+                        <a th:href = "@{/profile}">
                             My profile
                         </a>
                     </div>
                     <div class = "profileOption">
-                        <a href = "formerOrder.html">
+                        <a th:href = "@{/formerOrders}">
                             My orders
                         </a>
                     </div>
                     <div class = "profileOption">
-                        <a href="index.html">
+                        <a th:href="@{/logout}">
                             Logout
                         </a>
                     </div>

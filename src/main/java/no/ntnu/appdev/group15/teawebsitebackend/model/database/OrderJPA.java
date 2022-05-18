@@ -33,7 +33,7 @@ public class OrderJPA implements OrderRegister {
   @Override
   public void addOrder(Order order) throws CouldNotAddOrderException{
     checkIfOrderIsValid(order);
-    if (!orderRepository.existsById(order.getID())){
+    if (!orderRepository.existsById(order.getOrderId())){
       orderRepository.save(order);
     } else {
       throw new CouldNotAddOrderException("Order does already exist");
@@ -43,7 +43,7 @@ public class OrderJPA implements OrderRegister {
   @Override
   public void removeOrder(Order order) throws CouldNotRemoveOrderException {
     checkIfOrderIsValid(order);
-    if (orderRepository.existsById(order.getID())) {
+    if (orderRepository.existsById(order.getOrderId())) {
       orderRepository.delete(order);
     } else {
       throw new CouldNotRemoveOrderException("The order does not exist, and cannot be removed");

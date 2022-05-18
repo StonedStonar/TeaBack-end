@@ -1,19 +1,28 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 
-import no.ntnu.appdev.group15.teawebsitebackend.controllers.rest.UserController;
+import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
 import no.ntnu.appdev.group15.teawebsitebackend.model.User;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.OrderJPA;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddUserException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.OrderRegister;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.security.AccessUser;
+import org.springframework.boot.Banner;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,16 +32,64 @@ import java.util.Map;
 @Controller
 public class ProfileController {
 
-    private UserController userController;
+    private UserRegister userRegister;
+
+    private OrderRegister orderRegister;
 
     /**
      * Makes an instance of the LoginController class.
+     * @param userJPA the user JPA.
+     * @param orderJPA the order JPA.
      */
-    public ProfileController(UserController userController) {
-        this.userController = userController;
+    public ProfileController(UserJPA userJPA, OrderJPA orderJPA) {
+        this.userRegister = userJPA;
+        this.orderRegister = orderJPA;
     }
 
-    @PostMapping("/user")
+    @GetMapping("/registerUser")
+    public String registerUser(Model model, HttpSession httpSession){
+        Iterator<String> it = httpSession.getAttributeNames().asIterator();
+        while (it.hasNext()){
+            String attributeName = it.next();
+            model.addAttribute(attributeName, httpSession.getAttribute(attributeName));
+            httpSession.removeAttribute(attributeName);
+        }
+
+        return "registerPage";
+    }
+
+    @PostMapping("/makeUser")
+    public RedirectView makeUser(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
+                                 @RequestParam("eMail") String eMail, @RequestParam("phoneNumber") String phoneNumber, @RequestParam("password") String password,
+                                 @RequestParam("secondPassword") String secondPassword, HttpSession httpSession){
+
+        ParameterBuilder parameterBuilder = new ParameterBuilder("registerUser");
+        try {
+            checkString(password, "password");
+            checkString(secondPassword, "second password");
+            if (secondPassword.equals(password)) {
+                User user = new User(firstName, lastName, eMail, Long.parseLong(phoneNumber), password);
+                userRegister.addUser(user);
+            }else {
+                parameterBuilder.addParameter("passwordMismatch", "true");
+            }
+        }catch (CouldNotAddUserException exception){
+            parameterBuilder.addParameter("invalidEmail", "true");
+        }catch (IllegalArgumentException exception){
+            parameterBuilder.addParameter("invalidFields", "true");
+        }
+        if (!parameterBuilder.isFirstAppend()){
+            httpSession.setAttribute("firstName", firstName);
+            httpSession.setAttribute("lastName", lastName);
+            httpSession.setAttribute("phoneNumber", phoneNumber);
+            httpSession.setAttribute("eMail", eMail);
+        }else {
+            parameterBuilder.addParameter("userMade", "true");
+        }
+        return new RedirectView(parameterBuilder.buildString(), true);
+    }
+
+    @PutMapping("/user")
     public String updateProfile(@RequestParam Map<String, String> map){
         System.err.println("Hei");
 
@@ -50,13 +107,22 @@ public class ProfileController {
 //        //return "redirect:/profile";
 //    }
 
-    @PostMapping("/address")
+    @PutMapping("/address")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String updateAddress(@RequestParam Map<String, String> map, Authentication authentication){
         System.err.println("Hei");
 
         return "errors/profile";
         //return "redirect:/profile";
+    }
+
+    @GetMapping("/formerOrders")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public String getFormerOrders(Model model, Authentication authentication){
+        User user = getUser(authentication);
+        List<Order> orders = orderRegister.getAllOrdersOfUser(user.getUserId());
+        model.addAttribute("orders", orders);
+        return "formerOrders";
     }
 
     @GetMapping("/profile")
@@ -75,6 +141,7 @@ public class ProfileController {
 
         return "profile";
     }
+
 
     @GetMapping("/login")
     public String getLoginPage(){

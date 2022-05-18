@@ -1,11 +1,9 @@
-
-
 .enter-account-details {
     display: flex;
     flex-flow: column;
 }
 
-.email, .password, .fullName, .re-enter-password{
+.loginLabel{
     font-size: 1.4rem;
 }
 
@@ -85,5 +83,3 @@ form>span {
 #sign-in:hover {
     background-color: var(--main-hoverbutton-color);
 }
-
-

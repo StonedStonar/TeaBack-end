@@ -16,7 +16,7 @@ public class Order {
 
     @Id
     @GeneratedValue
-    private Long orderID;
+    private long orderID;
 
     @OneToOne(targetEntity = User.class)
     @JoinColumn(name = "userID")
@@ -108,7 +108,7 @@ public class Order {
      * Gets the ID
      * @return the ID
      */
-    public long getID() {
+    public long getOrderId() {
         return orderID;
     }
 
@@ -175,6 +175,19 @@ public class Order {
      */
     public String getPaymentMethod() {
         return paymentMethod;
+    }
+
+    /**
+     * Gets the total price of all
+     * @return gets the total price of the whole order.
+     */
+    public float getTotalPrice(){
+        float totalPrice = 0;
+        List<OrderedProduct> products = this.orderedProductList.stream().filter(orderedProduct -> orderedProduct.getOrderState() != OrderState.RETURNED || orderedProduct.getOrderState() != OrderState.CANCELLED || orderedProduct.getOrderState() != OrderState.PARTIALRETURN).toList();
+        for (OrderedProduct orderedProduct : products){
+            totalPrice += orderedProduct.getTotalPrice();
+        }
+        return totalPrice;
     }
 
 

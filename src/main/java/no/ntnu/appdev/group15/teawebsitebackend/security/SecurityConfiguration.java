@@ -26,6 +26,7 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter {
 
     /**
      * Makes an instance of the SecurityConfiguration class.
+     * @param accessUserJPA the access user JPA.
      */
     public SecurityConfiguration(AccessUserJPA accessUserJPA) {
         this.userDetailsService = accessUserJPA;
@@ -64,7 +65,7 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login?error=true")
                 .and()
                 .logout()
-                .logoutUrl("/perform_logout")
+                .logoutSuccessUrl("/index")
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true);
     }

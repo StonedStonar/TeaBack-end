@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Former order</title>
+  <link th:href="@{/css/basic.css}" rel = "stylesheet" type="text/css">
+  <link th:href="@{/css/formerOrder.css}" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<header id = "headerWrapper" th:replace="components/menu :: header">
+</header>
+<section class="mainSection">
+  <h2 class="mainHeaderText">
+    Orders
+  </h2>
+  <div class="orderContainer" id="headerContainer">
+    <h3>
+      Orderdate
+    </h3>
+    <h3>
+      OrderStatus
+    </h3>
+    <h3>
+      Total
+    </h3>
+  </div>
+  <div class="orderContainer clickContainer" th:each="order: ${orders}">
+    <p class="orderDate" th:text = "${order.getDateOfOrder()}">
+      09.03.2022
+    </p>
+    <p class="orderStatus" th:text = "${order.getOrderState()}">
+      Sent
+    </p>
+    <p class="orderPrice" >
+      <span th:text = "${order.getTotalPrice()}">899</span>,- kr
+    </p>
+    <a href="#">
+      <img src="#" srcset="svg/Arrow-for-dropdown-meny.svg" alt="A arrow head" class="svg logo rotatableLogo">
+    </a>
+    <div class="order">
+      <div class="orderDeatils">
+        <p class="orderHeader">
+          Delivery
+        </p>
+        <p>
+          Delivery method
+        </p>
+        <p th:text = "${order.getDeliveryMethod()}">
+          Helt hjem
+        </p>
+        <p class="wholeText underHeader">
+          Name and address
+        </p>
+        <p class="closeText wholeText" th:text = "${order.getUser().getFullName()}">
+          Navn navnesen
+        </p>
+        <p class="closeText wholeText" th:text = "${order.getAddress().getStreetNameWithHouseNumber()}">
+          Ålesundvegen 65
+        </p>
+        <p class="wholeText closeText" th:text = "${order.getAddress().getPostalPlaceWithCode()}">
+          6015 Ålesund
+        </p>
+      </div>
+      <div class="orderDeatils">
+        <p class="orderHeader">
+          Order details
+        </p>
+        <p>
+          Order gotten
+        </p>
+        <p th:text = "${order.getDateOfOrder()}">
+          08.03.2022
+        </p>
+        <p>
+          Order status
+        </p>
+        <p th:text = "${order.getOrderState()}">
+          Sent
+        </p>
+        <p>
+          Date sent
+        </p>
+        <p th:text = "${order.getShippedDate() == null} ? 'Not sent' : ${order.getShippedDate()}">
+          09.03.2022
+        </p>
+        <p>
+          Payment method
+        </p>
+        <p th:text = "${order.getPaymentMethod()}">
+          15 camels and one ferrari
+        </p>
+        <p>
+          Order number
+        </p>
+        <p th:text = "${order.getOrderId()}">
+          4482914
+        </p>
+      </div>
+      <div class="product" th:each = "product: ${order.getOrderedProductList()}">
+        <div class="productPicture productDetails">
+          <img src="Images/greentea.jpg">
+          <p class="closeText productHeader" th:text = "${product.getProduct().getProductName()}">
+            Green stoned tea
+          </p>
+          <p>
+            Produced by <span th:text = "${product.getProduct().getCompany().getCompanyName()}">blabla</span>
+          </p>
+        </div>
+        <div class="productCostAndAmount productDetails">
+          <p class="closeText">
+            Price per: <span th:text = "${product.getPricePerProduct()}">299</span>,-
+          <p>
+            Amount: <span th:text = "${product.getAmountOfProduct()}">2</span>
+          </p>
+          <p class="closeText">
+            Total cost: <span th:text = "${product.getTotalPrice()}">600</span>,-
+          </p>
+          <button class="reviewButton button">
+            Leave review
+          </button>
+        </div>
+      </div>
+      <div class="productSummation orderDeatils">
+        <p class="underHeader deliveryHeader">
+          Delivery cost
+        </p>
+        <p>
+          0,-
+        </p>
+        <p class="underHeader costHeader">
+          Total cost
+        </p>
+        <p>
+          <span th:text = "${order.getTotalPrice()}">600</span>,-
+        </p>
+        <button class="returnButton button">
+          Return wares
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+<script th:src="@{javascript/menu.js}">
+</script>
+<script th:src="@{javascript/formerOrders.js}">
+</script>
+<footer id= "footerWrapper" th:replace="/components/footer :: footer">
+</footer>
+</body>
+
+</html>

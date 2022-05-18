@@ -101,7 +101,32 @@ public class User {
                 @JsonProperty("address") Address address, @JsonProperty("email") String email,@JsonProperty("phoneNumber") long phoneNumber , @JsonProperty("password") String password) {
         setFirstName(firstName);
         setLastName(lastName);
+        setEmail(email);
         setAddress(address);
+        setPassword(password);
+        checkIfLongIsAboveZero(phoneNumber, "phone number");
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        role = Role.ROLE_USER;
+        this.active = true;
+        cart = new Cart();
+    }
+
+    /**
+     * Makes an instance of the user object.
+     * @param firstName the first name of the user.
+     * @param lastName the last name of the user.
+     * @param email the email of the user.
+     * @param phoneNumber the phone number of the user.
+     * @param password the password of the user.
+     * @throws IllegalArgumentException gets thrown if the input is invalid format.
+     */
+    @JsonCreator
+    public User(@JsonProperty("firstName") String firstName, @JsonProperty("lastName") String lastName,
+                @JsonProperty("email") String email,@JsonProperty("phoneNumber") long phoneNumber ,
+                @JsonProperty("password") String password) {
+        setFirstName(firstName);
+        setLastName(lastName);
         setEmail(email);
         setPassword(password);
         checkIfLongIsAboveZero(phoneNumber, "phone number");
@@ -146,11 +171,19 @@ public class User {
         return role;
     }
 
-
+    /**
+     * Gets if the user is active.
+     * @return <code>true</code> if the user is active.
+     *         <code>false</code> if the user is not active.
+     */
     public boolean isActive() {
         return active;
     }
 
+    /**
+     * Gets the password.
+     * @return the password.
+     */
     public String getPassword(){
         return password;
     }
@@ -261,6 +294,14 @@ public class User {
     public void setEmail(String email) {
         checkIfEmailIsNotInvalid(email);
         this.email = email;
+    }
+
+    /**
+     * Gets the full name of the user.
+     * @return the full name.
+     */
+    public String getFullName(){
+        return firstName + " " + lastName;
     }
 
     /**

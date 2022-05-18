@@ -98,13 +98,13 @@ public class RegisterTestData {
         List<Company> companies = companyRegister.getAllCompanies();
         if (productRegister.getAllProducts().isEmpty()) {
             //Todo: Gjorde bare om på denne så vi kunne generere random reviews til databasen.
-            products.add(new Product( "Green Leaf Tea", 11.99f, 7, new ProductDetails("Lul", "Tea"), companies.get(0)));
-            products.add(new Product( "Black water Leaf Tea", 9.99f, 3, new ProductDetails("Lul", "Tea"), companies.get(1)));
-            products.add(new Product( "Mushroom High Tea", 6.99f, 2, new ProductDetails("Lul", "Tea"), companies.get(2)));
-            products.add(new Product( "Blue Herb Tea", 5.99f, 1, new ProductDetails("Lul", "Tea"), companies.get(3)));
-            products.add(new Product( "Strawberry Tea", 8.99f, 9, new ProductDetails("Lul", "Tea"), companies.get(1)));
-            products.add(new Product( "Hause Norsk Tea", 7.99f, 5, new ProductDetails("Lul", "Tea"), companies.get(1)));
-            products.add(new Product( "Stor Troll Herb Tea", 13.99f, 11, new ProductDetails("Lul", "Tea"), companies.get(0)));
+            products.add(new Product( "Green Leaf Tea", 100.99f, 7, new ProductDetails("Lul", "Tea"), companies.get(0)));
+            products.add(new Product( "Black water Leaf Tea", 50.99f, 3, new ProductDetails("Lul", "Tea"), companies.get(1)));
+            products.add(new Product( "Mushroom High Tea", 50.99f, 2, new ProductDetails("Lul", "Tea"), companies.get(2)));
+            products.add(new Product( "Blue Herb Tea", 89.99f, 1, new ProductDetails("Lul", "Tea"), companies.get(3)));
+            products.add(new Product( "Strawberry Tea", 99.99f, 9, new ProductDetails("Lul", "Tea"), companies.get(1)));
+            products.add(new Product( "Hause Norsk Tea", 69.99f, 5, new ProductDetails("Lul", "Tea"), companies.get(1)));
+            products.add(new Product( "Stor Troll Herb Tea", 150.99f, 11, new ProductDetails("Lul", "Tea"), companies.get(0)));
             addRandomProductReviews(userRegister.getAllUsers(), products);
             for (Product product : products){
                 productRegister.addProduct(product);
@@ -203,21 +203,26 @@ public class RegisterTestData {
         User user3 = users.get(2);
         User user4 = users.get(3);
         if (orderRegister.getAllOrders().isEmpty()){
-            Order order = new Order(123L, user1, makeListWithOrderedProducts(products.get(0)), OrderState.ORDERED,
+            List<OrderedProduct> orders = makeListWithOrderedProducts(products.get(0));
+            orders.add(new OrderedProduct(products.get(3), 10));
+            Order order = new Order(123L, user1, orders, OrderState.ORDERED,
                     user1.getAddress(), "Posten", LocalDate.now().minusDays(1), "Klarna", false);
             Order order1 = new Order(124L, user2, makeListWithOrderedProducts(products.get(1)), OrderState.ORDERED,
                     user2.getAddress(), "Posten", LocalDate.now().minusDays(1), "Visa", false);
             Order order2 = new Order(125L, user3, makeListWithOrderedProducts(products.get(2)), OrderState.ORDERED,
                     user3.getAddress(), "Posten", LocalDate.now().minusDays(1), "Mastercard", false);
             Order order3 = new Order(126L, user4, makeListWithOrderedProducts(products.get(0)), OrderState.ORDERED,
-                    user4.getAddress(), "Posten", LocalDate.now().minusDays(1), "nudes", false);
+                    user4.getAddress(), "Posten", LocalDate.now().minusDays(1), "Nudes", false);
             Order order4 = new Order(126L, user1, makeListWithOrderedProducts(products.get(2)), OrderState.ORDERED,
-                    user4.getAddress(), "Posten", LocalDate.now().minusDays(1), "nudes", false);
+                    user4.getAddress(), "Posten", LocalDate.now().minusDays(1), "Nudes", false);
+            Order order5 = new Order(123L, user1, makeListWithOrderedProducts(products.get(4)), OrderState.ORDERED,
+                    user1.getAddress(), "Post-Nord", LocalDate.now().minusDays(0), "Klarna", false);
             orderRegister.addOrder(order);
             orderRegister.addOrder(order1);
             orderRegister.addOrder(order2);
             orderRegister.addOrder(order3);
             orderRegister.addOrder(order4);
+            orderRegister.addOrder(order5);
         }
     }
 

@@ -123,6 +123,14 @@ public class OrderedProduct {
     }
 
     /**
+     * Gets the total price of the products.
+     * @return the total price.
+     */
+    public float getTotalPrice(){
+        return pricePerProduct * amountOfProduct;
+    }
+
+    /**
      * Removes an amount of product from this object. If it hits zero the order is set to returned.
      * @param amountOfProduct the amount to remove.
      * @throws IllegalArgumentException gets thrown if the number is zero or above the amount in this object.
