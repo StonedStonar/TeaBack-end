@@ -122,15 +122,15 @@
                             <h3>Profile details</h3>
                             <img src="svg/cross.svg" alt = "Exit edit window logo" class = "logo exitOverlay">
                         </div>
-                        <form class = "editForm">
+                        <form class = "editForm"  action = "#" th:action="@{/user}" th:method = "POST">
                             <label for="firstName">First name</label>
-                            <input type = "text" id = "firstName" name = "pepe" placeholder = "Enter first sname" class = "input" th:value = "${user.getFirstName()}">
+                            <input type = "text" id = "firstName" name = "firstName" placeholder = "Enter first sname" class = "input" th:value = "${user.getFirstName()}">
                             <label for = "lastName">Last name</label>
-                            <input type = "text" id = "lastName" placeholder = "Enter last name" th:value = "${user.getLastName()}">
+                            <input type = "text" id = "lastName" name = "lastName" placeholder = "Enter last name" th:value = "${user.getLastName()}">
                             <label for = "email">E-mail</label>
-                            <input type = "email" id = "email" placeholder = "Enter email address" th:value = "${user.getEmail()}">
+                            <input type = "email" id = "email" name = "email" placeholder = "Enter email address" th:value = "${user.getEmail()}">
                             <label for = "mobileNumber">Mobile number</label>
-                            <input type = "number" id = "mobileNumber" placeholder = "Enter mobile number" th:value = "${user.getPhoneNumber()}">
+                            <input type = "number" id = "mobileNumber" name = "mobileNumber" placeholder = "Enter mobile number" th:value = "${user.getPhoneNumber()}">
                             <input type = "submit" value = "Change details" id = "submitEditProfile" class = "button greenButton">
                         </form>
                     </div>
