@@ -9,28 +9,29 @@
         <link th:href="@{/css/login.css}" rel="stylesheet" type="text/css">
     </head>
     <body>
-    <header id = "headerWrapper" th:replace="components/menu :: header">
-    </header>
+        <header id = "headerWrapper" th:replace="components/menu :: header">
+        </header>
         <section class="mainSection">
             <h2  class="mainHeaderText">
                 Log in
             </h2>
             <div class = "enter-details">
                 <form class="enter-account-details" action="login" method="POST">
-                    <label for="email" class="loginLabel">Email</label>
-                    <input type="text" id = "email" placeholder="Enter email adress" name = "username">
-                    <label for="password" class="loginLabel">Password</label>
-                    <input type="password" id="password" placeholder="Enter password" name = "password">
+                    <label for="email" class="email">Email</label>
+                    <input type="text" id = "email" name = "username" placeholder="Enter email adress">
+                    <label for="password" class="password">Password</label>
+                    <input type="password" id="password" name = "password" placeholder="Enter password">
                     <span th:unless="${param.error}">
                         Password must be at least 6 characters long
                     </span>
                     <span th:if="${param.error}">
                         The credentials entered is not valid. Please try again.
                     </span>
+
                     <a href="forgotPassword.html">
                         Forgot Password?
                     </a>
-                    <input type="submit" value="Sign in" id="sign-in" class="button">
+                    <input type="submit" value="Sign in" id="sign-in" class="button greenButton">
                 </form>
                 <h3>Not a member yet?</h3>
                 <a th:href="@{/registerUser}">
@@ -38,9 +39,8 @@
                 </a>
             </div>
         </section>
-        <script src = "javascript/menu.js">
-        </script>
         <footer id= "footerWrapper" th:replace="/components/footer :: footer">
         </footer>
+        <script type="text/javascript" th:src="@{/javascript/menu.js}"></script>
     </body>
 </html>

@@ -1,6 +1,4 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
-
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -84,10 +82,6 @@ public class Address {
     this.addressID = 0;
   }
 
-  private void setPostalCode(int postalCode){
-    this.postalCode = postalCode;
-  }
-
   /**
    * Gets the id of the address.
    * @return the id of the address.
@@ -129,14 +123,6 @@ public class Address {
   }
 
   /**
-   * Gets the street name with the house number.
-   * @return the street name with house number.
-   */
-  public String getStreetNameWithHouseNumber(){
-    return streetName + " " + houseNumber;
-  }
-
-  /**
    * Gets the house number.
    * @return Returns the house number of the address.
    */
@@ -150,15 +136,6 @@ public class Address {
    */
   public String getCountry() {
     return country;
-  }
-
-  /**
-   * Gets the whole address as a string.
-   * @return the whole address.
-   */
-  public String getWholeAddressAsString() {
-    String wholeAddress = getStreetName()+" "+getHouseNumber()+ " "+getPostalPlace()+" "+getPostalCode()+" "+getCountry();
-    return wholeAddress;
   }
 
 /**

@@ -35,8 +35,8 @@
 
 /*Menu items*/
 .topItem{
-    border-top: 1px solid var(--main-border-color);
-    border-bottom: 1px solid var(--main-border-color);
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
     height: 2em;
     margin: 0;
     display: flex;
@@ -96,8 +96,8 @@
 }
 
 .amount-to-add>span.num-to-change {
-   border-right: 2px solid var(--main-font-color); 
-   border-left: 2px solid var(--main-font-color); 
+   border-bottom: 2px solid rgba(0,0,0,0.1); 
+   border-top: 2px solid rgba(0,0,0,0.1); 
    pointer-events: none;
 }
 
@@ -130,11 +130,52 @@
     background-color: var(--hover-container-color);
 }
 
+.minus-button, .plus-button, .amount-to-add{
+    outline: none;
+    background-color: transparent;
+    border: none;
+}
+
+.amount-to-add {
+    height: 30px;
+    min-width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 8px;
+}
+
+.amount-to-add>input, .amount-to-add>button {
+    width: 100%;
+    text-align: center;
+    width: 100%;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.amount-to-add>.num-to-change {
+   border-bottom: 2px solid rgba(0,0,0,0.1); 
+   border-top: 2px solid rgba(0,0,0,0.1); 
+   pointer-events: none;
+}
+
 .productID{
     font-size: 0.75em;
     color: var(--main-font-color);
 }
 
+.removeButton{
+    outline: none;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.pricePer, .discountPer{
+    display: none;
+}
 
 
 @media screen and (max-width:700px) {
@@ -185,4 +226,9 @@
     .productImage{
         width: 10em;
     }
+}
+
+.hideProduct{
+    display: none;
+    overflow: hidden;
 }

@@ -2,7 +2,7 @@
 :root{
     /*Figcaption color*/
     --figcap-color: gray;
-
+    
     /*Backgrounds*/
     --main-bg-color: #e9e2d8; /*Orginal #FDF7EE*/
     --main-secbg-color: #fdf6ee; /*Orginal white*/
@@ -81,6 +81,7 @@ body{
 .button{
     border-radius: 0.5em;
     height: 40px;
+    border: none;
 }
 
 .greenButton{
@@ -112,7 +113,7 @@ body{
     justify-content: space-evenly;
     display: flex;
     align-items: center;
-    height: 60px;
+    min-height: 60px;
 }
 
 /*The logos on the top*/
@@ -196,8 +197,17 @@ body{
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 60px;
+    top: 3.5em;
     margin-top: 0.5em;
+    width: 100%;
+    visibility: hidden;
+    max-height: 0;
+    background-color: var(--main-menubg-color);
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding: 0 0.5em;
+    transition: visibility 0s,0.5s max-height, ease 0.5s;
 }
 
 #searchForm>form>label{
@@ -207,17 +217,6 @@ body{
 #searchForm>form{
     max-width: 1200px;
     width: 100%;
-}
-
-#searchForm{
-    visibility: hidden;
-    max-height: 0;
-    background-color: var(--main-menubg-color);
-    width: 100%;
-    overflow-y: hidden;
-    overflow-x: hidden;
-    padding: 0 0.5em;
-    transition: visibility 0s,0.5s max-height, ease 0.5s;
 }
 
 #searchForm>form>input:focus{
@@ -247,7 +246,7 @@ body{
     visibility: hidden;
     opacity: 0;
     overflow: hidden;
-    left: -3em;
+    left: -2.5em;
     width: 300%;
     flex-direction: column;
     z-index: 1;
@@ -279,8 +278,8 @@ body{
 }
 
 #profileTriangle{
-    width: 0;
-    height: 0;
+    width: 0; 
+    height: 0; 
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-bottom: 5px solid var(--main-border-color);
@@ -323,7 +322,7 @@ body{
 
     #menu>nav {
         order: 1;
-        width: 0;
+        width: 0; 
         position: fixed;
         visibility: hidden;
         z-index: 1;
@@ -407,7 +406,7 @@ body{
 .socialLogoContainer>a>img{
     width: 100%;
 }
-
+ 
 
 /*Donators*/
 #fairtradeLogo>a>img,#amnestyLogo>a>img {
@@ -479,18 +478,53 @@ body{
         flex-flow: column nowrap;
         height: auto;
         align-items: center;
-    }
+    }    
     .sectionFooter {
         width: 80%;
         padding-top: 1.5em;
     }
-
-
+    
+    
 
     .sectionFooter> * {
         margin: 0.5em 0;
     }
+}
 
+@media screen and (max-width:350px) {
+    #menu{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 1em;
+    }
+
+    #companyHeader{
+        grid-column: 1/5;
+        text-align: center;
+    }
+
+    .logoContainer{
+        margin: 0 auto;
+    }
+
+    #hamburgerMenu{
+        order: 1;
+    }
+    #search{
+        order: 1;
+    }
+
+    #searchForm{
+        top: 6.5em;
+    }
+}
+
+@media screen and (max-width:600px){
+    
+
+    #searchForm>form>input{
+        width: 80%;
+    }
 }
 
 /*The animations of the menus.*/

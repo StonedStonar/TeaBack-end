@@ -122,7 +122,7 @@ public class ProfileController {
         User user = getUser(authentication);
         List<Order> orders = orderRegister.getAllOrdersOfUser(user.getUserId());
         model.addAttribute("orders", orders);
-        return "formerOrders";
+        return "formerOrder";
     }
 
     @GetMapping("/profile")

@@ -5,10 +5,27 @@
     justify-content: space-between;
 }
 
-#product-info, .card-prices {
-    width: 48%;
+#setStarRating {
+    display: none;
+}
+
+#productContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2em;
+}
+
+#product-info {
     align-self: center;
-    justify-self: center;
+}
+
+#addToCartContainer {
+    align-self: center;
+    max-width: 350px;
+    height: 200px;
+    margin: 0 auto;
+    width: 100%;
+    
 }
 
 #product-info{
@@ -23,15 +40,15 @@ figure {
     width: 100%;
 }
 
-.card-prices {
-    max-width: 350px;
-    height: 200px;;
+#descriptionContainer:hover, #ingredientsContainer:hover, #productReviewsContainer:hover {
+    font-weight: bold;
+    cursor: pointer;
+    
 }
 
 .Add-To-Cart {
     width: 100%;
     height: 45px;
-    /*What if this is one?*/
     margin: 0 0 1.5em 0;
     font-size: 16px;
 }
@@ -40,35 +57,47 @@ figure {
 .star-rating {
     user-select: none;
     text-decoration: none;
-    /*Removed this, since there is another way*/
-    /*margin-top: 1.6rem;*/
 }
 
+.product-info-price {
+    display: flex;
+    flex-flow: column;
+}
 
-.price-and-review>.star-rating{
-    /*La til denne så stjerna og reveiws havner på samme plass istedet for å bruke margin.*/
+#price-and-review>.star-rating{
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    /*50% basert på objektet den er*/
-    width: 55%;
+    width: 53%;
 }
 
 .inStock{
     height: fit-content;
 }
 
+.minus-button, .plus-button, .amount-to-add{
+    outline: none;
+    background-color: transparent;
+    border: none;
+}
 
 .amount-to-add {
     height: 30px;
-    min-width: 80px;
+    max-width: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: white;
     border-radius: 8px;
+
 }
-.amount-to-add>span {
+
+.content-container {
+    margin-top: 1em;
+    padding: 1em;
+    background-color: white;
+}
+
+.amount-to-add>input, .amount-to-add>button {
     width: 100%;
     text-align: center;
     width: 100%;
@@ -77,10 +106,15 @@ figure {
     cursor: pointer;
 }
 
-.amount-to-add>span.num-to-change {
-   border-right: 2px solid rgba(0,0,0,0.1); 
-   border-left: 2px solid rgba(0,0,0,0.1); 
-   pointer-events: none;
+.logoSocials:hover,  .logoSupport:hover{
+    box-shadow: 0px 0px 4px var(--main-shadow-color);
+}
+
+
+.amount-to-add>.num-to-change {
+    border-top: 2px solid rgba(0,0,0,0.1); 
+    border-bottom: 2px solid rgba(0,0,0,0.1); 
+    pointer-events: none;
 }
 
 .amount-on-storage {
@@ -90,7 +124,6 @@ figure {
 .dropdown {
     display: flex;
     flex-flow: column;
-    width: 100%;
     width: 100%;
     border-top: 1px solid var(--main-border-color);
 }
@@ -141,6 +174,7 @@ figure {
     margin-left: 0.2em;
 }
 
+
 .review-form> button {
     width: 20%;
     height: 40px;
@@ -157,6 +191,10 @@ figure {
     margin: 5px 0;
     outline: none;
     font-size: large;
+}
+
+.card-body > form >button {
+    width: 100%;
 }
 
 #description {
@@ -193,9 +231,7 @@ figure {
     border-bottom: 1px solid black;
 }
 
-
-
-.price-and-review {
+#price-and-review {
     display: flex;
     justify-content: space-between;
 }
@@ -218,26 +254,22 @@ figure {
     width: 100%;
 }
 
-
-
 @media screen and (max-width:800px) {
-   
-    .mainSection{
-        justify-content: none;
-    }
-
     .mainSection>div{
         width: 100%;
     }
     
-    .card-prices, #product-info{
+    #addToCartContainer, #product-info{
         max-width: none;
         width: 100%;
     }
 
-    .price-and-review>.star-rating{
-        /*La til denne for at det ikke skulle bli rart med stjernene*/
+    #price-and-review>.star-rating{
         width: auto;
+    }
+
+    #productContainer {
+        grid-template-columns: 1fr;
     }
     
 }

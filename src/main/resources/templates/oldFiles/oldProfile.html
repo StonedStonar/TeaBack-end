@@ -7,6 +7,7 @@
         <title>Account</title>
         <link th:href = "@{/css/basic.css}" rel = "stylesheet" type="text/css">
         <link th:href = "@{/css/profile.css}" rel = "stylesheet" type = "text/css">
+        <link th:href = "@{/css/profileMenu.css}" rel = "stylesheet" type = "text/css">
     </head>
     <body>
         <header id = "headerWrapper" th:replace="components/menu :: header">
@@ -22,7 +23,7 @@
                         <figcaption>Picture taken from Nathan Dumalo on Nosplash</figcaption>
                     </figure>
                 </div>
-                
+
                 <div class = "personalInformation">
                     <h3 id = "aboutYouHeader">
                         About you
@@ -30,42 +31,41 @@
                     <p class = "closeText">
                         First name
                     </p>
-                    <p class = "closeText">
-                        Test 
+                    <p class = "closeText" th:text="${user.getFirstName()}">
+                        Test
                     </p>
                     <p class = "closeText">
                         Last name
                     </p>
-                    <p class = "closeText">
+                    <p class = "closeText" th:text="${user.getLastName()}">
                         Testesen
                     </p>
                     <p class = "closeText">
                         Email
                     </p>
-                    <p class = "closeText">
+                    <p class = "closeText" th:text="${user.getEmail()}">
                         Test@Testesen.com
                     </p>
                     <p class = "closeText">
                         Phonenumber
                     </p>
-                    <p class = "closeText">
+                    <p class = "closeText" th:text="${user.getPhoneNumber()}">
                         44609832
                     </p>
                     <p>
                         Main address
                     </p>
-                    <p>
-                        <span>
-                            <span th:text = "${address.getStreetName()}">Testvegen</span>
-                            <span th:text = "${address.getHouseNumber()}">12</span>
-                        </span>
-                        <span th:text = "${address.getPostalCode()}">6015</span>
-                        <span th:text = "${address.getPostalPlace()}">Ålesund</span>
-                        <span th:text = "${address.getCountry()}">Norge</span>
+                    <p th:text = "${address}">
+                        <span>Testvegen 12</span>
+                        <span>6015</span>
+                        <span>Ålesund</span>
+                        <span>Norge</span>
                     </p>
-                    <a href = "editProfile.html" class = "button greenButton" id = "editProfile">
-                        Edit profile
-                    </a>
+                    <button class = "button greenButton" id = "editProfile">
+                        <span>
+                            Edit profile
+                        </span>
+                    </button>
                 </div>
                 <div id = "optionsForUser">
                     <div class = "profileMenuOptions">
@@ -75,6 +75,16 @@
                             </span>
                             <span>
                                 Overview of orders and returns.
+                            </span>
+                        </a>
+                    </div>
+                    <div class = "profileMenuOptions">
+                        <a href = "#" class = "editPassword" id = "editPassword">
+                            <span class = "editPassword">
+                                Security
+                            </span>
+                            <span class = "editPassword">
+                                Manage your password.
                             </span>
                         </a>
                     </div>
@@ -89,7 +99,7 @@
                         </a>
                     </div>
                 </div>
-                <form id = "deleteProfile">
+                <div id = "deleteProfile">
                     <h3>
                         Delete profile
                     </h3>
@@ -102,7 +112,7 @@
                     <button class = "button" id = "deleteProfileButton">
                         Delete my profile
                     </button>
-                </form>
+                </div>
             </div>
 
             <div class = "editContainer" id = "editProfileContainer">
@@ -112,33 +122,33 @@
                             <h3>Profile details</h3>
                             <img src="svg/cross.svg" alt = "Exit edit window logo" class = "logo exitOverlay">
                         </div>
-                        <form class = "editForm">
+                        <form class = "editForm"  action = "#" th:action="@{/user}" th:method = "POST">
                             <label for="firstName">First name</label>
-                            <input type = "text" id = "firstName" placeholder = "Enter first name" class = "input">
-                            <label for="lastName">Last name</label>
-                            <input type = "text" id = "lastName" placeholder = "Enter last name">
+                            <input type = "text" id = "firstName" name = "firstName" placeholder = "Enter first sname" class = "input" th:value = "${user.getFirstName()}">
+                            <label for = "lastName">Last name</label>
+                            <input type = "text" id = "lastName" name = "lastName" placeholder = "Enter last name" th:value = "${user.getLastName()}">
                             <label for = "email">E-mail</label>
-                            <input type = "email" id = "email" placeholder = "Enter email address">
+                            <input type = "email" id = "email" name = "email" placeholder = "Enter email address" th:value = "${user.getEmail()}">
                             <label for = "mobileNumber">Mobile number</label>
-                            <input type = "number" id = "mobileNumber" placeholder = "Enter mobile number">
-                            <input type = "submit" value = "Change details" class = "button greenButton">
+                            <input type = "number" id = "mobileNumber" name = "mobileNumber" placeholder = "Enter mobile number" th:value = "${user.getPhoneNumber()}">
+                            <input type = "submit" value = "Change details" id = "submitEditProfile" class = "button greenButton">
                         </form>
                     </div>
                     <div>
                         <h3>
                             Address
                         </h3>
-                        <form class = "editForm">
+                        <form class = "editForm" action = "#" th:action="@{/address}" th:method = "PUT">
                             <label for = "streetName">Street name</label>
-                            <input type = "text" id = "streetName" placeholder = "Enter street name">
+                            <input type = "text" id = "streetName" placeholder = "Enter street name" th:value = "${address.getStreetName()}" name = "streetName">
                             <label for = "houseNumber">House number</label>
-                            <input type = "text" id = "houseNumber" placeholder = "Enter house number">
+                            <input type = "text" id = "houseNumber" placeholder = "Enter house number" th:value = "${address.getHouseNumber()}" name = "houseNumber">
                             <label for = "postalCode">Postal code</label>
-                            <input type = "number" id = "postalCode" placeholder = "Enter postal code">
+                            <input type = "number" id = "postalCode"  placeholder = "Enter postal code" th:value = "${address.getPostalCode()}" name = "postalCode">
                             <label for = "city">City</label>
-                            <input type = "text" id = "city"  placeholder = "Enter city">
+                            <input type = "text" id = "city"  placeholder = "Enter city" th:value = "${address.getPostalPlace()}" name = "postalPlace">
                             <label for = "country">Country</label>
-                            <input type = "text" id = "country" placeholder = "Enter country">
+                            <input type = "text" id = "country" placeholder = "Enter country" th:value = "${address.getCountry()}" name = "country">
                             <input type = "submit" value = "Update address" class = "button greenButton">
                         </form>
                     </div>
@@ -162,15 +172,16 @@
                             <label for = "twicePassword">Confirm new password</label>
                             <input type = "password" id = "twicePassword" placeholder = "Enter the new password again">
                             <span id = "passwordMismatch">The passwords does not match</span>
-                            <input type="submit" value = "Change password" class = "button greenButton">
+                            <input type = "submit" value = "Change password" id = "submit" class = "button greenButton">
                         </form>
                     </div>
                 </div>
             </div>
+
         </section>
-        <script type="text/javascript" th:src="@{/javascript/profile.js}"></script>
-        <script type="text/javascript" th:src="@{/javascript/menu.js}"></script>
         <footer id= "footerWrapper" th:replace="/components/footer :: footer">
         </footer>
+        <script type="text/javascript" th:src="@{/javascript/profile.js}"></script>
+        <script type="text/javascript" th:src="@{/javascript/menu.js}"></script>
     </body>
 </html>
