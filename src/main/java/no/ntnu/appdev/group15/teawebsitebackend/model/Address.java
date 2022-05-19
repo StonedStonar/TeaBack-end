@@ -107,14 +107,6 @@ public class Address {
   }
 
   /**
-   * Gets the postal place with its code.
-   * @return the postal place.
-   */
-  public String getPostalPlaceWithCode(){
-    return postalCode + " " + postalPlace;
-  }
-
-  /**
    * Gets the street name.
    * @return Returns the street name of the address.
    */

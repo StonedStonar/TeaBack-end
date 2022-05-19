@@ -297,6 +297,16 @@ public class User {
     }
 
     /**
+     * Sets the phone number.
+     * @param phoneNumber the new phone number.
+     */
+    //Todo: Lag tester for denne
+    public void setPhoneNumber(long phoneNumber){
+        checkIfLongIsAboveZero(phoneNumber, "phone number");
+        this.phoneNumber = phoneNumber;
+    }
+
+    /**
      * Gets the full name of the user.
      * @return the full name.
      */

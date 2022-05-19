@@ -33,6 +33,17 @@ public class AccessUser implements UserDetails {
         authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
     }
 
+    /**
+     * Sets the user.
+     * @param user the user.
+     */
+    public void setUser(User user){
+        checkIfObjectIsNull(user, "user");
+        this.user = user;
+        authorities.clear();
+        authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
+    }
+
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
         return authorities;
