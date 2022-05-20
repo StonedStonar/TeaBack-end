@@ -90,6 +90,14 @@ public class Cart {
     }
 
     /**
+     * Gets all the products in this cart.
+     * @return the cart products.
+     */
+    public List<CartProduct> getAllProducts(){
+        return cartProductList;
+    }
+
+    /**
      * Check to make sure that integer values cannot go bellow 0. (Negative value)
      * @param number the object to be checked.
      * @param errorMessage exception to be displayed.

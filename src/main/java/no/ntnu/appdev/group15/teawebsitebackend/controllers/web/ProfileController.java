@@ -103,6 +103,10 @@ public class ProfileController {
         AccessUser accessUser = getAccessUser(authentication);
         User user = accessUser.getUser();
         try {
+            checkString(firstName, "first name");
+            checkString(lastName, "last name");
+            checkString(eMail, "email");
+            checkIfLongIsAboveZero(phoneNumber, "phone number");
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setEmail(eMail);
@@ -239,9 +243,15 @@ public class ProfileController {
         model.addAttribute("address", user.getAddress());
     }
 
+    /**
+     * Gets the access user that is using the page.
+     * @param authentication the authentication object.
+     * @return the access user of this session.
+     */
     private AccessUser getAccessUser(Authentication authentication){
         return (AccessUser) authentication.getPrincipal();
     }
+
     /**
      * Checks if a string is of a valid format or not.
      * @param stringToCheck the string you want to check.

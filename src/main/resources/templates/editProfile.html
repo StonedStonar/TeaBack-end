@@ -5,9 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Account</title>
-        <link href = "CSS/basic.css" rel = "stylesheet" type="text/css">
-        <link href = "CSS/profile.css" rel = "stylesheet" type = "text/css">
-        <link href = "CSS/editProfile.css" rel = "stylesheet" type = "text/css">
+        <link th:href="@{/css/basic.css}" rel = "stylesheet" type="text/css">
+        <link th:href="@{/css/editProfile.css}" rel="stylesheet" type="text/css">
+        <link th:href="@{/css/form.css}" rel = "stylesheet" type="text/css">
     </head>
     <body>
         <header id = "headerWrapper" th:replace="components/menu :: header">
@@ -22,15 +22,17 @@
                     <h3>Profile details</h3>
                 </div>
                 <form class = "editForm" action="#" th:action="@{/user}" th:method="PUT">
-                    <label for="firstName">First name</label>
-                    <input type = "text" id = "firstName" placeholder = "Enter first name" class = "input" th:value = "${user.getFirstName()}" name = "firstName">
-                    <label for="lastName">Last name</label>
-                    <input type = "text" id = "lastName" placeholder = "Enter last name" th:value = "${user.getLastName()}" name = "lastName">
-                    <label for = "email">E-mail</label>
-                    <input type = "email" id = "email" placeholder = "Enter email address" th:value = "${user.getEmail()}" name = "eMail">
-                    <label for = "mobileNumber">Mobile number</label>
-                    <input type = "number" id = "mobileNumber" placeholder = "Enter mobile number" th:value = "${user.getPhoneNumber()}" name = "phoneNumber">
-                    <input type = "submit" value = "Change details" class = "button greenButton">
+                    <label for="firstName" class = "formLabel">First name</label>
+                    <input type = "text" id = "firstName" placeholder = "Enter first name" class = "inputForm" th:value = "${user.getFirstName()}" name = "firstName">
+                    <label for="lastName" class = "formLabel">Last name</label>
+                    <input type = "text" id = "lastName" placeholder = "Enter last name" class = "inputForm" th:value = "${user.getLastName()}" name = "lastName">
+                    <label for = "email" class = "formLabel">E-mail</label>
+                    <input type = "email" id = "email" placeholder = "Enter email address" class = "inputForm" th:value = "${user.getEmail()}" name = "eMail">
+                    <label for = "mobileNumber" class = "formLabel">Mobile number</label>
+                    <input type = "number" id = "mobileNumber" placeholder = "Enter mobile number" class = "inputForm" th:value = "${user.getPhoneNumber()}" name = "phoneNumber">
+                    <span class = "message errorMessage" th:if = "${param.invalidAddressInput}">All the fields must be filled in</span>
+                    <span class = "message okMessage" th:if = "${param.changedAddress}">User details has now been updated</span>
+                    <input type = "submit" value = "Change details" class = "button greenButton submitButton">
                 </form>
             </div>
 
@@ -39,17 +41,19 @@
                     Address
                 </h3>
                 <form class = "editForm" action = "#" th:action="@{/address}" th:method = "PUT">
-                    <label for = "streetName">Street name</label>
-                    <input type = "text" id = "streetName" placeholder = "Enter street name" th:value = "${address.getStreetName()}" name = "streetName">
-                    <label for = "houseNumber">House number</label>
-                    <input type = "text" id = "houseNumber" placeholder = "Enter house number" th:value = "${address.getHouseNumber()}" name = "houseNumber">
-                    <label for = "postalCode">Postal code</label>
-                    <input type = "number" id = "postalCode" placeholder = "Enter postal code" th:value = "${address.getPostalCode()}" name = "postalCode">
-                    <label for = "city">City</label>
-                    <input type = "text" id = "city"  placeholder = "Enter city" th:value = "${address.getPostalPlace()}" name = "postalPlace">
-                    <label for = "country">Country</label>
-                    <input type = "text" id = "country" placeholder = "Enter country" th:value = "${address.getCountry()}" name = "country">
-                    <input type = "submit" value = "Update address" class = "button greenButton">
+                    <label for = "streetName" class = "formLabel">Street name</label>
+                    <input type = "text" id = "streetName" placeholder = "Enter street name" class = "inputForm" th:value = "${address.getStreetName()}" name = "streetName">
+                    <label for = "houseNumber" class = "formLabel">House number</label>
+                    <input type = "text" id = "houseNumber" placeholder = "Enter house number" class = "inputForm" th:value = "${address.getHouseNumber()}" name = "houseNumber">
+                    <label for = "postalCode" class = "formLabel">Postal code</label>
+                    <input type = "number" id = "postalCode" placeholder = "Enter postal code" class = "inputForm" th:value = "${address.getPostalCode()}" name = "postalCode">
+                    <label for = "city" class = "formLabel">City</label>
+                    <input type = "text" id = "city"  placeholder = "Enter city" class = "inputForm" th:value = "${address.getPostalPlace()}" name = "postalPlace">
+                    <label for = "country" class = "formLabel">Country</label>
+                    <input type = "text" id = "country" placeholder = "Enter country" class = "inputForm" th:value = "${address.getCountry()}" name = "country">
+                    <span class = "message errorMessage" th:if = "${param.invalidAddressInput}">All the fields must be filled in</span>
+                    <span class = "message okMessage" th:if = "${param.changedAddress}">Address has now been updated</span>
+                    <input type = "submit" value = "Update address" class = "button greenButton submitButton">
                 </form>
             </div>
 
@@ -58,19 +62,21 @@
                     <h3>Edit password</h3>
                 </div>
                 <form class = "editForm" action="#" th:action="@{/password}" th:method="PUT">
-                    <label for = "oldPassword">Old password</label>
-                    <span id = "invalidPassword" class = "formHelpText"></span>
-                    <input type = "password" id = "oldPassword" placeholder = "Enter old password" class = "input" name = "oldPassword">
-                    <label for = "newPassword">New password</label>
-                    <input type = "password" id = "newPassword" placeholder = "Enter new password" name = "password">
-                    <span id = "newPasswordHelp">The password must be 8 letters in length</span>
-                    <label for = "twicePassword">Confirm new password</label>
-                    <input type = "password" id = "twicePassword" placeholder = "Enter the new password again" name = "secondPassword">
-                    <span id = "passwordMismatch">The passwords does not match</span>
-                    <input type="submit" value = "Change password" class = "button greenButton">
+                    <label for = "oldPassword" class = "formLabel">Old password</label>
+                    <input type = "password" id = "oldPassword" placeholder = "Enter old password" class = "inputForm" name = "oldPassword">
+                    <label for = "newPassword" class = "formLabel">New password</label>
+                    <input type = "password" id = "newPassword" placeholder = "Enter new password" class = "inputForm" name = "password">
+                    <span id = "newPasswordHelp" class = "message">The password must be 8 letters in length</span>
+                    <label for = "twicePassword" class = "formLabel">Confirm new password</label>
+                    <input type = "password" id = "twicePassword" placeholder = "Enter the new password again" class = "inputForm" name = "secondPassword">
+                    <span th:if = "${param.passwordChanged}" class = "message okMessage">The password has now been changed</span>
+                    <span th:if = "${param.passwordMisMatch}" class = "message errorMessage">The new passwords must match</span>
+                    <span th:if = "${param.oldPasswordMisMatch}" class = "message errorMessage">The old password was incorrect.</span>
+                    <span th:if = "${param.invalidPasswordInput}" class = "message">All the password fields must be filled in</span>
+                    <input type="submit" value = "Change password" class = "button greenButton submitButton">
                 </form>
             </div>
-            <a href="profile.html" id = "backToProfile" class="button greenButton">
+            <a th:href="@{/profile}" id = "backToProfile" class="button greenButton">
                 Back to profile
             </a>
 

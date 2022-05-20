@@ -1,6 +1,11 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 
+import no.ntnu.appdev.group15.teawebsitebackend.model.User;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.OrderJPA;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.OrderRegister;
+import no.ntnu.appdev.group15.teawebsitebackend.security.AccessUser;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,18 +17,31 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class CartAndCheckoutController {
 
+    private OrderRegister orderRegister;
+
     /**
      * Makes an instance of the CartAndCheckoutController class.
      */
-    public CartAndCheckoutController() {
-
+    public CartAndCheckoutController(OrderJPA orderJPA) {
+        this.orderRegister = orderJPA;
     }
 
 
     @GetMapping("/cart")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public String getCart(Model model){
+    public String getCart(Model model, Authentication authentication){
+        User user = getAccessUser(authentication).getUser();
+        model.addAttribute("cart", user.getCart());
         return "cart";
+    }
+
+    /**
+     * Gets the access user that is using the page.
+     * @param authentication the authentication object.
+     * @return the access user of this session.
+     */
+    private AccessUser getAccessUser(Authentication authentication){
+        return (AccessUser) authentication.getPrincipal();
     }
 
     /**
