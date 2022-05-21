@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <body>
     <header id = "headerWrapper" th:fragment="header">
         <div id = "menu">
@@ -71,22 +71,22 @@
 
                         </div>
                     </div>
-                    <div class = "profileOption">
+                    <div class = "profileOption" th:if="${!loggedIn}">
                         <a th:href = "@{/login}">
                             Login
                         </a>
                     </div>
-                    <div class = "profileOption">
+                    <div class = "profileOption" th:if="${loggedIn}">
                         <a th:href = "@{/profile}">
                             My profile
                         </a>
                     </div>
-                    <div class = "profileOption">
+                    <div class = "profileOption" th:if="${loggedIn}">
                         <a th:href = "@{/formerOrders}">
                             My orders
                         </a>
                     </div>
-                    <div class = "profileOption">
+                    <div class = "profileOption" th:if="${loggedIn}">
                         <a th:href="@{/logout}">
                             Logout
                         </a>

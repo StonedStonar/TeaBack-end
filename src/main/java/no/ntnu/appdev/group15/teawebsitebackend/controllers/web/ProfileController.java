@@ -44,19 +44,6 @@ public class ProfileController {
         this.orderRegister = orderJPA;
     }
 
-    /**
-     * Adds all the attributes to the model.
-     * @param model the model.
-     * @param httpSession the http session.
-     */
-    private void addAllAttributes(Model model, HttpSession httpSession){
-        Iterator<String> it = httpSession.getAttributeNames().asIterator();
-        while (it.hasNext()){
-            String attributeName = it.next();
-            model.addAttribute(attributeName, httpSession.getAttribute(attributeName));
-            httpSession.removeAttribute(attributeName);
-        }
-    }
 
     @GetMapping("/registerUser")
     public String registerUser(Model model, HttpSession httpSession){
@@ -68,7 +55,6 @@ public class ProfileController {
     public RedirectView makeUser(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
                                  @RequestParam("eMail") String eMail, @RequestParam("phoneNumber") String phoneNumber, @RequestParam("password") String password,
                                  @RequestParam("secondPassword") String secondPassword, HttpSession httpSession){
-
         ParameterBuilder parameterBuilder = new ParameterBuilder("registerUser");
         try {
             checkString(password, "password");
@@ -185,6 +171,7 @@ public class ProfileController {
     @GetMapping("/formerOrders")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String getFormerOrders(Model model, Authentication authentication){
+        addLoggedInAttributes(authentication, model);
         User user = getAccessUser(authentication).getUser();
         List<Order> orders = orderRegister.getAllOrdersOfUser(user.getUserId());
         model.addAttribute("orders", orders);
@@ -198,10 +185,8 @@ public class ProfileController {
     }
 
     private String getProfilePage(Authentication authentication, Model model){
+        addLoggedInAttributes(authentication, model);
         User user = getAccessUser(authentication).getUser();
-        if (authentication != null){
-            authentication.getAuthorities().forEach(System.err::println);
-        }
         addUserToModel(model, user);
         addAddressToModel(model, user);
 
@@ -210,13 +195,15 @@ public class ProfileController {
 
 
     @GetMapping("/login")
-    public String getLoginPage(){
+    public String getLoginPage(Authentication authentication, Model model){
+        addLoggedInAttributes(authentication, model);
         return "login";
     }
 
     @GetMapping("/editProfile")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String getEditProfilePage(Model model, Authentication authentication, HttpSession httpSession){
+        addLoggedInAttributes(authentication, model);
         User user = getAccessUser(authentication).getUser();
         addAllAttributes(model, httpSession);
         addUserToModel(model, user);
@@ -273,6 +260,30 @@ public class ProfileController {
     private void checkIfObjectIsNull(Object object, String error) {
         if (object == null) {
             throw new IllegalArgumentException("The " + error + " cannot be null.");
+        }
+    }
+
+    /**
+     * Adds a logged in attribute to the model.
+     * @param authentication the authentication.
+     * @param model the model.
+     */
+    private void addLoggedInAttributes(Authentication authentication, Model model){
+        boolean loggedIn = authentication != null;
+        model.addAttribute("loggedIn", loggedIn);
+    }
+
+    /**
+     * Adds all the attributes to the model.
+     * @param model the model.
+     * @param httpSession the http session.
+     */
+    private void addAllAttributes(Model model, HttpSession httpSession){
+        Iterator<String> it = httpSession.getAttributeNames().asIterator();
+        while (it.hasNext()){
+            String attributeName = it.next();
+            model.addAttribute(attributeName, httpSession.getAttribute(attributeName));
+            httpSession.removeAttribute(attributeName);
         }
     }
 

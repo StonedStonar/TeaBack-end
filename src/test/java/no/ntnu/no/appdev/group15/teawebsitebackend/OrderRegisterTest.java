@@ -75,7 +75,7 @@ public class OrderRegisterTest {
         }
         user = userJPA.loginToUser("bjarne@bjarn.com", "pass");
         if (companyJPA.getAllCompanies().isEmpty()){
-            companyJPA.addCompany(new Company("hei", new CompanyDetails("Faa", user.getAddress())));
+            companyJPA.addCompany(new Company("hei", new CompanyDetails("Faa", new Address(2910, "Aurdal", "Raskebakkin", 9, "Norge"))));
         }
         Company company = companyJPA.getAllCompanies().get(0);
         if (productJPA.getAllProducts().isEmpty()){

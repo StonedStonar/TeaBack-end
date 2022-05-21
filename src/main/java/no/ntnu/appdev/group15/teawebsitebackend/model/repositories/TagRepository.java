@@ -20,6 +20,6 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
      * @param tagName the tag to look for.
      * @return the optional that might contain the wanted tag.
      */
-    @Query(value = "SELECT * FROM tag WHERE tagName = :tagName", nativeQuery = true)
+    @Query(value = "SELECT * FROM tags WHERE tagName = :tagName", nativeQuery = true)
     Optional<Tag> getTagWithTagName(@Param("tagName") String tagName);
 }

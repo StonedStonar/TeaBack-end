@@ -72,9 +72,6 @@ public class Order {
         checkIfDateIsBeforeOrEqualToCurrentDate(dateOfOrder);
         this.dateOfOrder = dateOfOrder;
 
-        //checkIfObjectIsNull(shippedDate, "Shipped date");
-        //this.shippedDate = null;
-
         checkString(paymentMethod, "Payment method");
         this.paymentMethod = paymentMethod;
 

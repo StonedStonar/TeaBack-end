@@ -6,6 +6,8 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagE
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 /**
@@ -18,7 +20,7 @@ public class ProductDetails extends Details{
 
     private String ingredients;
 
-    @Transient
+    @ManyToMany(targetEntity = Tag.class)
     private List<Tag> tagList;
 
     public ProductDetails() {
