@@ -37,9 +37,9 @@
     <p class="orderPrice" >
       <span th:text = "${order.getTotalPrice()}">899</span>,- kr
     </p>
-    <a href="#">
+    <button class = "arrowButton">
       <img src="#" srcset="svg/Arrow-for-dropdown-meny.svg" alt="A arrow head" class="svg logo rotatableLogo">
-    </a>
+    </button>
     <div class="order">
       <div class="orderDeatils">
         <p class="orderHeader">
@@ -57,11 +57,13 @@
         <p class="closeText wholeText" th:text = "${order.getUser().getFullName()}">
           Navn navnesen
         </p>
-        <p class="closeText wholeText" th:text = "${order.getAddress().getStreetNameWithHouseNumber()}">
-          Ålesundvegen 65
+        <p class="closeText wholeText">
+          <span th:text = "${order.getAddress().getStreetName()}">Ålesundvegen</span>
+          <span th:text = "${order.getAddress().getHouseNumber()}">65</span>
         </p>
-        <p class="wholeText closeText" th:text = "${order.getAddress().getPostalPlaceWithCode()}">
-          6015 Ålesund
+        <p class="wholeText closeText">
+          <span th:text = "${order.getAddress().getPostalCode()}">6015</span>
+          <span th:text = "${order.getAddress().getPostalPlace()}">Ålesund</span>
         </p>
       </div>
       <div class="orderDeatils">
@@ -128,7 +130,7 @@
           Delivery cost
         </p>
         <p>
-          0,-
+          <span>0</span>,-
         </p>
         <p class="underHeader costHeader">
           Total cost

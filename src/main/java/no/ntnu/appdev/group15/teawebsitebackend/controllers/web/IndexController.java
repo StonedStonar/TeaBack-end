@@ -2,7 +2,9 @@ package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
@@ -23,10 +25,21 @@ public class IndexController {
     }
 
     @GetMapping("/index")
-    public String getIndex(){
+    public String getIndex(Authentication authentication, Model model){
+        addLoggedInAttributes(authentication, model);
         return "index";
     }
 
+
+    /**
+     * Adds a logged in attribute to the model.
+     * @param authentication the authentication.
+     * @param model the model.
+     */
+    private void addLoggedInAttributes(Authentication authentication, Model model){
+        boolean loggedIn = authentication != null;
+        model.addAttribute("loggedIn", loggedIn);
+    }
     /**
      * Checks if a string is of a valid format or not.
      *

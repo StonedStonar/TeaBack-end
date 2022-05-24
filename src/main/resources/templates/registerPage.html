@@ -1,16 +1,104 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang = "en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Register user page</title>
-        <link th:href="@{/css/basic.css}" rel = "stylesheet" type="text/css">
-        <link th:href="@{/css/login.css}" rel="stylesheet" type="text/css">
-        <link th:href="@{/css/registerAccount.css}" rel="stylesheet" type="text/css">
+        <link href = "CSS/basic.css" rel = "stylesheet" type="text/css">
+        <link href="CSS/login.css" rel="stylesheet" type="text/css">
+        <link href="CSS/registerAccount.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <header id = "headerWrapper" th:replace="components/menu :: header">
+        <header id = "menu">
+            <div id = "hamburgerMenu" class = "mobileElement" onclick = "openMenu()">
+                <span class = "logoContainer">
+                    <img src = "#" srcset = "svg/Menu.svg" alt = "Hamburger menu" class = "svg logo">
+                    <span>
+                        Menu
+                    </span>
+                </span>
+            </div>
+            <div id = "search" onclick = "openSearch()">
+                <span class = "logoContainer">
+                    <img src = "#" srcset = "svg/search.svg" alt = "Looking glass logo" class = "svg logo">
+                    <span>
+                        Search
+                    </span>
+                </span>
+            </div>
+            <a href = "index.html" id = "companyHeader">
+                <h1>
+                    NORTE
+                </h1>
+            </a>
+            <nav id = "sideMenu">
+                <span id = "exit" class = "mobileElement" onclick = "closeMenu()">
+                    <img src = "#" srcset = "svg/cross.svg" alt = "Image of a cross logo" class = "svg logo">
+                </span>
+                <a href = "products.html" class = "menuOption">
+                    Products
+                </a>
+                <a href = "products.html" class = "menuOption">
+                    Sale
+                </a>
+                <a href = "contactUs.html" class = "menuOption">
+                    Contact us
+                </a>
+                <a href = "aboutUs.html" class = "menuOption">
+                     About us
+                </a> 
+            </nav>
+            <form id = "searchForm">
+                <label for = "productSearch">
+                    Search
+                </label>
+                <img src = "#" srcset = "svg/search.svg" alt = "Search button" class = "svg logo">
+                <input type = "search" id = "productSearch" name="productSearch">
+            </form>
+            <div id = "cartMenu">
+                <a href = "cart.html" class = "logoContainer">
+                    <img src = "#" srcset = "svg/shoppingcart.svg" alt = "A shoppingcart" class = "svg logo">
+                    <span>
+                        Cart
+                    </span>
+                </a>
+            </div>
+            <div id = "profileMenu" onmousedown = "openProfileMenu" >
+                <span class = "logoContainer" onclick = "openProfileMenu()">
+                    <img src = "#" srcset = "svg/profile.svg" alt = "A human looking logo" class = "svg logo">
+                    <span>
+                        Profile
+                    </span>
+                </span>
+                <div id = "profileMenuOptions">
+                    <div >
+                        <div id = "profileTriangle">
+
+                        </div>
+                    </div>
+                    <div class = "profileOption">
+                        <a href = "Login.html">
+                            Login
+                        </a>
+                    </div>
+                    <div class = "profileOption">
+                        <a href = "profile.html">
+                            My profile
+                        </a>
+                    </div>
+                    <div class = "profileOption">
+                        <a href = "formerOrder.html">
+                            My orders
+                        </a>
+                    </div>
+                    <div class = "profileOption">
+                        <a href="index.html">
+                            Logout
+                        </a>
+                    </div>
+                </div>   
+            </div> 
         </header>
         <script src = "javascript/menu.js">   
         </script>
@@ -19,29 +107,20 @@
             <h2  class="mainHeaderText">
                 Create Account
             </h2>
-            <form class="enter-details" th:action = "@{/makeUser}" th:method = "POST">
+            <form class="enter-details">
                 <div class="enter-account-details">
                     <label for="firstName" class="loginLabel">First name</label>
-                    <input type="text" id="firstName" placeholder="Enter first name" name = "firstName" th:value="${firstName != null} ? ${firstName} : ''">
+                    <input type="text" id="firstName" placeholder="Enter first name" name = "firstName">
                     <label for="lastName" class="loginLabel">Last name</label>
-                    <input type="text" id="lastName" placeholder="Enter last name" name = "lastName" th:value="${lastName != null} ? ${lastName} : ''">
+                    <input type="text" id="lastName" placeholder="Enter last name" name = "lastName">
                     <label for="email" class="loginLabel">Email</label>
-                    <input type="text" id="email" placeholder="Enter email address" name = "eMail" th:value="${eMail != null} ? ${eMail} : ''">
-                    <label for="phoneNumber" class = "loginLabel">Phone number</label>
-                    <input type="number" id="phoneNumber" placeholder="Enter phone number" name = "phoneNumber" th:value="${phoneNumber != null} ? ${phoneNumber} : ''">
-                    <label for="password" class="loginLabel">Password</label>
+                    <input type="text" id="email" placeholder="Enter email adress" name = "eMail">
+                    <label for="phoneNumber" class="loginLabel">Phone number</label>
+                    <input type="number" id="phoneNumber" placeholder="Enter phone number" name = "phoneNumber">
+                    <label for="password" class="password">Password</label>
                     <input type="password" id="password" placeholder="Enter at least 6 characters" name = "password">
                     <label for="re-enter-password" class="loginLabel">Re enter password</label>
                     <input type="password" id="re-enter-password" placeholder="Re enter the same password" name = "secondPassword">
-                    <span th:if="${param.userMade}">
-                        The user has now been made.
-                    </span>
-                    <span th:if="${param.invalidEmail}">
-                        The email is already in use.
-                    </span>
-                    <span th:if="${param.passwordMismatch}">
-                        The passwords does not match
-                    </span>
                     <input type="submit" value="Register user" id="sign-in" class="button">
                 </div>
                 
@@ -51,7 +130,119 @@
                 </a>
             </form>
         </section>
-        <footer id= "footerWrapper" th:replace="/components/footer :: footer">
+
+        <footer id= "footer">
+            <div class="sectionFooter">
+                <a href = "index.html" id="footerLogo">
+                    <span>
+                        NORTE
+                    </span>
+                    <span>
+                        For tea lovers
+                    </span>
+                </a>
+    
+                
+                <div id="addressFooter">
+                    <span>
+                        Contact Information
+                    </span>
+                    <span>
+                        NORTE AS,
+                    </span>
+                    <span>
+                        LegitAddress 69,
+                    </span> 
+                    <span>
+                        6015 Ålesund
+                    </span>
+                </div>
+                <div id="contactInformation">
+                    <a href="tel:82097082">
+                        <span>
+                            820 97 082
+                        </span>
+                     </a>   
+                    <a href = "mailto:norte@professionalemail.com">
+                        <span>
+                            norte@professionalemail.com
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <div class="sectionFooter" id = "pressButton">
+                <a href="contactUs.html" class="buttonFooter">
+                    <span>
+                        Home
+                    </span>
+                </a>
+                <a href="aboutUs.html" class="buttonFooter">
+                    <span>
+                        About us
+                    </span>
+                </a>
+                <a href="login.html" class="buttonFooter">
+                    <span>
+                        Log in
+                    </span>
+                </a>
+                
+            </div>
+            <div class="sectionFooter">
+                <div class="rightFooterDiv">
+                    <a href="https://twitter.com/">
+                        <img src="Images/twitterLogoBlack.png" alt="twitter logo" class = "logoSocials">
+                    </a>
+                    <a href="https://instagram.com/">
+                        <img src="Images/instagramLogo.png" alt="Instagram logo" class = "logoSocials">
+                    </a>
+                    <a href="https://facebook.com/">
+                        <img src="Images/facebookLogo.png" alt="Facebook logo" class = "logoSocials">
+                    </a>
+                </div>
+                <div class="rightFooterDiv" id="companies">
+                    <span>
+                        We cooperate with:
+                    </span>
+                    <a href="https://www.yogitea.com/nb/">
+                        <span>
+                            Yogi Tea
+                        </span>
+                    </a>
+                    <a href="https://www.ahmadtea.com/">
+                        <span>
+                            Ahmad Tea
+                        </span>
+                    </a>
+                    <a href="https://www.clipper-teas.com/">
+                        <span>
+                            Clipper Tea
+                        </span>
+                    </a>
+                    <a href="https://www.pukkaherbs.com/no/no">
+                        <span>
+                            Pukka Tea
+                        </span>
+                    </a>
+                </div>
+                <div class="rightFooterDiv" id="donators">
+                    <span>
+                        Feel free to support
+                    </span>
+                    <div id="fairtradeLogo">
+                        <a href="https://www.fairtrade.no/">
+                            <img src="Images/FairtradeLogo.jpg" alt="Fairtrade link" class="logoSupport">
+                        </a>
+                    </div>
+                    <div id="amnestyLogo">
+                        <a href="https://amnesty.no/">
+                            <img src="Images/Amnesty_logo_RGB_yellow.png" alt="Amnesty link" class="logoSupport">
+                        </a>
+                    </div>
+                </div>
+            
+            </div>
+    
         </footer>
     </body>
 </html>

@@ -4,13 +4,10 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * A class holding the details of the authenticated user.
@@ -30,6 +27,17 @@ public class AccessUser implements UserDetails {
     public AccessUser(User user) {
         checkIfObjectIsNull(user, "user");
         this.user = user;
+        authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
+    }
+
+    /**
+     * Sets the user.
+     * @param user the user.
+     */
+    public void setUser(User user){
+        checkIfObjectIsNull(user, "user");
+        this.user = user;
+        authorities.clear();
         authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
     }
 

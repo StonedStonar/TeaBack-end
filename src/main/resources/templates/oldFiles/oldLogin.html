@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,31 +7,31 @@
         <title>Login Page</title>
         <link th:href="@{/css/basic.css}" rel = "stylesheet" type="text/css">
         <link th:href="@{/css/login.css}" rel="stylesheet" type="text/css">
-        <link th:href="@{/css/form.css}" rel = "stylesheet" type="text/css">
     </head>
     <body>
-    <header id = "headerWrapper" th:replace="components/menu :: header">
-    </header>
+        <header id = "headerWrapper" th:replace="components/menu :: header">
+        </header>
         <section class="mainSection">
             <h2  class="mainHeaderText">
                 Log in
             </h2>
             <div class = "enter-details">
                 <form class="enter-account-details" action="login" method="POST">
-                    <label for="email" class="formLabel">Email</label>
-                    <input type="text" class = "inputForm" id = "email" placeholder="Enter email adress" name = "username">
-                    <label for="password" class="formLabel">Password</label>
-                    <input type="password" class = "inputForm" id="password" placeholder="Enter password" name = "password">
-                    <span class = "message" th:unless="${param.error}">
+                    <label for="email" class="email">Email</label>
+                    <input type="text" id = "email" name = "username" placeholder="Enter email adress">
+                    <label for="password" class="password">Password</label>
+                    <input type="password" id="password" name = "password" placeholder="Enter password">
+                    <span th:unless="${param.error}">
                         Password must be at least 6 characters long
                     </span>
-                    <span class = "message errorMessage" th:if="${param.error}">
-                        The credentials does not match any user in the system.
+                    <span th:if="${param.error}">
+                        The credentials entered is not valid. Please try again.
                     </span>
+
                     <a href="forgotPassword.html">
                         Forgot Password?
                     </a>
-                    <input type="submit" value="Sign in" id="sign-in" class="button greenButton submitButton">
+                    <input type="submit" value="Sign in" id="sign-in" class="button greenButton">
                 </form>
                 <h3>Not a member yet?</h3>
                 <a th:href="@{/registerUser}">
@@ -39,9 +39,8 @@
                 </a>
             </div>
         </section>
-        <script src = "javascript/menu.js">
-        </script>
         <footer id= "footerWrapper" th:replace="/components/footer :: footer">
         </footer>
+        <script type="text/javascript" th:src="@{/javascript/menu.js}"></script>
     </body>
 </html>

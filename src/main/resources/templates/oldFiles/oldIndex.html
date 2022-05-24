@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org" >
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +8,11 @@
         <link th:href="@{/css/basic.css}" rel = "stylesheet" type="text/css">
         <link th:href="@{/css/index.css}" rel="stylesheet" type="text/css">
         <link th:href="@{/css/card.css}" rel = "stylesheet" type="text/css">
-
+        
     </head>
     <body>
-    <header id = "headerWrapper" th:replace="components/menu :: header">
-    </header>
+        <header id = "headerWrapper" th:replace="components/menu :: header">
+        </header>
         <script src = "javascript/menu.js">   
         </script>
         <section class = "mainSection">
@@ -24,7 +24,7 @@
                     <div class = "topButtonsWrapper">
                         <a href="products.html" class="frontpageButton">
                             <span>
-                                Find your herbal friend or other products
+                                All products
                             </span>
                         </a>
                         <a href="products.html" class="frontpageButton"> <!--Change to link to sales instead of products-->
@@ -33,8 +33,7 @@
                             </span>
                         </a>
                     </div>
-                    <img src="Images/cupAndPlant.jpg" class ="teacupImage"
-                        alt="SOMETHING">
+                    <img th:src="@{Images/cupAndPlant.jpg}"alt="SOMETHING">
                     <figcaption> Picture downloaded from unsplash.com, by Massimo Rinaldi </figcaption>
                 </figure>
                 
@@ -44,8 +43,7 @@
                     We can offer tea for every occasion!
                 </h2>
                 <figure class ="teaCupFrontPage">
-                    <img src="Images/teaLightsBook.jpg" class ="teacupImage"
-                        alt="SOMETHING">
+                    <img th:src="@{Images/teaLightsBook.jpg}" alt="SOMETHING">
                     <figcaption> Picture downloaded from unsplash.com, by SVITLANA </figcaption>
                 </figure>
                 <div class ="theOccasions">
@@ -55,7 +53,7 @@
                     <div class ="card-container">
                         <a href="product-info.html" class="card">
                             <div class="card-header">
-                                <img src="Images/greentea-cropped.jpg" alt="Tea card picture">
+                                <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture">
                                 <div class="card-title">Blackberry Leaf Tea</div>
                                 <div class="card-description">Tea ingredients from the nature of norway</div>
                             </div>
@@ -76,7 +74,7 @@
                         </a>
                         <a href="product-info.html" class="card">
                             <div class="card-header">
-                                <img src="Images/greentea-cropped.jpg" alt="Tea card picture">
+                                <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture">
                                 <div class="card-title">Blackberry Leaf Tea</div>
                                 <div class="card-description">Tea ingredients from the nature of norway</div>
                             </div>
@@ -97,7 +95,7 @@
                         </a>
                         <a href="product-info.html" class="card">
                             <div class="card-header">
-                                <img src="images/greentea-cropped.jpg" alt="Tea card picture">
+                                <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture"></img>
                                 <div class="card-title">Blackberry Leaf Tea</div>
                                 <div class="card-description">Tea ingredients from the nature of norway</div>
                             </div>
@@ -118,7 +116,7 @@
                         </a>
                         <a href="product-info.html" class="card">
                             <div class="card-header">
-                                <img src="images/greentea-cropped.jpg" alt="Tea card picture">
+                                <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture">
                                 <div class="card-title">Blackberry Leaf Tea</div>
                                 <div class="card-description">Tea ingredients from the nature of norway</div>
                             </div>
@@ -145,7 +143,7 @@
                     <div class = "card-container">
                         <a href="product-info.html" class="card">
                             <div class="card-header">
-                                <img src="images/greentea-cropped.jpg" alt="Tea card picture">
+                                <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture"></img>
                                 <div class="card-title">Blackberry Leaf Tea</div>
                                 <div class="card-description">Tea ingredients from the nature of norway</div>
                             </div>
@@ -166,7 +164,7 @@
                         </a>
                         <a href="product-info.html" class="card">
                             <div class="card-header">
-                                <img src="images/greentea-cropped.jpg" alt="Tea card picture">
+                                <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture">
                                 <div class="card-title">Blackberry Leaf Tea</div>
                                 <div class="card-description">Tea ingredients from the nature of norway</div>
                             </div>
@@ -187,7 +185,7 @@
                         </a>
                         <a href="product-info.html" class="card">
                             <div class="card-header">
-                                <img src="images/greentea-cropped.jpg" alt="Tea card picture">
+                                <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture">
                                 <div class="card-title">Blackberry Leaf Tea</div>
                                 <div class="card-description">Tea ingredients from the nature of norway</div>
                             </div>
@@ -208,7 +206,7 @@
                         </a>
                         <a href="product-info.html" class="card">
                             <div class="card-header">
-                                <img src="Images/greentea-cropped.jpg" alt="Tea card picture">
+                                <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture">
                                 <div class="card-title">Blackberry Leaf Tea</div>
                                 <div class="card-description">Tea ingredients from the nature of norway</div>
                             </div>
@@ -235,7 +233,7 @@
                     <div class ="card-container">
                         <a href="product-info.html" class="card">
                             <div class="card-header">
-                                <img src="images/greentea-cropped.jpg" alt="Tea card picture">
+                                <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture">
                                 <div class="card-title">Blackberry Leaf Tea</div>
                                 <div class="card-description">Tea ingredients from the nature of norway</div>
                             </div>
@@ -256,7 +254,7 @@
                         </a>
                         <a href="product-info.html" class="card">
                             <div class="card-header">
-                                <img src="images/greentea-cropped.jpg" alt="Tea card picture">
+                                <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture">
                                 <div class="card-title">Blackberry Leaf Tea</div>
                                 <div class="card-description">Tea ingredients from the nature of norway</div>
                             </div>
@@ -277,7 +275,7 @@
                         </a>
                         <a href="product-info.html" class="card">
                             <div class="card-header">
-                                <img src="Images/greentea-cropped.jpg" alt="Tea card picture">
+                                <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture">
                                 <div class="card-title">Blackberry Leaf Tea</div>
                                 <div class="card-description">Tea ingredients from the nature of norway</div>
                             </div>
@@ -298,7 +296,7 @@
                         </a>
                         <a href="product-info.html" class="card">
                             <div class="card-header">
-                                <img src="Images/greentea-cropped.jpg" alt="Tea card picture">
+                                <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture">
                                 <div class="card-title">Blackberry Leaf Tea</div>
                                 <div class="card-description">Tea ingredients from the nature of norway</div>
                             </div>
@@ -325,7 +323,7 @@
                     <div class ="card-container">
                         <a href="product-info.html" class="card">
                             <div class="card-header">
-                                <img src="images/greentea-cropped.jpg" alt="Tea card picture">
+                                <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture">
                                 <div class="card-title">Blackberry Leaf Tea</div>
                                 <div class="card-description">Tea ingredients from the nature of norway</div>
                             </div>
@@ -346,7 +344,7 @@
                         </a>
                         <a href="product-info.html" class="card">
                             <div class="card-header">
-                                <img src="images/greentea-cropped.jpg" alt="Tea card picture">
+                                <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture">
                                 <div class="card-title">Blackberry Leaf Tea</div>
                                 <div class="card-description">Tea ingredients from the nature of norway</div>
                             </div>
@@ -367,7 +365,7 @@
                         </a>
                         <a href="product-info.html" class="card">
                             <div class="card-header">
-                                <img src="Images/greentea-cropped.jpg" alt="Tea card picture">
+                                <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture">
                                 <div class="card-title">Blackberry Leaf Tea</div>
                                 <div class="card-description">Tea ingredients from the nature of norway</div>
                             </div>
@@ -388,7 +386,7 @@
                         </a>
                         <a href="product-info.html" class="card">
                             <div class="card-header">
-                                <img src="Images/greentea-cropped.jpg" alt="Tea card picture">
+                                <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture">
                                 <div class="card-title">Blackberry Leaf Tea</div>
                                 <div class="card-description">Tea ingredients from the nature of norway</div>
                             </div>
@@ -432,8 +430,7 @@
                                     </span>
                                 </a>
                             </div>
-                            <img src="Images/cupAndPlant.jpg" alt="cup and plant" class = "teacupImage">
-                                alt="SOMETHING">
+                            <img th:src="@{Images/cupAndPlant.jpg}" alt="SOMETHING">
                             <figcaption> Picture downloaded from unsplash.com, by Massimo Rinaldi </figcaption>
                         </figure>
                     </div>
@@ -456,13 +453,10 @@
                             </a>
                         </div>
                     </div>
-                    <img src="Images/herbsInFIeld.jpg" class = "teacupImage"
-                        alt="SOMETHING">
+                    <img src="Images/herbsInFIeld.jpg" alt="SOMETHING">
                     <figcaption> Picture downloaded from unsplash.com, by Massimo Rinaldi </figcaption>
                 </figure>
-                
             </div>
-        
         </section>
         <footer id= "footerWrapper" th:replace="/components/footer :: footer">
         </footer>

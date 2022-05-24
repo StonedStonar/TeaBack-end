@@ -1,29 +1,27 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 
+import no.ntnu.appdev.group15.teawebsitebackend.model.Address;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
 import no.ntnu.appdev.group15.teawebsitebackend.model.User;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.OrderJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddUserException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotChangePasswordException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetUserException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.OrderRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.security.AccessUser;
-import org.springframework.boot.Banner;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * @author Steinar Hjelle Midthus
@@ -46,15 +44,10 @@ public class ProfileController {
         this.orderRegister = orderJPA;
     }
 
+
     @GetMapping("/registerUser")
     public String registerUser(Model model, HttpSession httpSession){
-        Iterator<String> it = httpSession.getAttributeNames().asIterator();
-        while (it.hasNext()){
-            String attributeName = it.next();
-            model.addAttribute(attributeName, httpSession.getAttribute(attributeName));
-            httpSession.removeAttribute(attributeName);
-        }
-
+        addAllAttributes(model, httpSession);
         return "registerPage";
     }
 
@@ -62,7 +55,6 @@ public class ProfileController {
     public RedirectView makeUser(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
                                  @RequestParam("eMail") String eMail, @RequestParam("phoneNumber") String phoneNumber, @RequestParam("password") String password,
                                  @RequestParam("secondPassword") String secondPassword, HttpSession httpSession){
-
         ParameterBuilder parameterBuilder = new ParameterBuilder("registerUser");
         try {
             checkString(password, "password");
@@ -90,10 +82,30 @@ public class ProfileController {
     }
 
     @PutMapping("/user")
-    public String updateProfile(@RequestParam Map<String, String> map){
-        System.err.println("Hei");
+    public RedirectView updateProfile(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
+                                @RequestParam("eMail") String eMail, @RequestParam("phoneNumber") long phoneNumber,
+                                Authentication authentication){
+        ParameterBuilder parameterBuilder = new ParameterBuilder("editProfile");
+        AccessUser accessUser = getAccessUser(authentication);
+        User user = accessUser.getUser();
+        try {
+            checkString(firstName, "first name");
+            checkString(lastName, "last name");
+            checkString(eMail, "email");
+            checkIfLongIsAboveZero(phoneNumber, "phone number");
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setEmail(eMail);
+            user.setPhoneNumber(phoneNumber);
+            userRegister.updateUser(user);
+            parameterBuilder.addParameter("changedDetails", "true");
+        }catch (IllegalArgumentException exception){
+            parameterBuilder.addParameter("invalidField", "true");
+        } catch (CouldNotGetUserException e) {
+            parameterBuilder.addParameter("criticalError", "true");
+        }
 
-        return "redirect:/profile?error=true";
+        return new RedirectView(parameterBuilder.buildString(), true);
     }
 
 //    @PostMapping("/address")
@@ -107,22 +119,63 @@ public class ProfileController {
 //        //return "redirect:/profile";
 //    }
 
+    @PutMapping("/password")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public RedirectView updatePassword(@RequestParam("password") String password, @RequestParam("oldPassword") String oldPassword,
+                                       @RequestParam("secondPassword") String secondPassword, Authentication authentication){
+        ParameterBuilder parameterBuilder = new ParameterBuilder("editProfile");
+        AccessUser accessUser = getAccessUser(authentication);
+        User user = accessUser.getUser();
+        try {
+            checkString(password, "password");
+            checkString(secondPassword, "second password");
+            if (password.equals(secondPassword)){
+                user.changePassword(oldPassword, password);
+                userRegister.updateUser(user);
+                parameterBuilder.addParameter("passwordChanged", "true");
+            }else {
+                parameterBuilder.addParameter("passwordMisMatch", "true");
+            }
+        } catch (CouldNotChangePasswordException exception) {
+            parameterBuilder.addParameter("oldPasswordMisMatch", "true");
+        } catch (IllegalArgumentException exception){
+            parameterBuilder.addParameter("invalidPasswordInput", "true");
+        } catch (CouldNotGetUserException exception) {
+            parameterBuilder.addParameter("fatalPasswordError", "true");
+        }
+        return new RedirectView(parameterBuilder.buildString(), true);
+    }
+
     @PutMapping("/address")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public String updateAddress(@RequestParam Map<String, String> map, Authentication authentication){
-        System.err.println("Hei");
+    public RedirectView updateAddress(@RequestParam("streetName") String streetName, @RequestParam("houseNumber") int houseNumber,
+                                @RequestParam("postalCode") int postalCode, @RequestParam("postalPlace") String postalPlace,
+                                @RequestParam("country") String country, Authentication authentication){
+        ParameterBuilder parameterBuilder = new ParameterBuilder("editProfile");
+        AccessUser accessUser = getAccessUser(authentication);
+        User user = accessUser.getUser();
+        try {
+            Address address = new Address(postalCode, postalPlace, streetName, houseNumber, country);
+            user.setAddress(address);
+            userRegister.updateUser(user);
+            parameterBuilder.addParameter("changedAddress", "true");
+        }catch (IllegalArgumentException exception){
+            parameterBuilder.addParameter("invalidAddressInput", "true");
+        }catch (CouldNotGetUserException exception){
+            parameterBuilder.addParameter("fatalAddressError", "true");
+        }
 
-        return "errors/profile";
-        //return "redirect:/profile";
+        return new RedirectView(parameterBuilder.buildString(), true);
     }
 
     @GetMapping("/formerOrders")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String getFormerOrders(Model model, Authentication authentication){
-        User user = getUser(authentication);
+        addLoggedInAttributes(authentication, model);
+        User user = getAccessUser(authentication).getUser();
         List<Order> orders = orderRegister.getAllOrdersOfUser(user.getUserId());
         model.addAttribute("orders", orders);
-        return "formerOrders";
+        return "formerOrder";
     }
 
     @GetMapping("/profile")
@@ -132,10 +185,8 @@ public class ProfileController {
     }
 
     private String getProfilePage(Authentication authentication, Model model){
-        User user = getUser(authentication);
-        if (authentication != null){
-            authentication.getAuthorities().forEach(System.err::println);
-        }
+        addLoggedInAttributes(authentication, model);
+        User user = getAccessUser(authentication).getUser();
         addUserToModel(model, user);
         addAddressToModel(model, user);
 
@@ -144,14 +195,17 @@ public class ProfileController {
 
 
     @GetMapping("/login")
-    public String getLoginPage(){
+    public String getLoginPage(Authentication authentication, Model model){
+        addLoggedInAttributes(authentication, model);
         return "login";
     }
 
     @GetMapping("/editProfile")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public String getEditProfilePage(Model model, Authentication authentication){
-        User user = getUser(authentication);
+    public String getEditProfilePage(Model model, Authentication authentication, HttpSession httpSession){
+        addLoggedInAttributes(authentication, model);
+        User user = getAccessUser(authentication).getUser();
+        addAllAttributes(model, httpSession);
         addUserToModel(model, user);
         addAddressToModel(model, user);
         return "editProfile";
@@ -176,10 +230,15 @@ public class ProfileController {
         model.addAttribute("address", user.getAddress());
     }
 
-    private User getUser(Authentication authentication){
-        AccessUser accessUser = (AccessUser) authentication.getPrincipal();
-        return accessUser.getUser();
+    /**
+     * Gets the access user that is using the page.
+     * @param authentication the authentication object.
+     * @return the access user of this session.
+     */
+    private AccessUser getAccessUser(Authentication authentication){
+        return (AccessUser) authentication.getPrincipal();
     }
+
     /**
      * Checks if a string is of a valid format or not.
      * @param stringToCheck the string you want to check.
@@ -201,6 +260,56 @@ public class ProfileController {
     private void checkIfObjectIsNull(Object object, String error) {
         if (object == null) {
             throw new IllegalArgumentException("The " + error + " cannot be null.");
+        }
+    }
+
+    /**
+     * Adds a logged in attribute to the model.
+     * @param authentication the authentication.
+     * @param model the model.
+     */
+    private void addLoggedInAttributes(Authentication authentication, Model model){
+        boolean loggedIn = authentication != null;
+        model.addAttribute("loggedIn", loggedIn);
+    }
+
+    /**
+     * Adds all the attributes to the model.
+     * @param model the model.
+     * @param httpSession the http session.
+     */
+    private void addAllAttributes(Model model, HttpSession httpSession){
+        Iterator<String> it = httpSession.getAttributeNames().asIterator();
+        while (it.hasNext()){
+            String attributeName = it.next();
+            model.addAttribute(attributeName, httpSession.getAttribute(attributeName));
+            httpSession.removeAttribute(attributeName);
+        }
+    }
+
+    /**
+     * Checks if the email is not an invalid value. Also checks that the email contains "@" and "."
+     * @param email the email to check.
+     * @throws IllegalArgumentException gets thrown if the email is invalid format.
+     */
+    private void checkIfEmailIsNotInvalid(String email){
+        checkString(email, "email");
+        String reg = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+        Pattern pattern = Pattern.compile(reg);
+        if (!pattern.matcher(email).matches()){
+            throw new IllegalArgumentException("The email must be the correct format.");
+        }
+    }
+
+    /**
+     * Checks if the input long is above zero.
+     * @param number the number to check.
+     * @param prefix the prefix the error should have.
+     * @throws IllegalArgumentException gets thrown if the number is below or equal to zero.
+     */
+    private void checkIfLongIsAboveZero(long number, String prefix){
+        if (number <= 0){
+            throw new IllegalArgumentException("The " + prefix + " must be above zero.");
         }
     }
 }

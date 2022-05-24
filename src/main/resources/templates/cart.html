@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,145 +7,116 @@
     <title>Cart</title>
     <link th:href="@{/css/basic.css}" rel = "stylesheet" type="text/css">
     <link th:href="@{/css/cart.css}" rel="stylesheet" type="text/css">
-    <link th:href="@{/css/orderedProductcard.css}" rel="stylesheet" type="text/css">
 </head>
 
 <body>
     <header id = "headerWrapper" th:replace="components/menu :: header">
     </header>
     <section class="mainSection">
-        <div id="headerCart">
-            <h2 class="mainHeaderText">
-                Cart
-            </h2>
-            <button class="button" id = "clearCartButton">
-                Clear cart
-            </button>
-        </div>
-        <div id="orderedProductContainer">
-            <p class = "topItem mobileText">
-                Products
-            </p>
-            <p class="topItem">
-                Product
-            </p>
-            <p class="topItem">
-                Amount
-            </p>
-            <p class="topItem">
-                Total cost
-            </p>
-            <p class="topItem">
-                Discount
-            </p>
-            <p class="topItem">
-                Remove
-            </p>
-            <div class="orderedProduct">
-                <div class = "productInfo">
-                    <img class="productImage" src="Images/greentea-cropped.jpg" alt="Picutre of greentea">
-                    <div class="productDetails">
-                        <p class="productName">
-                            Green tea
-                        </p>
-                        <p>
-                            Procuded by Yo Papa
-                        </p>
-                        <p class = "productID">
-                            Product ID: 1
-                        </p>
-                    </div>
-                </div>
-                <div class = "priceAndAmount">
-                    <div class="amount-to-add">
-                        <span class="minus-button">-</span>
-                        <span class="num-to-change">1</span>
-                        <span class="plus-button">+</span>
-                    </div>
-                    <div class = price>
-                        <p>
-                            <span class = "mobileText">
-                                Total
-                            </span>
-                            499,00
-                        </p>
-                        <p>
-                            <span class = "mobileText">
-                                Discount
-                            </span>
-                            10,00
-                        </p>
-                    </div>
-                    <img src="#" srcset="svg/cross.svg" alt="A cross logo for removal of product" class="logo">
-                </div>
-            </div>
-            <div class="orderedProduct">
-                <div class = "productInfo">
-                    <img class="productImage" src="Images/greentea-cropped.jpg" alt="Picutre of greentea">
-                    <div class="productDetails">
-                        <p class="productName">
-                            Green tea
-                        </p>
-                        <p>
-                            Procuded by Yo Papa
-                        </p>
-                        <p class = "productID">
-                            Product ID: 2
-                        </p>
-
-                    </div>
-                </div>
-                <div class = "priceAndAmount">
-                    <div class="amount-to-add">
-                        <span class="minus-button">-</span>
-                        <span class="num-to-change">2</span>
-                        <span class="plus-button">+</span>
-                    </div>
-                    <div class = price>
-                        <p>
-                            <span class = "mobileText">
-                                Total
-                            </span>
-                            998,00
-                        </p>
-                        <p>
-                            <span class = "mobileText">
-                                Discount
-                            </span>
-                            20,00
-                        </p>
-                    </div>
-                    <img src="#" srcset="svg/cross.svg" alt="A cross logo for removal of product" class="logo">
-                </div>
-            </div>
-        </div>
-        
-        <div id = "buttonAndSumContainer">
-            <div>
-                <div id = "summary">
-                    <span>
-                        Total sum:
-                    </span>
-                    <span id = "totalSum">
-                        1497
-                    </span>
-                    <span>
-                        Total discount:
-                    </span>
-                    <span id = "totalDiscount">
-                        30
-                    </span>
-                </div>
-                <button id = "checkOutButton" class = "button greenButton">
-                    Go to checkout
+        <form>
+            <div id="headerCart">
+                <h2 class="mainHeaderText">
+                    Cart
+                </h2>
+                <button class="button" id = "clearCartButton">
+                    Clear cart
                 </button>
             </div>
-        </div>
+            <div id="orderedProductContainer">
+                <p class = "topItem mobileText">
+                    Products
+                </p>
+                <p class="topItem">
+                    Product
+                </p>
+                <p class="topItem">
+                    Amount
+                </p>
+                <p class="topItem">
+                    Total cost
+                </p>
+                <p class="topItem">
+                    Discount
+                </p>
+                <p class="topItem">
+                    Remove
+                </p>
+                <div class="orderedProduct" th:each = "cartProduct: ${cart.getAllProducts()}">
+                    <div class = "productInfo">
+                        <img class="productImage" src="Images/greentea-cropped.jpg" alt="Picutre of greentea">
+                        <div class="productDetails">
+                            <p class="productName">
+                                Green tea
+                            </p>
+                            <p>
+                                Produced by <span th:text = "${cartProduct.getProduct().getProductName()}">Yo Papa</span>
+                            </p>
+                            <p class = "productID">
+                                Product ID: <span th:text = "${cartProduct.getProduct().getProductID()}">1</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class = "priceAndAmount">
+                        <div class="amount-to-add">
+                            <button class="minus-button" type="button">-</button>
+                            <input class="num-to-change" th:value = "${cartProduct.getAmount()}" th:name = "${cartProduct.getProduct().getProductID()}">
+                            <button class="plus-button" type="button">+</button>
+                        </div>
+                        <div class = price>
+                            <p class = "pricePer" th:text = "${cartProduct.getProduct().getPrice()}">
+                                499,00
+                            </p>
+                            <p>
+                                <span class = "mobileText">
+                                    Total
+                                </span>
+                                <span class = "totalPricePerProduct">
+                                    499,00
+                                </span>
+                            </p>
+                            <p class = "discountPer">
+                                10,00
+                            </p>
+                            <p>
+                                <span class = "mobileText">
+                                    Discount
+                                </span>
+                                <span class = "discountPerProduct">
+                                    10,00
+                                </span>
+                            </p>
+                        </div>
+                        <button class = "removeButton" type = "button">
+                            <img src="#" srcset="svg/cross.svg" alt="A cross logo for removal of product" class="logo">
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id = "buttonAndSumContainer">
+                <div>
+                    <div id = "summary">
+                        <span>
+                            Total sum:
+                        </span>
+                        <span id = "totalSum">
+                            1497
+                        </span>
+                        <span>
+                            Total discount:
+                        </span>
+                        <span id = "totalDiscount">
+                            30
+                        </span>
+                    </div>
+                    <input type = "submit" id = "checkOutButton" class = "button greenButton" value="Go to checkout">
+                </div>
+            </div>
+        </form>
         <script src = "javascript/cart.js"></script>
         <script src="javascript/menu.js"></script>
     </section>
-    <footer id= "footerWrapper" th:replace="/components/footer :: footer">
-    </footer>
+    <footer id= "footerWrapper" th:replace="/components/footer :: footer"></footer>
 </body>
 
 </html>

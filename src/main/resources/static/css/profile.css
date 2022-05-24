@@ -27,7 +27,7 @@ figure>img{
 }
 
 .personalInformation>h3{
-    border-bottom: 1px solid var(--main-secondfont-color);
+    border-bottom: 1px solid var(--main-border-color);
 }
 
 
@@ -35,6 +35,12 @@ figure>img{
     display: grid;
     width: 50%;
     grid-template-columns: 1fr 1fr;
+}
+
+.personalInformation>p:last-of-type{
+    display: flex;
+    flex-flow: column nowrap;
+    margin: 0.2em;
 }
 
 #editProfile{
@@ -52,7 +58,7 @@ figure>img{
     font-weight: bold;
 }
 
-.button>span{
+#editProfile{
     color: var(--main-secondfont-color);
 }
 
@@ -68,94 +74,54 @@ figure>img{
     color:var(--figcap-color);
 }
 
-/*Edit profile things*/
-.editForm{
-    display: flex;
-    flex-flow: column nowrap;
-    width: 100%;
-}
 
-.editProfileContainer>div{
-    min-width: 48%;
-}
 
-.editForm>label{
-    font-size: 1.1em;
-    font-weight: 500;
-}
-
-.editProfileContainer>div>h3{
-    border-bottom: 1px solid var(--main-border-color);
-}
-
-.editForm>input{
-    border-radius: 5px;
-    height: 30px;
-    margin-bottom: 1em;
-    height: 20px;
-}
-
-.editForm>input:last-of-type{
-    height: 40px;
-}
-
-.editContainer{
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1;
-    visibility: hidden;
-    background-size: cover;
-    backdrop-filter: blur(5px);
-    max-height: 0;
-    transition: visibility 0s, max-heigt 1s;
-}
-
-.headerOverlay{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.headerOverlay>.logo{
-    cursor: pointer;
-}
-
-.editContainer>div{
-    background-color: var(--main-bg-color);
-    width: 50%;
-    padding: 1em;
-}
 
 #optionsForUser{
     width: 80%;
 }
 
+.profileMenuOptions{
+    outline: none;
+    margin: 0.5em 0;
+    box-sizing: border-box;
+    padding: 0.25em;
+    margin: 1.5em 0;
+    box-shadow: 0px 4px 4px var(--main-shadow-color);
+    border-radius: 5px;
+    background-color: var(--main-secbg-color);
+    border: 1px solid var(--main-border-color);
+}
 
-@media screen and (max-width:900px) {
-   
-    .mainSection{
-        justify-content: none;
-    }
+.profileMenuOptions>a, #editPassword{
+    display: flex;
+    flex-flow: column nowrap;
+    text-decoration: none;
+    color: black;
+    width: 100%;
+}
 
-    .mainSection>div{
-        width: 100%;
-    }
+.profileMenuOptions:hover{
+    background-color: var(--hover-container-color);
+}
 
-    #deleteProfile{
-        min-width: 100%;
-    }
+.profileMenuOptions>a>span:first-child, #editPassword>span:first-of-type{
+    font-weight: bold;
+}
+
+#editPassword>span{
+    font-size: 16px;
 }
 
 
+@media screen and (max-width:900px) {
+    .mainSection>div{
+        width: 100%;
+    }
+}
 
-.openOverlay{
-    visibility: visible !important;
-    height: 100%;
-    max-height: 9999px !important;
+@media screen and (max-width:600px){
+    #profileWrapper>div{
+        width: 100%;
+    }
 }
