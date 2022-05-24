@@ -51,7 +51,7 @@ public class OrderedProductTests {
      * @return the product that was made.
      */
     private Product makeProduct(){
-        return new Product(1, "Fjell laks Te", 399.99f, 100, new ProductDetails("Lul", "Tea"), new Company());
+        return new Product(1, "Fjell laks Te", 399, 100, new ProductDetails("Lul", "Tea"), new Company());
     }
 
     /**

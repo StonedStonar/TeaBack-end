@@ -116,10 +116,10 @@ public class ProductRegisterTest {
             for (Product product : productRegister.getAllProducts()) {
                 productRegister.removeProduct(product);
             }
-            Product product = new Product( "Green Leaf Tea", 11.99f, 7, new ProductDetails("Lul", "Tea"), companies.get(0));
-            Product product1 = new Product( "Black water Leaf Tea", 9.99f, 3, new ProductDetails("Lul", "Tea"), companies.get(1));
-            Product product2 = new Product( "Mushroom High Tea", 6.99f, 2, new ProductDetails("Lul", "Tea"), companies.get(2));
-            Product product3 = new Product( "Blue Herb Tea", 5.99f, 1, new ProductDetails("Lul", "Tea"), companies.get(0));
+            Product product = new Product( "Green Leaf Tea", 1199, 7, new ProductDetails("Lul", "Tea"), companies.get(0));
+            Product product1 = new Product( "Black water Leaf Tea", 999, 3, new ProductDetails("Lul", "Tea"), companies.get(1));
+            Product product2 = new Product( "Mushroom High Tea", 699, 2, new ProductDetails("Lul", "Tea"), companies.get(2));
+            Product product3 = new Product( "Blue Herb Tea", 599, 1, new ProductDetails("Lul", "Tea"), companies.get(0));
             product.addReview(new Review("Lul", "clap", user, "Good good", LocalDate.now(), 4));
             productRegister.addProduct(product);
             productRegister.addProduct(product1);
@@ -199,7 +199,7 @@ public class ProductRegisterTest {
     @DisplayName("Tests if addProduct works with valid input.")
     public void testIfAddProductWorksWithValidInput() {
         try {
-            productRegister.addProduct(new Product("Green Leaf Tea", 11.99f, 7, new ProductDetails("Lul", "Tea"), companies.get(0)));
+            productRegister.addProduct(new Product("Green Leaf Tea", 119, 7, new ProductDetails("Lul", "Tea"), companies.get(0)));
         } catch (IllegalArgumentException | CouldNotAddProductException ex) {
             addErrorWithException("Expected the add method to work since", "the input product is not in the system.", ex);
         }
@@ -221,7 +221,7 @@ public class ProductRegisterTest {
             addErrorWithException(expectedError, "the input is null", ex);
         }
         try {
-            productRegister.removeProduct(new Product("Pepehang hard", 1000000000.99f, 3, new ProductDetails("Lul", "Tea"), new Company()));
+            productRegister.removeProduct(new Product("Pepehang hard", 10000, 3, new ProductDetails("Lul", "Tea"), new Company()));
                 addError(expectedError, "the product is not found in the system");
             } catch (IllegalArgumentException ex) {
 
@@ -347,7 +347,7 @@ public class ProductRegisterTest {
         }
         String getException = "Expected to get a CouldNotGetProductException";
         try {
-            productRegister.updateProduct(new Product(90000, "Pepeppepepe", 2992.2f, 2, new ProductDetails("Lul", "Tea"), new Company()));
+            productRegister.updateProduct(new Product(90000, "Pepeppepepe", 2992, 2, new ProductDetails("Lul", "Tea"), new Company()));
             addError(expectedError, "the product do not exist in the system");
         } catch (IllegalArgumentException ex) {
             addErrorWithException(getException, "the product do not exist in the system", ex);

@@ -1,5 +1,7 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddReviewException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveReviewException;
 
@@ -21,7 +23,7 @@ public class Product {
     private long productID;
 
     private String productName;
-    private float price;
+    private int price;
     private int amountOfProduct;
 
     @OneToOne(targetEntity = ProductDetails.class, cascade = CascadeType.ALL)
@@ -55,7 +57,9 @@ public class Product {
      * @param productDetails details written for a product.
      * @param company company information.
      */
-    public Product(long id, String productName, float price, int size, ProductDetails productDetails, Company company) {
+    @JsonCreator
+    public Product(@JsonProperty("productID")long id, @JsonProperty("productName") String productName,
+                   @JsonProperty ("price")int price, @JsonProperty ("amountOfProduct") int size, @JsonProperty ("productDetails") ProductDetails productDetails, @JsonProperty ("company") Company company) {
         checkIfNumberNotNegative( id, "id");
         this.productID = id;
 
@@ -80,7 +84,9 @@ public class Product {
      * @param productDetails details written for a product.
      * @param company company information.
      */
-    public Product(String productName, float price, int size, ProductDetails productDetails, Company company) {
+    @JsonCreator
+    public Product (@JsonProperty("productName") String productName, @JsonProperty ("price") int price, @JsonProperty ("amountOfProduct") int size,
+                    @JsonProperty ("productDetails") ProductDetails productDetails, @JsonProperty ("company") Company company) {
         this.productID = 0;
         setProductName(productName);
         setPrice(price);
@@ -128,7 +134,7 @@ public class Product {
      *
      * @return the price.
      */
-    public float getPrice() {
+    public int getPrice() {
         return price;
     }
 
@@ -136,8 +142,9 @@ public class Product {
      * Sets the price of a product.
      * @param price price to be set for a product.
      */
-    public void setPrice(float price) {
-        checkIfFloatNotNegative(price, "price");
+    public void setPrice(int price) {
+        checkIfNumberNotNegative(price, "price");
+        checkIfNumberNotNegative(price, "price");
         this.price = price;
     }
 
@@ -249,17 +256,6 @@ public class Product {
     private void checkIfObjectIsNull(Object object, String error) {
         if (object == null) {
             throw new IllegalArgumentException("The " + error + " cannot be null.");
-        }
-    }
-
-    /**
-     * Checks if an float value is above or zero so that we cannot enter negative values.
-     * @param product the product to be checked.
-     * @param error   the message the exception should hold.
-     */
-    private void checkIfFloatNotNegative(float product, String error) {
-        if (product < 0) {
-            throw new IllegalArgumentException("The " + error + " Cannot be negative values.");
         }
     }
 

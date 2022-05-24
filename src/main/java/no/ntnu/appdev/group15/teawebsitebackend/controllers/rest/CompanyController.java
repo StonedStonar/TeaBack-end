@@ -42,9 +42,21 @@ public class CompanyController {
      * @return a list with all the companies.
      */
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public List<Company> getAllCompanies() {
         return companyRegister.getAllCompanies();
+    }
+
+
+    /**
+     * Gets a product with a specified ID.
+     * @param id the id of the company.
+     * @return the company with the right id.
+     * @throws CouldNotGetCompanyException gets thrown if the company could not be found.
+     */
+    @GetMapping("/{id}")
+    public Company getCompanyWithCompanyID(@PathVariable long id) throws CouldNotGetCompanyException {
+        return companyRegister.getCompanyWithId(id);
     }
 
     /**
@@ -64,7 +76,7 @@ public class CompanyController {
      * @throws CouldNotRemoveCompanyException gets thrown if the company could not be removed.
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public void removeCompany(@PathVariable Long id) throws CouldNotRemoveCompanyException {
         companyRegister.removeCompanyWithCompanyID(id);
     }
@@ -76,7 +88,7 @@ public class CompanyController {
      * @throws CouldNotGetCompanyException gets thrown if company could not be found.
      */
     @PutMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     private void updateCompany(@RequestBody String body) throws JsonProcessingException, CouldNotGetCompanyException {
         companyRegister.updateCompany(makeCompany(body));
     }

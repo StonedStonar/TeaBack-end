@@ -79,7 +79,7 @@ public class OrderRegisterTest {
         }
         Company company = companyJPA.getAllCompanies().get(0);
         if (productJPA.getAllProducts().isEmpty()){
-            productJPA.addProduct(new Product("Hei", 333.9f, 5, new ProductDetails("the", "hei"), company));
+            productJPA.addProduct(new Product("Hei", 333, 5, new ProductDetails("the", "hei"), company));
         }
         product = productJPA.getAllProducts().get(0);
       } catch (CouldNotAddUserException | CouldNotAddProductException | IllegalArgumentException | CouldNotAddCompanyException | CouldNotLoginToUserException | CouldNotGetUserException e) {

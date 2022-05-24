@@ -2,7 +2,6 @@ package no.ntnu.appdev.group15.teawebsitebackend.controllers.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Product;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddProductException;
@@ -11,7 +10,6 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveP
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -43,7 +41,8 @@ public class ProductController {
      */
     @GetMapping
     public List<Product> getAllProducts() {
-        return productRegister.getAllProducts();
+        List<Product> products = productRegister.getAllProducts();
+        return products;
     }
 
     /**
@@ -58,7 +57,7 @@ public class ProductController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    //TODO PreAuthorize("hasRole('ADMIN')")
     public void addProduct(@RequestBody String body) throws JsonProcessingException, CouldNotAddProductException {
         productRegister.addProduct(getProduct(body));
     }
@@ -68,6 +67,7 @@ public class ProductController {
      * @param id the id of the product.
      * @throws CouldNotRemoveProductException gets thrown if the product could not be removed.
      */
+    @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) throws CouldNotRemoveProductException {
         productRegister.removeProductWithProductID(id);
     }
@@ -79,7 +79,7 @@ public class ProductController {
      * @throws CouldNotGetProductException gets thrown if the product could not be found in the system.
      */
     @PutMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    //PreAuthorize("hasRole('ADMIN')")
     public void updateProduct(@RequestBody String body) throws JsonProcessingException, CouldNotGetProductException {
         productRegister.updateProduct(getProduct(body));
     }
@@ -90,7 +90,7 @@ public class ProductController {
      * @return the product form the json object.
      * @throws JsonProcessingException Should be cast if the json does not contain right format.
      */
-    private Product getProduct(@RequestBody String body) throws JsonProcessingException {
+    private Product getProduct(String body) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(body, Product.class);
     }
@@ -110,6 +110,10 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ex.getMessage());
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    private ResponseEntity<String> handleIllegalArgumentException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(ex.getMessage());
+    }
 
     /**
      * Check if an object is null.
