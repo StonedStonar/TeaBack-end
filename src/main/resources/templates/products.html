@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Products</title>
+    <link th:href = "@{/CSS/basic.css}" rel="stylesheet" type="text/css">
+    <link th:href = "@{/CSS/card.css}" rel="stylesheet" type="text/css">
+    <link th:href = "@{/CSS/products.css}" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <header id = "headerWrapper" th:replace="components/menu :: header">
+    </header>
+
+    <section class="mainSection">
+        <h2 class= "mainHeaderText">
+            Products
+        </h2>
+
+        <div id = "productsWrapper">
+            <div id="product-filter">
+                <div id="filter" class="filterOption">
+                    <span>Product type</span>
+                    <img src = "#" srcset = "svg/Arrow-for-dropdown-meny.svg" alt = "A arrow head" class = "svg logo rotatableLogo">
+                </div>
+                
+                <form id="hidden-filter">
+                    <div id="tea" class="filterOption">
+                        <span>Tea</span>
+                        <img src = "#" srcset = "svg/Arrow-for-dropdown-meny.svg" alt = "A arrow head" class = "svg logo rotatableLogo">
+                    </div>
+                    <div id="openTea" class="closeable">
+                        <div th:each="sortTag:${relatedTags}">
+                            <label for="black-tea" th:text="${sortTag.getTagName()}">Black Tea</label>
+                            <input type="checkbox" id="black-tea" name="black-tea">
+                        </div>
+                    </div>
+                    <div id="mug" class="filterOption">
+                        <span>Mug</span>
+                        <img src = "#" srcset = "svg/Arrow-for-dropdown-meny.svg" alt = "A arrow head" class = "svg logo rotatableLogo">
+                    </div>
+                    <div id="openMug" class="closeable">
+                        <div>
+                        <label for="classic-mug">Classic Mug</label>
+                        <input type="checkbox" id="classic-mug" name="classic-mug">
+                        </div>
+                    </div>
+                    <input type="submit" value="Sort now" class="greenButton button">
+                </form>
+            </div>
+    
+    
+            <div class="card-container">
+                <a href="product-info.html" class="card" th:each="product:${relatedProduct}" >
+                    <div class="card-header">
+                        <img src="images/greentea-cropped.jpg" alt="Tea card picture">
+                        <div class="card-title" th:text="${product.getProductName()}">Blackberry Leaf Tea</div>
+                        <div class="card-description" th:text="${product.getProductDetails().getDescription()}">Tea ingredients from the nature of norway</div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="price" th:if = "${product.isOnSale()}">
+                            <p class="now-price" th:text="${product.getPrice()}">169kr</p>
+                            <p class="former-price">199kr</p>
+                        </div>
+                        <div class="price" th:if = "${!product.isOnSale()}">
+                            <p class="now-price normal-price">199kr</p>
+                        </div>
+                        <div class="rating-on-cards">
+                            <span class="star">&#9734;</span>
+                            <span class="star">&#9734;</span>
+                            <span class="star">&#9734;</span>
+                            <span class="star">&#9734;</span>
+                            <span class="star">&#9734;</span>
+                            <span class="average-stars" th:text="${product.getAverageRating()}">2</span>
+                            <span>(<span class="average-stars-on-card" th:text="${product.getReviews().size()}">69</span>)</span>
+                        </div>
+                        <form>
+                            <button type="submit" class="add-to-cart greenButton button">ADD TO CART</button>
+                        </form>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+    </section>
+
+        <script type="text/javascript" th:src="@{/javascript/menu.js}"></script>
+        <script type="text/javascript" th:src="@{/javascript/products.js}"></script>
+        <footer id= "footerWrapper" th:replace="/components/footer :: footer">
+        </footer>
+</body>
+</html>

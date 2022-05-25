@@ -29,8 +29,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+
 /**
- * @author Steinar Hjelle Midthus
+ * @author Kenneth Johansen Misund and Steinar Hjelle Midthus
  * @version 0.1
  */
 @Controller
@@ -42,6 +43,29 @@ public class WebProductController {
 
     private CompanyRegister companyRegister;
 
+    private TagsRegister tagRegister;
+
+    @GetMapping("/product-info")
+    public String getProductInfo(Authentication authentication, Model model) {
+        addLoggedInAttributes(authentication, model);
+        List<Product> productList = productRegister.getAllProducts();
+        Product product = productList.get(6);
+        model.addAttribute("mainProduct", product);
+        model.addAttribute("relatedProduct", productList);
+        model.addAttribute("productDetail", product.getProductDetails());
+        return "product-info";
+    }
+
+    @GetMapping("/productsOverview")
+    public String getProductsPage(Authentication authentication, Model model) {
+        addLoggedInAttributes(authentication, model);
+        List<Product> productList = productRegister.getAllProducts();
+        model.addAttribute("relatedProduct", productList);
+        model.addAttribute("relatedTags", tagRegister.getAllTags());
+        return "products";
+    }
+
+
     /**
      * Makes an instance of the ProductController class.
      * @param companyJPA the company JPA
@@ -50,7 +74,7 @@ public class WebProductController {
      */
     public WebProductController(ProductJPA productJPA, TagJPA tagJPA, CompanyJPA companyJPA) {
         this.productRegister = productJPA;
-        this.tagsRegister = tagJPA;
+        this.tagRegister = tagJPA;
         this.companyRegister = companyJPA;
     }
 

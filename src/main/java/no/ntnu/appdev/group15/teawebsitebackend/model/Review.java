@@ -36,6 +36,7 @@ public class Review {
      * Just a normal constructor needed for JPA.
      */
     public Review() {
+
     }
 
     /**

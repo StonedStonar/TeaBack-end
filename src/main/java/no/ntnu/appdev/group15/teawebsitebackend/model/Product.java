@@ -1,12 +1,14 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddReviewException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveReviewException;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -25,6 +27,8 @@ public class Product {
     private String productName;
     private int price;
     private int amountOfProduct;
+    @JsonIgnore
+    private boolean isOnSale;
 
     @OneToOne(targetEntity = ProductDetails.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "productDetailsID")
@@ -45,7 +49,7 @@ public class Product {
      * A constructor for the JPA.
      */
     public Product() {
-
+        reviews = new ArrayList<>();
     }
 
     /**
@@ -73,6 +77,8 @@ public class Product {
         checkIfObjectIsNull(company, "company");
         this.company = company;
 
+        this.isOnSale = false;
+
         this.reviews = new ArrayList<>();
     }
 
@@ -98,6 +104,7 @@ public class Product {
         checkIfObjectIsNull(company, "company");
         this.company = company;
 
+        this.isOnSale = false;
         this.reviews = new ArrayList<>();
     }
 
@@ -146,6 +153,10 @@ public class Product {
         checkIfNumberNotNegative(price, "price");
         checkIfNumberNotNegative(price, "price");
         this.price = price;
+    }
+
+    public boolean isOnSale() {
+        return isOnSale;
     }
 
     /**
@@ -209,6 +220,20 @@ public class Product {
      */
     public List<Review> getReviews() {
         return reviews;
+    }
+
+    public int getAverageRating() {
+       Iterator<Review> it = reviews.iterator();
+       int totalSumOfStars = 0;
+       while (it.hasNext()) {
+           Review review = it.next();
+           totalSumOfStars += review.getRating();
+       }
+       int rating = 0;
+       if(reviews.size() != 0) {
+           rating = totalSumOfStars/ reviews.size();
+       }
+       return rating;
     }
 
     /**

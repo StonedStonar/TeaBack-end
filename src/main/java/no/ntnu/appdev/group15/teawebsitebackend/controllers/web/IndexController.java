@@ -51,13 +51,6 @@ public class IndexController {
         return "contactUs";
     }
 
-    @GetMapping("/product-info")
-    public String getProductInfo(Authentication authentication, Model model) {
-        addLoggedInAttributes(authentication, model);
-
-        return "product-info";
-    }
-
     private List<Product> getSpesificNumberOfElements() {
         List<Product> products = productRegister.getAllProducts();
         List<Product> wantedProduct = new ArrayList<>();
