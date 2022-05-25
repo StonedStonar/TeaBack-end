@@ -26,30 +26,33 @@
                 <button class = "button greenButton" id = "switchViewButton" type = "button">
                     Switch view
                 </button>
-                <input type="text" class = "inputForm" id = "productID" placeholder="Enter product id" name = "productID" th:value = "${productID}">
+                <input type="hidden" class = "inputForm" id = "productID" placeholder="Enter product id" name = "productID" th:value = "${productID}">
                 <label for="productNameInput" class="formLabel">Product name</label>
                 <input type="text" class = "inputForm" id = "productNameInput" placeholder="Enter product name" name = "productName" th:value = "${productName}">
                 <label for="productAmountInput" class="formLabel">Product amount</label>
-                <input type="number" class = "inputForm" id = "productAmountInput" placeholder="Enter product amount" name = "productAmount" th:value = "${product.getAmountOfProduct()}">
+                <input type="number" class = "inputForm" id = "productAmountInput" placeholder="Enter product amount" name = "productAmount" th:value = "${productAmount}">
                 <label for="productPriceInput" class="formLabel">Product price</label>
-                <input type="number" class = "inputForm" id = "productPriceInput" placeholder="Enter product price" name = "productPrice" th:value = "${product.getPrice()}">
-                <label for="compandyIDInput" class="formLabel">Producer ID</label>
-                <input type="number" class = "inputForm" id = "compandyIDInput" placeholder="Enter company id" name = "companyID" th:value = "${product.getCompany().getCompanyID()}">
-                <label for="comapnyID" class="formLabel">Producer ID</label>
-                <input type="number" class = "inputForm" id = "comapnyID" placeholder="Enter company id" name = "companyID">
+                <input type="number" class = "inputForm" id = "productPriceInput" placeholder="Enter product price" name = "productPrice" th:value = "${price}">
+                <label for="companyIDInput" class="formLabel">Producer ID</label>
+                <input type="number" class = "inputForm" id = "companyIDInput" placeholder="Enter company id" name = "companyID" th:value = "${companyID}">
+                <label for="descriptionInput" class="formLabel">Description</label>
+                <textarea class = "inputForm" form = "editProductForm" placeholder = "Insert ingredients" id = "descriptionInput" name = "description" th:text = "${description}"></textarea>
                 <label for="ingredientsInput" class="formLabel">Ingredients</label>
-                <textarea class = "inputForm" form = "editProductForm" placeholder = "Insert ingredients" id = "ingredientsInput" name = "ingredients" th:value = "${product.getProductDetails().getIngredients()}"></textarea>
+                <textarea class = "inputForm" form = "editProductForm" placeholder = "Insert ingredients" id = "ingredientsInput" name = "ingredients" th:text = "${ingredients}"></textarea>
                 <p>
                     Ingredients must be inserted with a ":" between the name and value. Also a comma is needed to seperate the values.
                 </p>
                 <p>
                     Example: sugar:54g, fiber:10g
                 </p>
+                <label for = "tags" class="formLabel">Tags</label>
+                <textarea class = "inputForm" form = "editProductForm" placeholder = "Insert tags" id = "tags" name = "tags" th:text = "${tags}"></textarea>
                 <p>
-                    Example: 1,2,3
+                    Tags must be separated with a ",". Example: "11,23,3"
                 </p>
-                
-                <input type = "submit" class = "button greenButton submitButton">
+                <label for = "previewBox" class = "formLabel">Preview</label>
+                <input type = "checkbox" id = "previewBox" class = "button greenButton submitButton" name = "previewProduct">
+                <input type = "submit" class = "button greenButton submitButton" value = "Submit">
             </form>
             <div id = "productInfoPreview" class = "preview">
                 <div id="productContainer">
@@ -61,7 +64,6 @@
                             <img th:src="@{/Images/greentea.jpg}" id="pictureOfTeaType" alt="Troll Green Tea Picture">
                             <figcaption>Picture taken from Nosplash</figcaption>
                         </figure>
-
                     </div>
 
                     <form id="addToCartContainer">

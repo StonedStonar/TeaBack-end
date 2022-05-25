@@ -1,23 +1,33 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 
 import no.ntnu.appdev.group15.teawebsitebackend.model.Product;
+import no.ntnu.appdev.group15.teawebsitebackend.model.ProductDetails;
+import no.ntnu.appdev.group15.teawebsitebackend.model.Tag;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.CompanyJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.TagJPA;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetProductException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetTagException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.CompanyRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.security.AccessUser;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author Steinar Hjelle Midthus
@@ -28,62 +38,149 @@ public class WebProductController {
 
     private ProductRegister productRegister;
 
+    private TagsRegister tagsRegister;
+
+    private CompanyRegister companyRegister;
+
     /**
      * Makes an instance of the ProductController class.
+     * @param companyJPA the company JPA
+     * @param productJPA the product JPA.
+     * @param tagJPA the tag JPA.
      */
-    public WebProductController(ProductJPA productJPA) {
+    public WebProductController(ProductJPA productJPA, TagJPA tagJPA, CompanyJPA companyJPA) {
         this.productRegister = productJPA;
+        this.tagsRegister = tagJPA;
+        this.companyRegister = companyJPA;
     }
 
     @GetMapping("/editProduct")
     @PreAuthorize("hasRole('ADMIN')")
-    public String getEditProduct(Authentication authentication, Model model, HttpSession httpSession){
+    public String getEditProduct(Authentication authentication, Model model, HttpSession httpSession,
+                                 @RequestParam("productID") long productID){
         addLoggedInAttributes(authentication, model);
-        httpSession.getAttributeNames();
-        try {
-            Product product = productRegister.getProduct(31);
-            model.addAttribute("product", product);
-            model.addAttribute("productID", product.getProductID());
-            model.addAttribute("productName", product.getProductName());
+        Boolean isPreview = (Boolean) httpSession.getAttribute("isPreview");
+        httpSession.removeAttribute("isPreview");
+        ParameterBuilder parameterBuilder = new ParameterBuilder("editProduct");
+        if (isPreview != null && isPreview){
+            addAllAttributes(model, httpSession);
+        }else {
+            try {
+                Product product = productRegister.getProduct(productID);
+                model.addAttribute("productID", product.getProductID());
+                model.addAttribute("productName", product.getProductName());
+                model.addAttribute("productAmount", product.getAmountOfProduct());
+                model.addAttribute("price", product.getPrice());
+                model.addAttribute("companyID", product.getCompany().getCompanyID());
+                model.addAttribute("ingredients", product.getProductDetails().getIngredients());
+                model.addAttribute("description", product.getProductDetails().getDescription());
+                model.addAttribute("tags", convertListToValues(product.getProductDetails().getTagList()));
 
-        }catch (CouldNotGetProductException exception){
-            //Todo: something
+            }catch (CouldNotGetProductException exception){
+                parameterBuilder.addParameter("invalidProductID", "true");
+            }
         }
-        addAllAttributes(model, httpSession);
 
-        return "editProduct";
+        String url = parameterBuilder.buildString();
+
+        return url;
     }
 
     @PutMapping("/editProduct")
     public RedirectView editProduct(@RequestParam("productID") long productID, @RequestParam("productName") String productName, @RequestParam("productAmount") int productAmount,
                                     @RequestParam("productPrice") int productPrice, @RequestParam("companyID") int companyID,
-                                    @RequestParam("ingredients") String ingredients, HttpSession httpSession){
+                                    @RequestParam("ingredients") String ingredients, @RequestParam("tags") List<Long> tags, @RequestParam("description") String description
+                                    ,@RequestParam(value = "previewProduct", required = false) Boolean preview,  HttpSession httpSession){
         ParameterBuilder parameterBuilder = new ParameterBuilder("editProduct");
+        parameterBuilder.addParameter("productID", String.valueOf(productID));
+        boolean invalidInput = false;
         try {
             checkIfNumberNotNegative(productAmount, "product amount");
             checkString(productName, "product name");
-            checkString(ingredients, "ingredients");
+            checkString(description, "description");
             checkIfNumberNotNegative(productPrice, "product price");
             checkIfNumberNotNegative(companyID, "companyID");
             checkIfNumberNotNegative(productAmount, "product amount");
             Product product = productRegister.getProduct(productID);
-            product.setProductName(productName);
-            product.setPrice(productPrice);
-            int totalProduct = productAmount - product.getAmountOfProduct();
-            product.addAmountOfProduct(totalProduct);
-
-
+            if (preview != null && preview){
+                parameterBuilder.addParameter("tagPreview", "true");
+                httpSession.setAttribute("isPreview", true);
+            }else {
+                product.setProductName(productName);
+                product.setPrice(productPrice);
+                int totalProduct = productAmount - product.getAmountOfProduct();
+                if (totalProduct > 0){
+                    product.addAmountOfProduct(totalProduct);
+                }else if (totalProduct < 0){
+                    product.removeAmountOfProduct(totalProduct);
+                }
+                ProductDetails productDetails = product.getProductDetails();
+                addAndRemoveTags(productDetails, tags);
+                parameterBuilder.addParameter("tagUpdated", "true");
+                productRegister.updateProduct(product);
+            }
         }catch (IllegalArgumentException  exception){
             parameterBuilder.addParameter("invalidFieldInput", "true");
-            httpSession.setAttribute("productName", productName);
-            httpSession.setAttribute("productAmount", productAmount);
-            httpSession.setAttribute("productPrice", productPrice);
-            httpSession.setAttribute("companyID", companyID);
-            httpSession.setAttribute("ingredientsInput", ingredients);
+            invalidInput = true;
         }catch (CouldNotGetProductException exception){
             parameterBuilder.addParameter("invalidProductID", "true");
+            invalidInput = true;
+        } catch (CouldNotGetTagException exception) {
+            parameterBuilder.addParameter("invalidTagId", "true");
+            invalidInput = true;
+        } catch (CouldNotAddTagException exception) {
+            parameterBuilder.addParameter("duplicateTag", "true");
+            invalidInput = true;
+        } catch (CouldNotRemoveTagException exception) {
+            parameterBuilder.addParameter("tagNotFound", "true");
+            invalidInput = true;
+        }
+        if (invalidInput || (preview != null && preview)){
+            httpSession.setAttribute("productID", productID);
+            httpSession.setAttribute("productName", productName);
+            httpSession.setAttribute("productAmount", productAmount);
+            httpSession.setAttribute("price", productPrice);
+            httpSession.setAttribute("companyID", companyID);
+            httpSession.setAttribute("ingredientsInput", ingredients);
+            httpSession.setAttribute("tags", tags);
+            httpSession.setAttribute("description", description);
         }
         return new RedirectView(parameterBuilder.buildString(), true);
+    }
+
+    /**
+     * Adds and removes tags form a product based on if it's already in.
+     * @param productDetails the product details.
+     * @param tags the tags id's
+     * @throws CouldNotGetTagException gets thrown if the input tags could not be found.
+     * @throws CouldNotRemoveTagException gets thrown if the tag could not be removed.
+     * @throws CouldNotAddTagException gets thrown if the tag could not be added.
+     */
+    private void addAndRemoveTags(ProductDetails productDetails, List<Long> tags) throws CouldNotRemoveTagException, CouldNotAddTagException, CouldNotGetTagException {
+        List<Tag> tagList = getAllTagsWithIDs(tags);
+        List<Tag> productTagList = productDetails.getTagList();
+        List<Tag> tagsToRemove = productTagList.stream().filter(tag -> !tagList.contains(tag)).toList();
+        List<Tag> tagsToAdd = tagList.stream().filter(tag -> !productTagList.contains(tag)).toList();
+        for (Tag tag : tagsToRemove) {
+            productDetails.removeTag(tag);
+        }
+        for (Tag tag : tagsToAdd) {
+            productDetails.addTag(tag);
+        }
+    }
+
+    /**
+     * Gets the list of the specified tags.
+     * @param tagIds the tags id.
+     * @return a list with the tags.
+     * @throws CouldNotGetTagException gets thrown if a tag could not be found.
+     */
+    private List<Tag> getAllTagsWithIDs(List<Long> tagIds) throws CouldNotGetTagException {
+        List<Tag> tagList = new ArrayList<>();
+        for (long tagId : tagIds){
+            tagList.add(tagsRegister.getTagWithID(tagId));
+        }
+        return tagList;
     }
 
     /**
@@ -128,9 +225,28 @@ public class WebProductController {
         Iterator<String> it = httpSession.getAttributeNames().asIterator();
         while (it.hasNext()){
             String attributeName = it.next();
-            model.addAttribute(attributeName, httpSession.getAttribute(attributeName));
+            Object object = httpSession.getAttribute(attributeName);
+            if (object instanceof List list){
+                object = convertListToValues(list);
+            }
+            model.addAttribute(attributeName, object);
             httpSession.removeAttribute(attributeName);
         }
+    }
+
+    private String convertListToValues(List list){
+        StringBuilder stringBuilder = new StringBuilder();
+        if (!list.isEmpty() && list.get(0) instanceof Long){
+            List<Long> longs = list;
+            for(long number: longs){
+                if (!stringBuilder.isEmpty()){
+                    stringBuilder.append(",");
+                }
+                stringBuilder.append(number);
+
+            }
+        }
+        return stringBuilder.toString();
     }
 
     /**

@@ -89,6 +89,14 @@ public class ProductDetails extends Details{
     }
 
     /**
+     * Gets all the tags within this product details.
+     * @return gets all the tags.
+     */
+    public List<Tag> getTagList(){
+        return tagList;
+    }
+
+    /**
      * Checks if a string is invalid by being empty.
      * @param stringToCheck the String to check.
      * @param errorPrefix the error if the string is invalid.
