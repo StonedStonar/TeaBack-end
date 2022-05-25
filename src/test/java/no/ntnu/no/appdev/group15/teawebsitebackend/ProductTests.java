@@ -52,7 +52,7 @@ public class ProductTests {
      * @return a product.
      */
     private Product makeProduct() throws CouldNotAddReviewException {
-        Product product = new Product(1, "Fjell laks Te", 399.99f, 100, details, company);
+        Product product = new Product(1, "Fjell laks Te", 399, 100, details, company);
         this.review = makeReview();
         product.addReview(review);
         return product;
@@ -76,31 +76,31 @@ public class ProductTests {
     @DisplayName("Tests if constructor works with invalid input.")
     public void testIfConstructorWorksWithInvalidInput() {
         try {
-            Product product = new Product(-4, "Ost", 12.99f, 3, new ProductDetails("Lul", "Tea"), new Company());
+            Product product = new Product(-4, "Ost", 129, 3, new ProductDetails("Lul", "Tea"), new Company());
             addError(expectedError, "The id is negative");
         } catch (IllegalArgumentException ex) {}
         try {
-            Product product = new Product(1, "", 12.99f, 3, new ProductDetails("Lul", "Tea"), new Company());
+            Product product = new Product(1, "", 159, 3, new ProductDetails("Lul", "Tea"), new Company());
             addError(expectedError, "The productName is an empty String");
         } catch (IllegalArgumentException ex) {}
         try {
-            Product product = new Product(3, null, 12.99f, 3, new ProductDetails("Lul", "Tea"), new Company());
+            Product product = new Product(3, null, 109, 3, new ProductDetails("Lul", "Tea"), new Company());
             addError(expectedError, "The product name is null");
         } catch (IllegalArgumentException ex) {}
         try {
-            Product product = new Product(3, "Kremost", -2.22f, 3, new ProductDetails("Lul", "Tea"), new Company());
+            Product product = new Product(3, "Kremost", -209, 3, new ProductDetails("Lul", "Tea"), new Company());
             addError(expectedError, "The price is null");
         } catch (IllegalArgumentException ex) {}
         try {
-            Product product = new Product(3, "Kremost", 3.29f, -5, new ProductDetails("Lul", "Tea"), new Company());
+            Product product = new Product(3, "Kremost", 349, -5, new ProductDetails("Lul", "Tea"), new Company());
             addError(expectedError, "The size is negative");
         } catch (IllegalArgumentException ex) {}
         try {
-            Product product = new Product(3, "Kremost", 3.29f, 4, null, new Company());
+            Product product = new Product(3, "Kremost", 89, 4, null, new Company());
             addError(expectedError, "Details should be set to null in negative test");
         } catch (IllegalArgumentException ex) {}
         try {
-            Product product = new Product(3, "Kremost", 3.29f, 3, new ProductDetails("Lul", "Tea"), null);
+            Product product = new Product(3, "Kremost", 135, 3, new ProductDetails("Lul", "Tea"), null);
             addError(expectedError, "Company should be set to null in negative test");
         } catch (IllegalArgumentException ex) {}
         checkIfTestsFailedAndDisplayResult();
@@ -114,7 +114,7 @@ public class ProductTests {
     @DisplayName("Test if constructor works with valid input.")
     public void testIfConstructorWorksWithValidInput() {
         try {
-            Product product = new Product(2, "Saus", 14.99f, 1, new ProductDetails("Lul", "Tea"), new Company());
+            Product product = new Product(2, "Saus", 149, 1, new ProductDetails("Lul", "Tea"), new Company());
         } catch (IllegalArgumentException ex) {
             addError(expectedError, " You have used Invalid input on a positive test.");
         }
@@ -301,7 +301,7 @@ public class ProductTests {
     @DisplayName("Test if setPrice works with valid input")
     public void testIfSetPriceWorksWithValidInput() {
         try {
-            float price = 2300.99f;
+            int price = 2300;
             product.setPrice(price);
             assertEquals(price, product.getPrice());
         } catch (IllegalArgumentException e) {
@@ -317,7 +317,7 @@ public class ProductTests {
     @DisplayName("Test if setPrice works with invalid input")
     public void testIfSetPriceWorksWithInvalidInput() {
         try {
-            product.setPrice(-0.99f);
+            product.setPrice(-79);
             fail("Expected to get an IllegalArgumentException since the input should be negative integer. ");
         } catch (IllegalArgumentException e) {
             assertTrue(true);

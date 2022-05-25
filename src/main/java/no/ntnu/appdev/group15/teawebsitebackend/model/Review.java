@@ -1,5 +1,6 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.LazyToOne;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class Review {
 
     @OneToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinColumn(name = "userID")
+    @JsonIgnore
     private User user;
 
     private String comment;

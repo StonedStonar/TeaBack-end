@@ -1,0 +1,28 @@
+spring.jpa.hibernate.ddl=true
+
+#Sets the setting if its going to create and so on each time.
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.datasource.url=${MYSQL_HOST}
+spring.datasource.username=${MYSQL_USER}
+spring.datasource.password=${MYSQL_PASSWORD}
+
+#Shows the code that is executed by JPA.
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.format_sql=false
+
+#Enables the hidden filters so that forms can use "put" in thymeleaf
+spring.mvc.hiddenmethod.filter.enabled=true
+
+logging.level.org.hibernate.SQL=DEBUG
+logging.level.org.hibernate.type=TRACE
+
+
+#Changes the style to camelcasing. CUZ CAMEL CASING RULES.
+spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+spring.mvc.pathmatch.matching-strategy=ant-path-matcher
+
+#Login information to the server.
+MYSQL_HOST=jdbc:mysql://localhost:3306/teaShopDB
+MYSQL_USER=username
+MYSQL_PASSWORD=password

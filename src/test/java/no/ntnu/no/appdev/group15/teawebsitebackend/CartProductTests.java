@@ -98,7 +98,7 @@ public class CartProductTests {
      * @return the product.
      */
     private Product makeProductWithId(long id){
-        return new Product(id, "Fjell laks Te", 399.99f, 100, new ProductDetails(), new Company());
+        return new Product(id, "Fjell laks Te", 399, 100, new ProductDetails(), new Company());
     }
 
     /**

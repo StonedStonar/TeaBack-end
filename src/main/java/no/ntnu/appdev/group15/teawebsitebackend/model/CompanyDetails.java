@@ -1,12 +1,10 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 /**
  * Represents the CompanyDetails class. Should give the information for a company.
@@ -16,7 +14,7 @@ import javax.persistence.Transient;
 @Entity
 public class CompanyDetails extends Details{
 
-    @Transient
+    @OneToOne(targetEntity = Address.class, cascade = CascadeType.ALL)
     private Address address;
 
     /**

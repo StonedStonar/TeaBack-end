@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <body>
     <footer id = "footerWrapper" th:fragment="footer">
         <div id = "footer">
@@ -12,8 +12,6 @@
                         For tea lovers
                     </span>
                 </a>
-
-
                 <div id="addressFooter">
                     <span>
                         Contact Information
@@ -46,12 +44,12 @@
                 <h3>
                     Shortcuts
                 </h3>
-                <a href="contactUs.html" class="shortcutFooter">
+                <a th:href="@{/contactUs}" class="shortcutFooter">
                     <span>
                         Home
                     </span>
                 </a>
-                <a href="aboutUs.html" class="shortcutFooter">
+                <a th:href="@{/aboutUs}" class="shortcutFooter">
                     <span>
                         About us
                     </span>
@@ -61,24 +59,24 @@
                         Profile
                     </span>
                 </a>
-                <a href="products.html" class="shortcutFooter">
+                <a th:href="@{/products}" class="shortcutFooter">
                     <span>
                         Products
                     </span>
                 </a>
-                <a href="sale.html" class="shortcutFooter">
+                <a th:href="@{/sale}" class="shortcutFooter">
                     <span>
                         Sale
                     </span>
                 </a>
-                <a href="products.html" class="shortcutFooter">
+                <a th:href="@{/cart}" class="shortcutFooter">
                     <span>
-                        Products
+                        Cart
                     </span>
                 </a>
-                <a href="products.html" class="shortcutFooter">
+                <a th:href="@{/login}" class="shortcutFooter">
                     <span>
-                        Products
+                        Login
                     </span>
                 </a>
             </div>

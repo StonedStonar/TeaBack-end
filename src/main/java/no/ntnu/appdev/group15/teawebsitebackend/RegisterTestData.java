@@ -98,13 +98,13 @@ public class RegisterTestData {
         List<Company> companies = companyRegister.getAllCompanies();
         if (productRegister.getAllProducts().isEmpty()) {
             //Todo: Gjorde bare om på denne så vi kunne generere random reviews til databasen.
-            products.add(new Product( "Green Leaf Tea", 100.99f, 7, new ProductDetails("Lul", "Tea"), companies.get(0)));
-            products.add(new Product( "Black water Leaf Tea", 50.99f, 3, new ProductDetails("Lul", "Tea"), companies.get(1)));
-            products.add(new Product( "Mushroom High Tea", 50.99f, 2, new ProductDetails("Lul", "Tea"), companies.get(2)));
-            products.add(new Product( "Blue Herb Tea", 89.99f, 1, new ProductDetails("Lul", "Tea"), companies.get(3)));
-            products.add(new Product( "Strawberry Tea", 99.99f, 9, new ProductDetails("Lul", "Tea"), companies.get(1)));
-            products.add(new Product( "Hause Norsk Tea", 69.99f, 5, new ProductDetails("Lul", "Tea"), companies.get(1)));
-            products.add(new Product( "Stor Troll Herb Tea", 150.99f, 11, new ProductDetails("Lul", "Tea"), companies.get(0)));
+            products.add(new Product( "Green Leaf Tea", 109, 7, new ProductDetails("Lul", "Tea"), companies.get(0)));
+            products.add(new Product( "Black water Leaf Tea", 509, 3, new ProductDetails("Lul", "Tea"), companies.get(1)));
+            products.add(new Product( "Mushroom High Tea", 559, 2, new ProductDetails("Lul", "Tea"), companies.get(2)));
+            products.add(new Product( "Blue Herb Tea", 89, 1, new ProductDetails("Lul", "Tea"), companies.get(3)));
+            products.add(new Product( "Strawberry Tea", 99, 9, new ProductDetails("Lul", "Tea"), companies.get(1)));
+            products.add(new Product( "Hause Norsk Tea", 69, 5, new ProductDetails("Lul", "Tea"), companies.get(1)));
+            products.add(new Product( "Stor Troll Herb Tea", 150, 11, new ProductDetails("Lul", "Tea"), companies.get(0)));
             addRandomProductReviews(userRegister.getAllUsers(), products);
             for (Product product : products){
                 productRegister.addProduct(product);

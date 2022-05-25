@@ -30,6 +30,7 @@ public class CartAndCheckoutController {
     @GetMapping("/cart")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String getCart(Model model, Authentication authentication){
+        addLoggedInAttributes(authentication, model);
         User user = getAccessUser(authentication).getUser();
         model.addAttribute("cart", user.getCart());
         return "cart";
@@ -42,6 +43,16 @@ public class CartAndCheckoutController {
      */
     private AccessUser getAccessUser(Authentication authentication){
         return (AccessUser) authentication.getPrincipal();
+    }
+
+    /**
+     * Adds a logged in attribute to the model.
+     * @param authentication the authentication.
+     * @param model the model.
+     */
+    private void addLoggedInAttributes(Authentication authentication, Model model){
+        boolean loggedIn = authentication != null;
+        model.addAttribute("loggedIn", loggedIn);
     }
 
     /**

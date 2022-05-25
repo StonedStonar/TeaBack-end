@@ -86,7 +86,7 @@ public class OrderTest {
    */
   private List<OrderedProduct> makeListWithOrderedProducts() {
     List<OrderedProduct> orderedProductList = new ArrayList<>();
-    orderedProductList.add(new OrderedProduct(new Product(1, "Fjell laks Te", 399.99f, 100, new ProductDetails("Lul", "Tea"), new Company()), 2));
+    orderedProductList.add(new OrderedProduct(new Product(1, "Fjell laks Te", 329, 100, new ProductDetails("Lul", "Tea"), new Company()), 2));
     return orderedProductList;
   }
 
