@@ -37,27 +37,12 @@ public class CartProduct {
     }
 
     /**
-     * Adds an N amount of the product to the cart product.
+     * Sets the amount of cart product.
      * @param amountToAdd the amount to add.
      */
-    public void addAmount(int amountToAdd){
+    public void setAmount(int amountToAdd){
         checkIfNumberNotNegative(amountToAdd, "amount to add");
-        this.amount += amountToAdd;
-    }
-
-    /**
-     * Removes an amount from the ordered product.
-     * @param amountToRemove the amount to remove.
-     * @throws IllegalArgumentException gets thrown if the number is negative or larger than the total amount.
-     */
-    public void removeAmount(int amountToRemove){
-        checkIfNumberNotNegative(amountToRemove, "amount to remove");
-        int newTotal = amount - amountToRemove;
-        if (newTotal >= 0){
-            this.amount = newTotal;
-        }else {
-            throw new IllegalArgumentException("The amount to remove cannot be larger than the total amount.");
-        }
+        this.amount = amountToAdd;
     }
 
     /**

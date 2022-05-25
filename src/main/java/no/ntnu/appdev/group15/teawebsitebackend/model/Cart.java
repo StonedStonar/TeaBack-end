@@ -42,7 +42,7 @@ public class Cart {
      */
     public void addCartProduct(CartProduct cartProduct) throws CouldNotAddCartProductException {
         checkIfObjectIsNull(cartProduct, "cart product");
-        if (!checkIfProductIsInCart(cartProduct)){
+        if (!checkIfProductIsInCart(cartProduct.getProduct())){
             cartProductList.add(cartProduct);
         }else {
             throw new CouldNotAddCartProductException("The product is already in the cart.");
@@ -66,12 +66,14 @@ public class Cart {
 
     /**
      * Checks if the cart product is in the cart.
-     * @param cartProduct the cart product.
+     * @param product the product.
      * @return <code>true</code> if the product is in the cart.
      *         <code>false</code> if the product is not in the cart.
      */
-    private boolean checkIfProductIsInCart(CartProduct cartProduct){
-        return cartProductList.stream().anyMatch(cartP -> cartP.getProduct().getProductID() == cartProduct.getProduct().getProductID());
+    public boolean checkIfProductIsInCart(Product product){
+        //Todo: MAke tests for this.
+        checkIfObjectIsNull(product, "product");
+        return cartProductList.stream().anyMatch(cartP -> cartP.getProduct().getProductID() == product.getProductID());
     }
 
     /**

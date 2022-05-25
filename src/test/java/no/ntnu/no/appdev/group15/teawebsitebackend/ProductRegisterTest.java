@@ -128,7 +128,7 @@ public class ProductRegisterTest {
 
             this.product = productRegister.getAllProducts().get(0);
         } catch (IllegalArgumentException | CouldNotAddProductException | CouldNotRemoveProductException | CouldNotAddReviewException ex) {
-            fail ("Expected the test data to be added before each test and not a " + ex.getClass().getSimpleName());
+            fail("Expected the test data to be added before each test and not a " + ex.getClass().getSimpleName());
         }
         stringBuilder = new StringBuilder();
         errors = 0;

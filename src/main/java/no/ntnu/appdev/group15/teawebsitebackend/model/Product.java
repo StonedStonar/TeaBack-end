@@ -109,6 +109,15 @@ public class Product {
     }
 
     /**
+     * Sets the company of this product.
+     * @param company the company.
+     */
+    public void setCompany(Company company){
+        checkIfObjectIsNull(company, "company");
+        this.company = company;
+    }
+
+    /**
      * Gets the unique productID for a product.
      *
      * @return productID in long.

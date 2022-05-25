@@ -1,15 +1,13 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 
+import no.ntnu.appdev.group15.teawebsitebackend.model.Company;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Product;
 import no.ntnu.appdev.group15.teawebsitebackend.model.ProductDetails;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Tag;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.CompanyJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.TagJPA;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetProductException;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetTagException;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.*;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.CompanyRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
@@ -45,21 +43,41 @@ public class WebProductController {
 
     private TagsRegister tagRegister;
 
+    /**
+     * Gets the product into page.
+     * @param authentication the authentication
+     * @param model the model
+     * @return the product info page.
+     */
     @GetMapping("/product-info")
-    public String getProductInfo(Authentication authentication, Model model) {
+    public String getProductInfo(Authentication authentication, Model model, @RequestParam("id") long id) {
         addLoggedInAttributes(authentication, model);
         List<Product> productList = productRegister.getAllProducts();
-        Product product = productList.get(6);
-        model.addAttribute("mainProduct", product);
-        model.addAttribute("relatedProduct", productList);
-        model.addAttribute("productDetail", product.getProductDetails());
+        Product product = null;
+        try {
+            product = productRegister.getProduct(id);
+            model.addAttribute("mainProduct", product);
+            model.addAttribute("relatedProduct", productList);
+            model.addAttribute("productDetail", product.getProductDetails());
+        } catch (CouldNotGetProductException e) {
+            e.printStackTrace();
+        }
         return "product-info";
     }
 
+    /**
+     * Gets the products page.
+     * @param authentication the authentication.
+     * @param model the model
+     * @return the products page.
+     */
     @GetMapping("/productsOverview")
-    public String getProductsPage(Authentication authentication, Model model) {
+    public String getProductsPage(Authentication authentication, Model model, @RequestParam(value = "productsMode", required = false) String productsMode) {
         addLoggedInAttributes(authentication, model);
         List<Product> productList = productRegister.getAllProducts();
+        if (productsMode != null && productsMode.equalsIgnoreCase("SALE")){
+            productList = productList.stream().filter(Product::isOnSale).toList();
+        }
         model.addAttribute("relatedProduct", productList);
         model.addAttribute("relatedTags", tagRegister.getAllTags());
         return "products";
@@ -99,11 +117,11 @@ public class WebProductController {
                 model.addAttribute("ingredients", product.getProductDetails().getIngredients());
                 model.addAttribute("description", product.getProductDetails().getDescription());
                 model.addAttribute("tags", convertListToValues(product.getProductDetails().getTagList()));
-
             }catch (CouldNotGetProductException exception){
                 parameterBuilder.addParameter("invalidProductID", "true");
             }
         }
+        model.addAttribute("isOnSale", false);
 
         String url = parameterBuilder.buildString();
 
@@ -130,6 +148,10 @@ public class WebProductController {
                 parameterBuilder.addParameter("tagPreview", "true");
                 httpSession.setAttribute("isPreview", true);
             }else {
+                ProductDetails productDetails = product.getProductDetails();
+                addAndRemoveTags(productDetails, tags);
+                Company company = companyRegister.getCompanyWithId(companyID);
+                product.setCompany(company);
                 product.setProductName(productName);
                 product.setPrice(productPrice);
                 int totalProduct = productAmount - product.getAmountOfProduct();
@@ -138,8 +160,7 @@ public class WebProductController {
                 }else if (totalProduct < 0){
                     product.removeAmountOfProduct(totalProduct);
                 }
-                ProductDetails productDetails = product.getProductDetails();
-                addAndRemoveTags(productDetails, tags);
+
                 parameterBuilder.addParameter("tagUpdated", "true");
                 productRegister.updateProduct(product);
             }
@@ -158,6 +179,8 @@ public class WebProductController {
         } catch (CouldNotRemoveTagException exception) {
             parameterBuilder.addParameter("tagNotFound", "true");
             invalidInput = true;
+        } catch (CouldNotGetCompanyException e) {
+            e.printStackTrace();
         }
         if (invalidInput || (preview != null && preview)){
             httpSession.setAttribute("productID", productID);
@@ -165,7 +188,7 @@ public class WebProductController {
             httpSession.setAttribute("productAmount", productAmount);
             httpSession.setAttribute("price", productPrice);
             httpSession.setAttribute("companyID", companyID);
-            httpSession.setAttribute("ingredientsInput", ingredients);
+            httpSession.setAttribute("ingredients", ingredients);
             httpSession.setAttribute("tags", tags);
             httpSession.setAttribute("description", description);
         }

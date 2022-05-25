@@ -24,7 +24,7 @@ public class OrderedProduct {
 
     private int returnedProductAmount;
 
-    private float pricePerProduct;
+    private int pricePerProduct;
 
     @Enumerated
     private OrderState orderState;
@@ -118,7 +118,7 @@ public class OrderedProduct {
      * Gets the price that the product was bought for.
      * @return the price the product was bought for.
      */
-    public float getPricePerProduct() {
+    public int getPricePerProduct() {
         return pricePerProduct;
     }
 
@@ -126,7 +126,7 @@ public class OrderedProduct {
      * Gets the total price of the products.
      * @return the total price.
      */
-    public float getTotalPrice(){
+    public int getTotalPrice(){
         return pricePerProduct * amountOfProduct;
     }
 
@@ -199,6 +199,10 @@ public class OrderedProduct {
         }
     }
 
+    /**
+     * Gets the ordered product id.
+     * @return the ordered product id.
+     */
     public long getOrderedProductID() {
         return orderedProductID;
     }

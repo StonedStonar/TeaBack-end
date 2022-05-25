@@ -1,14 +1,24 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 
-import no.ntnu.appdev.group15.teawebsitebackend.model.User;
+import no.ntnu.appdev.group15.teawebsitebackend.model.*;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.OrderJPA;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddCartProductException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetCartProductException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetProductException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.OrderRegister;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.security.AccessUser;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
+
+import java.lang.reflect.Parameter;
 
 /**
  * @author Steinar Hjelle Midthus
@@ -19,13 +29,46 @@ public class CartAndCheckoutController {
 
     private OrderRegister orderRegister;
 
+    private ProductRegister productRegister;
+
     /**
      * Makes an instance of the CartAndCheckoutController class.
      */
-    public CartAndCheckoutController(OrderJPA orderJPA) {
+    public CartAndCheckoutController(OrderJPA orderJPA, ProductJPA productJPA) {
         this.orderRegister = orderJPA;
+        this.productRegister = productJPA;
     }
 
+
+    @PutMapping("/addToCart")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    public RedirectView addToCart(@RequestParam("productID") long productID, @RequestParam(value = "amount", required = false) Integer amount,
+                                  Authentication authentication){
+        ParameterBuilder parameterBuilder = new ParameterBuilder("/cart");
+        AccessUser accessUser = getAccessUser(authentication);
+        //Todo: Fix the rest tomorrow
+        try {
+            Product product = productRegister.getProduct(productID);
+            Cart cart = accessUser.getUser().getCart();
+            if (amount == null || amount == 0){
+                amount = 1;
+            }
+            if (!cart.checkIfProductIsInCart(product)){
+                cart.addCartProduct(new CartProduct(product, amount, cart));
+            }else {
+                CartProduct cartProduct = cart.getCartProduct(productID);
+                cartProduct.setAmount(amount);
+            }
+        } catch (CouldNotGetProductException e) {
+
+        } catch (CouldNotAddCartProductException e) {
+
+        } catch (CouldNotGetCartProductException e) {
+
+        }
+
+        return new RedirectView(parameterBuilder.buildString(), true);
+    }
 
     @GetMapping("/cart")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")

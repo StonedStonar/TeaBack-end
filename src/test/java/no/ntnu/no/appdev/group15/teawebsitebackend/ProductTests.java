@@ -325,6 +325,35 @@ public class ProductTests {
     }
 
     /**
+     * Tests if setCompany works with invalid input.
+     */
+    @Test
+    @DisplayName("Tests if setCompany works with invalid input.")
+    public void testIfSetCompanyWorksWithInvalidInput(){
+        try {
+            product.setCompany(null);
+            addError(expectedError, "the input is null.");
+        }catch (IllegalArgumentException exception){
+
+        }
+        checkIfTestsFailedAndDisplayResult();
+    }
+
+    /**
+     * Tests if setCompany works with valid input.
+     */
+    @Test
+    @DisplayName("Tests if setCompany works with valid input.")
+    public void testsIfCompanyWorksWithValidInput(){
+        try {
+            product.setCompany(new Company());
+        }catch (IllegalArgumentException exception){
+            addError("Expected the company to be made since", "the input is valid.");
+        }
+        checkIfTestsFailedAndDisplayResult();
+    }
+
+    /**
      * Adds a new error to the StringBuilder.
      * @param errorPrefix what it should say before the error.
      * @param expectedError the error to appear.
@@ -344,5 +373,7 @@ public class ProductTests {
             fail("\nAmount of errors " + errors + " listed errors: " + stringBuilder.toString());
         }
     }
+
+
 
 }

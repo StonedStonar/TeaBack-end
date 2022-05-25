@@ -45,11 +45,11 @@
                     <div class = "productInfo">
                         <img class="productImage" src="Images/greentea-cropped.jpg" alt="Picutre of greentea">
                         <div class="productDetails">
-                            <p class="productName">
+                            <p class="productName" th:text = "${cartProduct.getProduct().getProductName()}">
                                 Green tea
                             </p>
                             <p>
-                                Produced by <span th:text = "${cartProduct.getProduct().getProductName()}">Yo Papa</span>
+                                Produced by <span th:text = "${cartProduct.getProduct().getCompany().getCompanyName()}">Yo Papa</span>
                             </p>
                             <p class = "productID">
                                 Product ID: <span th:text = "${cartProduct.getProduct().getProductID()}">1</span>

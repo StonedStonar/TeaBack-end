@@ -54,7 +54,7 @@
     
     
             <div class="card-container">
-                <a href="product-info.html" class="card" th:each="product:${relatedProduct}" >
+                <a th:href="@{/product-info(id=${product.getProductID()})}" class="card" th:each="product:${relatedProduct}" >
                     <div class="card-header">
                         <img src="images/greentea-cropped.jpg" alt="Tea card picture">
                         <div class="card-title" th:text="${product.getProductName()}">Blackberry Leaf Tea</div>
@@ -78,7 +78,8 @@
                             <span class="average-stars" th:text="${product.getAverageRating()}">2</span>
                             <span>(<span class="average-stars-on-card" th:text="${product.getReviews().size()}">69</span>)</span>
                         </div>
-                        <form>
+                        <form th:action = "@{/addToCart}" th:method = "PUT">
+                            <input type = "hidden" name = "productID" th:value = "${product.getProductID()}">
                             <button type="submit" class="add-to-cart greenButton button">ADD TO CART</button>
                         </form>
                     </div>

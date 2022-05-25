@@ -106,7 +106,7 @@ public class CompanyRegisterTest {
     }
 
     /**
-     * Adds an error with an relevant exception in the title.
+     * Adds an error with a relevant exception in the title.
      * @param expectedError what it should say before the main error appear.
      * @param error what it should say after the error.
      * @param ex the exception that was not expected.

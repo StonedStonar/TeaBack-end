@@ -138,60 +138,31 @@ public class CartProductTests {
     }
 
     /**
-     * Tests if addAmount works with invalid input.
+     * Tests if setAmount works with invalid input.
      */
     @Test
-    @DisplayName("Tests if addAmount works with invalid input.")
+    @DisplayName("Tests if setAmount works with invalid input.")
     public void testIfAddAmountWorksWithInvalidInput(){
         try {
-            cartProduct.addAmount(0);
+            cartProduct.setAmount(0);
             addError(illegalPrefix, "the input is zero");
         }catch (IllegalArgumentException exception){}
         try {
-            cartProduct.addAmount(-1);
+            cartProduct.setAmount(-1);
             addError(illegalPrefix, "the input is negative");
         }catch (IllegalArgumentException exception){}
     }
 
     /**
-     * Tests if addAmount works with valid input.
+     * Tests if setAmount works with valid input.
      */
     @Test
-    @DisplayName("Tests if addAmount works with valid input.")
+    @DisplayName("Tests if setAmount works with valid input.")
     public void testIfAddAmountWorksWithValidInput(){
         try {
-            cartProduct.addAmount(2);
+            cartProduct.setAmount(2);
         }catch (IllegalArgumentException exception){
             addErrorWithException("Expected the ", "amount to be added since the input is valid", exception);
-        }
-    }
-
-    /**
-     * Tests if removeAmount works with invalid input.
-     */
-    @Test
-    @DisplayName("Tests if removeAmount works with invalid input.")
-    public void testIfRemoveAmountWorksWithInvalidInput(){
-        try {
-            cartProduct.removeAmount(0);
-            addError(illegalPrefix, "the input amount is zero");
-        }catch (IllegalArgumentException exception){}
-        try {
-            cartProduct.removeAmount(-1);
-            addError(illegalPrefix, "the input is negative");
-        }catch (IllegalArgumentException exception){}
-    }
-
-    /**
-     * Tests if removeAmount works with valid input.
-     */
-    @Test
-    @DisplayName("Tests if removeAmount works with valid input.")
-    public void testIfRemoveAmountWorksWithValidInput(){
-        try {
-            cartProduct.removeAmount(2);
-        }catch (IllegalArgumentException exception){
-            addErrorWithException("Expected the", "amount to be removed since the input is valid", exception);
         }
     }
 }

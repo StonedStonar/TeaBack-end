@@ -6,9 +6,9 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagE
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 /**
  * Represents a tea-details class, containing details about a specific tea.
@@ -21,6 +21,10 @@ public class ProductDetails extends Details{
     private String ingredients;
 
     @ManyToMany(targetEntity = Tag.class)
+    @JoinTable(name = "productTags",
+            joinColumns = @JoinColumn(name= "detailsID", referencedColumnName = "detailsID"),
+            inverseJoinColumns = @JoinColumn(name= "tagID", referencedColumnName = "tagID")
+    )
     private List<Tag> tagList;
 
     public ProductDetails() {
@@ -63,7 +67,7 @@ public class ProductDetails extends Details{
     /**
      * Adding a tag to tagList.
      * @param tagToAdd the tag to add.
-     * @throws CouldNotAddTagException
+     * @throws CouldNotAddTagException gets thrown if the tag is already in the details.
      */
     public void addTag(Tag tagToAdd) throws CouldNotAddTagException {
         checkIfObjectIsNull(tagToAdd, "tag to add");
@@ -75,9 +79,9 @@ public class ProductDetails extends Details{
     }
 
     /**
-     * Removes the tag from taglist.
+     * Removes the tag from tag list.
      * @param tagToRemove the tag to remove.
-     * @throws CouldNotRemoveTagException
+     * @throws CouldNotRemoveTagException gets thrown if the tag could not be removed.
      */
     public void removeTag(Tag tagToRemove) throws CouldNotRemoveTagException {
         checkIfObjectIsNull(tagToRemove, "tag to remove");
