@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+
+
 /**
  * Represents the controller for the index page.
  * @author Steinar Hjelle Midthus
