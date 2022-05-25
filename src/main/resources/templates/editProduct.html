@@ -4,110 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Information for one product</title>
-    <link href="CSS/basic.css" rel="stylesheet" type="text/css">
-    <link href="CSS/card.css" rel="stylesheet" type="text/css">
-    <link href="CSS/product-info.css" rel="stylesheet" type="text/css">
-    <link href="CSS/review.css" rel="stylesheet" type="text/css">
-    <link href="CSS/editProduct.css" rel="stylesheet" type="text/css">
-    <link href="CSS/form.css" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/basic.css}" rel = "stylesheet" type="text/css">
+    <link th:href="@{/css/card.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/form.css}" rel = "stylesheet" type="text/css">
+    <link th:href="@{/css/product-info.css}" rel = "stylesheet" type="text/css">
+    <link th:href="@{/css/review.css}" rel = "stylesheet" type="text/css">
+    <link th:href="@{/css/editProduct.css}" rel = "stylesheet" type="text/css">
 </head>
 
 <body>
-    <header id="headerWrapper">
-        <div id="menu">
-            <div id="hamburgerMenu" class="mobileElement topMenuLogo" onclick="openMenu()">
-                <button class="logoContainer">
-                    <img src="#" srcset="svg/Menu.svg" alt="Hamburger menu" class="svg logo">
-                    <span>
-                        Menu
-                    </span>
-                </button>
-            </div>
-            <div id="search" class="topMenuLogo" onclick="openSearch()">
-                <button class="logoContainer">
-                    <img src="#" srcset="svg/search.svg" alt="Looking glass logo" class="svg logo">
-                    <span>
-                        Search
-                    </span>
-                </button>
-            </div>
-            <a href="index.html" id="companyHeader">
-                <h1>
-                    NORTE
-                </h1>
-            </a>
-            <nav id="sideMenu">
-                <button id="exit" class="mobileElement topMenuLogo" onclick="closeMenu()">
-                    <img src="#" srcset="svg/cross.svg" alt="Image of a cross logo" class="svg logo">
-                </button>
-                <a href="products.html" class="menuOption">
-                    Products
-                </a>
-                <a href="products.html" class="menuOption">
-                    Sale
-                </a>
-                <a href="contactUs.html" class="menuOption">
-                    Contact us
-                </a>
-                <a href="aboutUs.html" class="menuOption">
-                    About us
-                </a>
-            </nav>
-            <div id="searchForm">
-                <form>
-                    <label for="productSearch">
-                        Search
-                    </label>
-                    <img src="#" srcset="svg/search.svg" alt="Search button" class="svg logo">
-                    <input type="search" id="productSearch" name="productSearch">
-                </form>
-            </div>
-            <div id="cartMenu" class="topMenuLogo">
-                <a href="cart.html" class="logoContainer">
-                    <img src="#" srcset="svg/shoppingcart.svg" alt="A shoppingcart" class="svg logo">
-                    <span>
-                        Cart
-                    </span>
-                </a>
-            </div>
-            <div id="profileMenu" class="topMenuLogo" onmousedown="openProfileMenu">
-                <button class="logoContainer" onclick="openProfileMenu()">
-                    <img src="#" srcset="svg/profile.svg" alt="A human looking logo" class="svg logo">
-                    <span>
-                        Profile
-                    </span>
-                </button>
-                <div id="profileMenuOptions">
-                    <div>
-                        <div id="profileTriangle">
-
-                        </div>
-                    </div>
-                    <div class="profileOption">
-                        <a href="Login.html">
-                            Login
-                        </a>
-                    </div>
-                    <div class="profileOption">
-                        <a href="profile.html">
-                            My profile
-                        </a>
-                    </div>
-                    <div class="profileOption">
-                        <a href="formerOrder.html">
-                            My orders
-                        </a>
-                    </div>
-                    <div class="profileOption">
-                        <a href="index.html">
-                            Logout
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
+    <header id = "headerWrapper" th:replace="components/menu :: header">
     </header>
     <script src="javascript/menu.js"></script>
 
@@ -116,22 +22,23 @@
             Edit product page
         </h2>
         <div id = "mainEditDiv">
-            <form id = "editProductForm" class = "editForm">
+            <form id = "editProductForm" class = "editForm" th:action = "@{/editProduct}" th:method = "PUT">
                 <button class = "button greenButton" id = "switchViewButton" type = "button">
                     Switch view
                 </button>
+                <input type="text" class = "inputForm" id = "productID" placeholder="Enter product id" name = "productID" th:value = "${productID}">
                 <label for="productNameInput" class="formLabel">Product name</label>
-                <input type="text" class = "inputForm" id = "productNameInput" placeholder="Enter product name" name = "productName">
+                <input type="text" class = "inputForm" id = "productNameInput" placeholder="Enter product name" name = "productName" th:value = "${productName}">
                 <label for="productAmountInput" class="formLabel">Product amount</label>
-                <input type="number" class = "inputForm" id = "productAmountInput" placeholder="Enter product amount" name = "productAmount">
+                <input type="number" class = "inputForm" id = "productAmountInput" placeholder="Enter product amount" name = "productAmount" th:value = "${product.getAmountOfProduct()}">
                 <label for="productPriceInput" class="formLabel">Product price</label>
-                <input type="number" class = "inputForm" id = "productPriceInput" placeholder="Enter product price" name = "productPrice">
+                <input type="number" class = "inputForm" id = "productPriceInput" placeholder="Enter product price" name = "productPrice" th:value = "${product.getPrice()}">
                 <label for="compandyIDInput" class="formLabel">Producer ID</label>
-                <input type="number" class = "inputForm" id = "compandyIDInput" placeholder="Enter company id" name = "companyID">
+                <input type="number" class = "inputForm" id = "compandyIDInput" placeholder="Enter company id" name = "companyID" th:value = "${product.getCompany().getCompanyID()}">
                 <label for="comapnyID" class="formLabel">Producer ID</label>
                 <input type="number" class = "inputForm" id = "comapnyID" placeholder="Enter company id" name = "companyID">
                 <label for="ingredientsInput" class="formLabel">Ingredients</label>
-                <textarea class = "inputForm" form = "editProductForm" placeholder = "Insert ingredients" id = "ingredientsInput" name = "ingredients"></textarea>
+                <textarea class = "inputForm" form = "editProductForm" placeholder = "Insert ingredients" id = "ingredientsInput" name = "ingredients" th:value = "${product.getProductDetails().getIngredients()}"></textarea>
                 <p>
                     Ingredients must be inserted with a ":" between the name and value. Also a comma is needed to seperate the values.
                 </p>
@@ -151,7 +58,7 @@
                             Troll Green Tea
                         </h2>
                         <figure>
-                            <img src="Images/greentea.jpg" id="pictureOfTeaType" alt="Troll Green Tea Picture">
+                            <img th:src="@{/Images/greentea.jpg}" id="pictureOfTeaType" alt="Troll Green Tea Picture">
                             <figcaption>Picture taken from Nosplash</figcaption>
                         </figure>
 
@@ -412,145 +319,8 @@
     <script src="javascript/product-info.js"></script>
     <script src="javascript/products.js"></script>
     <script src = "javascript/editProfile.js"></script>
-    <footer id="footerWrapper">
-        <div id="footer">
-            <div class="sectionFooter">
-                <a href="index.html" id="footerLogo">
-                    <span>
-                        NORTE
-                    </span>
-                    <span>
-                        For tea lovers
-                    </span>
-                </a>
-
-
-                <div id="addressFooter">
-                    <span>
-                        Contact Information
-                    </span>
-                    <span>
-                        NORTE AS,
-                    </span>
-                    <span>
-                        LegitAddress 69,
-                    </span>
-                    <span>
-                        6015 Ålesund
-                    </span>
-                </div>
-                <div id="contactInformation">
-                    <a href="tel:82097082">
-                        <span>
-                            820 97 082
-                        </span>
-                    </a>
-                    <a href="mailto:norte@professionalemail.com">
-                        <span>
-                            norte@professionalemail.com
-                        </span>
-                    </a>
-                </div>
-            </div>
-
-            <div class="sectionFooter" id="shortcutContainer">
-                <h3>
-                    Shortcuts
-                </h3>
-                <a href="contactUs.html" class="shortcutFooter">
-                    <span>
-                        Home
-                    </span>
-                </a>
-                <a href="aboutUs.html" class="shortcutFooter">
-                    <span>
-                        About us
-                    </span>
-                </a>
-                <a href="profile.html" class="shortcutFooter">
-                    <span>
-                        Profile
-                    </span>
-                </a>
-                <a href="products.html" class="shortcutFooter">
-                    <span>
-                        Products
-                    </span>
-                </a>
-                <a href="sale.html" class="shortcutFooter">
-                    <span>
-                        Sale
-                    </span>
-                </a>
-                <a href="cart.html" class="shortcutFooter">
-                    <span>
-                        Cart
-                    </span>
-                </a>
-                <a href="login.html" class="shortcutFooter">
-                    <span>
-                        Login
-                    </span>
-                </a>
-            </div>
-            <div class="sectionFooter">
-                <div class="rightFooterDiv" id="socialContainer">
-                    <a href="https://twitter.com/">
-                        <img src="Images/twitterLogoBlack.png" alt="twitter logo" class="logoSocials">
-                    </a>
-                    <a href="https://instagram.com/">
-                        <img src="Images/instagramLogo.png" alt="Instagram logo" class="logoSocials">
-                    </a>
-                    <a href="https://facebook.com/">
-                        <img src="Images/facebookLogo.png" alt="Facebook logo" class="logoSocials">
-                    </a>
-                </div>
-                <div class="rightFooterDiv" id="companies">
-                    <span>
-                        We cooperate with:
-                    </span>
-                    <a href="https://www.yogitea.com/nb/">
-                        <span>
-                            Yogi Tea
-                        </span>
-                    </a>
-                    <a href="https://www.ahmadtea.com/">
-                        <span>
-                            Ahmad Tea
-                        </span>
-                    </a>
-                    <a href="https://www.clipper-teas.com/">
-                        <span>
-                            Clipper Tea
-                        </span>
-                    </a>
-                    <a href="https://www.pukkaherbs.com/no/no">
-                        <span>
-                            Pukka Tea
-                        </span>
-                    </a>
-                </div>
-                <div class="rightFooterDiv" id="donators">
-                    <span>
-                        Feel free to support
-                    </span>
-                    <div id="fairtradeLogo">
-                        <a href="https://www.fairtrade.no/">
-                            <img src="Images/FairtradeLogo.jpg" alt="Fairtrade link" class="logoSupport">
-                        </a>
-                    </div>
-                    <div id="amnestyLogo">
-                        <a href="https://amnesty.no/">
-                            <img src="Images/Amnesty_logo_RGB_yellow.png" alt="Amnesty link" class="logoSupport">
-                        </a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
+    <footer id= "footerWrapper" th:replace="/components/footer :: footer">
     </footer>
-
 </body>
 
 </html>
