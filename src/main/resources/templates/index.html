@@ -21,15 +21,15 @@
     <div class = "allProductsAndSale">
         <figure class ="teaCupFrontPage" id = "topButtonsPicture">
             <div class = "topButtonsWrapper">
-                <a href="products.html" class="frontpageButton">
-                            <span>
-                                Find your herbal friend or other products
-                            </span>
+                <a th:href="@{/products}" class="frontpageButton">
+                        <span>
+                            Find your herbal friend or other products
+                        </span>
                 </a>
-                <a href="products.html" class="frontpageButton"> <!--Change to link to sales instead of products-->
-                    <span>
-                                Sale
-                            </span>
+                <a th:href="@{/products}" class="frontpageButton"> <!--Change to link to sales instead of products-->
+                        <span>
+                            Sale
+                        </span>
                 </a>
             </div>
             <img src="Images/cupAndPlant.jpg" class ="teacupImage"
@@ -47,7 +47,7 @@
                         our ancestors. Our experts have carefully selected teas from all regions of the planet, of course through Fairtraded guidelines, and eco-friendly transport.
                         Read more about us and our values her:
                     </p>
-                    <a href="aboutUs.html" class="frontpageButton">
+                    <a th:href="@{/aboutUs}" class="frontpageButton">
                                 <span>
                                     About Us
                                 </span>
@@ -70,7 +70,7 @@
                 Need a cleanse? We gotcha fam!
             </h3>
             <div class ="card-container">
-                <a href="product-info.html" class="card" th:each = "product : ${listOfProductsOne}">
+                <a th:href="@{product-info}" class="card" th:each = "product : ${listOfProductsOne}">
                     <div class="card-header">
                         <img src="Images/greentea-cropped.jpg" alt="Tea card picture">
                         <div class="card-title" th:text = "${product.getProductName()}">Blackberry Leaf Tea</div>
@@ -102,7 +102,7 @@
                 Can't sleep? Come get your cammomile dawg!
             </h3>
             <div class ="card-container">
-                <a href="product-info.html" class="card" th:each = "product : ${listOfProductsOne}">
+                <a th:href="@{product-info}" class="card" th:each = "product : ${listOfProductsOne}">
                     <div class="card-header">
                         <img src="Images/greentea-cropped.jpg" alt="Tea card picture">
                         <div class="card-title" th:text = "${product.getProductName()}">Blackberry Leaf Tea</div>
@@ -135,7 +135,7 @@
                 Low on energy? Say no more! We have black tea
             </h3>
             <div class ="card-container">
-                <a href="product-info.html" class="card" th:each = "product : ${listOfProductsOne}">
+                <a th:href="@{product-info}" class="card" th:each = "product : ${listOfProductsOne}">
                     <div class="card-header">
                         <img src="Images/greentea-cropped.jpg" alt="Tea card picture">
                         <div class="card-title" th:text = "${product.getProductName()}">Blackberry Leaf Tea</div>
@@ -168,7 +168,7 @@
                 We also got the cutest mugs and other accessoire. Check it out!
             </h3>
             <div class ="card-container">
-                <a href="product-info.html" class="card" th:each = "product : ${listOfProductsOne}">
+                <a th:href="@{product-info}" class="card" th:each = "product : ${listOfProductsOne}">
                     <div class="card-header">
                         <img src="Images/greentea-cropped.jpg" alt="Tea card picture">
                         <div class="card-title" th:text = "${product.getProductName()}">Blackberry Leaf Tea</div>
@@ -209,12 +209,12 @@
 
                 <figure class ="teaCupFrontPage" id = "allProductsAndSaleImage">
                     <div class = "topButtonsWrapper">
-                        <a href="products.html" class="frontpageButton">
+                        <a th:href="@{/products}" class="frontpageButton">
                                     <span>
                                         All products
                                     </span>
                         </a>
-                        <a href="products.html" class="frontpageButton"> <!--Change to link to sales instead of products-->
+                        <a th:href="@{/products}" class="frontpageButton"> <!--Change to link to sales instead of products-->
                             <span>
                                         Sale
                                     </span>
