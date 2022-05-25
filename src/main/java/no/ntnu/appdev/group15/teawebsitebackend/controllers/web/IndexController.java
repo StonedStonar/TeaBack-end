@@ -1,5 +1,8 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 
+import java.util.ArrayList;
+import java.util.List;
+import no.ntnu.appdev.group15.teawebsitebackend.model.Product;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
 import org.springframework.security.core.Authentication;
@@ -29,7 +32,18 @@ public class IndexController {
     @GetMapping("/index")
     public String getIndex(Authentication authentication, Model model){
         addLoggedInAttributes(authentication, model);
+
+        model.addAttribute("listOfProductsOne", getSpesificNumberOfElements());
         return "index";
+    }
+
+    private List<Product> getSpesificNumberOfElements() {
+        List<Product> products = productRegister.getAllProducts();
+        List<Product> wantedProduct = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            wantedProduct.add(products.get(i));
+        }
+        return wantedProduct;
     }
 
 

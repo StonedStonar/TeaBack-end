@@ -98,13 +98,13 @@ public class RegisterTestData {
         List<Company> companies = companyRegister.getAllCompanies();
         if (productRegister.getAllProducts().isEmpty()) {
             //Todo: Gjorde bare om på denne så vi kunne generere random reviews til databasen.
-            products.add(new Product( "Green Leaf Tea", 109, 7, new ProductDetails("Lul", "Tea"), companies.get(0)));
-            products.add(new Product( "Black water Leaf Tea", 509, 3, new ProductDetails("Lul", "Tea"), companies.get(1)));
-            products.add(new Product( "Mushroom High Tea", 559, 2, new ProductDetails("Lul", "Tea"), companies.get(2)));
-            products.add(new Product( "Blue Herb Tea", 89, 1, new ProductDetails("Lul", "Tea"), companies.get(3)));
-            products.add(new Product( "Strawberry Tea", 99, 9, new ProductDetails("Lul", "Tea"), companies.get(1)));
-            products.add(new Product( "Hause Norsk Tea", 69, 5, new ProductDetails("Lul", "Tea"), companies.get(1)));
-            products.add(new Product( "Stor Troll Herb Tea", 150, 11, new ProductDetails("Lul", "Tea"), companies.get(0)));
+            products.add(new Product( "Green Leaf Tea", 109, 7, new ProductDetails("Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.", "Tea"), companies.get(0)));
+            products.add(new Product( "Black water Leaf Tea", 509, 3, new ProductDetails("Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.", "Tea"), companies.get(1)));
+            products.add(new Product( "Mushroom High Tea", 559, 2, new ProductDetails("Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis.", "Tea"), companies.get(2)));
+            products.add(new Product( "Blue Herb Tea", 89, 1, new ProductDetails("Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet e consectetur.", "Tea"), companies.get(3)));
+            products.add(new Product( "Strawberry Tea", 99, 9, new ProductDetails("Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.", "Tea"), companies.get(1)));
+            products.add(new Product( "Hause Norsk Tea", 69, 5, new ProductDetails("At vero eos et accusamus et iusto odio dignissimos ducimus q.", "Tea"), companies.get(1)));
+            products.add(new Product( "Stor Troll Herb Tea", 150, 11, new ProductDetails("Itaque earum rerum hic tenetur a sapiente delectus", "Tea"), companies.get(0)));
             addRandomProductReviews(userRegister.getAllUsers(), products);
             for (Product product : products){
                 productRegister.addProduct(product);
