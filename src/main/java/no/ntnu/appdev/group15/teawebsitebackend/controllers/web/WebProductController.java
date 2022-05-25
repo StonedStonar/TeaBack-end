@@ -1,9 +1,13 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 
 import no.ntnu.appdev.group15.teawebsitebackend.model.Product;
+import no.ntnu.appdev.group15.teawebsitebackend.model.Review;
+import no.ntnu.appdev.group15.teawebsitebackend.model.Tag;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.TagJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetProductException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.security.AccessUser;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -17,10 +21,11 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
- * @author Steinar Hjelle Midthus
+ * @author Kenneth Johansen Misund and Steinar Hjelle Midthus
  * @version 0.1
  */
 @Controller
@@ -28,11 +33,34 @@ public class WebProductController {
 
     private ProductRegister productRegister;
 
+    private TagsRegister tagRegister;
+
+    @GetMapping("/product-info")
+    public String getProductInfo(Authentication authentication, Model model) {
+        addLoggedInAttributes(authentication, model);
+        List<Product> productList = productRegister.getAllProducts();
+        Product product = productList.get(6);
+        model.addAttribute("mainProduct", product);
+        model.addAttribute("relatedProduct", productList);
+        model.addAttribute("productDetail", product.getProductDetails());
+        return "product-info";
+    }
+
+    @GetMapping("/productsOverview")
+    public String getProductsPage(Authentication authentication, Model model) {
+        addLoggedInAttributes(authentication, model);
+        List<Product> productList = productRegister.getAllProducts();
+        model.addAttribute("relatedProduct", productList);
+        model.addAttribute("relatedTags", tagRegister.getAllTags());
+        return "products";
+    }
+
     /**
      * Makes an instance of the ProductController class.
      */
-    public WebProductController(ProductJPA productJPA) {
+    public WebProductController(ProductJPA productJPA, TagJPA tagJPA) {
         this.productRegister = productJPA;
+        this.tagRegister = tagJPA;
     }
 
     @GetMapping("/editProduct")

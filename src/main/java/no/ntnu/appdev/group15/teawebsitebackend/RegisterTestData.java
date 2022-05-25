@@ -156,7 +156,7 @@ public class RegisterTestData {
         int amountOfUsers = users.size();
         int maxAmountOfRandomReviews = 5;
         for (Product product : products) {
-            int amountOfReveiws = random.nextInt(maxAmountOfRandomReviews);
+            int amountOfReveiws = random.nextInt(1 ,maxAmountOfRandomReviews);
             for (int i = 0; i < amountOfReveiws; i++){
                 User randomUser = users.get(random.nextInt(users.size()));
                 product.addReview(new Review("Luli " + i, randomUser.getFirstName(), randomUser, "Pogchamp " + (i *amountOfReveiws), LocalDate.now().minusDays(random.nextInt(14)), random.nextInt(6)));
