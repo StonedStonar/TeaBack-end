@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>AboutUs</title>
+        <link th:href = "@{css/basic.css}" rel = "stylesheet" type="text/css">
+        <link th:href = "@{css/aboutUs.css}" rel = "stylesheet" type="text/css">
+
+    </head>
+    <body>
+    <header id = "headerWrapper" th:replace="components/menu :: header">
+    </header>
+        
+        <section class = "mainSection" id = "mainContent">
+            <h1 class = "mainHeaderText">
+                About us
+            </h1>
+            <p>
+                Humans have been enjoying herbal teas for millennia. We are passionate for natural teas, nurtured by
+    our ancestors. Our experts have carefully selected teas from all regions of the planet, from Japanese
+    teas to herbal wonders of Machu Picchu
+            </p>
+            <figure>
+                <img src="Images/teaCupImage.jpg" id= "teacupImage" alt="A rich black tea from the Yunnan province in China with hints of Cacao">
+                <figcaption> Picture downloaded from unsplash.com, by NIKON CORPORATION </figcaption>
+            </figure>
+            <h2>
+                Main values
+            </h2>
+            <p>
+                We value the ancient traditions which are brought to modern times through nature.
+    Health, good quality tea. Time together with friends, family, talking
+            </p>
+            <h2>
+                Our products and services
+            </h2>
+            <p>
+                We have carefully created a collection of more than 600 different teas from 140 different countries.
+    Come visit us at our office in Amfi Moa, we have 62 most popular teas available here! Our shop is maskfree (just don't tell it to municipality's chief physician)!
+            </p>
+            <p>
+                Feel free to contact us for questions or help choosing a product!
+            </p>
+        </section>
+
+    <footer id= "footerWrapper" th:replace="/components/footer :: footer">
+    </footer>
+
+    </body>
+
+    
+</html>
