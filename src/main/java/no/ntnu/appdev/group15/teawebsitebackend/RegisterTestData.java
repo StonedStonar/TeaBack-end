@@ -40,7 +40,7 @@ public class RegisterTestData {
             addTestTags(tagJPA);
             addTestCompanies(companyJPA);
             addTestUsers(userJPA);
-            addTestProducts(productJPA, userJPA, companyJPA);
+            addTestProducts(productJPA, userJPA, companyJPA, tagJPA);
             addTestOrder(orderJPA, userJPA.getAllUsers(), productJPA.getAllProducts());
             addTestCarts(userJPA, productJPA);
         } catch (CouldNotAddOrderException | CouldNotAddProductException | CouldNotAddReviewException | CouldNotAddTagException | CouldNotAddUserException | CouldNotAddCompanyException | CouldNotAddCartProductException | CouldNotGetUserException e) {
@@ -61,6 +61,15 @@ public class RegisterTestData {
             tagsRegister.addTagWithDetails("Tea", "A herb that is crushed and used to make water taste something more than minerals.");
             tagsRegister.addTagWithDetails("Crockery", "Stuff you use to eat on and drink from.");
             tagsRegister.addTagWithDetails("Environmentally Friendly", "A product made in a sustainable way for the planets sake.");
+            tagsRegister.addTagWithDetails("Green tea", "A green tea that is green");
+            tagsRegister.addTagWithDetails("Black tea", "A black tea that is black");
+            tagsRegister.addTagWithDetails("White tea", "A white tea that is white");
+            tagsRegister.addTagWithDetails("Yellow tea", "A yellow tea that is yellow");
+            tagsRegister.addTagWithDetails("Oolong tea", "Oolong tea that is chinese");
+            tagsRegister.addTagWithDetails("Small cup", "Small cup that is small");
+            tagsRegister.addTagWithDetails("Cup", "Cup that is a cup");
+            tagsRegister.addTagWithDetails("Big cup", "Big cup that is big");
+            tagsRegister.addTagWithDetails("Tea pot", "Tea pot that tea pots");
         }
     }
 
@@ -88,23 +97,32 @@ public class RegisterTestData {
      * @param productRegister the product register.
      * @param userRegister the user register.
       * @param companyRegister the company register
+      * @param tagsRegister the tags register.
      * @throws CouldNotAddProductException gets thrown if the product could not be added.
      * @throws CouldNotAddReviewException gets thrown if the review could not be added.
      */
-    public void addTestProducts(ProductRegister productRegister, UserRegister userRegister, CompanyRegister companyRegister) throws CouldNotAddProductException, CouldNotAddReviewException {
+    public void addTestProducts(ProductRegister productRegister, UserRegister userRegister, CompanyRegister companyRegister, TagsRegister tagsRegister)
+        throws CouldNotAddProductException, CouldNotAddReviewException, CouldNotAddTagException {
         checkIfObjectIsNull(productRegister, "product register");
+        List<Tag> tags = tagsRegister.getAllTags();
         List<Product> products = new ArrayList<>();
         //Todo: Vi må legge til mer reivews.
         List<Company> companies = companyRegister.getAllCompanies();
         if (productRegister.getAllProducts().isEmpty()) {
             //Todo: Gjorde bare om på denne så vi kunne generere random reviews til databasen.
-            products.add(new Product( "Green Leaf Tea", 109, 7, new ProductDetails("Lul", "Tea"), companies.get(0)));
-            products.add(new Product( "Black water Leaf Tea", 509, 3, new ProductDetails("Lul", "Tea"), companies.get(1)));
-            products.add(new Product( "Mushroom High Tea", 559, 2, new ProductDetails("Lul", "Tea"), companies.get(2)));
-            products.add(new Product( "Blue Herb Tea", 89, 1, new ProductDetails("Lul", "Tea"), companies.get(3)));
-            products.add(new Product( "Strawberry Tea", 99, 9, new ProductDetails("Lul", "Tea"), companies.get(1)));
-            products.add(new Product( "Hause Norsk Tea", 69, 5, new ProductDetails("Lul", "Tea"), companies.get(1)));
-            products.add(new Product( "Stor Troll Herb Tea", 150, 11, new ProductDetails("Lul", "Tea"), companies.get(0)));
+            products.add(new Product( "Green Leaf Tea", 109, 7, new ProductDetails("Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.", "Tea"), companies.get(0)));
+            products.add(new Product( "Black water Leaf Tea", 509, 3, new ProductDetails("Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.", "Tea"), companies.get(1)));
+            products.add(new Product( "Mushroom High Tea", 559, 2, new ProductDetails("Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis.", "Tea"), companies.get(2)));
+            products.add(new Product( "Blue Herb Tea", 89, 1, new ProductDetails("Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet e consectetur.", "Tea"), companies.get(3)));
+            products.add(new Product( "Strawberry Tea", 99, 9, new ProductDetails("Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.", "Tea"), companies.get(1)));
+            products.add(new Product( "Hause Norsk Tea", 69, 5, new ProductDetails("At vero eos et accusamus et iusto odio dignissimos ducimus q.", "Tea"), companies.get(1)));
+            products.add(new Product( "Stor Troll Herb Tea", 150, 11, new ProductDetails("Itaque earum rerum hic tenetur a sapiente delectus", "Tea"), companies.get(0)));
+            products.get(0).getProductDetails().addTag(tags.get(5));
+            products.get(1).getProductDetails().addTag(tags.get(6));
+            products.get(2).getProductDetails().addTag(tags.get(9));
+            products.get(3).getProductDetails().addTag(tags.get(9));
+            products.get(4).getProductDetails().addTag(tags.get(7));
+            products.get(5).getProductDetails().addTag(tags.get(7));
             addRandomProductReviews(userRegister.getAllUsers(), products);
             for (Product product : products){
                 productRegister.addProduct(product);
