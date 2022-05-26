@@ -79,6 +79,14 @@ public class CartAndCheckoutController {
         return "cart";
     }
 
+    @GetMapping("/thankYouPage")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public String getThankYouPage(Authentication authentication, Model model){
+        addLoggedInAttributes(authentication, model);
+
+        return "thankYouPage";
+    }
+
     /**
      * Gets the access user that is using the page.
      * @param authentication the authentication object.
