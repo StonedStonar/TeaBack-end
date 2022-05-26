@@ -21,12 +21,12 @@
     <div class = "allProductsAndSale">
         <figure class ="teaCupFrontPage" id = "topButtonsPicture">
             <div class = "topButtonsWrapper">
-                <a th:href="@{/products}" class="frontpageButton">
+                <a th:href="@{/productsOverview}" class="frontpageButton">
                         <span>
                             Find your herbal friend or other products
                         </span>
                 </a>
-                <a th:href="@{/products}" class="frontpageButton"> <!--Change to link to sales instead of products-->
+                <a th:href="@{/productsOverview}" class="frontpageButton"> <!--Change to link to sales instead of products-->
                         <span>
                             Sale
                         </span>
@@ -69,18 +69,21 @@
             <h3 class="miniHeader">
                 Need a cleanse? We gotcha fam!
             </h3>
-            <div class ="card-container">
-                <a th:href="@{product-info}" class="card" th:each = "product : ${listOfProductsOne}">
+            <div class="card-container">
+                <a th:href="@{/product-info(id=${product.getProductID()})}" class="card" th:each="product:${listOfProductsOne}" >
                     <div class="card-header">
-                        <img src="Images/greentea-cropped.jpg" alt="Tea card picture">
-                        <div class="card-title" th:text = "${product.getProductName()}">Blackberry Leaf Tea</div>
-                        <div class="card-description" th:text = "${product.getProductDetails.getDescription()}">Tea ingredients from the nature of norway</div>
+                        <img src="images/greentea-cropped.jpg" alt="Tea card picture">
+                        <div class="card-title" th:text="${product.getProductName()}">Blackberry Leaf Tea</div>
+                        <div class="card-description" th:text="${product.getProductDetails().getDescription()}">Tea ingredients from the nature of norway</div>
                     </div>
 
                     <div class="card-body">
-                        <div class="price">
-                            <p class="now-price">169kr</p>
+                        <div class="price" th:if = "${product.isOnSale()}">
+                            <p class="now-price" th:text="${product.getPrice()}">169kr</p>
                             <p class="former-price">199kr</p>
+                        </div>
+                        <div class="price" th:if = "${!product.isOnSale()}">
+                            <p class="now-price normal-price">199kr</p>
                         </div>
                         <div class="rating-on-cards">
                             <span class="star">&#9734;</span>
@@ -88,31 +91,34 @@
                             <span class="star">&#9734;</span>
                             <span class="star">&#9734;</span>
                             <span class="star">&#9734;</span>
-                            <span class="average-stars">1</span>
-                            <span>(<span class="average-stars-on-card">3</span>)</span>
+                            <span class="average-stars" th:text="${product.getAverageRating()}">2</span>
+                            <span>(<span class="average-stars-on-card" th:text="${product.getReviews().size()}">69</span>)</span>
                         </div>
-                        <form>
+                        <form th:action = "@{/addToCart}" th:method = "PUT">
+                            <input type = "hidden" name = "productID" th:value = "${product.getProductID()}">
                             <button type="submit" class="add-to-cart greenButton button">ADD TO CART</button>
                         </form>
                     </div>
                 </a>
-
             </div>
             <h3 class="miniHeader">
                 Can't sleep? Come get your cammomile dawg!
             </h3>
-            <div class ="card-container">
-                <a th:href="@{product-info}" class="card" th:each = "product : ${listOfProductsOne}">
+            <div class="card-container">
+                <a th:href="@{/product-info(id=${product.getProductID()})}" class="card" th:each="product:${listOfProductsOne}" >
                     <div class="card-header">
-                        <img src="Images/greentea-cropped.jpg" alt="Tea card picture">
-                        <div class="card-title" th:text = "${product.getProductName()}">Blackberry Leaf Tea</div>
-                        <div class="card-description" th:text = "${product.getProductDetails.getDescription()}">Tea ingredients from the nature of norway</div>
+                        <img src="images/greentea-cropped.jpg" alt="Tea card picture">
+                        <div class="card-title" th:text="${product.getProductName()}">Blackberry Leaf Tea</div>
+                        <div class="card-description" th:text="${product.getProductDetails().getDescription()}">Tea ingredients from the nature of norway</div>
                     </div>
 
                     <div class="card-body">
-                        <div class="price">
-                            <p class="now-price">169kr</p>
+                        <div class="price" th:if = "${product.isOnSale()}">
+                            <p class="now-price" th:text="${product.getPrice()}">169kr</p>
                             <p class="former-price">199kr</p>
+                        </div>
+                        <div class="price" th:if = "${!product.isOnSale()}">
+                            <p class="now-price normal-price">199kr</p>
                         </div>
                         <div class="rating-on-cards">
                             <span class="star">&#9734;</span>
@@ -120,32 +126,35 @@
                             <span class="star">&#9734;</span>
                             <span class="star">&#9734;</span>
                             <span class="star">&#9734;</span>
-                            <span class="average-stars">1</span>
-                            <span>(<span class="average-stars-on-card">3</span>)</span>
+                            <span class="average-stars" th:text="${product.getAverageRating()}">2</span>
+                            <span>(<span class="average-stars-on-card" th:text="${product.getReviews().size()}">69</span>)</span>
                         </div>
-                        <form>
+                        <form th:action = "@{/addToCart}" th:method = "PUT">
+                            <input type = "hidden" name = "productID" th:value = "${product.getProductID()}">
                             <button type="submit" class="add-to-cart greenButton button">ADD TO CART</button>
                         </form>
                     </div>
                 </a>
-
             </div>
 
             <h3 class="miniHeader">
                 Low on energy? Say no more! We have black tea
             </h3>
-            <div class ="card-container">
-                <a th:href="@{product-info}" class="card" th:each = "product : ${listOfProductsOne}">
+            <div class="card-container">
+                <a th:href="@{/product-info(id=${product.getProductID()})}" class="card" th:each="product:${listOfProductsOne}" >
                     <div class="card-header">
-                        <img src="Images/greentea-cropped.jpg" alt="Tea card picture">
-                        <div class="card-title" th:text = "${product.getProductName()}">Blackberry Leaf Tea</div>
-                        <div class="card-description" th:text = "${product.getProductDetails.getDescription()}">Tea ingredients from the nature of norway</div>
+                        <img src="images/greentea-cropped.jpg" alt="Tea card picture">
+                        <div class="card-title" th:text="${product.getProductName()}">Blackberry Leaf Tea</div>
+                        <div class="card-description" th:text="${product.getProductDetails().getDescription()}">Tea ingredients from the nature of norway</div>
                     </div>
 
                     <div class="card-body">
-                        <div class="price">
-                            <p class="now-price">169kr</p>
+                        <div class="price" th:if = "${product.isOnSale()}">
+                            <p class="now-price" th:text="${product.getPrice()}">169kr</p>
                             <p class="former-price">199kr</p>
+                        </div>
+                        <div class="price" th:if = "${!product.isOnSale()}">
+                            <p class="now-price normal-price">199kr</p>
                         </div>
                         <div class="rating-on-cards">
                             <span class="star">&#9734;</span>
@@ -153,32 +162,35 @@
                             <span class="star">&#9734;</span>
                             <span class="star">&#9734;</span>
                             <span class="star">&#9734;</span>
-                            <span class="average-stars">1</span>
-                            <span>(<span class="average-stars-on-card">3</span>)</span>
+                            <span class="average-stars" th:text="${product.getAverageRating()}">2</span>
+                            <span>(<span class="average-stars-on-card" th:text="${product.getReviews().size()}">69</span>)</span>
                         </div>
-                        <form>
+                        <form th:action = "@{/addToCart}" th:method = "PUT">
+                            <input type = "hidden" name = "productID" th:value = "${product.getProductID()}">
                             <button type="submit" class="add-to-cart greenButton button">ADD TO CART</button>
                         </form>
                     </div>
                 </a>
-
             </div>
 
             <h3 class = "miniHeader">
                 We also got the cutest mugs and other accessoire. Check it out!
             </h3>
-            <div class ="card-container">
-                <a th:href="@{product-info}" class="card" th:each = "product : ${listOfProductsOne}">
+            <div class="card-container">
+                <a th:href="@{/product-info(id=${product.getProductID()})}" class="card" th:each="product:${listOfProductsOne}" >
                     <div class="card-header">
-                        <img src="Images/greentea-cropped.jpg" alt="Tea card picture">
-                        <div class="card-title" th:text = "${product.getProductName()}">Blackberry Leaf Tea</div>
-                        <div class="card-description" th:text = "${product.getProductDetails.getDescription()}">Tea ingredients from the nature of norway</div>
+                        <img src="images/greentea-cropped.jpg" alt="Tea card picture">
+                        <div class="card-title" th:text="${product.getProductName()}">Blackberry Leaf Tea</div>
+                        <div class="card-description" th:text="${product.getProductDetails().getDescription()}">Tea ingredients from the nature of norway</div>
                     </div>
 
                     <div class="card-body">
-                        <div class="price">
-                            <p class="now-price">169kr</p>
+                        <div class="price" th:if = "${product.isOnSale()}">
+                            <p class="now-price" th:text="${product.getPrice()}">169kr</p>
                             <p class="former-price">199kr</p>
+                        </div>
+                        <div class="price" th:if = "${!product.isOnSale()}">
+                            <p class="now-price normal-price">199kr</p>
                         </div>
                         <div class="rating-on-cards">
                             <span class="star">&#9734;</span>
@@ -186,15 +198,15 @@
                             <span class="star">&#9734;</span>
                             <span class="star">&#9734;</span>
                             <span class="star">&#9734;</span>
-                            <span class="average-stars">1</span>
-                            <span>(<span class="average-stars-on-card">3</span>)</span>
+                            <span class="average-stars" th:text="${product.getAverageRating()}">2</span>
+                            <span>(<span class="average-stars-on-card" th:text="${product.getReviews().size()}">69</span>)</span>
                         </div>
-                        <form>
+                        <form th:action = "@{/addToCart}" th:method = "PUT">
+                            <input type = "hidden" name = "productID" th:value = "${product.getProductID()}">
                             <button type="submit" class="add-to-cart greenButton button">ADD TO CART</button>
                         </form>
                     </div>
                 </a>
-
             </div>
         </div>
 
@@ -209,12 +221,12 @@
 
                 <figure class ="teaCupFrontPage" id = "allProductsAndSaleImage">
                     <div class = "topButtonsWrapper">
-                        <a th:href="@{/products}" class="frontpageButton">
+                        <a th:href="@{/productsOverview}" class="frontpageButton">
                                     <span>
                                         All products
                                     </span>
                         </a>
-                        <a th:href="@{/products}" class="frontpageButton"> <!--Change to link to sales instead of products-->
+                        <a th:href="@{/productsOverview}" class="frontpageButton"> <!--Change to link to sales instead of products-->
                             <span>
                                         Sale
                                     </span>
