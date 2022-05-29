@@ -42,7 +42,7 @@
             </div>
         </div>
 
-        <form class="editForm" id = "orderForm">
+        <form class="editForm" id = "orderForm" th:action="@{/doPayment}" th:method="POST">
             <h3 class="headerOptions">
                 Choose delivery-method
             </h3>
@@ -55,6 +55,7 @@
                 <option value = "3" class = "option" label = "Brevdue - 0,-">0</option>
             </select>
 
+
             <h3 class="headerOptions">
                 Choose payment-method
             </h3>
@@ -64,6 +65,9 @@
                 <option value = "2" class = "option" label = "Vipps - 120,-">120</option>
                 <option value = "3" class = "option" label = "Your mom  - 0,-">0</option>
             </select>
+            <span class ="errorMessage" th:if = "${param.invalidPaymentOrDelivery}">
+                All fields must be selected
+            </span>
             <div class="myInfo">
                 <h2>
                     Confirm
@@ -84,9 +88,9 @@
                         </div>
                     </div>
 
-                    <a th:href="@{thankYouPage}" id ="confirmButton" class="button greenButton">
+                    <button id ="confirmButton" class="button greenButton">
                         Confirm order
-                    </a>
+                    </button>
                 </div>
             </div>
 

@@ -1,19 +1,29 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import net.bytebuddy.pool.TypePool;
 import no.ntnu.appdev.group15.teawebsitebackend.model.*;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.OrderJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddCartProductException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddOrderException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetCartProductException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetProductException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetUserException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.OrderRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.security.AccessUser;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
@@ -31,12 +41,15 @@ public class CartAndCheckoutController {
 
     private ProductRegister productRegister;
 
+    private UserRegister userRegister;
+
     /**
      * Makes an instance of the CartAndCheckoutController class.
      */
-    public CartAndCheckoutController(OrderJPA orderJPA, ProductJPA productJPA) {
+    public CartAndCheckoutController(OrderJPA orderJPA, ProductJPA productJPA, UserJPA userJPA) {
         this.orderRegister = orderJPA;
         this.productRegister = productJPA;
+        this.userRegister = userJPA;
     }
 
 
@@ -68,6 +81,106 @@ public class CartAndCheckoutController {
         }
 
         return new RedirectView(parameterBuilder.buildString(), true);
+    }
+
+    @PostMapping("/doPayment") //TODO FIX logic (errors after tried to not select a method)
+    public RedirectView confirmOrderAndDoPayment(Authentication authentication, @RequestParam(value = "deliveryMethod", required = false)Integer deliveryValue, @RequestParam(value = "paymentMethod", required = false)Integer paymentValue){
+        ParameterBuilder parameterBuilder = new ParameterBuilder("thankYouPage");
+        AccessUser accessUser = getAccessUser(authentication);
+        User user = accessUser.getUser();
+        Cart cart = user.getCart();
+        List<OrderedProduct> orderedProducts = null;
+        boolean invalidInput = false;
+
+        try {
+            //Not optimal, but in our case the system would be locked if we are going to process a cart.
+            synchronized (CartAndCheckoutController.class) {
+                orderedProducts = getOrderedProducts(cart);
+            }
+        } catch (CouldNotGetProductException | IllegalArgumentException e) {
+            parameterBuilder.addParameter("invalidProductAmount", "true");
+            invalidInput = true;
+        }
+        if (deliveryValue != null && paymentValue != null) {
+            try {
+                Order order = new Order(Long.MAX_VALUE, user, orderedProducts, OrderState.ORDERED, user.getAddress(), getDeliveryMethod(deliveryValue), LocalDate.now(),getPaymentMethod(paymentValue), false);
+                orderRegister.addOrder(order);
+                //cart.clearAllProducts();
+                userRegister.updateUser(user);
+            } catch (IllegalArgumentException e) {
+                invalidInput = true;
+                parameterBuilder.addParameter("invalidPaymentOrDelivery", "true");
+                //her funkæ ikke delivvery eller payment
+            } catch (CouldNotAddOrderException | CouldNotGetUserException e) {
+                invalidInput = true;
+                parameterBuilder.addParameter("criticalError", "true");
+                // her har det skjedd noe critical
+            }
+        } else {
+            invalidInput = true;
+            parameterBuilder.addParameter("invalidPaymentOrDelivery", "true");
+        }
+
+        if (invalidInput) {
+            parameterBuilder.setPageName("confirmPage");
+        }
+
+
+        return new RedirectView(parameterBuilder.buildString(), true);
+    }
+
+    private String getPaymentMethod(int paymentValue){
+        return switch (paymentValue){
+            case 1 -> "Klarna";
+            case 2 -> "Vipps";
+            case 3 -> "Your mom";
+            default -> throw new IllegalArgumentException("Invalid paymentMethod");
+        };
+    }
+
+    private String getDeliveryMethod(int deliveryValue){
+        return switch (deliveryValue){
+            case 1 -> "Postnord";
+            case 2 -> "Posten";
+            case 3 -> "Brevdue";
+            default -> throw new IllegalArgumentException("Invalid deliveryMethod");
+        };
+    }
+
+
+    /**
+     * Gets ordered products from cart.
+     * @param cart the cart with products to get.
+     * @return a list of ordered products.
+     * @throws CouldNotGetProductException this gets thrown when
+     */
+    private List<OrderedProduct> getOrderedProducts(Cart cart) throws CouldNotGetProductException {
+        List<CartProduct> cartProductsList = cart.getAllProducts();
+        List<OrderedProduct> orderedProductList = new ArrayList<>();
+        try {
+            for(CartProduct cartProduct:cartProductsList){
+                long productID = cartProduct.getProduct().getProductID();
+                Product product = productRegister.getProduct(productID);
+                OrderedProduct orderedProduct = new OrderedProduct(product, cartProduct.getAmount());
+                product.removeAmountOfProduct(orderedProduct.getAmountOfProduct());
+
+                orderedProductList.add(orderedProduct);
+            }
+        }catch (CouldNotGetProductException | IllegalArgumentException e) {
+            //TODO logic
+            for(OrderedProduct orderedProduct:orderedProductList) {
+                Product product = orderedProduct.getProduct();
+                int amount = orderedProduct.getAmountOfProduct();
+                product.addAmountOfProduct(amount);
+            }
+            throw e;
+        }finally {
+            for(OrderedProduct orderedProduct : orderedProductList){
+                productRegister.updateProduct(orderedProduct.getProduct());
+            }
+        }
+
+        return orderedProductList;
     }
 
     @GetMapping("/cart")
