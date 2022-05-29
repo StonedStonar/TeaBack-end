@@ -30,6 +30,9 @@
     color: red;
 }
 
-.okMessage{
-    color: green;
+
+.formOptions{
+    border-radius: 5px;
+    height: 30px;
+    font-size: 1em;
 }
