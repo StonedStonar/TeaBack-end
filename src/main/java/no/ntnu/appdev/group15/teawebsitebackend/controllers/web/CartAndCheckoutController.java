@@ -110,7 +110,7 @@ public class CartAndCheckoutController {
             } catch (IllegalArgumentException e) {
                 invalidInput = true;
                 parameterBuilder.addParameter("invalidPaymentOrDelivery", "true");
-                //her funkæ ikke delivvery eller payment
+                //her funker ikke delivery eller payment
             } catch (CouldNotAddOrderException | CouldNotGetUserException e) {
                 invalidInput = true;
                 parameterBuilder.addParameter("criticalError", "true");
