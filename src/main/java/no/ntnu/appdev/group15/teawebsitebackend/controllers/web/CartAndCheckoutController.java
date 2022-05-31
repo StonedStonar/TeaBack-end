@@ -224,7 +224,12 @@ public class CartAndCheckoutController {
      */
     private void addLoggedInAttributes(Authentication authentication, Model model){
         boolean loggedIn = authentication != null;
+        boolean admin = false;
         model.addAttribute("loggedIn", loggedIn);
+        if (loggedIn){
+            admin = getAccessUser(authentication).getUser().getRole() == Role.ROLE_ADMIN;
+        }
+        model.addAttribute("isAdmin", admin);
     }
 
     /**

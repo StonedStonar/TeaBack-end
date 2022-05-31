@@ -19,6 +19,15 @@
         <h2 class= "mainHeaderText">
             Products
         </h2>
+        <p th:if = "${relatedProduct.isEmpty() && searchWord != null && sale == null}">
+            No products could be found with the search "<span th:text = "${searchWord}">word</span>".
+        </p>
+        <p th:if = "${relatedProduct.isEmpty() && sale != null && searchWord == null}">
+            There is no products on sale.
+        </p>
+        <p th:if = "${relatedProduct.isEmpty() && searchWord == null && sale == null }">
+            There is no products in stock
+        </p>
 
         <div id = "productsWrapper">
             <div id="product-filter">
@@ -27,19 +36,19 @@
                     <img src = "#" srcset = "svg/Arrow-for-dropdown-meny.svg" alt = "A arrow head" class = "svg logo rotatableLogo">
                 </div>
                 
-                <form id="hidden-filter">
+                <form id="hidden-filter" th:action = "@{/productsOverview}">
                     <div id="tea" class="filterOption">
-                        <span>Tea</span>
+                        <span>Category</span>
                         <img src = "#" srcset = "svg/Arrow-for-dropdown-meny.svg" alt = "A arrow head" class = "svg logo rotatableLogo">
                     </div>
                     <div id="openTea" class="closeable">
                         <div th:each="sortTag:${relatedTags}">
-                            <label for="black-tea" th:text="${sortTag.getTagName()}">Black Tea</label>
-                            <input type="checkbox" id="black-tea" name="black-tea">
+                            <label th:for="${sortTag.getTagName()}" th:text="${sortTag.getTagName()}">Black Tea</label>
+                            <input type="checkbox" th:id="${sortTag.getTagName()}" th:name="${'t-' + sortTag.getTagID()}">
                         </div>
                     </div>
                     <div id="mug" class="filterOption">
-                        <span>Mug</span>
+                        <span>Company</span>
                         <img src = "#" srcset = "svg/Arrow-for-dropdown-meny.svg" alt = "A arrow head" class = "svg logo rotatableLogo">
                     </div>
                     <div id="openMug" class="closeable">
@@ -67,7 +76,7 @@
                             <p class="former-price">199kr</p>
                         </div>
                         <div class="price" th:if = "${!product.isOnSale()}">
-                            <p class="now-price normal-price">199kr</p>
+                            <p class="now-price normal-price" th:text = "${product.getPrice()}">199kr</p>
                         </div>
                         <div class="rating-on-cards">
                             <span class="star">&#9734;</span>
@@ -78,9 +87,13 @@
                             <span class="average-stars" th:text="${product.getAverageRating()}">2</span>
                             <span>(<span class="average-stars-on-card" th:text="${product.getReviews().size()}">69</span>)</span>
                         </div>
-                        <form th:action = "@{/addToCart}" th:method = "PUT">
+                        <form th:action = "@{/addToCart}" th:method = "PUT" th:if="${!isAdmin}">
                             <input type = "hidden" name = "productID" th:value = "${product.getProductID()}">
                             <button type="submit" class="add-to-cart greenButton button">ADD TO CART</button>
+                        </form>
+                        <form th:action = "@{/editProduct}" th:method = "GET" th:if="${isAdmin}">
+                            <input type = "hidden" name = "productID" th:value = "${product.getProductID()}">
+                            <button type="submit" class="add-to-cart greenButton button">EDIT PRODUCT</button>
                         </form>
                     </div>
                 </a>
