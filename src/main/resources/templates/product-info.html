@@ -14,11 +14,11 @@
         </header>
 
         <section class = "mainSection">
+            <h2  class="mainHeaderText" th:text="${mainProduct.getProductName()}">
+                Troll Green Tea
+            </h2>
             <div id = "productContainer">
                 <div id= "product-info">
-                    <h2  class="mainHeaderText" th:text="${mainProduct.getProductName()}">
-                        Troll Green Tea
-                    </h2>
                     <figure>
                         <img src = "Images/greentea.jpg" id = "pictureOfTeaType" alt="Troll Green Tea Picture">
                         <figcaption>Picture taken from Nosplash</figcaption>

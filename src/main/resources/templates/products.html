@@ -76,7 +76,7 @@
                             <p class="former-price">199kr</p>
                         </div>
                         <div class="price" th:if = "${!product.isOnSale()}">
-                            <p class="now-price normal-price" th:text = "${product.getPrice()}">199kr</p>
+                            <p class="now-price normal-price"><span th:text = "${product.getPrice()}">199</span><span> kr</span></p>
                         </div>
                         <div class="rating-on-cards">
                             <span class="star">&#9734;</span>

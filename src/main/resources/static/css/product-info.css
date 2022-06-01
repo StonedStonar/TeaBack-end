@@ -67,6 +67,7 @@ figure {
 .product-info-price {
     display: flex;
     flex-flow: column;
+    justify-content: center;
 }
 
 #price-and-review>.star-rating{
