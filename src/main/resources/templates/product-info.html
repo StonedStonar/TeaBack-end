@@ -25,7 +25,7 @@
                     </figure>
                 </div>
     
-                <form id="addToCartContainer">
+                <div id="addToCartContainer">
                     <div id="price-and-review">
                         <div class="product-info-price">
                             <div>
@@ -53,10 +53,15 @@
                                 </span>
                         </a>
                     </div>
-                
-                    <button type = "submit" class="Add-To-Cart greenButton button">
-                        ADD TO CART
-                    </button>
+
+                    <form th:action = "@{/addToCart}" th:method = "PUT" th:if="${!isAdmin}" class = "Add-to-cart">
+                        <input type = "hidden" name = "productID" th:value = "${mainProduct.getProductID()}">
+                        <button type="submit" class="greenButton button">ADD TO CART</button>
+                    </form>
+                    <form th:action = "@{/editProduct}" th:method = "GET" th:if="${isAdmin}" class = "Add-to-cart">
+                        <input type = "hidden" name = "productID" th:value = "${mainProduct.getProductID()}">
+                        <button type="submit" class="greenButton button">EDIT PRODUCT</button>
+                    </form>
                     
                     <div class="amount">
                         <div class="amount-to-add">
@@ -72,7 +77,7 @@
                             <span> on storage</span>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
 
             <div class="drop-down-meny">
@@ -179,7 +184,7 @@
                             <p class="former-price">199kr</p>
                         </div>
                         <div class="price" th:if = "${!product.isOnSale()}">
-                            <p class="now-price normal-price">199kr</p>
+                            <p class="now-price normal-price" th:text = "${product.getPrice()}">199kr</p>
                         </div>
                         <div class="rating-on-cards">
                             <span class="star">&#9734;</span>
@@ -190,8 +195,13 @@
                             <span class="average-stars" th:text="${product.getAverageRating()}">2</span>
                             <span>(<span class="average-stars-on-card" th:text="${product.getReviews().size()}">69</span>)</span>
                         </div>
-                        <form>
+                        <form th:action = "@{/addToCart}" th:method = "PUT" th:if="${!isAdmin}">
+                            <input type = "hidden" name = "productID" th:value = "${product.getProductID()}">
                             <button type="submit" class="add-to-cart greenButton button">ADD TO CART</button>
+                        </form>
+                        <form th:action = "@{/editProduct}" th:method = "GET" th:if="${isAdmin}">
+                            <input type = "hidden" name = "productID" th:value = "${product.getProductID()}">
+                            <button type="submit" class="add-to-cart greenButton button">EDIT PRODUCT</button>
                         </form>
                     </div>
                 </a>

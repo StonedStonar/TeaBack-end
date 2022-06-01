@@ -2,6 +2,7 @@ package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 
 import no.ntnu.appdev.group15.teawebsitebackend.model.Address;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
+import no.ntnu.appdev.group15.teawebsitebackend.model.Role;
 import no.ntnu.appdev.group15.teawebsitebackend.model.User;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.OrderJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
@@ -270,7 +271,12 @@ public class ProfileController {
      */
     private void addLoggedInAttributes(Authentication authentication, Model model){
         boolean loggedIn = authentication != null;
+        boolean admin = false;
         model.addAttribute("loggedIn", loggedIn);
+        if (loggedIn){
+            admin = getAccessUser(authentication).getUser().getRole() == Role.ROLE_ADMIN;
+        }
+        model.addAttribute("isAdmin", admin);
     }
 
     /**

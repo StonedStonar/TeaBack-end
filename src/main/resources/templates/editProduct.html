@@ -20,13 +20,14 @@
     <section class="mainSection">
         <h2 class = "mainHeaderText">
             Edit product page
+
         </h2>
         <div id = "mainEditDiv">
             <form id = "editProductForm" class = "editForm" th:action = "@{/editProduct}" th:method = "PUT">
                 <button class = "button greenButton" id = "switchViewButton" type = "button">
                     Switch view
                 </button>
-                <input type="hidden" class = "inputForm" id = "productID" placeholder="Enter product id" name = "productID" th:value = "${productID}">
+                <input type="hidden" class = "inputForm" id = "productID" name = "productID" th:value = "${productID}">
                 <label for="productNameInput" class="formLabel">Product name</label>
                 <input type="text" class = "inputForm" id = "productNameInput" placeholder="Enter product name" name = "productName" th:value = "${productName}">
                 <label for="productAmountInput" class="formLabel">Product amount</label>
@@ -52,7 +53,13 @@
                 </p>
                 <label for = "previewBox" class = "formLabel">Preview</label>
                 <input type = "checkbox" id = "previewBox" class = "button greenButton submitButton" name = "previewProduct">
-                <input type = "submit" class = "button greenButton submitButton" value = "Submit">
+                <span class = "message">
+                    Normal message.
+                </span>
+                <span class = "errorMessage message">
+                    Error message.
+                </span>
+                <input type = "submit" class = "button greenButton submitButton" value = "Submit changes">
             </form>
             <div id = "productInfoPreview" class = "preview">
                 <div id = "productContainer">
@@ -66,7 +73,7 @@
                         </figure>
                     </div>
 
-                    <form id="addToCartContainer">
+                    <div id="addToCartContainer">
                         <div id="price-and-review">
                             <div class="product-info-price">
                                 <div>
@@ -95,9 +102,14 @@
                             </a>
                         </div>
 
-                        <button type = "submit" class="Add-To-Cart greenButton button">
-                            ADD TO CART
-                        </button>
+                        <form th:action = "@{/addToCart}" th:method = "PUT" th:if="${!isAdmin}" class = "Add-to-cart">
+                            <input type = "hidden" name = "productID" th:value = "${productID}">
+                            <button type="submit" class="greenButton button">ADD TO CART</button>
+                        </form>
+                        <form th:action = "@{/editProduct}" th:method = "GET" th:if="${isAdmin}" class = "Add-to-cart">
+                            <input type = "hidden" name = "productID" th:value = "${productID}">
+                            <button type="submit" class="greenButton button">EDIT PRODUCT</button>
+                        </form>
 
                         <div class="amount">
                             <div class="amount-to-add">
@@ -113,7 +125,7 @@
                                 <span> on storage</span>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
 
                 <div class="drop-down-meny">
@@ -174,8 +186,13 @@
                                 <span class="average-stars">2</span>
                                 <span>(<span class="average-stars-on-card">69</span>)</span>
                             </div>
-                            <form>
+                            <form th:action = "@{/addToCart}" th:method = "PUT" th:if="${!isAdmin}">
+                                <input type = "hidden" name = "productID" th:value = "${productID}">
                                 <button type="submit" class="add-to-cart greenButton button">ADD TO CART</button>
+                            </form>
+                            <form th:action = "@{/editProduct}" th:method = "GET" th:if="${isAdmin}">
+                                <input type = "hidden" name = "productID" th:value = "${productID}">
+                                <button type="submit" class="add-to-cart greenButton button">EDIT PRODUCT</button>
                             </form>
                         </div>
                     </a>

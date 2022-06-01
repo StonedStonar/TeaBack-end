@@ -3,8 +3,10 @@ package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 import java.util.ArrayList;
 import java.util.List;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Product;
+import no.ntnu.appdev.group15.teawebsitebackend.model.Role;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
+import no.ntnu.appdev.group15.teawebsitebackend.security.AccessUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,8 +70,23 @@ public class IndexController {
      */
     private void addLoggedInAttributes(Authentication authentication, Model model){
         boolean loggedIn = authentication != null;
+        boolean admin = false;
         model.addAttribute("loggedIn", loggedIn);
+        if (loggedIn){
+            admin = getAccessUser(authentication).getUser().getRole() == Role.ROLE_ADMIN;
+        }
+        model.addAttribute("isAdmin", admin);
     }
+
+    /**
+     * Gets the access user that is using the page.
+     * @param authentication the authentication object.
+     * @return the access user of this session.
+     */
+    private AccessUser getAccessUser(Authentication authentication){
+        return (AccessUser) authentication.getPrincipal();
+    }
+
     /**
      * Checks if a string is of a valid format or not.
      *
