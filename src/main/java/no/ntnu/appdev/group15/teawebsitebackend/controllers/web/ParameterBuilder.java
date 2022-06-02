@@ -9,6 +9,8 @@ public class ParameterBuilder {
 
     private StringBuilder stringBuilder;
 
+    private String pageName;
+
     private boolean firstAppend;
 
     /**
@@ -18,8 +20,17 @@ public class ParameterBuilder {
     public ParameterBuilder(String pageName) {
         checkString(pageName,  "page name");
         stringBuilder = new StringBuilder();
-        stringBuilder.append(pageName);
+        this.pageName = pageName;
         firstAppend = true;
+    }
+
+    /**
+     * Sets the page name.
+     * @param pageName the page name.
+     */
+    public void setPageName(String pageName){
+        checkString(pageName, "pageName");
+        this.pageName = pageName;
     }
 
     /**
@@ -53,7 +64,7 @@ public class ParameterBuilder {
      * @return the string.
      */
     public String buildString(){
-        return stringBuilder.toString();
+        return pageName + stringBuilder.toString();
     }
 
     /**

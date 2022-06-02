@@ -100,6 +100,13 @@ public class Cart {
     }
 
     /**
+     * Clears all products from cart.
+     */
+    public void clearAllProducts() {
+        cartProductList.clear();
+    }
+
+    /**
      * Check to make sure that integer values cannot go bellow 0. (Negative value)
      * @param number the object to be checked.
      * @param errorMessage exception to be displayed.

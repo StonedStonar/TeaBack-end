@@ -18,6 +18,7 @@ function addListeners(){
     }
     let clearCartButton = document.getElementById("clearCartButton");
     clearCartButton.addEventListener("click", () => removeAllProducts());
+    updateTotalAmounts();
 }
 
 function updateTotalOfProduct(container){
@@ -28,12 +29,12 @@ function updateTotalOfProduct(container){
     let totalSpan = container.querySelector(".totalPricePerProduct");
     let totalPrice = parseFloat(pricePer.innerHTML) * parseFloat(amount.value);
     totalSpan.innerHTML = totalPrice;
-    
+
     let discountPer = container.querySelector(".discountPer");
     let discountSpan = container.querySelector(".discountPerProduct");
     let totalDiscount = parseFloat(discountPer.innerHTML) * parseFloat(amount.value);
     discountSpan.innerHTML = totalDiscount;
-    
+
     updateTotalAmounts();
 }
 
@@ -90,7 +91,7 @@ function removeProduct(event){
 
 /**
  * Hides an container.
- * @param {*} productContainer the container to hide. 
+ * @param {*} productContainer the container to hide.
  */
 function hideContainer(productContainer){
     let amount = productContainer.querySelector(".num-to-change");
@@ -111,7 +112,7 @@ function removeAllProducts(){
 
 /**
  * Increments the target product.
- * @param {*} event the click event. 
+ * @param {*} event the click event.
  */
 function increment(event){
     let target = event.target;
@@ -123,8 +124,8 @@ function increment(event){
 }
 
 /**
- * Makes the amount value decrease. 
- * @param {clicked decrement button} event the button that was pressed. 
+ * Makes the amount value decrease.
+ * @param {clicked decrement button} event the button that was pressed.
  */
 function decrement(event){
     let target = event.target;

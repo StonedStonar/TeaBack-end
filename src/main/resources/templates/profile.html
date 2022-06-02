@@ -68,7 +68,7 @@
                     </a>
                 </div>
                 <div id = "optionsForUser">
-                    <div class = "profileMenuOptions">
+                    <div class = "profileMenuOptions" th:if ="${!isAdmin}">
                         <a th:href = "@{/formerOrders}">
                             <span>
                                 Your orders
@@ -79,7 +79,7 @@
                         </a>
                     </div>
                     <div class = "profileMenuOptions">
-                        <a href = "contactUs.html">
+                        <a th:href = "@{/contactUs}">
                             <span>
                                 Help and contact
                             </span>
@@ -89,7 +89,7 @@
                         </a>
                     </div>
                 </div>
-                <form id = "deleteProfile">
+                <form id = "deleteProfile" th:if ="${!isAdmin}">
                     <h3>
                         Delete profile
                     </h3>

@@ -69,12 +69,12 @@
                         Sale
                     </span>
                 </a>
-                <a th:href="@{/cart}" class="shortcutFooter">
+                <a th:href="@{/cart}" class="shortcutFooter" th:if ="${!isAdmin}">
                     <span>
                         Cart
                     </span>
                 </a>
-                <a th:href="@{/login}" class="shortcutFooter">
+                <a th:href="@{/login}" class="shortcutFooter" th:if = "${!loggedIn}">
                     <span>
                         Login
                     </span>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Confirmation</title>
+    <link th:href="@{/css/basic.css}" rel = "stylesheet" type="text/css">
+    <link th:href="@{/css/confirmPage.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/form.css}" rel = "stylesheet" type="text/css">
+</head>
+
+<body>
+<header id = "headerWrapper" th:replace="components/menu :: header">
+</header>
+
+<section class="mainSection" id="mainContent">
+    <div id="orderWrapper">
+        <h2 class="mainHeaderText">
+            My info
+        </h2>
+        <div class="infoButtonWrapper">
+            <div id="infoShower">
+                <div>
+                    <p>
+                        <span>Bjarne</span> <span>Bjarnesen</span>
+                    </p>
+                    <p>
+                        <span>Testvegen</span> <span>12</span>
+                    </p>
+                    <p>
+                        <span> 6015</span> <span>Ålesund</span>
+                    </p>
+                    <p>
+                        Norge
+                    </p>
+                </div>
+                <a th:href="@{/editProfile}" id="editButton">
+                    Edit
+                </a>
+            </div>
+        </div>
+
+        <form class="editForm" id = "orderForm" th:action="@{/doPayment}" th:method="POST">
+            <h3 class="headerOptions">
+                Choose delivery-method
+            </h3>
+
+
+            <select type="text" class="formOptions" id = "selectDelivery" required name = "deliveryMethod">
+                <option value="0" disabled selected> Select delivery-method</option>
+                <option value = "1" class = "option" label = "Postnord - 56,-">56</option>
+                <option value = "2" class = "option" label = "Posten - 120,-">120</option>
+                <option value = "3" class = "option" label = "Brevdue - 0,-">0</option>
+            </select>
+
+
+            <h3 class="headerOptions">
+                Choose payment-method
+            </h3>
+            <select type="text" class="formOptions" id = "selectPayment" required name = "paymentMethod">
+                <option value="0" disabled selected> Select payment-method</option>
+                <option value = "1" class = "option" label = "Klarna - 56,-">56</option>
+                <option value = "2" class = "option" label = "Vipps - 120,-">120</option>
+                <option value = "3" class = "option" label = "Your mom  - 0,-">0</option>
+            </select>
+            <span class ="errorMessage" th:if = "${param.invalidPaymentOrDelivery}">
+                All fields must be selected
+            </span>
+            <div class="myInfo">
+                <h2>
+                    Confirm
+                </h2>
+                <div class="confirmationAndInfo">
+                    <div>
+                        <div>
+                            Product cost: <span id = "productCost" class = "costs">200</span>,-
+                        </div>
+                        <div>
+                            Shipping: <span id = "shippingCost" class = "costs">0</span>,-
+                        </div>
+                        <div>
+                            Payment: <span id = "paymentCost" class = "costs">0</span>,-
+                        </div>
+                        <div id = "subTotal">
+                            Subtotal: <span id = "TotalCost">0</span>,-
+                        </div>
+                    </div>
+
+                    <button id ="confirmButton" class="button greenButton">
+                        Confirm order
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+
+</section>
+
+<script src="javascript/menu.js"> </script>
+<script src="javascript/confirmPage.js"> </script>
+
+<footer id= "footerWrapper" th:replace="/components/footer :: footer">
+</footer>
+
+</body>
+
+
+</html>

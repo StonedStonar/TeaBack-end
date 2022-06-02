@@ -1,9 +1,6 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 
-import no.ntnu.appdev.group15.teawebsitebackend.model.Company;
-import no.ntnu.appdev.group15.teawebsitebackend.model.Product;
-import no.ntnu.appdev.group15.teawebsitebackend.model.ProductDetails;
-import no.ntnu.appdev.group15.teawebsitebackend.model.Tag;
+import no.ntnu.appdev.group15.teawebsitebackend.model.*;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.CompanyJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.TagJPA;
@@ -26,6 +23,7 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -54,6 +52,7 @@ public class WebProductController {
         addLoggedInAttributes(authentication, model);
         List<Product> productList = productRegister.getAllProducts();
         Product product = null;
+        model.addAttribute("sale", false);
         try {
             product = productRegister.getProduct(id);
             model.addAttribute("mainProduct", product);
@@ -72,15 +71,42 @@ public class WebProductController {
      * @return the products page.
      */
     @GetMapping("/productsOverview")
-    public String getProductsPage(Authentication authentication, Model model, @RequestParam(value = "productsMode", required = false) String productsMode) {
+    public String getProductsPage(Authentication authentication, Model model, @RequestParam Map<String, String> parameters) {
         addLoggedInAttributes(authentication, model);
         List<Product> productList = productRegister.getAllProducts();
-        if (productsMode != null && productsMode.equalsIgnoreCase("SALE")){
+        checkIfSearch(parameters, productList, model);
+        String sale = parameters.get("sale");
+        boolean isSale = sale != null;
+        if (isSale){
             productList = productList.stream().filter(Product::isOnSale).toList();
+            if (productList.isEmpty()){
+                model.addAttribute("sale", sale);
+            }
         }
         model.addAttribute("relatedProduct", productList);
+        //Todo: Istedet for at vi tar alle tagsene som er i systemet burde vi heller ta alle tagsene som er med disse produktene og vise dem.
         model.addAttribute("relatedTags", tagRegister.getAllTags());
         return "products";
+    }
+
+    /**
+     * Checks if the input values is a search.
+     * @param stringMap the string map.
+     * @param productList the product list.
+     * @param model the model.
+     */
+    private void checkIfSearch(Map<String, String> stringMap, List<Product> productList, Model model){
+        String searchWord = stringMap.get("productSearch");
+        List<Product> products;
+        if (searchWord != null && !searchWord.isBlank()) {
+            products = productList.stream().filter(product -> product.getProductName().length() >= searchWord.length())
+                    .filter(product -> product.getProductName().toLowerCase().contains(searchWord.toLowerCase())).toList();
+            productList.clear();
+            productList.addAll(products);
+            if (productList.isEmpty()){
+                model.addAttribute("searchWord", searchWord);
+            }
+        }
     }
 
 
@@ -246,7 +272,12 @@ public class WebProductController {
      */
     private void addLoggedInAttributes(Authentication authentication, Model model){
         boolean loggedIn = authentication != null;
+        boolean admin = false;
         model.addAttribute("loggedIn", loggedIn);
+        if (loggedIn){
+            admin = getAccessUser(authentication).getUser().getRole() == Role.ROLE_ADMIN;
+        }
+        model.addAttribute("isAdmin", admin);
     }
 
     /**
