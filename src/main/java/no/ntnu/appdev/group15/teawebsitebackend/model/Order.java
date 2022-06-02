@@ -1,6 +1,8 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -56,9 +58,10 @@ public class Order {
      * @param cancelled true if order is cancelled, otherwise false.
      */
     //Todo: Skriv dokumentasjon
-    public Order(long orderID, User user, List<OrderedProduct> orderedProductList,
-                 OrderState orderState, Address address, String deliveryMethod,
-                 LocalDate dateOfOrder, String paymentMethod, boolean cancelled) {
+    //TODO @JsonProperty on cancelled?
+    public Order(@JsonProperty("orderId")long orderID, @JsonProperty("user")User user, @JsonProperty("orderedProductList")List<OrderedProduct> orderedProductList,
+                 @JsonProperty("orderState")OrderState orderState, @JsonProperty("address")Address address, @JsonProperty("deliveryMethod")String deliveryMethod,
+                 @JsonProperty("dateOfOrder")LocalDate dateOfOrder, @JsonProperty("paymentMethod")String paymentMethod, boolean cancelled) {
 
         checkIfNumberNotNegative(orderID, "order ID");
         this.orderID = orderID;
@@ -183,10 +186,12 @@ public class Order {
         return paymentMethod;
     }
 
+
     /**
      * Gets the total price of all
      * @return gets the total price of the whole order.
      */
+    @JsonIgnore
     public float getTotalPrice(){
         float totalPrice = 0;
         List<OrderedProduct> products = this.orderedProductList.stream().filter(orderedProduct -> orderedProduct.getOrderState() != OrderState.RETURNED || orderedProduct.getOrderState() != OrderState.CANCELLED || orderedProduct.getOrderState() != OrderState.PARTIALRETURN).toList();

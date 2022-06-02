@@ -1,10 +1,13 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
 import no.ntnu.appdev.group15.teawebsitebackend.model.OrderedProduct;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Role;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.OrderJPA;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddOrderException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetOrderException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveOrderException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.OrderRegister;
@@ -21,6 +24,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -67,17 +72,25 @@ public class OrderController {
     return order;
   }
 
+  /**
+   * Makes new order.
+   */
+  public Order makeOrder(String body) throws JsonProcessingException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    return objectMapper.readValue(body, Order.class);
+  }
 
-//  /**
-//   * Adds an order to a user.
-//   * @param orderedProduct the order to be added
-//   * @param id the id of the user to add the order to
-//   *           TODO this one
-//   */
-//  @GetMapping
-//  public void addOrderToUser(OrderedProduct orderedProduct, Long id) {
-//
-//  }
+
+  /**
+   * Adds an order to a user.
+   * @param body the json object
+   */
+  @PostMapping
+  public void addOrderToUser(@RequestBody String body)
+      throws JsonProcessingException, CouldNotAddOrderException {
+    Order order = makeOrder(body);
+    orderRegister.addOrder(order);
+  }
 
 
   /**

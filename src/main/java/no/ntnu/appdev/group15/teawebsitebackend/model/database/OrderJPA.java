@@ -2,6 +2,7 @@ package no.ntnu.appdev.group15.teawebsitebackend.model.database;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddOrderException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetOrderException;
@@ -63,13 +64,12 @@ public class OrderJPA implements OrderRegister {
   @Override
   public Order getOrderWithId(long orderID) throws CouldNotGetOrderException {
     checkIfNumberIsAboveZero(orderID, "orderID");
-    Order orderIDToFind = null;
-    if(orderRepository.existsById(orderID)) {
-      orderIDToFind = orderRepository.getById(orderID);
-    } else {
+
+    Optional<Order> opOrder = orderRepository.findById(orderID);
+    if (opOrder.isEmpty()) {
       throw new CouldNotGetOrderException("The order with id " + orderID + " is not in the system");
     }
-    return orderIDToFind;
+    return opOrder.get();
   }
 
   @Override

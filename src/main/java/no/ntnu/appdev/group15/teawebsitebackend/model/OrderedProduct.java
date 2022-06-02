@@ -1,5 +1,7 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 
 /**
@@ -42,7 +44,7 @@ public class OrderedProduct {
      * @param amountOfProduct the amount of the product that was ordered.
      * @throws IllegalArgumentException if any of the input arguments are invalid format.
      */
-    public OrderedProduct(long orderedID, Product product, int amountOfProduct, OrderState orderState) {
+    public OrderedProduct(@JsonProperty("orderedProductID") long orderedID, @JsonProperty("product") Product product, @JsonProperty("amountOfProduct") int amountOfProduct, @JsonProperty("orderState")OrderState orderState) {
         checkIfProductIsValid(product);
         checkIfAmountIsValid(amountOfProduct);
         checkOrderState(orderState);
@@ -126,6 +128,7 @@ public class OrderedProduct {
      * Gets the total price of the products.
      * @return the total price.
      */
+    @JsonIgnore
     public int getTotalPrice(){
         return pricePerProduct * amountOfProduct;
     }
