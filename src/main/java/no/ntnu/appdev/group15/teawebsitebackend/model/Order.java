@@ -45,6 +45,15 @@ public class Order {
 
     /**
      * Makes an instance of the Order class.
+     * @param orderID the id of the order.
+     * @param user the user.
+     * @param orderedProductList the ordered products.
+     * @param orderState the state of the order.
+     * @param address the address of the user.
+     * @param deliveryMethod the method of delivery.
+     * @param dateOfOrder the date of the order.
+     * @param paymentMethod the payment method.
+     * @param cancelled true if order is cancelled, otherwise false.
      */
     //Todo: Skriv dokumentasjon
     public Order(long orderID, User user, List<OrderedProduct> orderedProductList,

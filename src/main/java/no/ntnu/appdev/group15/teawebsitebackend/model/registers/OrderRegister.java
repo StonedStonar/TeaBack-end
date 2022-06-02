@@ -53,4 +53,5 @@ public interface OrderRegister {
      * @return a list with all the orders of a user in the system.
      */
     List<Order> getAllOrders();
+
 }
