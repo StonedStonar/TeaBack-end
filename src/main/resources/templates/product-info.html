@@ -14,11 +14,11 @@
         </header>
 
         <section class = "mainSection">
+            <h2  class="mainHeaderText" th:text="${mainProduct.getProductName()}">
+                Troll Green Tea
+            </h2>
             <div id = "productContainer">
                 <div id= "product-info">
-                    <h2  class="mainHeaderText" th:text="${mainProduct.getProductName()}">
-                        Troll Green Tea
-                    </h2>
                     <figure>
                         <img src = "Images/greentea.jpg" id = "pictureOfTeaType" alt="Troll Green Tea Picture">
                         <figcaption>Picture taken from Nosplash</figcaption>
@@ -106,7 +106,7 @@
                     </div> 
                     <div id = "ingredients">
                         <p th:text="${productDetail.getIngredients()}">
-                            Chuck Norris once went skydiving, but promised never to do it again. One Grand Canyon is enough.
+                            Thyme 40g, sugar 100g, water 5dl
                         </p>
                     </div>
                 </div>
