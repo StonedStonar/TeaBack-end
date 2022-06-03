@@ -3,6 +3,7 @@ package no.ntnu.appdev.group15.teawebsitebackend.controllers.rest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
 import no.ntnu.appdev.group15.teawebsitebackend.model.OrderedProduct;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Role;
@@ -106,18 +107,17 @@ public class OrderController {
 
 
 
-//  /**
-//   * Edit an order. Only possible for admin-users.
-//   * TODO this motherfucker
-//   */
-//  //@PreAuthorize("hasRole('ADMIN')")
-//  @GetMapping
-//  public String getEditOrder(Model model, Authentication authentication, HttpSession httpSession){
-//    addLoggedInAttributes(authentication, model);
-//    //Order order = getAccessUser(authentication).getOrder();
-//
-//    return "editOrder";
-//  }
+  /**
+   * Edit an order. Only possible for admin-users.
+   *
+   */
+  //@PreAuthorize("hasRole('ADMIN')")
+  public String editOrder(Model model, Authentication authentication, HttpSession httpSession){
+    addLoggedInAttributes(authentication, model);
+    //Order order = getAccessUser(authentication).getOrder();
+
+    return "editOrder";
+  }
 
 
 
