@@ -93,6 +93,17 @@ public class ProductDetails extends Details{
     }
 
     /**
+     * Checks if all tag matches the tag we want to find.
+     * @param tagsToFind the wanted tag.
+     * @return {true} if wanted tags matches anyone the wanted tags, {false} if the tag could not be found.
+     */
+
+    //TODO skriv tester.
+    public boolean checkIfTagsAreFound(List<Tag> tagsToFind) {
+        return tagsToFind.stream().allMatch(tag -> tagList.stream().anyMatch(tag4 -> tag4.getTagID() == tag.getTagID()));
+    }
+
+    /**
      * Gets all the tags within this product details.
      * @return gets all the tags.
      */

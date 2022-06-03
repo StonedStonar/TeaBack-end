@@ -1,15 +1,16 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta charset="UTF-8">
-        <title>Information for one product</title>
-        <link th:href = "@{/CSS/basic.css}" rel="stylesheet" type="text/css">
-        <link th:href = "@{/CSS/card.css}" rel="stylesheet" type="text/css">
-        <link th:href = "@{/CSS/product-info.css}" rel="stylesheet" type="text/css">
-        <link th:href = "@{/CSS/review.css}" rel="stylesheet" type="text/css">
-    </head>
 
-    <body>
+        <!DOCTYPE html>
+        <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+        <head>
+            <meta charset="UTF-8">
+            <title>Information for one product</title>
+            <link th:href = "@{/CSS/basic.css}" rel="stylesheet" type="text/css">
+            <link th:href = "@{/CSS/card.css}" rel="stylesheet" type="text/css">
+            <link th:href = "@{/CSS/product-info.css}" rel="stylesheet" type="text/css">
+            <link th:href = "@{/CSS/review.css}" rel="stylesheet" type="text/css">
+        </head>
+
+        <body>
         <header id = "headerWrapper" th:replace="components/menu :: header">
         </header>
 
@@ -24,7 +25,7 @@
                         <figcaption>Picture taken from Nosplash</figcaption>
                     </figure>
                 </div>
-    
+
                 <div id="addToCartContainer">
                     <div id="price-and-review">
                         <div class="product-info-price">
@@ -40,14 +41,14 @@
                             </div>
                         </div>
                         <a class="star-rating" href = "#productReviews">
-                                <div class="review-star-rating">
-                                    <span class="star">&#9734;</span>
-                                    <span class="star">&#9734;</span>
-                                    <span class="star">&#9734;</span>
-                                    <span class="star">&#9734;</span>
-                                    <span class="star">&#9734;</span>
-                                </div>
-                                <span class = "inStock">(
+                            <div class="review-star-rating">
+                                <span class="star">&#9734;</span>
+                                <span class="star">&#9734;</span>
+                                <span class="star">&#9734;</span>
+                                <span class="star">&#9734;</span>
+                                <span class="star">&#9734;</span>
+                            </div>
+                            <span class = "inStock">(
                                     <span id="amount-of-reviews">666</span>
                                     )
                                 </span>
@@ -62,14 +63,14 @@
                         <input type = "hidden" name = "productID" th:value = "${mainProduct.getProductID()}">
                         <button type="submit" class="greenButton button">EDIT PRODUCT</button>
                     </form>
-                    
+
                     <div class="amount">
                         <div class="amount-to-add">
                             <button class="minus-button" type="button">-</button>
                             <input class="num-to-change" value="1" name = "amountOfProduct">
                             <button class="plus-button" type="button">+</button>
                         </div>
-    
+
                         <div class="amount-on-storage">
                             <span class="circle"></span>
                             <span class="amount-of-product" th:text="${mainProduct.getAmountOfProduct()}">170</span>
@@ -98,19 +99,19 @@
 
                     </div>
                 </div>
-    
+
                 <div class="dropdown">
                     <div id = "ingredientsContainer" >
                         <span>Ingredients</span>
                         <img src = "#" srcset = "svg/Arrow-for-dropdown-meny.svg" alt = "A arrow head" class = "svg logo rotatableLogo">
-                    </div> 
+                    </div>
                     <div id = "ingredients">
                         <p th:text="${productDetail.getIngredients()}">
-                            Thyme 40g, sugar 100g, water 5dl
+                            Chuck Norris once went skydiving, but promised never to do it again. One Grand Canyon is enough.
                         </p>
                     </div>
                 </div>
-    
+
                 <div class="dropdown last">
                     <div id = "productReviewsContainer">
                         <span>Proudct reviews</span>
@@ -124,7 +125,7 @@
                                 <input type="text" placeholder="Title for review">
                                 <span>Reviewer</span>
                                 <input type="text" placeholder="Name or Username">
-                                
+
                                 <div class="set-star-rating" id = "reviewStars">
                                     <span>Set rating:</span>
                                     <span class="star">&#9734;</span>
@@ -137,7 +138,7 @@
                                 <textarea rows="8" placeholder="write you're review here"></textarea>
                                 <button type="submit">Submit review</button>
                             </form>
-    
+
                         </div>
                         <div class="review-content">
                             <button id = "reviewButton" class = "button greenButton">Write your review</button>
@@ -166,9 +167,9 @@
                     </div>
                 </div>
             </div>
-           
+
             <h3 id = "relatedProducts">
-                Related products   
+                Related products
             </h3>
             <div class="card-container">
                 <a href="product-info.html" class="card" th:each="product:${relatedProduct}" >
@@ -177,7 +178,7 @@
                         <div class="card-title" th:text="${product.getProductName()}">Blackberry Leaf Tea</div>
                         <div class="card-description" th:text="${product.getProductDetails().getDescription()}">Tea ingredients from the nature of norway</div>
                     </div>
-        
+
                     <div class="card-body">
                         <div class="price" th:if = "${product.isOnSale()}">
                             <p class="now-price" th:text="${product.getPrice()}">169kr</p>
@@ -213,7 +214,7 @@
         <script type="text/javascript" th:src="@{/javascript/product-info.js}"></script>
         <script type="text/javascript" th:src="@{/javascript/products.js}"></script>
         <footer id= "footerWrapper" th:replace="/components/footer :: footer">
-    </footer>
+        </footer>
 
-    </body>
-</html>
+        </body>
+        </html>

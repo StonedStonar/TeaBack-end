@@ -20,10 +20,9 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static java.lang.Long.parseLong;
 
 
 /**
@@ -34,8 +33,6 @@ import java.util.Map;
 public class WebProductController {
 
     private ProductRegister productRegister;
-
-    private TagsRegister tagsRegister;
 
     private CompanyRegister companyRegister;
 
@@ -71,10 +68,23 @@ public class WebProductController {
      * @return the products page.
      */
     @GetMapping("/productsOverview")
-    public String getProductsPage(Authentication authentication, Model model, @RequestParam Map<String, String> parameters) {
+    public String getProductsPage(Authentication authentication, Model model, @RequestParam Map<String, String> parameters) throws CouldNotGetTagException, CouldNotGetCompanyException {
         addLoggedInAttributes(authentication, model);
         List<Product> productList = productRegister.getAllProducts();
-        checkIfSearch(parameters, productList, model);
+        if (parameters.size() > 0) {
+            List<Tag> listOfTags = getTagsFromMap(parameters);
+            if(!listOfTags.isEmpty()){
+                productList = productList.stream().filter(product ->
+                        product.getProductDetails().checkIfTagsAreFound(listOfTags)).toList();
+            }
+            parameters.keySet().forEach(tagIdentifier -> model.addAttribute(tagIdentifier, tagIdentifier));
+            List<Company> companies = getCompaniesFromMap(parameters);
+            if(!companies.isEmpty()){
+                productList = productList.stream().filter(product -> companies.stream().anyMatch(company ->
+                        company.getCompanyID() == product.getCompany().getCompanyID())).toList();
+            }
+        }
+        productList = checkIfSearch(parameters, productList, model);
         String sale = parameters.get("sale");
         boolean isSale = sale != null;
         if (isSale){
@@ -83,10 +93,67 @@ public class WebProductController {
                 model.addAttribute("sale", sale);
             }
         }
+        List<Company> companies = productList.stream().map(product -> product.getCompany()).distinct().toList();
+        List<Tag> tags = getTagsFromProduct(productList);
         model.addAttribute("relatedProduct", productList);
         //Todo: Istedet for at vi tar alle tagsene som er i systemet burde vi heller ta alle tagsene som er med disse produktene og vise dem.
-        model.addAttribute("relatedTags", tagRegister.getAllTags());
+        model.addAttribute("relatedTags", tags);
+        model.addAttribute("companies" ,companies);
         return "products";
+    }
+
+    private List<Company> getCompaniesFromMap(Map<String, String> parameters) throws CouldNotGetCompanyException {
+        Set<String> keySetForMap = parameters.keySet();
+        List<Company> companies = new ArrayList<>();
+        Iterator<String> it = keySetForMap.iterator();
+        while (it.hasNext()) {
+            String stringToTakeOut = it.next();
+            String[] takeOutAsArray = stringToTakeOut.split("-");
+            if (takeOutAsArray[0].equals("c")) {
+                long companyID = Long.parseLong(takeOutAsArray[1]);
+                companies.add(companyRegister.getCompanyWithId(companyID));
+            }
+        }
+        return companies;
+    }
+
+    /**
+     * Get the tags from a product.
+     * @param products the products to get the tags from.
+     * @return the tags.
+     */
+    private List<Tag> getTagsFromProduct(List<Product> products) {
+        List<Tag> tags = new ArrayList<>();
+        products.forEach(product -> {
+            List<Tag> tagsToGet = product.getProductDetails().getTagList();
+            tagsToGet.forEach(tag -> {
+                if (!tags.contains(tag)) {
+                    tags.add(tag);
+                }
+            });
+        });
+        return tags;
+    }
+
+    /**
+     * Gets the tag from map so that we can use it for the sort methode later.
+     * @param parameters the return map value.
+     * @return the tag.
+     * @throws CouldNotGetTagException is thrown if we could not get the tag from map.
+     */
+    private List<Tag> getTagsFromMap(Map<String, String> parameters) throws CouldNotGetTagException {
+        Set<String> keySetForMap = parameters.keySet();
+        List<Tag> tags = new ArrayList<>();
+        Iterator<String> it = keySetForMap.iterator();
+        while (it.hasNext()) {
+            String stringToTakeOut = it.next();
+            String[] takeOutAsArray = stringToTakeOut.split("-");
+            if (takeOutAsArray[0].equals("t")) {
+                long tagID = Long.parseLong(takeOutAsArray[1]);
+                tags.add(tagRegister.getTagWithID(tagID));
+            }
+        }
+        return tags;
     }
 
     /**
@@ -94,19 +161,19 @@ public class WebProductController {
      * @param stringMap the string map.
      * @param productList the product list.
      * @param model the model.
+     * @return a list with all the products that has that searchword in it.
      */
-    private void checkIfSearch(Map<String, String> stringMap, List<Product> productList, Model model){
+    private List<Product> checkIfSearch(Map<String, String> stringMap, List<Product> productList, Model model){
         String searchWord = stringMap.get("productSearch");
-        List<Product> products;
+        List<Product> products = productList;
         if (searchWord != null && !searchWord.isBlank()) {
-            products = productList.stream().filter(product -> product.getProductName().length() >= searchWord.length())
+            products = products.stream().filter(product -> product.getProductName().length() >= searchWord.length())
                     .filter(product -> product.getProductName().toLowerCase().contains(searchWord.toLowerCase())).toList();
-            productList.clear();
-            productList.addAll(products);
             if (productList.isEmpty()){
                 model.addAttribute("searchWord", searchWord);
             }
         }
+        return products;
     }
 
 
@@ -251,7 +318,7 @@ public class WebProductController {
     private List<Tag> getAllTagsWithIDs(List<Long> tagIds) throws CouldNotGetTagException {
         List<Tag> tagList = new ArrayList<>();
         for (long tagId : tagIds){
-            tagList.add(tagsRegister.getTagWithID(tagId));
+            tagList.add(tagRegister.getTagWithID(tagId));
         }
         return tagList;
     }

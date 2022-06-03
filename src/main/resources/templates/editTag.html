@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit page for tags</title>
+    <link href="CSS/basic.css" rel="stylesheet" type="text/css">
+    <link href="CSS/form.css" rel="stylesheet" type="text/css">
+    <link href="CSS/editTag.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<header id = "headerWrapper" th:replace="components/menu :: header">
+</header>
+
+
+<section class="mainSection">
+    <h2 class="headerText">Edit tag page</h1>
+        <div class="editTagDiv">
+            <form id="editTagForm" class="editTag" th:action="@{/updateTag}" th:method="PUT">
+                <input type="hidden" class="inputForm" id="tagID" name="tagID" th:value="${tag.getTagID}">
+                <label for="tagNameInput" class="inputLabel">Tag name</label>
+                <input type="text" class="inputForm" id="tagNameInput" placeholder="Enter tag name" name="tagName" th:value="${tag.getTagName()}">
+                <label for="tagDescriptionInput" class="inputLabel">Tag description</label>
+                <input type="text" class="inputForm" id="tagDescriptionInput" placeholder="Enter tag description" name="tagDescription" th:value="${tag.getTagDescription()}">
+
+                <label for="preview" class="formLabel">Preview</label>
+                <input type="checkbox" id="preview" class="button greenButton submitButton" value="submit changes" name="isPreviewed">
+                <input type="submit" class="button greenButton submitButton" value="Submit changes">
+            </form>
+            <div id="tagPreview" class="preview">
+                <h3>Tag name</h3>
+                <p th:text="${tag.getTagName()}">The name of the tag</p>
+                <h3>Tag description</h3>
+                <p th:text="${tag.getTagDescription()}">The description written</p>
+            </div>
+        </div>
+
+
+</section>
+<script type="text/javascript" th:src="@{/javascript/menu.js}"></script>
+<footer id= "footerWrapper" th:replace="/components/footer :: footer">
+</footer>
+</body>
+</html>
