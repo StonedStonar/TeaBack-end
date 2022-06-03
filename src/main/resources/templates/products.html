@@ -44,7 +44,7 @@
                     <div id="openTea" class="closeable">
                         <div th:each="sortTag:${relatedTags}">
                             <label th:for="${sortTag.getTagName()}" th:text="${sortTag.getTagName()}">Black Tea</label>
-                            <input type="checkbox" th:id="${sortTag.getTagName()}" th:name="${'t-' + sortTag.getTagID()}">
+                            <input type="checkbox" th:id="${sortTag.getTagName()}" th:name="${'t-' + sortTag.getTagID()}" th:checked ="${#request.getParameter('t-' + sortTag.getTagID()) != null}">
                         </div>
                     </div>
                     <div id="mug" class="filterOption">
@@ -52,9 +52,9 @@
                         <img src = "#" srcset = "svg/Arrow-for-dropdown-meny.svg" alt = "A arrow head" class = "svg logo rotatableLogo">
                     </div>
                     <div id="openMug" class="closeable">
-                        <div>
-                        <label for="classic-mug">Classic Mug</label>
-                        <input type="checkbox" id="classic-mug" name="classic-mug">
+                        <div th:each="sortCompanyTag:${companies}">
+                            <label th:for="${sortCompanyTag.getCompanyName()}" th:text="${sortCompanyTag.getCompanyName()}">Classic Mug</label>
+                            <input type="checkbox" th:id="${sortCompanyTag.getCompanyName()}" th:name="${'c-' + sortCompanyTag.getCompanyID()}" th:checked ="${#request.getParameter('c-' + sortCompanyTag.getCompanyID()) != null}">
                         </div>
                     </div>
                     <input type="submit" value="Sort now" class="greenButton button">
