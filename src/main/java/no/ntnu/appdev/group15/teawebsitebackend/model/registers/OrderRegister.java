@@ -54,8 +54,10 @@ public interface OrderRegister {
      */
     List<Order> getAllOrders();
 
-//    /**
-//     * Edits an order with a specific ID.
-//     */
-//    void editOrder(Order orderWithSpecifiedId);
+    /**
+     * Updates the order.
+     * @param order the order to update.
+     * @throws CouldNotGetOrderException gets thrown when order is not valid.
+     */
+    void updateOrder(Order order) throws CouldNotGetOrderException;
 }

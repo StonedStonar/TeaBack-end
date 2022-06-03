@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Order controller class. User must be logged in to see orders.
  * Orders can be removed and added.
+ *
  * @author Trine Merete Staverløkk
  * @version 0.1
  */
@@ -44,21 +46,23 @@ public class OrderController {
 
   /**
    * Makes an instance of the OrderController class.
+   *
    * @param orderJPA
    */
-  public OrderController (OrderJPA orderJPA){
-    checkIfObjectIsNull(orderJPA, "orderJPA");
-    this.orderRegister = orderJPA;
+  public OrderController(OrderJPA orderJPA) {
+      checkIfObjectIsNull(orderJPA, "orderJPA");
+      this.orderRegister = orderJPA;
   }
 
   /**
    * gets all the orders made by a user.
+   *
    * @return a list with all the orders made by a user.
    */
   @GetMapping
   public List<Order> getALlOrders(OrderedProduct orderedProduct) {
-    List<Order> orders = orderRegister.getAllOrders();
-    return orders;
+      List<Order> orders = orderRegister.getAllOrders();
+      return orders;
   }
 
 
@@ -68,26 +72,27 @@ public class OrderController {
   //@PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/{id}")
   public Order getOrderWithSpecifiedId(@PathVariable Long id) throws CouldNotGetOrderException {
-    Order order = orderRegister.getOrderWithId(id);
-    return order;
+      Order order = orderRegister.getOrderWithId(id);
+      return order;
   }
 
   /**
    * Makes new order.
+   * @param body the body of the HTML-document.
    */
-  public Order makeOrder(String body) throws JsonProcessingException {
-    ObjectMapper objectMapper = new ObjectMapper();
-    return objectMapper.readValue(body, Order.class);
+  private Order makeOrder(String body) throws JsonProcessingException {
+      ObjectMapper objectMapper = new ObjectMapper();
+      return objectMapper.readValue(body, Order.class);
   }
 
 
   /**
    * Adds an order to a user.
+   *
    * @param body the json object
    */
   @PostMapping
-  public void addOrderToUser(@RequestBody String body)
-      throws JsonProcessingException, CouldNotAddOrderException {
+  public void addOrderToUser(@RequestBody String body) throws JsonProcessingException, CouldNotAddOrderException {
     Order order = makeOrder(body);
     orderRegister.addOrder(order);
   }
@@ -95,6 +100,7 @@ public class OrderController {
 
   /**
    * Removes an order from the system. Only by admin.
+   *
    * @param id the id of the order to remove
    */
   //@PreAuthorize("hasRole('ADMIN')")
@@ -105,18 +111,17 @@ public class OrderController {
   }
 
 
-
   /**
    * Edit an order. Only possible for admin-users.
    *
-   //* @param id the id of the order to edit.
+   * @param body the json object
    * @throws CouldNotGetOrderException gets thrown if the order could not be edited.
    */
+  @PutMapping
   //@PreAuthorize("hasRole('ADMIN')")
-//  public void editOrder(Long id) throws CouldNotGetOrderException {
-//    orderRegister.editOrder(getOrderWithSpecifiedId(id));
-//  }
-
+  public void editOrder(String body) throws CouldNotGetOrderException, JsonProcessingException {
+    orderRegister.updateOrder(makeOrder(body));
+  }
 
   @ExceptionHandler(CouldNotRemoveProductException.class)
   private ResponseEntity<String> handleCouldNotRemoveProductException(Exception ex) {
@@ -139,31 +144,18 @@ public class OrderController {
   }
 
   /**
-   * Adds a logged in attribute to the model.
-   * @param authentication the authentication.
-   * @param model the model.
-   */
-  private void addLoggedInAttributes(Authentication authentication, Model model){
-    boolean loggedIn = authentication != null;
-    boolean admin = false;
-    model.addAttribute("loggedIn", loggedIn);
-    if (loggedIn){
-      admin = getAccessUser(authentication).getUser().getRole() == Role.ROLE_ADMIN;
-    }
-    model.addAttribute("isAdmin", admin);
-  }
-
-  /**
    * Gets the access user that is using the page.
+   *
    * @param authentication the authentication object.
    * @return the access user of this session.
    */
-  private AccessUser getAccessUser(Authentication authentication){
+  private AccessUser getAccessUser(Authentication authentication) {
     return (AccessUser) authentication.getPrincipal();
   }
 
   /**
    * Checks if an object is null.
+   *
    * @param object the object you want to check.
    * @param error  the error message the exception should have.
    * @throws IllegalArgumentException gets thrown if the object is null.
@@ -176,6 +168,7 @@ public class OrderController {
 
   /**
    * Checks if a string is of a valid format or not.
+   *
    * @param stringToCheck the string you want to check.
    * @param errorPrefix   the error the exception should have if the string is invalid.
    * @throws IllegalArgumentException gets thrown if the string to check is empty or null.

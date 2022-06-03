@@ -306,7 +306,7 @@ public class OrderRegisterTest {
     @DisplayName("Test if removeOrderWithOrderID works with valid input")
     public void testsIfRemoveOrderWithOrderIDWorksWithValidInput() {
       try {
-        orderRegister.removeOrderWithOrderID(order.getOrderId());
+        orderRegister.removeOrderWithOrderID(order.getOrderID());
       } catch (CouldNotRemoveOrderException | IllegalArgumentException exception) {
         addErrorWithException("Expected the order to be removed since its in the register", "", exception);
       }
@@ -344,7 +344,7 @@ public class OrderRegisterTest {
     @DisplayName("Test if getOrderWithId works with valid input")
     public void testsIfGetOrderWithIdWorksWithValidInput() {
       try {
-        orderRegister.getOrderWithId(order.getOrderId());
+        orderRegister.getOrderWithId(order.getOrderID());
       } catch (CouldNotGetOrderException | IllegalArgumentException exception) {
         addErrorWithException("Expected to get the order since its in the register", "", exception);
       }

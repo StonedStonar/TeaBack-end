@@ -1,5 +1,6 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Entity;
 
@@ -28,6 +29,7 @@ public class OrderAddress extends Address {
      * @param country The country
      * @throws IllegalArgumentException gets thrown if the input parameters are invalid.
      */
+    @JsonCreator
     public OrderAddress(@JsonProperty("addressID") long addressID, @JsonProperty("postalCode") int postalCode,
                         @JsonProperty("postalPlace") String postalPlace, @JsonProperty("streetName") String streetName,
                         @JsonProperty("houseNumber") int houseNumber, @JsonProperty("country") String country) {

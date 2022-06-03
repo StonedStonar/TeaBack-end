@@ -83,27 +83,41 @@ public class CartAndCheckoutController {
         return new RedirectView(parameterBuilder.buildString(), true);
     }
 
-    @PostMapping("/doPayment") //TODO FIX logic (errors after tried to not select a method)
-    public RedirectView confirmOrderAndDoPayment(Authentication authentication, @RequestParam(value = "deliveryMethod", required = false)Integer deliveryValue, @RequestParam(value = "paymentMethod", required = false)Integer paymentValue){
+
+
+    //TODO "my info" stemmer ikke.
+
+
+    /**
+     * Confirms order and redirects to thankYouPage.
+     * @param authentication
+     * @param deliveryValue
+     * @param paymentValue
+     * @return
+     */
+    @PostMapping("/doPayment")
+    public RedirectView confirmOrder(Authentication authentication, @RequestParam(value = "deliveryMethod", required = false)Integer deliveryValue, @RequestParam(value = "paymentMethod", required = false)Integer paymentValue){
         ParameterBuilder parameterBuilder = new ParameterBuilder("thankYouPage");
         AccessUser accessUser = getAccessUser(authentication);
         User user = accessUser.getUser();
         Cart cart = user.getCart();
-        List<OrderedProduct> orderedProducts = null;
+        List<OrderedProduct> orderedProductList = new ArrayList<>();
+        //List<OrderedProduct> orderedProducts = null; //WOOPSIES
         boolean invalidInput = false;
 
         try {
             //Not optimal, but in our case the system would be locked if we are going to process a cart.
             synchronized (CartAndCheckoutController.class) {
-                orderedProducts = getOrderedProducts(cart);
+                orderedProductList = getOrderedProducts(cart);
             }
         } catch (CouldNotGetProductException | IllegalArgumentException e) {
             parameterBuilder.addParameter("invalidProductAmount", "true");
             invalidInput = true;
         }
+
         if (deliveryValue != null && paymentValue != null) {
             try {
-                Order order = new Order(Long.MAX_VALUE, user, orderedProducts, OrderState.ORDERED, user.getAddress(), getDeliveryMethod(deliveryValue), LocalDate.now(),getPaymentMethod(paymentValue), false);
+                Order order = new Order(Long.MAX_VALUE, user, orderedProductList, OrderState.ORDERED, user.getAddress(), getDeliveryMethod(deliveryValue), LocalDate.now(),getPaymentMethod(paymentValue), false);
                 orderRegister.addOrder(order);
                 //cart.clearAllProducts();
                 userRegister.updateUser(user);
@@ -126,9 +140,15 @@ public class CartAndCheckoutController {
         }
 
 
+
         return new RedirectView(parameterBuilder.buildString(), true);
     }
 
+    /**
+     * Gets payment method
+     * @param paymentValue represents the payment method
+     * @return the payment method as a value
+     */
     private String getPaymentMethod(int paymentValue){
         return switch (paymentValue){
             case 1 -> "Klarna";
@@ -138,6 +158,11 @@ public class CartAndCheckoutController {
         };
     }
 
+    /**
+     * Gets delivery method
+     * @param deliveryValue represents the delivery method
+     * @return the delivery method as a value
+     */
     private String getDeliveryMethod(int deliveryValue){
         return switch (deliveryValue){
             case 1 -> "Postnord";
@@ -146,7 +171,6 @@ public class CartAndCheckoutController {
             default -> throw new IllegalArgumentException("Invalid deliveryMethod");
         };
     }
-
 
     /**
      * Gets ordered products from cart.

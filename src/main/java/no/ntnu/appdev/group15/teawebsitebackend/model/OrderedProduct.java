@@ -1,5 +1,6 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
@@ -44,6 +45,7 @@ public class OrderedProduct {
      * @param amountOfProduct the amount of the product that was ordered.
      * @throws IllegalArgumentException if any of the input arguments are invalid format.
      */
+    @JsonCreator
     public OrderedProduct(@JsonProperty("orderedProductID") long orderedID, @JsonProperty("product") Product product, @JsonProperty("amountOfProduct") int amountOfProduct, @JsonProperty("orderState")OrderState orderState) {
         checkIfProductIsValid(product);
         checkIfAmountIsValid(amountOfProduct);
