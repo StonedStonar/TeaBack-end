@@ -55,7 +55,7 @@ public class CartAndCheckoutController {
 
     @PutMapping("/addToCart")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    public RedirectView addToCart(@RequestParam("productID") long productID, @RequestParam(value = "amount", required = false) Integer amount,
+    public RedirectView addToCart(@RequestParam("productID") long productID, @RequestParam(value = "amountOfProduct", required = false) Integer amount,
                                   Authentication authentication){
         ParameterBuilder parameterBuilder = new ParameterBuilder("/cart");
         AccessUser accessUser = getAccessUser(authentication);
