@@ -54,4 +54,8 @@ public interface OrderRegister {
      */
     List<Order> getAllOrders();
 
+//    /**
+//     * Edits an order with a specific ID.
+//     */
+//    void editOrder(Order orderWithSpecifiedId);
 }

@@ -3,7 +3,6 @@ package no.ntnu.appdev.group15.teawebsitebackend.controllers.rest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
-import javax.servlet.http.HttpSession;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
 import no.ntnu.appdev.group15.teawebsitebackend.model.OrderedProduct;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Role;
@@ -110,16 +109,13 @@ public class OrderController {
   /**
    * Edit an order. Only possible for admin-users.
    *
+   //* @param id the id of the order to edit.
+   * @throws CouldNotGetOrderException gets thrown if the order could not be edited.
    */
   //@PreAuthorize("hasRole('ADMIN')")
-  public String editOrder(Model model, Authentication authentication, HttpSession httpSession){
-    addLoggedInAttributes(authentication, model);
-    //Order order = getAccessUser(authentication).getOrder();
-
-    return "editOrder";
-  }
-
-
+//  public void editOrder(Long id) throws CouldNotGetOrderException {
+//    orderRegister.editOrder(getOrderWithSpecifiedId(id));
+//  }
 
 
   @ExceptionHandler(CouldNotRemoveProductException.class)
