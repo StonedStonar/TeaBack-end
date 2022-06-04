@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @version 0.1
  */
 @Controller
-public class IndexController {
+public class IndexController extends WebController{
 
     private ProductRegister productRegister;
 
@@ -28,6 +28,7 @@ public class IndexController {
      * Makes an instance of the IndexController class.
      */
     public IndexController(ProductJPA productJPA) {
+        super();
         this.productRegister = productJPA;
     }
 
@@ -60,57 +61,5 @@ public class IndexController {
             wantedProduct.add(products.get(i));
         }
         return wantedProduct;
-    }
-
-
-    /**
-     * Adds a logged in attribute to the model.
-     * @param authentication the authentication.
-     * @param model the model.
-     */
-    private void addLoggedInAttributes(Authentication authentication, Model model){
-        boolean loggedIn = authentication != null;
-        boolean admin = false;
-        model.addAttribute("loggedIn", loggedIn);
-        if (loggedIn){
-            admin = getAccessUser(authentication).getUser().getRole() == Role.ROLE_ADMIN;
-        }
-        model.addAttribute("isAdmin", admin);
-    }
-
-    /**
-     * Gets the access user that is using the page.
-     * @param authentication the authentication object.
-     * @return the access user of this session.
-     */
-    private AccessUser getAccessUser(Authentication authentication){
-        return (AccessUser) authentication.getPrincipal();
-    }
-
-    /**
-     * Checks if a string is of a valid format or not.
-     *
-     * @param stringToCheck the string you want to check.
-     * @param errorPrefix   the error the exception should have if the string is invalid.
-     * @throws IllegalArgumentException gets thrown if the string to check is empty or null.
-     */
-    private void checkString(String stringToCheck, String errorPrefix) {
-        checkIfObjectIsNull(stringToCheck, errorPrefix);
-        if (stringToCheck.isEmpty()) {
-            throw new IllegalArgumentException("The " + errorPrefix + " cannot be empty.");
-        }
-    }
-
-    /**
-     * Checks if an object is null.
-     *
-     * @param object the object you want to check.
-     * @param error  the error message the exception should have.
-     * @throws IllegalArgumentException gets thrown if the object is null.
-     */
-    private void checkIfObjectIsNull(Object object, String error) {
-        if (object == null) {
-            throw new IllegalArgumentException("The " + error + " cannot be null.");
-        }
     }
 }

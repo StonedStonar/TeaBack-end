@@ -23,6 +23,7 @@ import java.lang.reflect.Parameter;
 import java.util.*;
 
 import static java.lang.Long.parseLong;
+import static java.lang.Long.sum;
 
 
 /**
@@ -30,13 +31,26 @@ import static java.lang.Long.parseLong;
  * @version 0.1
  */
 @Controller
-public class WebProductController {
+public class WebProductController extends WebController{
 
     private ProductRegister productRegister;
 
     private CompanyRegister companyRegister;
 
     private TagsRegister tagRegister;
+
+    /**
+     * Makes an instance of the ProductController class.
+     * @param companyJPA the company JPA
+     * @param productJPA the product JPA.
+     * @param tagJPA the tag JPA.
+     */
+    public WebProductController(ProductJPA productJPA, TagJPA tagJPA, CompanyJPA companyJPA) {
+        super();
+        this.productRegister = productJPA;
+        this.tagRegister = tagJPA;
+        this.companyRegister = companyJPA;
+    }
 
     /**
      * Gets the product into page.
@@ -176,19 +190,6 @@ public class WebProductController {
         return products;
     }
 
-
-    /**
-     * Makes an instance of the ProductController class.
-     * @param companyJPA the company JPA
-     * @param productJPA the product JPA.
-     * @param tagJPA the tag JPA.
-     */
-    public WebProductController(ProductJPA productJPA, TagJPA tagJPA, CompanyJPA companyJPA) {
-        this.productRegister = productJPA;
-        this.tagRegister = tagJPA;
-        this.companyRegister = companyJPA;
-    }
-
     @GetMapping("/editProduct")
     @PreAuthorize("hasRole('ADMIN')")
     public String getEditProduct(Authentication authentication, Model model, HttpSession httpSession,
@@ -197,22 +198,25 @@ public class WebProductController {
         Boolean isPreview = (Boolean) httpSession.getAttribute("isPreview");
         httpSession.removeAttribute("isPreview");
         ParameterBuilder parameterBuilder = new ParameterBuilder("editProduct");
-        if (isPreview != null && isPreview){
+        if (isPreview != null && isPreview || httpSession.getAttribute("productID") != null){
             addAllAttributes(model, httpSession);
         }else {
-            try {
-                Product product = productRegister.getProduct(productID);
-                model.addAttribute("productID", product.getProductID());
-                model.addAttribute("productName", product.getProductName());
-                model.addAttribute("productAmount", product.getAmountOfProduct());
-                model.addAttribute("price", product.getPrice());
-                model.addAttribute("companyID", product.getCompany().getCompanyID());
-                model.addAttribute("ingredients", product.getProductDetails().getIngredients());
-                model.addAttribute("description", product.getProductDetails().getDescription());
-                model.addAttribute("tags", convertListToValues(product.getProductDetails().getTagList()));
-            }catch (CouldNotGetProductException exception){
-                parameterBuilder.addParameter("invalidProductID", "true");
+            Product product = null;
+            if (productID > 0){
+                try {
+                    product = productRegister.getProduct(productID);
+                }catch (CouldNotGetProductException exception){
+                    parameterBuilder.addParameter("invalidProductID", "true");
+                }
             }
+            model.addAttribute("productID", product != null ? product.getProductID() : 0);
+            model.addAttribute("productName", product != null ? product.getProductName(): "ProductName");
+            model.addAttribute("productAmount", product != null ? product.getAmountOfProduct(): 0);
+            model.addAttribute("price", product != null ? product.getPrice():0);
+            model.addAttribute("companyID", product != null ? product.getCompany().getCompanyID(): 0);
+            model.addAttribute("ingredients", product != null ? product.getProductDetails().getIngredients(): "Ingredients");
+            model.addAttribute("description", product != null ? product.getProductDetails().getDescription(): "Description");
+            model.addAttribute("tags", product != null ? convertListToValues(product.getProductDetails().getTagList()) : convertListToValues(new ArrayList<>()));
         }
         model.addAttribute("isOnSale", false);
 
@@ -230,37 +234,39 @@ public class WebProductController {
         parameterBuilder.addParameter("productID", String.valueOf(productID));
         boolean invalidInput = false;
         try {
-            checkIfNumberNotNegative(productAmount, "product amount");
-            checkString(productName, "product name");
-            checkString(description, "description");
-            checkIfNumberNotNegative(productPrice, "product price");
-            checkIfNumberNotNegative(companyID, "companyID");
-            checkIfNumberNotNegative(productAmount, "product amount");
-            Product product = productRegister.getProduct(productID);
-            if (preview != null && preview){
-                parameterBuilder.addParameter("tagPreview", "true");
-                httpSession.setAttribute("isPreview", true);
-            }else {
-                ProductDetails productDetails = product.getProductDetails();
-                addAndRemoveTags(productDetails, tags);
+            Product product = null;
+            if (productID == 0){
+                ProductDetails productDetails = new ProductDetails(description, ingredients);
                 Company company = companyRegister.getCompanyWithId(companyID);
-                product.setCompany(company);
-                product.setProductName(productName);
-                product.setPrice(productPrice);
-                int totalProduct = productAmount - product.getAmountOfProduct();
-                if (totalProduct > 0){
-                    product.addAmountOfProduct(totalProduct);
-                }else if (totalProduct < 0){
-                    product.removeAmountOfProduct(totalProduct);
+                product = new Product(productName, productPrice, productAmount, productDetails, company);
+                productRegister.addProduct(product);
+                parameterBuilder.addParameter("productAdded", "true");
+            }else {
+                product = productRegister.getProduct(productID);
+                if (preview != null && preview){
+                    parameterBuilder.addParameter("tagPreview", "true");
+                    httpSession.setAttribute("isPreview", true);
+                }else {
+                    ProductDetails productDetails = product.getProductDetails();
+                    addAndRemoveTags(productDetails, tags);
+                    Company company = companyRegister.getCompanyWithId(companyID);
+                    product.setCompany(company);
+                    product.setProductName(productName);
+                    product.setPrice(productPrice);
+                    int totalProduct = productAmount - product.getAmountOfProduct();
+                    if (totalProduct > 0){
+                        product.addAmountOfProduct(totalProduct);
+                    }else if (totalProduct < 0){
+                        product.removeAmountOfProduct(totalProduct);
+                    }
+                    productRegister.updateProduct(product);
+                    parameterBuilder.addParameter("productUpdated", "true");
                 }
-
-                parameterBuilder.addParameter("tagUpdated", "true");
-                productRegister.updateProduct(product);
             }
         }catch (IllegalArgumentException  exception){
             parameterBuilder.addParameter("invalidFieldInput", "true");
             invalidInput = true;
-        }catch (CouldNotGetProductException exception){
+        }catch (CouldNotGetProductException | CouldNotAddProductException exception){
             parameterBuilder.addParameter("invalidProductID", "true");
             invalidInput = true;
         } catch (CouldNotGetTagException exception) {
@@ -273,7 +279,8 @@ public class WebProductController {
             parameterBuilder.addParameter("tagNotFound", "true");
             invalidInput = true;
         } catch (CouldNotGetCompanyException e) {
-            e.printStackTrace();
+            parameterBuilder.addParameter("invalidCompanyID", "true");
+            invalidInput = true;
         }
         if (invalidInput || (preview != null && preview)){
             httpSession.setAttribute("productID", productID);
@@ -321,90 +328,6 @@ public class WebProductController {
             tagList.add(tagRegister.getTagWithID(tagId));
         }
         return tagList;
-    }
-
-    /**
-     * Gets the access user that is using the page.
-     * @param authentication the authentication object.
-     * @return the access user of this session.
-     */
-    private AccessUser getAccessUser(Authentication authentication){
-        return (AccessUser) authentication.getPrincipal();
-    }
-
-    /**
-     * Adds a logged in attribute to the model.
-     * @param authentication the authentication.
-     * @param model the model.
-     */
-    private void addLoggedInAttributes(Authentication authentication, Model model){
-        boolean loggedIn = authentication != null;
-        boolean admin = false;
-        model.addAttribute("loggedIn", loggedIn);
-        if (loggedIn){
-            admin = getAccessUser(authentication).getUser().getRole() == Role.ROLE_ADMIN;
-        }
-        model.addAttribute("isAdmin", admin);
-    }
-
-    /**
-     * Checks if a string is of a valid format or not.
-     *
-     * @param stringToCheck the string you want to check.
-     * @param errorPrefix   the error the exception should have if the string is invalid.
-     * @throws IllegalArgumentException gets thrown if the string to check is empty or null.
-     */
-    private void checkString(String stringToCheck, String errorPrefix) {
-        checkIfObjectIsNull(stringToCheck, errorPrefix);
-        if (stringToCheck.isEmpty()) {
-            throw new IllegalArgumentException("The " + errorPrefix + " cannot be empty.");
-        }
-    }
-
-    /**
-     * Adds all the attributes to the model.
-     * @param model the model.
-     * @param httpSession the http session.
-     */
-    private void addAllAttributes(Model model, HttpSession httpSession){
-        Iterator<String> it = httpSession.getAttributeNames().asIterator();
-        while (it.hasNext()){
-            String attributeName = it.next();
-            Object object = httpSession.getAttribute(attributeName);
-            if (object instanceof List list){
-                object = convertListToValues(list);
-            }
-            model.addAttribute(attributeName, object);
-            httpSession.removeAttribute(attributeName);
-        }
-    }
-
-    private String convertListToValues(List list){
-        StringBuilder stringBuilder = new StringBuilder();
-        if (!list.isEmpty() && list.get(0) instanceof Long){
-            List<Long> longs = list;
-            for(long number: longs){
-                if (!stringBuilder.isEmpty()){
-                    stringBuilder.append(",");
-                }
-                stringBuilder.append(number);
-
-            }
-        }
-        return stringBuilder.toString();
-    }
-
-    /**
-     * Checks if an object is null.
-     *
-     * @param object the object you want to check.
-     * @param error  the error message the exception should have.
-     * @throws IllegalArgumentException gets thrown if the object is null.
-     */
-    private void checkIfObjectIsNull(Object object, String error) {
-        if (object == null) {
-            throw new IllegalArgumentException("The " + error + " cannot be null.");
-        }
     }
 
     /**

@@ -240,3 +240,7 @@
     align-items: center;
     text-decoration: none;
 }
+
+#updateCartButton{
+    display: none;
+}

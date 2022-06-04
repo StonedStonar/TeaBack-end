@@ -1,7 +1,7 @@
 window.addEventListener('load', () => addListeners());
 
-document.getElementById("form").addEventListener("submit", event => sendForm(event))
 
+document.getElementById("form").addEventListener("submit", event => sendForm(event));
 /**
  * Sends the form to the server.
  */
@@ -9,7 +9,6 @@ function sendForm(event){
     event.preventDefault();
     let collection = event.target.querySelectorAll(".num-to-change");
     let link = window.location.origin;
-    console.log(collection);
     link = link + "/users/cart?";
     for(let i = 0; i < collection.length; i++){
         let input = collection[i];
@@ -21,7 +20,13 @@ function sendForm(event){
     }
     let http = new XMLHttpRequest();
     http.open("PUT", link);
-    console.log(http.send());
+    http.send();
+}
+
+function sendCart(){
+    let updateCartButton = document.getElementById("updateCartButton");
+    updateCartButton.click();
+
 }
 
 /**
@@ -42,12 +47,19 @@ function addListeners(){
     }
     let clearCartButton = document.getElementById("clearCartButton");
     clearCartButton.addEventListener("click", () => removeAllProducts());
+    document.getElementById("form").addEventListener("submit", event => sendForm(event));
+    let collection = document.getElementsByTagName("a");
+    for(let a of collection){
+        a.addEventListener("click", () => sendCart());
+    }
+    let productCollection = document.getElementsByClassName("orderedProduct");
+    for(let productContainer of productCollection){
+        updateTotalOfProduct(productContainer);
+    }
     updateTotalAmounts();
 }
 
 function updateTotalOfProduct(container){
-    console.log(container)
-    console.log("hello")
     let pricePer = container.querySelector(".pricePer");
     let amount = container.querySelector(".num-to-change");
     let totalSpan = container.querySelector(".totalPricePerProduct");

@@ -14,28 +14,46 @@
 
 
 <section class="mainSection">
-    <h2 class="headerText">Edit tag page</h1>
+    <h2 class="headerText mainHeaderText">Edit tag page</h2>
         <div class="editTagDiv">
             <form id="editTagForm" class="editTag" th:action="@{/updateTag}" th:method="PUT">
-                <input type="hidden" class="inputForm" id="tagID" name="tagID" th:value="${tag.getTagID}">
+                <input type="hidden" class="inputForm" id="tagID" name="tagID" th:value="${tagID}">
                 <label for="tagNameInput" class="inputLabel">Tag name</label>
-                <input type="text" class="inputForm" id="tagNameInput" placeholder="Enter tag name" name="tagName" th:value="${tag.getTagName()}">
+                <input type="text" class="inputForm" id="tagNameInput" placeholder="Enter tag name" name="tagName" th:value="${tagName}">
                 <label for="tagDescriptionInput" class="inputLabel">Tag description</label>
-                <input type="text" class="inputForm" id="tagDescriptionInput" placeholder="Enter tag description" name="tagDescription" th:value="${tag.getTagDescription()}">
-
+                <input type="text" class="inputForm" id="tagDescriptionInput" placeholder="Enter tag description" name="tagDescription" th:value="${tagDescription}">
+                <span class ="message" th:if="${param.isPreviewed}">
+                    Preivew is now loaded
+                </span>
+                <span class = "message" th:if="${param.tagIsUpdated}">
+                    The tag is now updated.
+                </span>
+                <span class = "message errorMessage" th:if="${param.invalidInput}">
+                    All fields needs to be filled in.
+                </span>
+                <span class = "message errorMessage" th:if="${param.invalidTagID}">
+                    Invalid tagID
+                </span>
+                <span class = "message errorMessage" th:if="${param.takenTagID}">
+                    An error has occurred when saving the new tag. A tag already has that ID.
+                </span>
+                <span class = "message" th:if="${param.tagAdded}">
+                    The tag has now been added.
+                </span>
                 <label for="preview" class="formLabel">Preview</label>
                 <input type="checkbox" id="preview" class="button greenButton submitButton" value="submit changes" name="isPreviewed">
                 <input type="submit" class="button greenButton submitButton" value="Submit changes">
             </form>
             <div id="tagPreview" class="preview">
                 <h3>Tag name</h3>
-                <p th:text="${tag.getTagName()}">The name of the tag</p>
+                <p th:text="${tagName}">The name of the tag</p>
                 <h3>Tag description</h3>
-                <p th:text="${tag.getTagDescription()}">The description written</p>
+                <p th:text="${tagDescription}">The description written</p>
             </div>
+            <a th:href="@{/tagsOverview}" class="button" id = "backButton">
+                Back to tags overview
+            </a>
         </div>
-
-
 </section>
 <script type="text/javascript" th:src="@{/javascript/menu.js}"></script>
 <footer id= "footerWrapper" th:replace="/components/footer :: footer">

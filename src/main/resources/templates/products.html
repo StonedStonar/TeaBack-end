@@ -19,6 +19,9 @@
         <h2 class= "mainHeaderText">
             Products
         </h2>
+        <a th:href = "@{/editProduct(productID=0)}" class = "greenButton button editButton" th:if="${isAdmin}">
+            Add new product
+        </a>
         <p th:if = "${relatedProduct.isEmpty() && searchWord != null && sale == null}">
             No products could be found with the search "<span th:text = "${searchWord}">word</span>".
         </p>

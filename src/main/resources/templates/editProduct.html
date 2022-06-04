@@ -20,7 +20,6 @@
     <section class="mainSection">
         <h2 class = "mainHeaderText">
             Edit product page
-
         </h2>
         <div id = "mainEditDiv">
             <form id = "editProductForm" class = "editForm" th:action = "@{/editProduct}" th:method = "PUT">
@@ -53,11 +52,29 @@
                 </p>
                 <label for = "previewBox" class = "formLabel">Preview</label>
                 <input type = "checkbox" id = "previewBox" class = "button greenButton submitButton" name = "previewProduct">
-                <span class = "message">
-                    Normal message.
+                <span class = "message" th:if = "${param.productAdded}">
+                    Product has been added.
                 </span>
-                <span class = "errorMessage message">
-                    Error message.
+                <span th:if = "${param.tagPreview}" class = "message">
+                    Preview has been loaded.
+                </span>
+                <span th:if = "${param.productUpdated}" class = "message">
+                    Product has been updated.
+                </span>
+                <span th:if = "${param.invalidFieldInput}" class = "message errorMessage">
+                    All fields must be valid.
+                </span>
+                <span th:if = "${param.invalidTagId}" class = "message errorMessage">
+                    One of the tag ids are not in the system.
+                </span>
+                <span th:if = "${param.duplicateTag}" class = "message errorMessage">
+                    The same tag can only be added to the product once.
+                </span>
+                <span th:if = "${param.tagNotFound}" class = "message errorMessage">
+                    A tag ID could not be located in the database.
+                </span>
+                <span th:if = "${param.invalidCompanyID}" class = "message errorMessage">
+                    The producer ID is not in the system.
                 </span>
                 <input type = "submit" class = "button greenButton submitButton" value = "Submit changes">
             </form>

@@ -78,7 +78,7 @@ public class Company {
      * Gets the details for a product.
      * @return the details given.
      */
-    public Details getDetails() {
+    public CompanyDetails getDetails() {
         return details;
     }
 

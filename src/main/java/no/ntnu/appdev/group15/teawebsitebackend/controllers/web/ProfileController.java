@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  * @version 0.1
  */
 @Controller
-public class ProfileController {
+public class ProfileController extends WebController{
 
     private UserRegister userRegister;
 
@@ -41,6 +41,7 @@ public class ProfileController {
      * @param orderJPA the order JPA.
      */
     public ProfileController(UserJPA userJPA, OrderJPA orderJPA) {
+        super();
         this.userRegister = userJPA;
         this.orderRegister = orderJPA;
     }
@@ -108,17 +109,6 @@ public class ProfileController {
 
         return new RedirectView(parameterBuilder.buildString(), true);
     }
-
-//    @PostMapping("/address")
-//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-//    public String updateAddress(@RequestParam("streetName") String streetName, @RequestParam("houseNumber") int houseNumber,
-//                                @RequestParam("postalCode") int postalCode, @RequestParam("postalPlace") String postalPlace,
-//                                @RequestParam("country") String country, BindingResult bindingResult){
-//        System.err.println(streetName + houseNumber);
-//        bindingResult.addError(new ObjectError("streetname", "luli"));
-//        return "errors/profile";
-//        //return "redirect:/profile";
-//    }
 
     @PutMapping("/password")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
@@ -229,82 +219,6 @@ public class ProfileController {
      */
     private void addAddressToModel(Model model, User user){
         model.addAttribute("address", user.getAddress());
-    }
-
-    /**
-     * Gets the access user that is using the page.
-     * @param authentication the authentication object.
-     * @return the access user of this session.
-     */
-    private AccessUser getAccessUser(Authentication authentication){
-        return (AccessUser) authentication.getPrincipal();
-    }
-
-    /**
-     * Checks if a string is of a valid format or not.
-     * @param stringToCheck the string you want to check.
-     * @param errorPrefix   the error the exception should have if the string is invalid.
-     */
-    private void checkString(String stringToCheck, String errorPrefix) {
-        checkIfObjectIsNull(stringToCheck, errorPrefix);
-        if (stringToCheck.isEmpty()) {
-            throw new IllegalArgumentException("The " + errorPrefix + " cannot be empty.");
-        }
-    }
-
-    /**
-     * Checks if an object is null.
-     *
-     * @param object the object you want to check.
-     * @param error  the error message the exception should have.
-     */
-    private void checkIfObjectIsNull(Object object, String error) {
-        if (object == null) {
-            throw new IllegalArgumentException("The " + error + " cannot be null.");
-        }
-    }
-
-    /**
-     * Adds a logged in attribute to the model.
-     * @param authentication the authentication.
-     * @param model the model.
-     */
-    private void addLoggedInAttributes(Authentication authentication, Model model){
-        boolean loggedIn = authentication != null;
-        boolean admin = false;
-        model.addAttribute("loggedIn", loggedIn);
-        if (loggedIn){
-            admin = getAccessUser(authentication).getUser().getRole() == Role.ROLE_ADMIN;
-        }
-        model.addAttribute("isAdmin", admin);
-    }
-
-    /**
-     * Adds all the attributes to the model.
-     * @param model the model.
-     * @param httpSession the http session.
-     */
-    private void addAllAttributes(Model model, HttpSession httpSession){
-        Iterator<String> it = httpSession.getAttributeNames().asIterator();
-        while (it.hasNext()){
-            String attributeName = it.next();
-            model.addAttribute(attributeName, httpSession.getAttribute(attributeName));
-            httpSession.removeAttribute(attributeName);
-        }
-    }
-
-    /**
-     * Checks if the email is not an invalid value. Also checks that the email contains "@" and "."
-     * @param email the email to check.
-     * @throws IllegalArgumentException gets thrown if the email is invalid format.
-     */
-    private void checkIfEmailIsNotInvalid(String email){
-        checkString(email, "email");
-        String reg = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-        Pattern pattern = Pattern.compile(reg);
-        if (!pattern.matcher(email).matches()){
-            throw new IllegalArgumentException("The email must be the correct format.");
-        }
     }
 
     /**

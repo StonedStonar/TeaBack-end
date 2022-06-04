@@ -26,7 +26,7 @@
                     </figure>
                 </div>
 
-                <div id="addToCartContainer">
+                <form id="addToCartContainer" th:action = "@{/addToCart}" th:method = "PUT" th:if="${!isAdmin}">
                     <div id="price-and-review">
                         <div class="product-info-price">
                             <div>
@@ -55,10 +55,10 @@
                         </a>
                     </div>
 
-                    <form th:action = "@{/addToCart}" th:method = "PUT" th:if="${!isAdmin}" class = "Add-to-cart">
+                    <div class = "Add-to-cart">
                         <input type = "hidden" name = "productID" th:value = "${mainProduct.getProductID()}">
                         <button type="submit" class="greenButton button">ADD TO CART</button>
-                    </form>
+                    </div>
                     <form th:action = "@{/editProduct}" th:method = "GET" th:if="${isAdmin}" class = "Add-to-cart">
                         <input type = "hidden" name = "productID" th:value = "${mainProduct.getProductID()}">
                         <button type="submit" class="greenButton button">EDIT PRODUCT</button>
@@ -78,7 +78,57 @@
                             <span> on storage</span>
                         </div>
                     </div>
-                </div>
+                </form>
+
+                <form th:action = "@{/editProduct}" th:method = "GET" th:if="${isAdmin}" id="addToCartContainer">
+                    <div id="price-and-review">
+                        <div class="product-info-price">
+                            <div>
+                                <span class = "former-price" th:if="${mainProduct.isOnSale()}">199kr</span>
+                            </div>
+                            <div th:if="${mainProduct.isOnSale()}">
+                                <span class = "now-price">169kr</span>
+                            </div>
+                            <div th:if="${!mainProduct.isOnSale()}">
+                                <span class = "normal-price" th:text="${mainProduct.getPrice()}">139</span>
+                                <span class="normal-price"> kr</span>
+                            </div>
+                        </div>
+                        <a class="star-rating" href = "#productReviews">
+                            <div class="review-star-rating">
+                                <span class="star">&#9734;</span>
+                                <span class="star">&#9734;</span>
+                                <span class="star">&#9734;</span>
+                                <span class="star">&#9734;</span>
+                                <span class="star">&#9734;</span>
+                            </div>
+                            <span class = "inStock">(
+                                    <span id="amount-of-reviews">666</span>
+                                    )
+                                </span>
+                        </a>
+                    </div>
+
+                    <div class = "Add-to-cart">
+                        <input type = "hidden" name = "productID" th:value = "${mainProduct.getProductID()}">
+                        <button type="submit" class="greenButton button">EDIT PRODUCT</button>
+                    </div>
+
+                    <div class="amount">
+                        <div class="amount-to-add">
+                            <button class="minus-button" type="button">-</button>
+                            <input class="num-to-change" value="1" name = "amountOfProduct">
+                            <button class="plus-button" type="button">+</button>
+                        </div>
+
+                        <div class="amount-on-storage">
+                            <span class="circle"></span>
+                            <span class="amount-of-product" th:text="${mainProduct.getAmountOfProduct()}">170</span>
+                            <span id = "storageStatus">+</span>
+                            <span> on storage</span>
+                        </div>
+                    </div>
+                </form>
             </div>
 
             <div class="drop-down-meny">

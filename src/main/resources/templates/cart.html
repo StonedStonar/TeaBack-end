@@ -75,14 +75,14 @@
                                 </span>
                             </p>
                             <p class = "discountPer">
-                                10,00
+                                0
                             </p>
                             <p>
                                 <span class = "mobileText">
                                     Discount
                                 </span>
                                 <span class = "discountPerProduct">
-                                    10,00
+                                    0
                                 </span>
                             </p>
                         </div>
@@ -112,9 +112,21 @@
                     <a th:href ="@{/confirmPage}" id ="checkOutButton" class = "button greenButton">
                         Go to checkout
                     </a>
+                    <button id = "updateCartButton">
+                        Submit
+                    </button>
                 </div>
             </div>
         </form>
+        <span class = "message" th:if = "${param.amountUpdated}">
+            The product amount has been updated.
+        </span>
+        <span class = "message" th:if = "${param.productAdded}">
+            The product has been added to cart.
+        </span>
+        <span class = "errorMessage message" th:if = "${param.invalidProductID}">
+            The product ID is not in the system and product could not be added.
+        </span>
         <script src = "javascript/cart.js"></script>
         <script src="javascript/menu.js"></script>
     </section>

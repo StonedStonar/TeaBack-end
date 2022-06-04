@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Companies overview</title>
+        <link th:href="@{/css/basic.css}" rel = "stylesheet" type="text/css">
+        <link th:href="@{/css/editCards.css}" rel = "stylesheet" type="text/css">
+    </head>
+
+    <body>
+        <header id = "headerWrapper" th:replace="components/menu :: header">
+        </header>
+        <section class = "mainSection">
+            <h2 class = "mainHeaderText">
+                Companies overview
+            </h2>
+            <div class = "cardContainer">
+                <div class = "customCard" th:each="company:${companies}">
+                    <p class = "headerOnCard">
+                        Company id
+                    </p>
+                    <p class = "cardText" th:text = "${company.getCompanyID()}">
+                        1
+                    </p>
+                    <p class = "headerOnCard">
+                        Company name
+                    </p>
+                    <p class = "cardText" th:text = "${company.getCompanyName()}">
+                        The name of the tag.
+                    </p>
+                    <p class = "headerOnCard">
+                        Address id
+                    </p>
+                    <p class = "cardText" th:text = "${company.getDetails().getAddress().getAddressID()}">
+                        1
+                    </p>
+                    <p class = "headerOnCard">
+                        Postalcode, place and country
+                    </p>
+                    <p class = "cardText">
+                        <span th:text = "${company.getDetails().getAddress().getPostalCode()}">6015</span>
+                        <span th:text = "${company.getDetails().getAddress().getPostalPlace()}">Ålesund</span>
+                        <span th:text = "${company.getDetails().getAddress().getCountry()}">Norway</span>
+                    </p>
+                    <p class = "headerOnCard">
+                        Streetname and house number
+                    </p>
+                    <p class = "cardText">
+                        <span th:text = "${company.getDetails().getAddress().getStreetName()}">Gåseidvika</span>
+                        <span th:text = "${company.getDetails().getAddress().getHouseNumber()}">23</span>
+                    </p>
+                    <a th:href="@{/editCompany(id=${company.getCompanyID()})}" class = "button greenButton editButton">
+                        Edit company
+                    </a>
+                </div>
+            </div>
+        </section>
+        <footer id= "footerWrapper" th:replace="/components/footer :: footer">
+        </footer>
+        <script src = "javascript/menu.js"></script>
+    </body>
+</html>

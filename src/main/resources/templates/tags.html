@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Tags overview</title>
+        <link th:href="@{/css/basic.css}" rel = "stylesheet" type="text/css">
+        <link th:href="@{/css/editCards.css}" rel = "stylesheet" type="text/css">
+    </head>
+
+    <body>
+        <header id = "headerWrapper" th:replace="components/menu :: header">
+        </header>
+        <section class = "mainSection">
+            <h2 class = "mainHeaderText">
+                Tags overview
+            </h2>
+            <a th:href = "@{/edit-tag(tagID=0)}" class = "greenButton button editButton">
+                Add new tag
+            </a>
+            <div class = "cardContainer">
+                <div class = "customCard" th:each="tag:${tags}">
+                    <p class = "headerOnCard">
+                        Tag id
+                    </p>
+                    <p class = "cardText" th:text = "${tag.getTagID()}">
+                        1
+                    </p>
+                    <p class = "headerOnCard">
+                        Tag name
+                    </p>
+                    <p class = "cardText" th:text = "${tag.getTagName()}">
+                        The name of the tag.
+                    </p>
+                    <p class = "headerOnCard">
+                        Tag description
+                    </p>
+                    <p class = "cardText" th:text = "${tag.getTagDescription()}">
+                        Masse tekst som ingen orker å lese. 
+                    </p>
+                    <a th:href="@{/edit-tag(tagID=${tag.getTagID()})}" class = "button greenButton editButton">
+                        Edit tag
+                    </a>
+                </div>
+            </div>
+        </section>
+        <footer id= "footerWrapper" th:replace="/components/footer :: footer">
+        </footer>
+        <script src = "javascript/menu.js"></script>
+
+    </body>
+</html>

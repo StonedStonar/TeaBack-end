@@ -79,6 +79,16 @@
                         Login
                     </span>
                 </a>
+                <a th:href="@{/tagsOverview}" class="shortcutFooter" th:if = "${isAdmin}">
+                    <span>
+                        Tags overview
+                    </span>
+                </a>
+                <a th:href="@{/companyOverview}" class="shortcutFooter" th:if = "${isAdmin}">
+                    <span>
+                        Company overview
+                    </span>
+                </a>
             </div>
             <div class="sectionFooter">
                 <div class="rightFooterDiv" id = "socialContainer">
