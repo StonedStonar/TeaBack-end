@@ -2,6 +2,7 @@ package no.ntnu.appdev.group15.teawebsitebackend.model.database;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddOrderException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetOrderException;
@@ -33,7 +34,7 @@ public class OrderJPA implements OrderRegister {
   @Override
   public void addOrder(Order order) throws CouldNotAddOrderException{
     checkIfOrderIsValid(order);
-    if (!orderRepository.existsById(order.getOrderId())){
+    if (!orderRepository.existsById(order.getOrderID())){
       orderRepository.save(order);
     } else {
       throw new CouldNotAddOrderException("Order does already exist");
@@ -43,7 +44,7 @@ public class OrderJPA implements OrderRegister {
   @Override
   public void removeOrder(Order order) throws CouldNotRemoveOrderException {
     checkIfOrderIsValid(order);
-    if (orderRepository.existsById(order.getOrderId())) {
+    if (orderRepository.existsById(order.getOrderID())) {
       orderRepository.delete(order);
     } else {
       throw new CouldNotRemoveOrderException("The order does not exist, and cannot be removed");
@@ -63,13 +64,12 @@ public class OrderJPA implements OrderRegister {
   @Override
   public Order getOrderWithId(long orderID) throws CouldNotGetOrderException {
     checkIfNumberIsAboveZero(orderID, "orderID");
-    Order orderIDToFind = null;
-    if(orderRepository.existsById(orderID)) {
-      orderIDToFind = orderRepository.getById(orderID);
-    } else {
+
+    Optional<Order> opOrder = orderRepository.findById(orderID);
+    if (opOrder.isEmpty()) {
       throw new CouldNotGetOrderException("The order with id " + orderID + " is not in the system");
     }
-    return orderIDToFind;
+    return opOrder.get();
   }
 
   @Override
@@ -88,6 +88,17 @@ public class OrderJPA implements OrderRegister {
     Iterable<Order> it = orderRepository.findAll();
     it.forEach(order ->orders.add(order));
     return orders;
+  }
+
+  //TODO LAG TESTER
+  @Override
+  public void updateOrder(Order order) throws CouldNotGetOrderException {
+    checkIfOrderIsValid(order);
+    if (orderRepository.existsById(order.getOrderID())){
+      orderRepository.save(order);
+    } else {
+      throw new CouldNotGetOrderException("Order could not be found");
+    }
   }
 
 

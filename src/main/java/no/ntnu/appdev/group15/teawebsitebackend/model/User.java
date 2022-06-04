@@ -112,6 +112,7 @@ public class User {
         cart = new Cart();
     }
 
+
     /**
      * Makes an instance of the user object.
      * @param firstName the first name of the user.

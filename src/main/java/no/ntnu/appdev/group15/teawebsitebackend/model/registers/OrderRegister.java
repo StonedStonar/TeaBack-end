@@ -53,4 +53,11 @@ public interface OrderRegister {
      * @return a list with all the orders of a user in the system.
      */
     List<Order> getAllOrders();
+
+    /**
+     * Updates the order.
+     * @param order the order to update.
+     * @throws CouldNotGetOrderException gets thrown when order is not valid.
+     */
+    void updateOrder(Order order) throws CouldNotGetOrderException;
 }

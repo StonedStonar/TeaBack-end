@@ -232,3 +232,11 @@
     display: none;
     overflow: hidden;
 }
+
+#checkOutButton {
+    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
