@@ -13,7 +13,7 @@
     <header id = "headerWrapper" th:replace="components/menu :: header">
     </header>
     <section class="mainSection">
-        <form>
+        <form th:action = "@{/confirmPage}" th:method = "GET" id = "form">
             <div id="headerCart">
                 <h2 class="mainHeaderText">
                     Cart

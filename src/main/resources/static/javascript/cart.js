@@ -1,5 +1,29 @@
 window.addEventListener('load', () => addListeners());
 
+document.getElementById("form").addEventListener("submit", event => sendForm(event))
+
+/**
+ * Sends the form to the server.
+ */
+function sendForm(event){
+    event.preventDefault();
+    let collection = event.target.querySelectorAll(".num-to-change");
+    let link = window.location.origin;
+    console.log(collection);
+    link = link + "/users/cart?";
+    for(let i = 0; i < collection.length; i++){
+        let input = collection[i];
+        let extraAnd = "";
+        if(i > 0){
+            extraAnd = "&";
+        }
+        link = link + extraAnd + input.name + "=" + input.value;
+    }
+    let http = new XMLHttpRequest();
+    http.open("PUT", link);
+    console.log(http.send());
+}
+
 /**
  * Adds all the listeners.
  */

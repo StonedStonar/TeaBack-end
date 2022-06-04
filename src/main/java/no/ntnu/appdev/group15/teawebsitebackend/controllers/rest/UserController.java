@@ -3,11 +3,19 @@ package no.ntnu.appdev.group15.teawebsitebackend.controllers.rest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.ntnu.appdev.group15.teawebsitebackend.RegisterTestData;
+import no.ntnu.appdev.group15.teawebsitebackend.model.Cart;
+import no.ntnu.appdev.group15.teawebsitebackend.model.CartProduct;
+import no.ntnu.appdev.group15.teawebsitebackend.model.Product;
 import no.ntnu.appdev.group15.teawebsitebackend.model.User;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddUserException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetUserException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveCartProductException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveUserException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
+import no.ntnu.appdev.group15.teawebsitebackend.security.AccessUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,25 +25,29 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Steinar Hjelle Midthus
  * @version 0.1
  */
 @RestController
-
 @RequestMapping("/users")
 public class UserController {
 
     private UserRegister userRegister;
 
+    private ProductRegister productRegister;
+
     /**
      * Makes an instance of the UserController class.
      * @param userJPA the service.
+     * @param productJPA the product JPA.
      */
-    public UserController(UserJPA userJPA) {
+    public UserController(UserJPA userJPA, ProductJPA productJPA) {
         checkIfObjectIsNull(userJPA, "user jpa");
         this.userRegister = userJPA;
+        this.productRegister = productJPA;
     }
 
     /**
@@ -93,6 +105,36 @@ public class UserController {
 
     private void updateUser(){
 
+    }
+
+
+    @PutMapping("/cart")
+    @PreAuthorize("hasRole('USER')")
+    public void updateCart(@RequestParam Map<String, String> productMap, Authentication authentication) throws CouldNotGetUserException, CouldNotRemoveCartProductException {
+        System.out.print("Pepegaclap");
+        AccessUser accessUser = getAccessUser(authentication);
+        User user = userRegister.getUserWithUserID(accessUser.getUser().getUserId());
+        Cart cart = user.getCart();
+        List<CartProduct> cartProducts = cart.getAllProducts().stream().filter(prod -> productMap.containsKey(Long.toString(prod.getProduct().getProductID()))).toList();
+        for (CartProduct cartProduct : cartProducts){
+            int amount = Integer.parseInt(productMap.get(Long.toString(cartProduct.getProduct().getProductID())));
+            if (amount == 0){
+                cart.removeCartProduct(cartProduct.getProduct());
+            }else {
+                cartProduct.setAmount(amount);
+            }
+        }
+        userRegister.updateUser(user);
+        accessUser.setUser(user);
+    }
+
+    /**
+     * Gets the access user that is using the page.
+     * @param authentication the authentication object.
+     * @return the access user of this session.
+     */
+    private AccessUser getAccessUser(Authentication authentication){
+        return (AccessUser) authentication.getPrincipal();
     }
 
     /**
