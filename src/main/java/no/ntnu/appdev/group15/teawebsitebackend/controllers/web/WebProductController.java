@@ -110,7 +110,6 @@ public class WebProductController extends WebController{
         List<Company> companies = productList.stream().map(product -> product.getCompany()).distinct().toList();
         List<Tag> tags = getTagsFromProduct(productList);
         model.addAttribute("relatedProduct", productList);
-        //Todo: Istedet for at vi tar alle tagsene som er i systemet burde vi heller ta alle tagsene som er med disse produktene og vise dem.
         model.addAttribute("relatedTags", tags);
         model.addAttribute("companies" ,companies);
         return "products";
@@ -328,16 +327,5 @@ public class WebProductController extends WebController{
             tagList.add(tagRegister.getTagWithID(tagId));
         }
         return tagList;
-    }
-
-    /**
-     * Check to make sure that integer values cannot be negative.
-     * @param object the object to be checked.
-     * @param error exception message to be displayed.
-     */
-    private void checkIfNumberNotNegative(long object, String error) {
-        if (object <= 0) {
-            throw new IllegalArgumentException("The " + error + " Cannot be negative values.");
-        }
     }
 }
