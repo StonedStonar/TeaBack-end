@@ -25,11 +25,9 @@ public class Order {
     @JoinColumn(name = "userID")
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, targetEntity = OrderedProduct.class)
-    @JoinTable(name = "orderedProducts",
-            joinColumns = @JoinColumn(name= "orderID", referencedColumnName = "orderID"),
-            inverseJoinColumns = @JoinColumn(name= "orderedProductID", referencedColumnName = "orderedProductID")
-    )
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "orderedProducts", joinColumns = @JoinColumn(name = "orderID"))
+    @Column(name = "orderID")
     private List<OrderedProduct> orderedProductList; //many to many
 
     @Enumerated

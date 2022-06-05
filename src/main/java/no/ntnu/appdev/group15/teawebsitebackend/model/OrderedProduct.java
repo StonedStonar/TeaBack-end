@@ -11,13 +11,8 @@ import javax.persistence.*;
  * @version 0.1
  */
 //Todo: Litt usikker på om denne trenger en ID. Tenk litt på det og hittl settes den bare som embeddable.
-@Entity
-@Table(name = "orderedProduct")
+@Embeddable
 public class OrderedProduct {
-
-    @Id
-    @GeneratedValue
-    private long orderedProductID;
 
     @OneToOne(targetEntity = Product.class)
     @JoinColumn(name = "productID")
@@ -55,7 +50,6 @@ public class OrderedProduct {
         this.pricePerProduct = product.getPrice();
         this.amountOfProduct = amountOfProduct;
         this.returnedProductAmount = 0;
-        this.orderedProductID = orderedID;
         this.orderState = orderState;
     }
 
@@ -72,7 +66,6 @@ public class OrderedProduct {
         this.pricePerProduct = product.getPrice();
         this.amountOfProduct = amountOfProduct;
         this.returnedProductAmount = 0;
-        this.orderedProductID = 0;
         this.orderState = OrderState.ORDERED;
     }
 
@@ -202,13 +195,5 @@ public class OrderedProduct {
         if (object == null) {
             throw new IllegalArgumentException("The " + error + " cannot be null.");
         }
-    }
-
-    /**
-     * Gets the ordered product id.
-     * @return the ordered product id.
-     */
-    public long getOrderedProductID() {
-        return orderedProductID;
     }
 }

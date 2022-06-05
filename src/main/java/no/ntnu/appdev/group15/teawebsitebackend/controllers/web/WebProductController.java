@@ -59,19 +59,15 @@ public class WebProductController extends WebController{
      * @return the product info page.
      */
     @GetMapping("/product-info")
-    public String getProductInfo(Authentication authentication, Model model, @RequestParam("id") long id) {
+    public String getProductInfo(Authentication authentication, Model model, @RequestParam("id") long id) throws CouldNotGetProductException {
         addLoggedInAttributes(authentication, model);
         List<Product> productList = productRegister.getAllProducts();
         Product product = null;
         model.addAttribute("sale", false);
-        try {
-            product = productRegister.getProduct(id);
-            model.addAttribute("mainProduct", product);
-            model.addAttribute("relatedProduct", productList);
-            model.addAttribute("productDetail", product.getProductDetails());
-        } catch (CouldNotGetProductException e) {
-            e.printStackTrace();
-        }
+        product = productRegister.getProduct(id);
+        model.addAttribute("mainProduct", product);
+        model.addAttribute("relatedProduct", productList);
+        model.addAttribute("productDetail", product.getProductDetails());
         return "product-info";
     }
 
@@ -107,7 +103,7 @@ public class WebProductController extends WebController{
                 model.addAttribute("sale", sale);
             }
         }
-        List<Company> companies = productList.stream().map(product -> product.getCompany()).distinct().toList();
+        List<Company> companies = productList.stream().map(Product::getCompany).distinct().toList();
         List<Tag> tags = getTagsFromProduct(productList);
         model.addAttribute("relatedProduct", productList);
         model.addAttribute("relatedTags", tags);

@@ -106,7 +106,6 @@ public class User {
         setPassword(password);
         checkIfLongIsAboveZero(phoneNumber, "phone number");
         this.phoneNumber = phoneNumber;
-        this.password = password;
         role = Role.ROLE_USER;
         this.active = true;
         cart = new Cart();
@@ -132,7 +131,6 @@ public class User {
         setPassword(password);
         checkIfLongIsAboveZero(phoneNumber, "phone number");
         this.phoneNumber = phoneNumber;
-        this.password = password;
         role = Role.ROLE_USER;
         this.active = true;
         cart = new Cart();

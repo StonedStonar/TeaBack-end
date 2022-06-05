@@ -21,7 +21,6 @@ public abstract class Details {
 
     }
 
-
     /**
      * Makes an instance of the Details class.
      * @param description the description.

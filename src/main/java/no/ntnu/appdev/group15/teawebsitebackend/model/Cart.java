@@ -19,14 +19,14 @@ import java.util.Optional;
 public class Cart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "cartID")
     private long cartID;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "cartProducts", joinColumns = @JoinColumn(name = "cartID"))
     @Column(name = "cartID")
-    private List<CartProduct> cartProductList;
+    private final List<CartProduct> cartProductList;
 
     /**
      * Makes an instance of the Cart class.

@@ -54,7 +54,10 @@
                     <p>
                         Main address
                     </p>
-                    <p>
+                    <p th:if = "${address == null}">
+                        There is no set address
+                    </p>
+                    <p th:if = "${address != null}">
                         <span>
                             <span th:text = "${address.getStreetName()}">Testvegen</span>
                             <span th:text = "${address.getHouseNumber()}">12</span>
