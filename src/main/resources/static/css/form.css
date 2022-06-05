@@ -42,7 +42,7 @@
     font-size: 1em;
 }
 
-.editButton{
+.editButton, #backButton{
     display: block;
     display: flex;
     justify-content: center;
