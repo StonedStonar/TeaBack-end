@@ -1,9 +1,5 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
-import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
-
 import javax.persistence.*;
 
 /**

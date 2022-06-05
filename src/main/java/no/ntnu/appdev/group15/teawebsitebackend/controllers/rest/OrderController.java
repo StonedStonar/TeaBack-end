@@ -165,19 +165,4 @@ public class OrderController {
       throw new IllegalArgumentException("The " + error + " cannot be null.");
     }
   }
-
-  /**
-   * Checks if a string is of a valid format or not.
-   *
-   * @param stringToCheck the string you want to check.
-   * @param errorPrefix   the error the exception should have if the string is invalid.
-   * @throws IllegalArgumentException gets thrown if the string to check is empty or null.
-   */
-  private void checkString(String stringToCheck, String errorPrefix) {
-    checkIfObjectIsNull(stringToCheck, errorPrefix);
-    if (stringToCheck.isEmpty()) {
-      throw new IllegalArgumentException("The " + errorPrefix + " cannot be empty.");
-    }
-  }
-
 }

@@ -1,13 +1,10 @@
 package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 
-import no.ntnu.appdev.group15.teawebsitebackend.model.Role;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Tag;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.TagJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.TagsRegister;
-import no.ntnu.appdev.group15.teawebsitebackend.security.AccessUser;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
