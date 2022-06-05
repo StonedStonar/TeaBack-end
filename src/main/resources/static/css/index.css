@@ -17,6 +17,10 @@
     height: 100%;
 }
 
+.add-to-cart {
+    width:100%;
+}
+
 .frontpageButton {
     height: 60px;
     display: flex;
