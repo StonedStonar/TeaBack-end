@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * Represents the controller for the index page.
- * @author Steinar Hjelle Midthus
+ * @author Trine Merete Staverløkk
  * @version 0.1
  */
 @Controller
@@ -30,6 +30,12 @@ public class IndexController extends WebController{
         this.productRegister = productJPA;
     }
 
+    /**
+     * Gets the index page.
+     * @param authentication the authentication.
+     * @param model the model.
+     * @return the HTML file name of index
+     */
     @GetMapping("/index")
     public String getIndex(Authentication authentication, Model model){
         addLoggedInAttributes(authentication, model);
@@ -38,6 +44,12 @@ public class IndexController extends WebController{
         return "index";
     }
 
+    /**
+     * Gets the about us page.
+     * @param authentication the authentication.
+     * @param model the model.
+     * @return HTML file name of aboutUs
+     */
     @GetMapping("/aboutUs")
     public String getAboutUs(Authentication authentication, Model model) {
         addLoggedInAttributes(authentication, model);
@@ -45,6 +57,12 @@ public class IndexController extends WebController{
         return "aboutUs";
     }
 
+    /**
+     * Gets the contact us page.
+     * @param authentication the authentication.
+     * @param model the model.
+     * @return HTML file name of contactUs.
+     */
     @GetMapping("/contactUs")
     public String getContactUs(Authentication authentication, Model model) {
         addLoggedInAttributes(authentication, model);
@@ -52,6 +70,10 @@ public class IndexController extends WebController{
         return "contactUs";
     }
 
+    /**
+     * Gets specific number of products.
+     * @return the wanted product.
+     */
     private List<Product> getSpesificNumberOfElements() {
         List<Product> products = productRegister.getAllProducts();
         List<Product> wantedProduct = new ArrayList<>();

@@ -53,6 +53,11 @@ public class WebCompanyController extends WebController{
 
     /**
      * Get the editCompany page
+     * @param model the model.
+     * @param authentication the authentication.
+     * @param companyID the company ID.
+     * @param httpSession the session to store the data in.
+     * @return edit company.
      */
     @GetMapping("/editCompany")
     public String getEditCompany(Model model, Authentication authentication, @RequestParam ("companyID") long companyID, HttpSession httpSession)
@@ -77,6 +82,20 @@ public class WebCompanyController extends WebController{
         return "editCompany";
     }
 
+    /**
+     * Edits or adds a company.
+     * @param companyID the ID of the company.
+     * @param companyName the name of the company.
+     * @param companyDescription description of the company.
+     * @param postalCodeAsString the postal code as string.
+     * @param postalPlace the postal place.
+     * @param streetName the street name.
+     * @param houseNumberAsString the house number as string.
+     * @param country the country.
+     * @param preview preview of the edits.
+     * @param httpSession the session to store data in.
+     * @return redirect to the HTML file name of edit company.
+     */
     @PutMapping("/editCompany")
     public RedirectView editCompany (@RequestParam ("companyID") long companyID, @RequestParam ("companyName") String companyName,
                                      @RequestParam ("companyDescription") String companyDescription, @RequestParam ("postalCode") String postalCodeAsString,

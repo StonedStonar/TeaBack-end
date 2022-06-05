@@ -93,8 +93,6 @@ public class CartAndCheckoutController extends WebController{
 
 
 
-    //TODO "my info" stemmer ikke.
-
 
     /**
      * Confirms order and redirects to thankYouPage.

@@ -78,6 +78,7 @@ public class OrderController {
 
   /**
    * Makes new order.
+   *
    * @param body the body of the HTML-document.
    */
   private Order makeOrder(String body) throws JsonProcessingException {
