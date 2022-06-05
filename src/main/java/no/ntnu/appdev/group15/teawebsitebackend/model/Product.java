@@ -229,6 +229,11 @@ public class Product {
         return reviews;
     }
 
+    /**
+     * Gets the average rating for a review.
+     * @return the average rating calculated from 1-5 since the stars cannot become
+     * more than 5. If there have not been given any rating there will be zero stars.
+     */
     public int getAverageRating() {
        Iterator<Review> it = reviews.iterator();
        int totalSumOfStars = 0;

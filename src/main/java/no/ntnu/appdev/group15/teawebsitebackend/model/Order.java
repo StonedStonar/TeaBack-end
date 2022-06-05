@@ -237,10 +237,6 @@ public class Order {
     }
 
     /**
-     * TODO cancelled order, later not now.
-     */
-
-    /**
      * Checks if date is after current date.
      * @param date the date to check.
      */

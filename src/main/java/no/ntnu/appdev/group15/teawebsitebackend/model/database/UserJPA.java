@@ -34,7 +34,6 @@ public class UserJPA implements no.ntnu.appdev.group15.teawebsitebackend.model.r
     @Override
     public void addUser(User user) throws CouldNotAddUserException {
         checkIfUserIsValid(user);
-        //Todo: Endre denne quickfixen senere. I JUST WANNA SLEEP SEND HELP
         Optional<User> opUs = userRepository.getUserByEmail(user.getEmail());
         if (!userRepository.existsById(user.getUserId()) && opUs.isEmpty()){
             userRepository.save(user);

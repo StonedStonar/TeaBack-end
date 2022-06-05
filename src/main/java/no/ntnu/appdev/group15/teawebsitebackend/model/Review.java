@@ -31,7 +31,6 @@ public class Review {
      * Just a normal constructor needed for JPA.
      */
     public Review() {
-
     }
 
     /**
@@ -50,7 +49,6 @@ public class Review {
         this.customerName = name;
         checkIfObjectIsNull(user, "user");
         this.user = user;
-        //Litt usikker her, for det må være mulig å sende bare rating og ikke en full review med kommentar kanskje?.
         checkString(comment, "comment");
         this.comment = comment;
         checkIfDateIsValid(date);

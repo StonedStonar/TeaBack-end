@@ -24,7 +24,6 @@ public class Company {
      * Empty constructor for JPA
      */
     public Company() {
-
     }
 
     /**
