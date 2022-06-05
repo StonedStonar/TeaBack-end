@@ -15,7 +15,7 @@
 
 
 <section class="mainSection">
-    <h2 class="headerText">Edit company page</h2>
+    <h2 class="headerText mainHeaderText">Edit company page</h2>
         <div class="editCompanyDiv">
             <form id="editCompanyForm" class="editCompany" th:action = "@{/editCompany}" th:method = "PUT">
                 <input type="hidden" class="inputForm" id="companyID" name="companyID" th:value = "${companyID}">
@@ -34,7 +34,21 @@
                 <input type="number" class="inputForm" id="houseNumberInput" placeholder="Enter house number" name="houseNumber" th:value = "${houseNumber}">
                 <label for="countryInput" class="inputLabel">Country</label>
                 <input type="text" class="inputForm" id="countryInput" placeholder="Enter country" name="country" th:value = "${country}">
-
+                <span class = "message" th:if = "${param.isPreview}">
+                    Preview is now loaded
+                </span>
+                <span class = "message errorMessage" th:if = "${param.invalidFields}">
+                    All fields must be filled out
+                </span>
+                <span class = "message" th:if = "${param.addedCompany}">
+                    Company added
+                </span>
+                <span class = "message" th:if = "${updatedCompany}">
+                    Company is updated
+                </span>
+                <span class = "message errorMessage" th:if = "${invalidCompanyID}">
+                    CompanyID is invalid or already in use
+                </span>
                 <label for="preview" class="formLabel">Preview</label>
                 <input type="checkbox" id="preview" class="button greenButton submitButton" value="submit changes" name = "preview">
                 <input type="submit" class="button greenButton submitButton" value="Submit changes">
