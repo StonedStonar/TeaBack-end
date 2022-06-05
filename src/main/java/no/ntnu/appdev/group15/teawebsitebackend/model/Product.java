@@ -38,11 +38,9 @@ public class Product {
     @JoinColumn(name = "companyID")
     private Company company;
 
-    @OneToMany(targetEntity = Review.class, cascade = CascadeType.ALL)
-    @JoinTable(name = "productReviews",
-            joinColumns = @JoinColumn(name= "productID", referencedColumnName = "productID"),
-            inverseJoinColumns = @JoinColumn(name= "reviewID", referencedColumnName = "reviewID")
-    )
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "productReviews", joinColumns = @JoinColumn(name = "productID"))
+    @Column(name = "productID")
     private List<Review> reviews;
 
     /**

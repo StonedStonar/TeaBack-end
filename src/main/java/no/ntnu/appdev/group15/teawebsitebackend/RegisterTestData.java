@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.thedeanda.lorem.Lorem;
+import com.thedeanda.lorem.LoremIpsum;
 import no.ntnu.appdev.group15.teawebsitebackend.model.*;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.*;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.*;
@@ -175,13 +177,13 @@ public class RegisterTestData {
      */
     private void addRandomProductReviews(List<User> users, List<Product> products) throws CouldNotAddReviewException {
         Random random = new Random();
-        int amountOfUsers = users.size();
         int maxAmountOfRandomReviews = 5;
+        Lorem lorem = LoremIpsum.getInstance();
         for (Product product : products) {
             int amountOfReveiws = random.nextInt(1 ,maxAmountOfRandomReviews);
             for (int i = 0; i < amountOfReveiws; i++){
                 User randomUser = users.get(random.nextInt(users.size()));
-                product.addReview(new Review("Luli " + i, randomUser.getFirstName(), randomUser, "Pogchamp " + (i *amountOfReveiws), LocalDate.now().minusDays(random.nextInt(14)), random.nextInt(6)));
+                product.addReview(new Review(lorem.getTitle(2), lorem.getName(), randomUser, lorem.getWords(2, 20), LocalDate.now().minusDays(random.nextInt(14)), random.nextInt(6)));
             }
         }
     }

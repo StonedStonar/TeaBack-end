@@ -10,13 +10,8 @@ import java.time.LocalDate;
  * @author Kenneth Johansen Misund
  * @version 0.1
  */
-@Entity
-@Table(name = "review")
+@Embeddable
 public class Review {
-
-    @Id
-    @GeneratedValue
-    private long reviewID;
 
     private String reviewTitle;
 
@@ -55,14 +50,11 @@ public class Review {
         this.customerName = name;
         checkIfObjectIsNull(user, "user");
         this.user = user;
-
-
         //Litt usikker her, for det må være mulig å sende bare rating og ikke en full review med kommentar kanskje?.
         checkString(comment, "comment");
         this.comment = comment;
         checkIfDateIsValid(date);
         this.dateOfReview = date;
-
         if (rating >= 0 && rating <= 5) {
             this.rating = rating;
         } else {
