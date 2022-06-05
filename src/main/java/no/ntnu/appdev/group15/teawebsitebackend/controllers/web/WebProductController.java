@@ -324,15 +324,4 @@ public class WebProductController extends WebController{
         }
         return tagList;
     }
-
-    /**
-     * Check to make sure that integer values cannot be negative.
-     * @param object the object to be checked.
-     * @param error exception message to be displayed.
-     */
-    private void checkIfNumberNotNegative(long object, String error) {
-        if (object <= 0) {
-            throw new IllegalArgumentException("The " + error + " Cannot be negative values.");
-        }
-    }
 }
