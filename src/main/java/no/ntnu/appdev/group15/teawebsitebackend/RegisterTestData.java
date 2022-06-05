@@ -106,19 +106,20 @@ public class RegisterTestData {
     public void addTestProducts(ProductRegister productRegister, UserRegister userRegister, CompanyRegister companyRegister, TagsRegister tagsRegister)
         throws CouldNotAddProductException, CouldNotAddReviewException, CouldNotAddTagException {
         checkIfObjectIsNull(productRegister, "product register");
+        Lorem lorem = LoremIpsum.getInstance();
         List<Tag> tags = tagsRegister.getAllTags();
         List<Product> products = new ArrayList<>();
         List<Company> companies = companyRegister.getAllCompanies();
         if (productRegister.getAllProducts().isEmpty()) {
-            products.add(new Product( "Green Leaf Tea", 109, 7, new ProductDetails("Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.", "Tea", "p"), companies.get(0)));
-            products.add(new Product( "Black water Leaf Tea", 509, 3, new ProductDetails("Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.", "Tea", "p"), companies.get(1)));
-            products.add(new Product( "Mushroom High Tea", 559, 20, new ProductDetails("Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis.", "Tea", "p"), companies.get(2)));
-            products.add(new Product( "Blue Herb Tea", 89, 1, new ProductDetails("Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet e consectetur.", "Tea", "p"), companies.get(3)));
-            products.add(new Product( "Strawberry Tea", 99, 9, new ProductDetails("Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.", "Tea", "p"), companies.get(1)));
-            products.add(new Product( "Hause Norsk Tea", 69, 5, new ProductDetails("At vero eos et accusamus et iusto odio dignissimos ducimus q.", "Tea", "p"), companies.get(1)));
-            products.add(new Product( "Stor Troll Herb Tea", 150, 11, new ProductDetails("Itaque earum rerum hic tenetur a sapiente delectus", "Tea", "p"), companies.get(0)));
-            products.add(new Product("White cup", 200, 200, new ProductDetails("A white cup with no decals so that you can enjoy your beverage", "Plastics", "p"), companies.get(4)));
-            products.add(new Product("Black cup", 200, 200, new ProductDetails("A white cup with no decals so that you can enjoy your beverage", "Plastics", "p"), companies.get(4)));
+            products.add(new Product( "Green Leaf Tea", 109, 7, new ProductDetails(lorem.getParagraphs(1,3), lorem.getWords(1, 8), lorem.getWords(2, 6)), companies.get(0)));
+            products.add(new Product( "Black water Leaf Tea", 509, 3, new ProductDetails(lorem.getParagraphs(1,3), lorem.getWords(1, 8), lorem.getWords(2, 6)), companies.get(1)));
+            products.add(new Product( "Mushroom High Tea", 559, 20, new ProductDetails(lorem.getParagraphs(1,3), lorem.getWords(1, 8), lorem.getWords(2, 6)), companies.get(2)));
+            products.add(new Product( "Blue Herb Tea", 89, 1, new ProductDetails(lorem.getParagraphs(1,3), lorem.getWords(1, 8), lorem.getWords(2, 6)), companies.get(3)));
+            products.add(new Product( "Strawberry Tea", 99, 9, new ProductDetails(lorem.getParagraphs(1,3), lorem.getWords(1, 8), lorem.getWords(2, 6)), companies.get(1)));
+            products.add(new Product( "Hause Norsk Tea", 69, 5, new ProductDetails(lorem.getParagraphs(1,3), lorem.getWords(1, 8), lorem.getWords(2, 6)), companies.get(1)));
+            products.add(new Product( "Stor Troll Herb Tea", 150, 11, new ProductDetails(lorem.getParagraphs(1,3), lorem.getWords(1, 8), lorem.getWords(2, 6)), companies.get(0)));
+            products.add(new Product("White cup", 200, 200, new ProductDetails(lorem.getParagraphs(1,3), lorem.getWords(1, 8), lorem.getWords(2, 6)), companies.get(4)));
+            products.add(new Product("Black cup", 200, 200, new ProductDetails(lorem.getParagraphs(1,3), lorem.getWords(1, 8), lorem.getWords(2, 6)), companies.get(4)));
             products.get(0).getProductDetails().addTag(tags.get(5));
             products.get(1).getProductDetails().addTag(tags.get(6));
             products.get(2).getProductDetails().addTag(tags.get(9));
