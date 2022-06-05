@@ -32,6 +32,9 @@
                 Total
             </h3>
         </div>
+        <p th:if = "${orders.isEmpty()}">
+            There is no orders to show.
+        </p>
         <div class="orderContainer clickContainer" th:each="order: ${orders}">
             <p class="orderDate" th:text = "${order.getDateOfOrder()}">
                 09.03.2022

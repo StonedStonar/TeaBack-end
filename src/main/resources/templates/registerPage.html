@@ -6,37 +6,44 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Register user page</title>
         <link th:href="@{/css/basic.css}" rel = "stylesheet" type="text/css">
+        <link th:href="@{/css/form.css}" rel = "stylesheet" type="text/css">
         <link th:href="@{/css/login.css}" rel = "stylesheet" type="text/css">
-        <link th:href="@{/css/registerAccount.css}" rel = "stylesheet" type="text/css">
     </head>
     <body>
-        <header id = "headerWrapper" th:replace="components/menu :: header">
+        <header id = "headerWrapper" th:replace="/components/menu :: header">
         </header>
-
-
         <section class="mainSection">
             <h2  class="mainHeaderText">
                 Create Account
             </h2>
-            <form class="enter-details">
+            <form class="enter-details editForm" th:action = "@{/makeUser}" th:method = "POST">
                 <div class="enter-account-details">
-                    <label for="firstName" class="loginLabel">First name</label>
-                    <input type="text" id="firstName" placeholder="Enter first name" name = "firstName">
-                    <label for="lastName" class="loginLabel">Last name</label>
-                    <input type="text" id="lastName" placeholder="Enter last name" name = "lastName">
-                    <label for="email" class="loginLabel">Email</label>
-                    <input type="text" id="email" placeholder="Enter email adress" name = "eMail">
-                    <label for="phoneNumber" class="loginLabel">Phone number</label>
-                    <input type="number" id="phoneNumber" placeholder="Enter phone number" name = "phoneNumber">
+                    <label for="firstName" class="formLabel">First name</label>
+                    <input type="text" class = "inputForm" id="firstName" placeholder="Enter first name" name = "firstName" th:value = "${firstName}">
+                    <label for="lastName" class="formLabel">Last name</label>
+                    <input type="text" class = "inputForm" id="lastName" placeholder="Enter last name" name = "lastName" th:value = "${lastName}">
+                    <label for="email" class="formLabel">Email</label>
+                    <input type="text" class = "inputForm" id="email" placeholder="Enter email adress" name = "eMail" th:value = "${eMail}">
+                    <label for="phoneNumber" class="formLabel">Phone number</label>
+                    <input type="number" class = "inputForm" id="phoneNumber" placeholder="Enter phone number" name = "phoneNumber" th:value = "${phoneNumber}">
                     <label for="password" class="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter at least 6 characters" name = "password">
-                    <label for="re-enter-password" class="loginLabel">Re enter password</label>
-                    <input type="password" id="re-enter-password" placeholder="Re enter the same password" name = "secondPassword">
-                    <input type="submit" value="Register user" id="sign-in" class="button">
+                    <input type="password" class = "inputForm" id="password" placeholder="Enter at least 6 characters" name = "password">
+                    <label for="re-enter-password" class="formLabel">Re enter password</label>
+                    <input type="password" class = "inputForm" id="re-enter-password" placeholder="Re enter the same password" name = "secondPassword">
+                    <span th:if = "${param.passwordMismatch}" class = "message errorMessage">
+                        The passwords are not matching.
+                    </span>
+                    <span th:if = "${param.invalidFields}" class = "message errorMessage">
+                        All the fields needs to be filled in.
+                    </span>
+                    <span th:if = "${param.invalidEmail}" class = "message errorMessage">
+                        The email is already in use.
+                    </span>
+                    <input type="submit" value="Register user" id="sign-in" class="button greenButton submitButton">
+
                 </div>
-                
                 <span>Already have an account?</span>
-                <a class="signIn" th:href="/login">
+                <a class="signIn" th:href="@{/login}">
                     Sign in here
                 </a>
             </form>

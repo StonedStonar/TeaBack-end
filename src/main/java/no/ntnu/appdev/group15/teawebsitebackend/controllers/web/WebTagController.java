@@ -29,11 +29,21 @@ public class WebTagController extends WebController{
 
     private TagsRegister tagsRegister;
 
+    /**
+     * Makes a instance of the tag controller.
+     * @param tagJPA the tagJPA.
+     */
     public WebTagController(TagJPA tagJPA) {
         super();
         this.tagsRegister = tagJPA;
     }
 
+    /**
+     * Gets the overview of all the tags.
+     * @param model the model.
+     * @param authentication the authentication.
+     * @return the HTML file name of tags overview.
+     */
     @GetMapping("/tagsOverview")
     public String getTagsOverview(Model model, Authentication authentication){
         addLoggedInAttributes(authentication, model);
@@ -42,6 +52,14 @@ public class WebTagController extends WebController{
         return "tags";
     }
 
+    /**
+     * Gets the edit tag page.
+     * @param authentication the authentication.
+     * @param model the model.
+     * @param id the ID of the tag.
+     * @param httpSession the HTTP session for data storage.
+     * @return the HTML file name of edit tag.
+     */
     @GetMapping("/edit-tag")
     @PreAuthorize("hasRole('ADMIN')")
     public String editTag(Authentication authentication, Model model, @RequestParam("tagID") long id, HttpSession httpSession) {
@@ -64,6 +82,15 @@ public class WebTagController extends WebController{
         return "editTag";
     }
 
+    /**
+     * Updates a tag's details. Makes a new tag if the id is 0.
+     * @param tagName the tag name.
+     * @param tagDescription the tag description.
+     * @param preview is present if it's supposed to be a preview of the tag.
+     * @param id the ID of the tag.
+     * @param httpSession the HTTP session to store data in.
+     * @return a redirect to the edit tag window.
+     */
     @PutMapping("/updateTag")
     @PreAuthorize("hasRole('ADMIN')")
     public RedirectView updateTag(@RequestParam("tagName") String tagName,

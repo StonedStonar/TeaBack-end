@@ -54,7 +54,13 @@ public class CartAndCheckoutController extends WebController{
         this.userRegister = userJPA;
     }
 
-
+    /**
+     * Adds a product to the cart.
+     * @param productID the product ID.
+     * @param amount the amount.
+     * @param authentication the authentication of the user.
+     * @return a redirect to the cart page.
+     */
     @PutMapping("/addToCart")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public RedirectView addToCart(@RequestParam("productID") long productID, @RequestParam(value = "amountOfProduct", required = false) Integer amount,
@@ -62,8 +68,9 @@ public class CartAndCheckoutController extends WebController{
         ParameterBuilder parameterBuilder = new ParameterBuilder("/cart");
         AccessUser accessUser = getAccessUser(authentication);
         try {
+            User user = userRegister.getUserWithUserID(accessUser.getUser().getUserId());
             Product product = productRegister.getProduct(productID);
-            Cart cart = accessUser.getUser().getCart();
+            Cart cart = user.getCart();
             if (amount == null || amount == 0){
                 amount = 1;
             }
@@ -75,7 +82,9 @@ public class CartAndCheckoutController extends WebController{
                 cartProduct.setAmount(amount);
                 parameterBuilder.addParameter("amountUpdated", "true");
             }
-        } catch (CouldNotGetProductException | CouldNotAddCartProductException | CouldNotGetCartProductException e) {
+            userRegister.updateUser(user);
+            accessUser.setUser(user);
+        } catch (CouldNotGetProductException | CouldNotAddCartProductException | CouldNotGetCartProductException | CouldNotGetUserException e) {
             parameterBuilder.addParameter("invalidProductID", "true");
         }
 
@@ -206,6 +215,12 @@ public class CartAndCheckoutController extends WebController{
         return orderedProductList;
     }
 
+    /**
+     * Gets the cart of the user.
+     * @param model the model object.
+     * @param authentication the authentication.
+     * @return the html name of the page.
+     */
     @GetMapping("/cart")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String getCart(Model model, Authentication authentication){
@@ -225,9 +240,12 @@ public class CartAndCheckoutController extends WebController{
 
     @GetMapping("/confirmPage")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public String getConfirmPage(Authentication authentication, Model model){
+    public String getConfirmPage(Authentication authentication, Model model) throws CouldNotGetUserException {
         addLoggedInAttributes(authentication, model);
-
+        AccessUser accessUser = getAccessUser(authentication);
+        User user = userRegister.getUserWithUserID(accessUser.getUser().getUserId());
+        int totalPrice = user.getCart().getAllProducts().stream().mapToInt(product -> product.getProduct().getPrice() * product.getAmount()).sum();
+        model.addAttribute("price", totalPrice);
         return "confirmPage";
     }
 }

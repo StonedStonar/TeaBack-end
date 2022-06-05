@@ -46,13 +46,31 @@ public class ProfileController extends WebController{
         this.orderRegister = orderJPA;
     }
 
-
+    /**
+     * Returns the register a new user page.
+     * @param model the model.
+     * @param httpSession the HTTP session for data.
+     * @param authentication the authentication.
+     * @return the register user page URL.
+     */
     @GetMapping("/registerUser")
-    public String registerUser(Model model, HttpSession httpSession){
+    public String registerUser(Model model, HttpSession httpSession, Authentication authentication){
+        addLoggedInAttributes(authentication, model);
         addAllAttributes(model, httpSession);
         return "registerPage";
     }
 
+    /**
+     * Makes a new user and directs the page to login.
+     * @param firstName the first name of the user.
+     * @param lastName the last name of the user.
+     * @param eMail the email of the user.
+     * @param phoneNumber the phone number of the user.
+     * @param password the password of the user.
+     * @param secondPassword the second password of the user.
+     * @param httpSession the HTTP session to store data.
+     * @return redirects the page to login.
+     */
     @PostMapping("/makeUser")
     public RedirectView makeUser(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
                                  @RequestParam("eMail") String eMail, @RequestParam("phoneNumber") String phoneNumber, @RequestParam("password") String password,
@@ -64,6 +82,7 @@ public class ProfileController extends WebController{
             if (secondPassword.equals(password)) {
                 User user = new User(firstName, lastName, eMail, Long.parseLong(phoneNumber), password);
                 userRegister.addUser(user);
+                parameterBuilder.setPageName("login");
             }else {
                 parameterBuilder.addParameter("passwordMismatch", "true");
             }
@@ -83,6 +102,15 @@ public class ProfileController extends WebController{
         return new RedirectView(parameterBuilder.buildString(), true);
     }
 
+    /**
+     * Updates the profile of a user and then redirects it to the edit profile page.
+     * @param firstName the first name of the user.
+     * @param lastName the last name of the user.
+     * @param eMail the email of the user.
+     * @param phoneNumber the phone number.
+     * @param authentication the authentication of the user.
+     * @return redirects the window to the editProfile page.
+     */
     @PutMapping("/user")
     public RedirectView updateProfile(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
                                 @RequestParam("eMail") String eMail, @RequestParam("phoneNumber") long phoneNumber,
@@ -110,6 +138,14 @@ public class ProfileController extends WebController{
         return new RedirectView(parameterBuilder.buildString(), true);
     }
 
+    /**
+     * Updates the password of the user.
+     * @param password the new password of the user.
+     * @param oldPassword the old password of the user.
+     * @param secondPassword the verification of the password.
+     * @param authentication the authentication.
+     * @return a redirect to the editProfile page.
+     */
     @PutMapping("/password")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public RedirectView updatePassword(@RequestParam("password") String password, @RequestParam("oldPassword") String oldPassword,
@@ -137,6 +173,16 @@ public class ProfileController extends WebController{
         return new RedirectView(parameterBuilder.buildString(), true);
     }
 
+    /**
+     * Updates the address of the user.
+     * @param streetName the street name.
+     * @param houseNumber the house number.
+     * @param postalCode the postal code.
+     * @param postalPlace the postal place.
+     * @param country the country.
+     * @param authentication the authentication.
+     * @return redirects the page to editProfile page.
+     */
     @PutMapping("/address")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public RedirectView updateAddress(@RequestParam("streetName") String streetName, @RequestParam("houseNumber") int houseNumber,
@@ -159,6 +205,12 @@ public class ProfileController extends WebController{
         return new RedirectView(parameterBuilder.buildString(), true);
     }
 
+    /**
+     * Gets the page where the former orders of a user is.
+     * @param model the model.
+     * @param authentication the authentication.
+     * @return the former orders HTML name.
+     */
     @GetMapping("/formerOrders")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String getFormerOrders(Model model, Authentication authentication){
@@ -169,13 +221,15 @@ public class ProfileController extends WebController{
         return "formerOrder";
     }
 
+    /**
+     * Gets the profile page of a user.
+     * @param model the model.
+     * @param authentication the authentication.
+     * @return the profile page of the user.
+     */
     @GetMapping("/profile")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String getUserPage(Model model, Authentication authentication){
-        return getProfilePage(authentication, model);
-    }
-
-    private String getProfilePage(Authentication authentication, Model model){
         addLoggedInAttributes(authentication, model);
         User user = getAccessUser(authentication).getUser();
         addUserToModel(model, user);
@@ -184,13 +238,25 @@ public class ProfileController extends WebController{
         return "profile";
     }
 
-
+    /**
+     * Gets the login page.
+     * @param authentication the authentication.
+     * @param model the model.
+     * @return the login page.
+     */
     @GetMapping("/login")
     public String getLoginPage(Authentication authentication, Model model){
         addLoggedInAttributes(authentication, model);
         return "login";
     }
 
+    /**
+     * Gets the edit profile page.
+     * @param model the model.
+     * @param authentication the authentication.
+     * @param httpSession the HTTP session in case data needs to be transfered.
+     * @return the HTML name of editProfile page.
+     */
     @GetMapping("/editProfile")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String getEditProfilePage(Model model, Authentication authentication, HttpSession httpSession){

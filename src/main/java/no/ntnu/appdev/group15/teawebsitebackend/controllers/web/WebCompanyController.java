@@ -29,6 +29,12 @@ public class WebCompanyController extends WebController{
         this.companyRegister = companyJPA;
     }
 
+    /**
+     * Gets the overview of all the companies.
+     * @param model the model.
+     * @param authentication the authentication.
+     * @return the HTML name of companies overview.
+     */
     @GetMapping("/companyOverview")
     public String getCompanyOverview(Model model, Authentication authentication){
         addLoggedInAttributes(authentication, model);
