@@ -110,8 +110,8 @@ public class OrderController {
    *
    * @param id the id of the order to remove
    */
-  @PreAuthorize("hasRole('ADMIN')")
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasRole('ADMIN')")
   public void removeOrder(@PathVariable Long id)
       throws CouldNotGetOrderException, CouldNotRemoveOrderException {
     orderRegister.removeOrder(getOrderWithSpecifiedId(id));

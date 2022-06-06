@@ -91,7 +91,7 @@ public class CompanyController {
      */
     @PutMapping
     @PreAuthorize("hasRole('ADMIN')")
-    private void updateCompany(@RequestBody String body) throws JsonProcessingException, CouldNotGetCompanyException {
+    public void updateCompany(@RequestBody String body) throws JsonProcessingException, CouldNotGetCompanyException {
         companyRegister.updateCompany(makeCompany(body));
     }
 

@@ -1,0 +1,2784 @@
+{
+	"info": {
+		"_postman_id": "9d39e5d1-72dc-4559-9818-bd1ea0070ff2",
+		"name": "TeaREST",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19716225"
+	},
+	"item": [
+		{
+			"name": "Tags",
+			"item": [
+				{
+					"name": "Get /tags",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test getting all the tags\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"var id = jsonData[jsonData.length - 1].tagID;\r",
+									"pm.environment.set(\"tagID\", id);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/tags",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get /tags/id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test getting tag x\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/tags/{{tagID}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tags",
+								"{{tagID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get /tags/id - fail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test tagid that is not a tag\", function(){\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/tags/5000",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tags",
+								"5000"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test user controller",
+			"item": [
+				{
+					"name": "Post /users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test add user\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userID\": 500000000,\r\n    \"firstName\": \"Bjarne\",\r\n    \"lastName\": \"Bjarnesen\",\r\n    \"email\": \"bjarne@bjarnesessssn.com\",\r\n    \"phoneNumber\": 12345678,\r\n    \"password\": \"password\",\r\n    \"address\": {\r\n        \"postalCode\": 2910,\r\n        \"postalPlace\": \"Aurdal\",\r\n        \"streetName\": \"Raskebakkin\",\r\n        \"houseNumber\": 9,\r\n        \"country\": \"Norge\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post /users - fail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test duplicate user\", function(){\r",
+									"    pm.response.to.have.status(226);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userID\": 500000000,\r\n    \"firstName\": \"Bjarne\",\r\n    \"lastName\": \"Bjarnesen\",\r\n    \"email\": \"bjarne@bjarnesessssn.com\",\r\n    \"phoneNumber\": 12345678,\r\n    \"password\": \"password\",\r\n    \"address\": {\r\n        \"postalCode\": 2910,\r\n        \"postalPlace\": \"Aurdal\",\r\n        \"streetName\": \"Raskebakkin\",\r\n        \"houseNumber\": 9,\r\n        \"country\": \"Norge\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products controller",
+			"item": [
+				{
+					"name": "Get /products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get all products\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"var id = jsonData[jsonData.length - 1].productID;\r",
+									"pm.environment.set(\"productID\", id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/products",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get /product/ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test get product by ID\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/products/{{productID}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products",
+								"{{productID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test user permissions",
+			"item": [
+				{
+					"name": "Logs in",
+					"item": [
+						{
+							"name": "Logs into a user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test login to user\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Connection",
+										"value": "keep-alive"
+									},
+									{
+										"key": "Cache-Control",
+										"value": "max-age=0"
+									},
+									{
+										"key": "sec-ch-ua",
+										"value": "\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"99\", \"Opera\";v=\"85\""
+									},
+									{
+										"key": "sec-ch-ua-mobile",
+										"value": "?0"
+									},
+									{
+										"key": "sec-ch-ua-platform",
+										"value": "\"Windows\""
+									},
+									{
+										"key": "Upgrade-Insecure-Requests",
+										"value": "1"
+									},
+									{
+										"key": "Origin",
+										"value": "http://localhost:8080"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									},
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36 OPR/85.0.4341.47"
+									},
+									{
+										"key": "Accept",
+										"value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+									},
+									{
+										"key": "Sec-Fetch-Site",
+										"value": "same-origin"
+									},
+									{
+										"key": "Sec-Fetch-Mode",
+										"value": "navigate"
+									},
+									{
+										"key": "Sec-Fetch-User",
+										"value": "?1"
+									},
+									{
+										"key": "Sec-Fetch-Dest",
+										"value": "document"
+									},
+									{
+										"key": "Referer",
+										"value": "http://localhost:8080/login"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "nb-NO,nb;q=0.9,no;q=0.8,nn;q=0.7,en-US;q=0.6,en;q=0.5"
+									},
+									{
+										"key": "Cookie",
+										"value": "JSESSIONID=155E7E14E22D7DA01D7C17F0CA199B15"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "arne@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "password",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get /users/myUser - User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test user page\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/myUser",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"myUser"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tags",
+					"item": [
+						{
+							"name": "Post /tags - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test post tag user - fail\", function(){\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"tagID\": 5000,\r\n    \"tagName\": \"Pepega\",\r\n    \"tagDescription\": \"A herb that is crushed and used to make water taste something more than minerals.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/tags",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"tags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get /tags - Gets only the ID for Delete tag",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test getting all the tags\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"var jsonData = pm.response.json();\r",
+											"var id = jsonData[jsonData.length - 1].tagID;\r",
+											"pm.environment.set(\"tagID\", id);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/tags",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"tags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete /tags - fail authentication",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test delete tag as user\", function(){\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/tags/{{tagID}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"tags",
+										"{{tagID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Put /tags - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test update tag as user\", function(){\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"tagName\": \"Tea pot\",\r\n    \"tagDescription\": \"Tea pot that tea pots\",\r\n    \"tagID\": 14\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/tags",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"tags"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Products",
+					"item": [
+						{
+							"name": "Add /product - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test add product fail for users\", function() {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productID\": 72020,\r\n    \"productName\": \"Mushroom High Tea\",\r\n    \"price\": 559,\r\n    \"amountOfProduct\": 20,\r\n    \"productDetails\": {\r\n        \"description\": \"Luli puli huli\",\r\n        \"ingredients\": \"sem reformidans\",\r\n        \"shortDescription\": \"mediocrem sapien dictumst ad\"\r\n    },\r\n    \"company\": {\r\n        \"companyID\": 21,\r\n        \"companyName\": \"Clipper Tea\",\r\n        \"details\": {\r\n            \"detailsID\": 22,\r\n            \"description\": \"Tea of great quality\",\r\n            \"address\": {\r\n                \"postalCode\": 6015,\r\n                \"postalPlace\": \"Ålesund\",\r\n                \"streetName\": \"Ålesundvegen\",\r\n                \"houseNumber\": 123,\r\n                \"country\": \"Norway\",\r\n                \"addressID\": 23\r\n            }\r\n        }\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/products",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get /product - Gets the ID for delete product",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Gets all products\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"var jsonData = pm.response.json();\r",
+											"var id = jsonData[jsonData.length - 1].productID;\r",
+											"pm.environment.set(\"productID\", id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/products",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete /product - fail authentication",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test Delete product as user\", function() {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/products/{{productID}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products",
+										"{{productID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update /product - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test update products for user\", function() {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productID\": 2313,\r\n    \"productName\": \"Dirty shit tea, never buy please or you need an ambulanse\",\r\n    \"price\": 229,\r\n    \"amountOfProduct\": 300,\r\n    \"productDetails\": {\r\n        \"description\": \"Luli puli huli\",\r\n        \"ingredients\": \"sem reformidans\",\r\n        \"shortDescription\": \"mediocrem sapien dictumst ad\"\r\n    },\r\n    \"company\": {\r\n        \"companyID\": 21,\r\n        \"companyName\": \"Clipper Tea\",\r\n        \"details\": {\r\n            \"detailsID\": 22,\r\n            \"description\": \"Tea of great quality\",\r\n            \"address\": {\r\n                \"postalCode\": 6015,\r\n                \"postalPlace\": \"Ålesund\",\r\n                \"streetName\": \"Ålesundvegen\",\r\n                \"houseNumber\": 123,\r\n                \"country\": \"Norway\",\r\n                \"addressID\": 23\r\n            }\r\n        }\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/products/{{productID}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products",
+										"{{productID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Company",
+					"item": [
+						{
+							"name": "Add / company - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test add company for a user\", function() {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \r\n    \"companyID\": 21,\r\n    \"companyName\": \"Clipper Tea\",\r\n    \"details\": {\r\n        \"detailsID\": 22,\r\n        \"description\": \"Tea of great quality\",\r\n        \"address\": {\r\n            \"postalCode\": 6015,\r\n            \"postalPlace\": \"Ålesund\",\r\n            \"streetName\": \"Ålesundvegen\",\r\n            \"houseNumber\": 123,\r\n            \"country\": \"Norway\",\r\n            \"addressID\": 23\r\n        }   \r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/Companies",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Companies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get / company - Gets the ID for delete company",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Gets all companies\", function() {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/Companies",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Companies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete /Company - fail authentication",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test Delete product as user\", function() {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/Companies/{{companyID}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Companies",
+										"{{companyID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update /Company - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test update company for user\", function() {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \r\n    \"companyID\": 21,\r\n    \"companyName\": \"Are you having fun testing this shit? ehhh fuck no...\",\r\n    \"details\": {\r\n        \"detailsID\": 22,\r\n        \"description\": \"Tea of great quality\",\r\n        \"address\": {\r\n            \"postalCode\": 6015,\r\n            \"postalPlace\": \"Ålesund\",\r\n            \"streetName\": \"Ålesundvegen\",\r\n            \"houseNumber\": 123,\r\n            \"country\": \"Norway\",\r\n            \"addressID\": 23\r\n        }   \r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/Companies/{{companyID}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Companies",
+										"{{companyID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Orders",
+					"item": [
+						{
+							"name": "get /orders - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test to see if user cannot see orders\", function(){\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get /order/id - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test to see if user cannot see orders by id\", function(){\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/orders/{{orderID}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders",
+										"{{orderID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "post /orders - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test to see if user cannot add orders\", function(){\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"orderID\": 5000000,\r\n    \"user\": {\r\n        \"firstName\": \"Bjarne\",\r\n        \"lastName\": \"Bjarnesen\",\r\n        \"email\": \"bjarne@bjarnesen.com\",\r\n        \"phoneNumber\": 12345678,\r\n        \"password\": \"$2a$10$SFuT.2dMJPZC.SdKeMwiDevC35NPbNIsgl/DXaDYNYfmTC8UEv2Xm\",\r\n        \"address\": {\r\n            \"postalCode\": 2910,\r\n            \"postalPlace\": \"Aurdal\",\r\n            \"streetName\": \"Raskebakkin\",\r\n            \"houseNumber\": 9,\r\n            \"country\": \"Norge\",\r\n            \"addressID\": 31\r\n        },\r\n        \"userId\": 30,\r\n        \"active\": true,\r\n        \"role\": \"ROLE_ADMIN\",\r\n        \"cart\": {\r\n            \"allProducts\": [\r\n                {\r\n                    \"amount\": 1,\r\n                    \"product\": {\r\n                        \"productName\": \"Green Leaf Tea\",\r\n                        \"price\": 109,\r\n                        \"amountOfProduct\": 7,\r\n                        \"productDetails\": {\r\n                            \"description\": \"Similiquedicat eu ferri feugiat deseruisse graecis potenti tota mollis mnesarchum voluptatum sapien falli atqui vero maluisset persecuti.  Deterruissetrepudiare duis voluptatum mandamus dui usu elementum nam quaerendum animal atomorum.  Queminvidunt purus magnis indoctum natum euismod leo ut constituam interpretaris.  Iuvaretposuere periculis fames consequat eum ius fastidii ridiculus consul atomorum atqui.  \\nSimiliqueconsectetuer imperdiet adversarium mi eos facilis his fringilla vivamus porro tota propriae eos quidam prompta senserit vero condimentum platea.  Equidemtation unum senserit sed voluptaria fuisset lectus.  Salesigniferumque repudiandae noster metus corrumpit dolorem sit saperet vero patrioque.\",\r\n                            \"ingredients\": \"docendi saperet ignota expetendis sententiae\",\r\n                            \"shortDescription\": \"eros venenatis ex qualisque fames\",\r\n                            \"detailsID\": 46,\r\n                            \"tagList\": [\r\n                                {\r\n                                    \"tagName\": \"Green tea\",\r\n                                    \"tagDescription\": \"A green tea that is green\",\r\n                                    \"tagID\": 6\r\n                                }\r\n                            ]\r\n                        },\r\n                        \"company\": {\r\n                            \"companyID\": 15,\r\n                            \"companyName\": \"Yogi Tea\",\r\n                            \"details\": {\r\n                                \"detailsID\": 16,\r\n                                \"description\": \"Best i Verden\",\r\n                                \"address\": {\r\n                                    \"postalCode\": 6015,\r\n                                    \"postalPlace\": \"Ålesund\",\r\n                                    \"streetName\": \"Ålesundvegen\",\r\n                                    \"houseNumber\": 123,\r\n                                    \"country\": \"Norway\",\r\n                                    \"addressID\": 17\r\n                                }\r\n                            }\r\n                        },\r\n                        \"productID\": 45,\r\n                        \"reviews\": [\r\n                            {\r\n                                \"customerName\": \"Jean Greene\",\r\n                                \"comment\": \"rhoncus meliore condimentum repudiare malorum liber placerat sociosqu lobortis omittam mel\",\r\n                                \"dateOfReview\": \"2022-05-25\",\r\n                                \"rating\": 2\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Ignacio Howell\",\r\n                                \"comment\": \"maecenas error tantas deterruisset ornare euripidis splendide electram convenire aliquam causae eloquentiam egestas possit cu idque inciderint invenire nulla\",\r\n                                \"dateOfReview\": \"2022-06-01\",\r\n                                \"rating\": 3\r\n                            }\r\n                        ]\r\n                    }\r\n                },\r\n                {\r\n                    \"amount\": 3,\r\n                    \"product\": {\r\n                        \"productName\": \"Black water Leaf Tea\",\r\n                        \"price\": 509,\r\n                        \"amountOfProduct\": 3,\r\n                        \"productDetails\": {\r\n                            \"description\": \"Docendirecteque adipisci qualisque fringilla accumsan etiam.  Fabulasgraeco dolores delectus libris ea deterruisset theophrastus mnesarchum montes condimentum tempus.  Hacest facilisi feugait corrumpit expetenda mel nostrum tristique postulant mollis mauris urna error mi efficitur autem duo.  Sedleo dictumst postulant deterruisset diam latine nam.  Reformidansquem eleifend aliquip.\",\r\n                            \"ingredients\": \"mauris agam accumsan\",\r\n                            \"shortDescription\": \"ceteros neglegentur\",\r\n                            \"detailsID\": 48,\r\n                            \"tagList\": [\r\n                                {\r\n                                    \"tagName\": \"Black tea\",\r\n                                    \"tagDescription\": \"A black tea that is black\",\r\n                                    \"tagID\": 7\r\n                                }\r\n                            ]\r\n                        },\r\n                        \"company\": {\r\n                            \"companyID\": 18,\r\n                            \"companyName\": \"Ahmad Tea\",\r\n                            \"details\": {\r\n                                \"detailsID\": 19,\r\n                                \"description\": \"Best i Norge\",\r\n                                \"address\": {\r\n                                    \"postalCode\": 6015,\r\n                                    \"postalPlace\": \"Ålesund\",\r\n                                    \"streetName\": \"Ålesundvegen\",\r\n                                    \"houseNumber\": 123,\r\n                                    \"country\": \"Norway\",\r\n                                    \"addressID\": 20\r\n                                }\r\n                            }\r\n                        },\r\n                        \"productID\": 47,\r\n                        \"reviews\": [\r\n                            {\r\n                                \"customerName\": \"Andrew Berry\",\r\n                                \"comment\": \"efficiantur nonumes nullam vis cetero sed adversarium sale habitant quem tantas sapien mucius falli salutatus\",\r\n                                \"dateOfReview\": \"2022-05-28\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Lena Boone\",\r\n                                \"comment\": \"erat affert sagittis at mucius docendi iusto nunc lobortis ei saperet habeo utinam sociis percipit vitae dis melius\",\r\n                                \"dateOfReview\": \"2022-05-25\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Fern Floyd\",\r\n                                \"comment\": \"delectus duis curae ultricies\",\r\n                                \"dateOfReview\": \"2022-06-02\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Deborah Patterson\",\r\n                                \"comment\": \"qui dui sea\",\r\n                                \"dateOfReview\": \"2022-06-06\",\r\n                                \"rating\": 3\r\n                            }\r\n                        ]\r\n                    }\r\n                }\r\n            ]\r\n        }\r\n    },\r\n    \"orderedProductList\": [\r\n        {\r\n            \"product\": {\r\n                \"productName\": \"Strawberry Tea\",\r\n                \"price\": 99,\r\n                \"amountOfProduct\": 9,\r\n                \"productDetails\": {\r\n                    \"description\": \"Efficianturpertinacia adipiscing vulputate quas quem pertinacia adipiscing mediocritatem.  Curabiturvarius esse gloriatur velit eum vulputate ne velit aptent dapibus feugait aliquip graeci intellegat class tantas urbanitas non.\",\r\n                    \"ingredients\": \"oporteat movet\",\r\n                    \"shortDescription\": \"salutatus voluptatum venenatis\",\r\n                    \"detailsID\": 54,\r\n                    \"tagList\": [\r\n                        {\r\n                            \"tagName\": \"White tea\",\r\n                            \"tagDescription\": \"A white tea that is white\",\r\n                            \"tagID\": 8\r\n                        }\r\n                    ]\r\n                },\r\n                \"company\": {\r\n                    \"companyID\": 18,\r\n                    \"companyName\": \"Ahmad Tea\",\r\n                    \"details\": {\r\n                        \"detailsID\": 19,\r\n                        \"description\": \"Best i Norge\",\r\n                        \"address\": {\r\n                            \"postalCode\": 6015,\r\n                            \"postalPlace\": \"Ålesund\",\r\n                            \"streetName\": \"Ålesundvegen\",\r\n                            \"houseNumber\": 123,\r\n                            \"country\": \"Norway\",\r\n                            \"addressID\": 20\r\n                        }\r\n                    }\r\n                },\r\n                \"productID\": 53,\r\n                \"reviews\": [\r\n                    {\r\n                        \"customerName\": \"Bertie Bridges\",\r\n                        \"comment\": \"dicam evertitur ridiculus debet lacinia scelerisque fabellas accusata cursus tempus dicant postea sociis voluptatum aliquet natoque elit\",\r\n                        \"dateOfReview\": \"2022-06-01\",\r\n                        \"rating\": 2\r\n                    },\r\n                    {\r\n                        \"customerName\": \"Carla Black\",\r\n                        \"comment\": \"sententiae tempor non ea ne duo omittantur malesuada quem gubergren leo noluisse cras hendrerit\",\r\n                        \"dateOfReview\": \"2022-05-27\",\r\n                        \"rating\": 1\r\n                    },\r\n                    {\r\n                        \"customerName\": \"Rachael Yates\",\r\n                        \"comment\": \"tincidunt porro ipsum\",\r\n                        \"dateOfReview\": \"2022-05-30\",\r\n                        \"rating\": 0\r\n                    }\r\n                ]\r\n            },\r\n            \"amountOfProduct\": 2,\r\n            \"orderState\": \"ORDERED\",\r\n            \"pricePerProduct\": 99\r\n        }\r\n    ],\r\n    \"orderState\": \"ORDERED\",\r\n    \"address\": {\r\n        \"addressID\": 73,\r\n        \"postalCode\": 2910,\r\n        \"postalPlace\": \"Aurdal\",\r\n        \"streetName\": \"Raskebakkin\",\r\n        \"houseNumber\": 9,\r\n        \"country\": \"Norge\"\r\n    },\r\n    \"deliveryMethod\": \"Post-Nord\",\r\n    \"dateOfOrder\": \"2022-06-06\",\r\n    \"paymentMethod\": \"Klarna\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "put /orders - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test to see if user cannot change orders\", function(){\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"orderID\": {{orderID}},\r\n    \"user\": {\r\n        \"firstName\": \"Bjarne\",\r\n        \"lastName\": \"Bjarnesen\",\r\n        \"email\": \"bjarne@bjarnesen.com\",\r\n        \"phoneNumber\": 12345678,\r\n        \"password\": \"$2a$10$SFuT.2dMJPZC.SdKeMwiDevC35NPbNIsgl/DXaDYNYfmTC8UEv2Xm\",\r\n        \"address\": {\r\n            \"postalCode\": 2910,\r\n            \"postalPlace\": \"Aurdal\",\r\n            \"streetName\": \"Raskebakkin\",\r\n            \"houseNumber\": 9,\r\n            \"country\": \"Norge\",\r\n            \"addressID\": 31\r\n        },\r\n        \"userId\": 30,\r\n        \"active\": true,\r\n        \"role\": \"ROLE_ADMIN\",\r\n        \"cart\": {\r\n            \"allProducts\": [\r\n                {\r\n                    \"amount\": 1,\r\n                    \"product\": {\r\n                        \"productName\": \"Green Leaf Tea\",\r\n                        \"price\": 109,\r\n                        \"amountOfProduct\": 7,\r\n                        \"productDetails\": {\r\n                            \"description\": \"Similiquedicat eu ferri feugiat deseruisse graecis potenti tota mollis mnesarchum voluptatum sapien falli atqui vero maluisset persecuti.  Deterruissetrepudiare duis voluptatum mandamus dui usu elementum nam quaerendum animal atomorum.  Queminvidunt purus magnis indoctum natum euismod leo ut constituam interpretaris.  Iuvaretposuere periculis fames consequat eum ius fastidii ridiculus consul atomorum atqui.  \\nSimiliqueconsectetuer imperdiet adversarium mi eos facilis his fringilla vivamus porro tota propriae eos quidam prompta senserit vero condimentum platea.  Equidemtation unum senserit sed voluptaria fuisset lectus.  Salesigniferumque repudiandae noster metus corrumpit dolorem sit saperet vero patrioque.\",\r\n                            \"ingredients\": \"docendi saperet ignota expetendis sententiae\",\r\n                            \"shortDescription\": \"eros venenatis ex qualisque fames\",\r\n                            \"detailsID\": 46,\r\n                            \"tagList\": [\r\n                                {\r\n                                    \"tagName\": \"Green tea\",\r\n                                    \"tagDescription\": \"A green tea that is green\",\r\n                                    \"tagID\": 6\r\n                                }\r\n                            ]\r\n                        },\r\n                        \"company\": {\r\n                            \"companyID\": 15,\r\n                            \"companyName\": \"Yogi Tea\",\r\n                            \"details\": {\r\n                                \"detailsID\": 16,\r\n                                \"description\": \"Best i Verden\",\r\n                                \"address\": {\r\n                                    \"postalCode\": 6015,\r\n                                    \"postalPlace\": \"Ålesund\",\r\n                                    \"streetName\": \"Ålesundvegen\",\r\n                                    \"houseNumber\": 123,\r\n                                    \"country\": \"Norway\",\r\n                                    \"addressID\": 17\r\n                                }\r\n                            }\r\n                        },\r\n                        \"productID\": 45,\r\n                        \"reviews\": [\r\n                            {\r\n                                \"customerName\": \"Jean Greene\",\r\n                                \"comment\": \"rhoncus meliore condimentum repudiare malorum liber placerat sociosqu lobortis omittam mel\",\r\n                                \"dateOfReview\": \"2022-05-25\",\r\n                                \"rating\": 2\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Ignacio Howell\",\r\n                                \"comment\": \"maecenas error tantas deterruisset ornare euripidis splendide electram convenire aliquam causae eloquentiam egestas possit cu idque inciderint invenire nulla\",\r\n                                \"dateOfReview\": \"2022-06-01\",\r\n                                \"rating\": 3\r\n                            }\r\n                        ]\r\n                    }\r\n                },\r\n                {\r\n                    \"amount\": 3,\r\n                    \"product\": {\r\n                        \"productName\": \"Black water Leaf Tea\",\r\n                        \"price\": 509,\r\n                        \"amountOfProduct\": 3,\r\n                        \"productDetails\": {\r\n                            \"description\": \"Docendirecteque adipisci qualisque fringilla accumsan etiam.  Fabulasgraeco dolores delectus libris ea deterruisset theophrastus mnesarchum montes condimentum tempus.  Hacest facilisi feugait corrumpit expetenda mel nostrum tristique postulant mollis mauris urna error mi efficitur autem duo.  Sedleo dictumst postulant deterruisset diam latine nam.  Reformidansquem eleifend aliquip.\",\r\n                            \"ingredients\": \"mauris agam accumsan\",\r\n                            \"shortDescription\": \"ceteros neglegentur\",\r\n                            \"detailsID\": 48,\r\n                            \"tagList\": [\r\n                                {\r\n                                    \"tagName\": \"Black tea\",\r\n                                    \"tagDescription\": \"A black tea that is black\",\r\n                                    \"tagID\": 7\r\n                                }\r\n                            ]\r\n                        },\r\n                        \"company\": {\r\n                            \"companyID\": 18,\r\n                            \"companyName\": \"Ahmad Tea\",\r\n                            \"details\": {\r\n                                \"detailsID\": 19,\r\n                                \"description\": \"Best i Norge\",\r\n                                \"address\": {\r\n                                    \"postalCode\": 6015,\r\n                                    \"postalPlace\": \"Ålesund\",\r\n                                    \"streetName\": \"Ålesundvegen\",\r\n                                    \"houseNumber\": 123,\r\n                                    \"country\": \"Norway\",\r\n                                    \"addressID\": 20\r\n                                }\r\n                            }\r\n                        },\r\n                        \"productID\": 47,\r\n                        \"reviews\": [\r\n                            {\r\n                                \"customerName\": \"Andrew Berry\",\r\n                                \"comment\": \"efficiantur nonumes nullam vis cetero sed adversarium sale habitant quem tantas sapien mucius falli salutatus\",\r\n                                \"dateOfReview\": \"2022-05-28\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Lena Boone\",\r\n                                \"comment\": \"erat affert sagittis at mucius docendi iusto nunc lobortis ei saperet habeo utinam sociis percipit vitae dis melius\",\r\n                                \"dateOfReview\": \"2022-05-25\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Fern Floyd\",\r\n                                \"comment\": \"delectus duis curae ultricies\",\r\n                                \"dateOfReview\": \"2022-06-02\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Deborah Patterson\",\r\n                                \"comment\": \"qui dui sea\",\r\n                                \"dateOfReview\": \"2022-06-06\",\r\n                                \"rating\": 3\r\n                            }\r\n                        ]\r\n                    }\r\n                }\r\n            ]\r\n        }\r\n    },\r\n    \"orderedProductList\": [\r\n        {\r\n            \"product\": {\r\n                \"productName\": \"Strawberry Tea\",\r\n                \"price\": 99,\r\n                \"amountOfProduct\": 9,\r\n                \"productDetails\": {\r\n                    \"description\": \"Efficianturpertinacia adipiscing vulputate quas quem pertinacia adipiscing mediocritatem.  Curabiturvarius esse gloriatur velit eum vulputate ne velit aptent dapibus feugait aliquip graeci intellegat class tantas urbanitas non.\",\r\n                    \"ingredients\": \"oporteat movet\",\r\n                    \"shortDescription\": \"salutatus voluptatum venenatis\",\r\n                    \"detailsID\": 54,\r\n                    \"tagList\": [\r\n                        {\r\n                            \"tagName\": \"White tea\",\r\n                            \"tagDescription\": \"A white tea that is white\",\r\n                            \"tagID\": 8\r\n                        }\r\n                    ]\r\n                },\r\n                \"company\": {\r\n                    \"companyID\": 18,\r\n                    \"companyName\": \"Ahmad Tea\",\r\n                    \"details\": {\r\n                        \"detailsID\": 19,\r\n                        \"description\": \"Best i Norge\",\r\n                        \"address\": {\r\n                            \"postalCode\": 6015,\r\n                            \"postalPlace\": \"Ålesund\",\r\n                            \"streetName\": \"Ålesundvegen\",\r\n                            \"houseNumber\": 123,\r\n                            \"country\": \"Norway\",\r\n                            \"addressID\": 20\r\n                        }\r\n                    }\r\n                },\r\n                \"productID\": 53,\r\n                \"reviews\": [\r\n                    {\r\n                        \"customerName\": \"Bertie Bridges\",\r\n                        \"comment\": \"dicam evertitur ridiculus debet lacinia scelerisque fabellas accusata cursus tempus dicant postea sociis voluptatum aliquet natoque elit\",\r\n                        \"dateOfReview\": \"2022-06-01\",\r\n                        \"rating\": 2\r\n                    },\r\n                    {\r\n                        \"customerName\": \"Carla Black\",\r\n                        \"comment\": \"sententiae tempor non ea ne duo omittantur malesuada quem gubergren leo noluisse cras hendrerit\",\r\n                        \"dateOfReview\": \"2022-05-27\",\r\n                        \"rating\": 1\r\n                    },\r\n                    {\r\n                        \"customerName\": \"Rachael Yates\",\r\n                        \"comment\": \"tincidunt porro ipsum\",\r\n                        \"dateOfReview\": \"2022-05-30\",\r\n                        \"rating\": 0\r\n                    }\r\n                ]\r\n            },\r\n            \"amountOfProduct\": 2,\r\n            \"orderState\": \"ORDERED\",\r\n            \"pricePerProduct\": 99\r\n        }\r\n    ],\r\n    \"orderState\": \"ORDERED\",\r\n    \"address\": {\r\n        \"addressID\": 73,\r\n        \"postalCode\": 2910,\r\n        \"postalPlace\": \"Aurdal\",\r\n        \"streetName\": \"Raskebakkin\",\r\n        \"houseNumber\": 9,\r\n        \"country\": \"Norge\"\r\n    },\r\n    \"deliveryMethod\": \"Post-Nord\",\r\n    \"dateOfOrder\": \"2022-06-05\",\r\n    \"paymentMethod\": \"Klarna\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete /orders - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test to see if user cannot delete orders by id\", function(){\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/orders/{{orderID}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders",
+										"{{orderID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get /orders/userOrders",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test getting all the orders for a user\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/orders/userOrders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders",
+										"userOrders"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Users test",
+					"item": [
+						{
+							"name": "Get /users - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Testing get all the users and fails\", function(){\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get /users/id - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Testing get one specified user and fails\", function(){\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/15",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"15"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete /users/id - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Testing deleting one user and fails\", function(){\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/15",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"15"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get /users/cart",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Testing get cart of logged in user\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/cart",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"cart"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Put /users/cart",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Testing get cart of logged in user\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/cart?49=1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"cart"
+									],
+									"query": [
+										{
+											"key": "49",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Put /users/address",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Testing update address in user\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"postalCode\": 630,\r\n    \"postalPlace\": \"Vestnes\",\r\n    \"streetName\": \"Kaigata\",\r\n    \"houseNumber\": 15,\r\n    \"country\": \"Noreg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/users/address",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"address"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Test admin permissions",
+			"item": [
+				{
+					"name": "Logs in tests",
+					"item": [
+						{
+							"name": "Logs into admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test login\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Connection",
+										"value": "keep-alive"
+									},
+									{
+										"key": "Cache-Control",
+										"value": "max-age=0"
+									},
+									{
+										"key": "sec-ch-ua",
+										"value": "\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"99\", \"Opera\";v=\"85\""
+									},
+									{
+										"key": "sec-ch-ua-mobile",
+										"value": "?0"
+									},
+									{
+										"key": "sec-ch-ua-platform",
+										"value": "\"Windows\""
+									},
+									{
+										"key": "Upgrade-Insecure-Requests",
+										"value": "1"
+									},
+									{
+										"key": "Origin",
+										"value": "http://localhost:8080"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									},
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36 OPR/85.0.4341.47"
+									},
+									{
+										"key": "Accept",
+										"value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+									},
+									{
+										"key": "Sec-Fetch-Site",
+										"value": "same-origin"
+									},
+									{
+										"key": "Sec-Fetch-Mode",
+										"value": "navigate"
+									},
+									{
+										"key": "Sec-Fetch-User",
+										"value": "?1"
+									},
+									{
+										"key": "Sec-Fetch-Dest",
+										"value": "document"
+									},
+									{
+										"key": "Referer",
+										"value": "http://localhost:8080/login"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "nb-NO,nb;q=0.9,no;q=0.8,nn;q=0.7,en-US;q=0.6,en;q=0.5"
+									},
+									{
+										"key": "Cookie",
+										"value": "JSESSIONID=17053CB8C6CE6802ECDD6A6C25D015F0"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "bjarne@bjarnesen.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get /users/myUser - Admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test user page\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/myUser",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"myUser"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tags tests",
+					"item": [
+						{
+							"name": "Post /tags",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test post tag as admin\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"tagID\": 500,\r\n    \"tagName\": \"Pepoga\",\r\n    \"tagDescription\": \"A herb that is crushed and used to make water taste something more than minerals.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/tags",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"tags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post /tags - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test login\", function(){\r",
+											"    pm.response.to.have.status(226);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"tagID\": 10,\r\n    \"tagName\": \"Tools\",\r\n    \"tagDescription\": \"Things used to fix stuff\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/tags",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"tags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get /tags Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test getting all the tags\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"var jsonData = pm.response.json();\r",
+											"var id = jsonData[jsonData.length - 1].tagID;\r",
+											"pm.environment.set(\"tagID\", id);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/tags",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"tags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete /tags/id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test delete tag\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/tags/{{tagID}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"tags",
+										"{{tagID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete /tags/id - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test login\", function(){\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/tags/6000",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"tags",
+										"6000"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Product tests",
+					"item": [
+						{
+							"name": "Add /product",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Adds a product\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productID\": 44444,\r\n    \"productName\": \"Mushroom High Tea\",\r\n    \"price\": 559,\r\n    \"amountOfProduct\": 20,\r\n    \"productDetails\": {\r\n        \"description\": \"Luli puli huli\",\r\n        \"ingredients\": \"sem reformidans\",\r\n        \"shortDescription\": \"mediocrem sapien dictumst ad\"\r\n    },\r\n    \"company\": {\r\n        \"companyID\": 21,\r\n        \"companyName\": \"Clipper Tea\",\r\n        \"details\": {\r\n            \"detailsID\": 22,\r\n            \"description\": \"Tea of great quality\",\r\n            \"address\": {\r\n                \"postalCode\": 6015,\r\n                \"postalPlace\": \"Ålesund\",\r\n                \"streetName\": \"Ålesundvegen\",\r\n                \"houseNumber\": 123,\r\n                \"country\": \"Norway\",\r\n                \"addressID\": 23\r\n            }\r\n        }\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/products",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get /products - Gets ID Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Get all products\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"var jsonData = pm.response.json();\r",
+											"var id = jsonData[jsonData.length - 1].productID;\r",
+											"pm.environment.set(\"productID\", id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/products",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update /product",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"change of products info\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productID\": \"{{productID}}\",\r\n    \"productName\": \"Dirty shit tea, never buy please or you need an ambulanse\",\r\n    \"price\": 229,\r\n    \"amountOfProduct\": 300,\r\n    \"productDetails\": {\r\n        \"description\": \"Luli puli huli\",\r\n        \"ingredients\": \"sem reformidans\",\r\n        \"shortDescription\": \"mediocrem sapien dictumst ad\"\r\n    },\r\n    \"company\": {\r\n        \"companyID\": 21,\r\n        \"companyName\": \"Clipper Tea\",\r\n        \"details\": {\r\n            \"detailsID\": 22,\r\n            \"description\": \"Tea of great quality\",\r\n            \"address\": {\r\n                \"postalCode\": 6015,\r\n                \"postalPlace\": \"Ålesund\",\r\n                \"streetName\": \"Ålesundvegen\",\r\n                \"houseNumber\": 123,\r\n                \"country\": \"Norway\",\r\n                \"addressID\": 23\r\n            }\r\n        }\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/products",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get /products - Gets ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Get all products\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"var jsonData = pm.response.json();\r",
+											"var id = jsonData[jsonData.length - 1].productID;\r",
+											"pm.environment.set(\"productID\", id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/products",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete /product/ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Delete a product by productID\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/products/{{productID}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products",
+										"{{productID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete /product/ID - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test deleting a product that isn't there\", function(){\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/products/44000",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products",
+										"44000"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Company tests",
+					"item": [
+						{
+							"name": "Add /Company",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Add a company\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"companyID\": 341234,\r\n    \"companyName\": \"Kenneths saus tea\",\r\n    \"details\": {\r\n        \"description\": \"jævlig dårlig tea! Aldri kjøp\",\r\n        \"address\": null\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/Companies/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Companies",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get /companies - Gets ID Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Get all companies in register\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"var jsonData = pm.response.json();\r",
+											"var id = jsonData[jsonData.length - 1].companyID;\r",
+											"pm.environment.set(\"companyID\", id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/Companies",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Companies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update /Company",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Edit/update company info\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"companyID\": {{companyID}},\r\n    \"companyName\": \"Jaujaujau\",\r\n    \"details\": {\r\n        \"detailsID\": 13,\r\n        \"description\": \"lite salt, treng mer\",\r\n        \"address\": {\r\n            \"postalCode\": 630,\r\n            \"postalPlace\": \"Vestnes\",\r\n            \"streetName\": \"Kaigata\",\r\n            \"houseNumber\": 15,\r\n            \"country\": \"Noreg\"\r\n        }\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/Companies",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Companies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get /companies - Gets ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Get all companies in register\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"var jsonData = pm.response.json();\r",
+											"var id = jsonData[jsonData.length - 1].companyID;\r",
+											"pm.environment.set(\"companyID\", id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/Companies",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Companies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete /company/ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Delete a company by CompanyID\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/Companies/{{companyID}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Companies",
+										"{{companyID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete /company/ID - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test deleting of a company that isn't there\", function() {\r",
+											"    pm.response.to.have.status(404);\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/Companies/7000",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Companies",
+										"7000"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Users test",
+					"item": [
+						{
+							"name": "Get /users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test get all users\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"var jsonData = pm.response.json();\r",
+											"var id = jsonData[jsonData.length - 1].userId;\r",
+											"pm.environment.set(\"userID\", id);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get /users/userID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test get specified user\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/42",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"42"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get /users/userID - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Gets a user by invalid ID\", function() {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/50000000",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"50000000"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get /users/cart - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Get cart of a admin\", function() {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/cart",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"cart"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Put /users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Update the details of an admin\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"Balle\",\r\n    \"lastName\": \"Sekk\",\r\n    \"email\": \"bjarne@bjarnesen.com\",\r\n    \"phoneNumber\": 95852210,\r\n    \"password\": \"password\",\r\n    \"address\": {\r\n        \"postalCode\": 6390,\r\n        \"postalPlace\": \"Vestnes\",\r\n        \"streetName\": \"Kaigata\",\r\n        \"houseNumber\": 15,\r\n        \"country\": \"Noreg\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/users",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Put /cart - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Update the cart of an admin\", function() {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/users/cart?1=2&5=6",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"cart"
+									],
+									"query": [
+										{
+											"key": "1",
+											"value": "2"
+										},
+										{
+											"key": "5",
+											"value": "6"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete /users/userId",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test delete recent user\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/{{userID}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"{{userID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete /users/userId - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test delete recent user\", function(){\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/{{userID}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"{{userID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Put /users/address Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Testing update address in admin\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"postalCode\": 630,\r\n    \"postalPlace\": \"Vestnes\",\r\n    \"streetName\": \"Kaigata\",\r\n    \"houseNumber\": 15,\r\n    \"country\": \"Noreg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/users/address",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"address"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Order test",
+					"item": [
+						{
+							"name": "get /orders",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test getting all the orders\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"var jsonData = pm.response.json();\r",
+											"var id = jsonData[jsonData.length - 1].orderID;\r",
+											"pm.environment.set(\"orderID\", id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get /order/id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test getting order x\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/orders/{{orderID}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders",
+										"{{orderID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "post /orders",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test posting a new order\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"orderID\": 5000000,\r\n    \"user\": {\r\n        \"firstName\": \"Bjarne\",\r\n        \"lastName\": \"Bjarnesen\",\r\n        \"email\": \"bjarne@bjarnesen.com\",\r\n        \"phoneNumber\": 12345678,\r\n        \"password\": \"$2a$10$SFuT.2dMJPZC.SdKeMwiDevC35NPbNIsgl/DXaDYNYfmTC8UEv2Xm\",\r\n        \"address\": {\r\n            \"postalCode\": 2910,\r\n            \"postalPlace\": \"Aurdal\",\r\n            \"streetName\": \"Raskebakkin\",\r\n            \"houseNumber\": 9,\r\n            \"country\": \"Norge\",\r\n            \"addressID\": 31\r\n        },\r\n        \"userId\": 30,\r\n        \"active\": true,\r\n        \"role\": \"ROLE_ADMIN\",\r\n        \"cart\": {\r\n            \"allProducts\": [\r\n                {\r\n                    \"amount\": 1,\r\n                    \"product\": {\r\n                        \"productName\": \"Green Leaf Tea\",\r\n                        \"price\": 109,\r\n                        \"amountOfProduct\": 7,\r\n                        \"productDetails\": {\r\n                            \"description\": \"Similiquedicat eu ferri feugiat deseruisse graecis potenti tota mollis mnesarchum voluptatum sapien falli atqui vero maluisset persecuti.  Deterruissetrepudiare duis voluptatum mandamus dui usu elementum nam quaerendum animal atomorum.  Queminvidunt purus magnis indoctum natum euismod leo ut constituam interpretaris.  Iuvaretposuere periculis fames consequat eum ius fastidii ridiculus consul atomorum atqui.  \\nSimiliqueconsectetuer imperdiet adversarium mi eos facilis his fringilla vivamus porro tota propriae eos quidam prompta senserit vero condimentum platea.  Equidemtation unum senserit sed voluptaria fuisset lectus.  Salesigniferumque repudiandae noster metus corrumpit dolorem sit saperet vero patrioque.\",\r\n                            \"ingredients\": \"docendi saperet ignota expetendis sententiae\",\r\n                            \"shortDescription\": \"eros venenatis ex qualisque fames\",\r\n                            \"detailsID\": 46,\r\n                            \"tagList\": [\r\n                                {\r\n                                    \"tagName\": \"Green tea\",\r\n                                    \"tagDescription\": \"A green tea that is green\",\r\n                                    \"tagID\": 6\r\n                                }\r\n                            ]\r\n                        },\r\n                        \"company\": {\r\n                            \"companyID\": 15,\r\n                            \"companyName\": \"Yogi Tea\",\r\n                            \"details\": {\r\n                                \"detailsID\": 16,\r\n                                \"description\": \"Best i Verden\",\r\n                                \"address\": {\r\n                                    \"postalCode\": 6015,\r\n                                    \"postalPlace\": \"Ålesund\",\r\n                                    \"streetName\": \"Ålesundvegen\",\r\n                                    \"houseNumber\": 123,\r\n                                    \"country\": \"Norway\",\r\n                                    \"addressID\": 17\r\n                                }\r\n                            }\r\n                        },\r\n                        \"productID\": 45,\r\n                        \"reviews\": [\r\n                            {\r\n                                \"customerName\": \"Jean Greene\",\r\n                                \"comment\": \"rhoncus meliore condimentum repudiare malorum liber placerat sociosqu lobortis omittam mel\",\r\n                                \"dateOfReview\": \"2022-05-25\",\r\n                                \"rating\": 2\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Ignacio Howell\",\r\n                                \"comment\": \"maecenas error tantas deterruisset ornare euripidis splendide electram convenire aliquam causae eloquentiam egestas possit cu idque inciderint invenire nulla\",\r\n                                \"dateOfReview\": \"2022-06-01\",\r\n                                \"rating\": 3\r\n                            }\r\n                        ]\r\n                    }\r\n                },\r\n                {\r\n                    \"amount\": 3,\r\n                    \"product\": {\r\n                        \"productName\": \"Black water Leaf Tea\",\r\n                        \"price\": 509,\r\n                        \"amountOfProduct\": 3,\r\n                        \"productDetails\": {\r\n                            \"description\": \"Docendirecteque adipisci qualisque fringilla accumsan etiam.  Fabulasgraeco dolores delectus libris ea deterruisset theophrastus mnesarchum montes condimentum tempus.  Hacest facilisi feugait corrumpit expetenda mel nostrum tristique postulant mollis mauris urna error mi efficitur autem duo.  Sedleo dictumst postulant deterruisset diam latine nam.  Reformidansquem eleifend aliquip.\",\r\n                            \"ingredients\": \"mauris agam accumsan\",\r\n                            \"shortDescription\": \"ceteros neglegentur\",\r\n                            \"detailsID\": 48,\r\n                            \"tagList\": [\r\n                                {\r\n                                    \"tagName\": \"Black tea\",\r\n                                    \"tagDescription\": \"A black tea that is black\",\r\n                                    \"tagID\": 7\r\n                                }\r\n                            ]\r\n                        },\r\n                        \"company\": {\r\n                            \"companyID\": 18,\r\n                            \"companyName\": \"Ahmad Tea\",\r\n                            \"details\": {\r\n                                \"detailsID\": 19,\r\n                                \"description\": \"Best i Norge\",\r\n                                \"address\": {\r\n                                    \"postalCode\": 6015,\r\n                                    \"postalPlace\": \"Ålesund\",\r\n                                    \"streetName\": \"Ålesundvegen\",\r\n                                    \"houseNumber\": 123,\r\n                                    \"country\": \"Norway\",\r\n                                    \"addressID\": 20\r\n                                }\r\n                            }\r\n                        },\r\n                        \"productID\": 47,\r\n                        \"reviews\": [\r\n                            {\r\n                                \"customerName\": \"Andrew Berry\",\r\n                                \"comment\": \"efficiantur nonumes nullam vis cetero sed adversarium sale habitant quem tantas sapien mucius falli salutatus\",\r\n                                \"dateOfReview\": \"2022-05-28\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Lena Boone\",\r\n                                \"comment\": \"erat affert sagittis at mucius docendi iusto nunc lobortis ei saperet habeo utinam sociis percipit vitae dis melius\",\r\n                                \"dateOfReview\": \"2022-05-25\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Fern Floyd\",\r\n                                \"comment\": \"delectus duis curae ultricies\",\r\n                                \"dateOfReview\": \"2022-06-02\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Deborah Patterson\",\r\n                                \"comment\": \"qui dui sea\",\r\n                                \"dateOfReview\": \"2022-06-06\",\r\n                                \"rating\": 3\r\n                            }\r\n                        ]\r\n                    }\r\n                }\r\n            ]\r\n        }\r\n    },\r\n    \"orderedProductList\": [\r\n        {\r\n            \"product\": {\r\n                \"productName\": \"Strawberry Tea\",\r\n                \"price\": 99,\r\n                \"amountOfProduct\": 9,\r\n                \"productDetails\": {\r\n                    \"description\": \"Efficianturpertinacia adipiscing vulputate quas quem pertinacia adipiscing mediocritatem.  Curabiturvarius esse gloriatur velit eum vulputate ne velit aptent dapibus feugait aliquip graeci intellegat class tantas urbanitas non.\",\r\n                    \"ingredients\": \"oporteat movet\",\r\n                    \"shortDescription\": \"salutatus voluptatum venenatis\",\r\n                    \"detailsID\": 54,\r\n                    \"tagList\": [\r\n                        {\r\n                            \"tagName\": \"White tea\",\r\n                            \"tagDescription\": \"A white tea that is white\",\r\n                            \"tagID\": 8\r\n                        }\r\n                    ]\r\n                },\r\n                \"company\": {\r\n                    \"companyID\": 18,\r\n                    \"companyName\": \"Ahmad Tea\",\r\n                    \"details\": {\r\n                        \"detailsID\": 19,\r\n                        \"description\": \"Best i Norge\",\r\n                        \"address\": {\r\n                            \"postalCode\": 6015,\r\n                            \"postalPlace\": \"Ålesund\",\r\n                            \"streetName\": \"Ålesundvegen\",\r\n                            \"houseNumber\": 123,\r\n                            \"country\": \"Norway\",\r\n                            \"addressID\": 20\r\n                        }\r\n                    }\r\n                },\r\n                \"productID\": 53,\r\n                \"reviews\": [\r\n                    {\r\n                        \"customerName\": \"Bertie Bridges\",\r\n                        \"comment\": \"dicam evertitur ridiculus debet lacinia scelerisque fabellas accusata cursus tempus dicant postea sociis voluptatum aliquet natoque elit\",\r\n                        \"dateOfReview\": \"2022-06-01\",\r\n                        \"rating\": 2\r\n                    },\r\n                    {\r\n                        \"customerName\": \"Carla Black\",\r\n                        \"comment\": \"sententiae tempor non ea ne duo omittantur malesuada quem gubergren leo noluisse cras hendrerit\",\r\n                        \"dateOfReview\": \"2022-05-27\",\r\n                        \"rating\": 1\r\n                    },\r\n                    {\r\n                        \"customerName\": \"Rachael Yates\",\r\n                        \"comment\": \"tincidunt porro ipsum\",\r\n                        \"dateOfReview\": \"2022-05-30\",\r\n                        \"rating\": 0\r\n                    }\r\n                ]\r\n            },\r\n            \"amountOfProduct\": 2,\r\n            \"orderState\": \"ORDERED\",\r\n            \"pricePerProduct\": 99\r\n        }\r\n    ],\r\n    \"orderState\": \"ORDERED\",\r\n    \"address\": {\r\n        \"addressID\": 73,\r\n        \"postalCode\": 2910,\r\n        \"postalPlace\": \"Aurdal\",\r\n        \"streetName\": \"Raskebakkin\",\r\n        \"houseNumber\": 9,\r\n        \"country\": \"Norge\"\r\n    },\r\n    \"deliveryMethod\": \"Post-Nord\",\r\n    \"dateOfOrder\": \"2022-06-06\",\r\n    \"paymentMethod\": \"Klarna\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "put /orders",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test alter order\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"orderID\": {{orderID}},\r\n    \"user\": {\r\n        \"firstName\": \"Bjarne\",\r\n        \"lastName\": \"Bjarnesen\",\r\n        \"email\": \"bjarne@bjarnesen.com\",\r\n        \"phoneNumber\": 12345678,\r\n        \"password\": \"$2a$10$SFuT.2dMJPZC.SdKeMwiDevC35NPbNIsgl/DXaDYNYfmTC8UEv2Xm\",\r\n        \"address\": {\r\n            \"postalCode\": 2910,\r\n            \"postalPlace\": \"Aurdal\",\r\n            \"streetName\": \"Raskebakkin\",\r\n            \"houseNumber\": 9,\r\n            \"country\": \"Norge\",\r\n            \"addressID\": 31\r\n        },\r\n        \"userId\": 30,\r\n        \"active\": true,\r\n        \"role\": \"ROLE_ADMIN\",\r\n        \"cart\": {\r\n            \"allProducts\": [\r\n                {\r\n                    \"amount\": 1,\r\n                    \"product\": {\r\n                        \"productName\": \"Green Leaf Tea\",\r\n                        \"price\": 109,\r\n                        \"amountOfProduct\": 7,\r\n                        \"productDetails\": {\r\n                            \"description\": \"Similiquedicat eu ferri feugiat deseruisse graecis potenti tota mollis mnesarchum voluptatum sapien falli atqui vero maluisset persecuti.  Deterruissetrepudiare duis voluptatum mandamus dui usu elementum nam quaerendum animal atomorum.  Queminvidunt purus magnis indoctum natum euismod leo ut constituam interpretaris.  Iuvaretposuere periculis fames consequat eum ius fastidii ridiculus consul atomorum atqui.  \\nSimiliqueconsectetuer imperdiet adversarium mi eos facilis his fringilla vivamus porro tota propriae eos quidam prompta senserit vero condimentum platea.  Equidemtation unum senserit sed voluptaria fuisset lectus.  Salesigniferumque repudiandae noster metus corrumpit dolorem sit saperet vero patrioque.\",\r\n                            \"ingredients\": \"docendi saperet ignota expetendis sententiae\",\r\n                            \"shortDescription\": \"eros venenatis ex qualisque fames\",\r\n                            \"detailsID\": 46,\r\n                            \"tagList\": [\r\n                                {\r\n                                    \"tagName\": \"Green tea\",\r\n                                    \"tagDescription\": \"A green tea that is green\",\r\n                                    \"tagID\": 6\r\n                                }\r\n                            ]\r\n                        },\r\n                        \"company\": {\r\n                            \"companyID\": 15,\r\n                            \"companyName\": \"Yogi Tea\",\r\n                            \"details\": {\r\n                                \"detailsID\": 16,\r\n                                \"description\": \"Best i Verden\",\r\n                                \"address\": {\r\n                                    \"postalCode\": 6015,\r\n                                    \"postalPlace\": \"Ålesund\",\r\n                                    \"streetName\": \"Ålesundvegen\",\r\n                                    \"houseNumber\": 123,\r\n                                    \"country\": \"Norway\",\r\n                                    \"addressID\": 17\r\n                                }\r\n                            }\r\n                        },\r\n                        \"productID\": 45,\r\n                        \"reviews\": [\r\n                            {\r\n                                \"customerName\": \"Jean Greene\",\r\n                                \"comment\": \"rhoncus meliore condimentum repudiare malorum liber placerat sociosqu lobortis omittam mel\",\r\n                                \"dateOfReview\": \"2022-05-25\",\r\n                                \"rating\": 2\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Ignacio Howell\",\r\n                                \"comment\": \"maecenas error tantas deterruisset ornare euripidis splendide electram convenire aliquam causae eloquentiam egestas possit cu idque inciderint invenire nulla\",\r\n                                \"dateOfReview\": \"2022-06-01\",\r\n                                \"rating\": 3\r\n                            }\r\n                        ]\r\n                    }\r\n                },\r\n                {\r\n                    \"amount\": 3,\r\n                    \"product\": {\r\n                        \"productName\": \"Black water Leaf Tea\",\r\n                        \"price\": 509,\r\n                        \"amountOfProduct\": 3,\r\n                        \"productDetails\": {\r\n                            \"description\": \"Docendirecteque adipisci qualisque fringilla accumsan etiam.  Fabulasgraeco dolores delectus libris ea deterruisset theophrastus mnesarchum montes condimentum tempus.  Hacest facilisi feugait corrumpit expetenda mel nostrum tristique postulant mollis mauris urna error mi efficitur autem duo.  Sedleo dictumst postulant deterruisset diam latine nam.  Reformidansquem eleifend aliquip.\",\r\n                            \"ingredients\": \"mauris agam accumsan\",\r\n                            \"shortDescription\": \"ceteros neglegentur\",\r\n                            \"detailsID\": 48,\r\n                            \"tagList\": [\r\n                                {\r\n                                    \"tagName\": \"Black tea\",\r\n                                    \"tagDescription\": \"A black tea that is black\",\r\n                                    \"tagID\": 7\r\n                                }\r\n                            ]\r\n                        },\r\n                        \"company\": {\r\n                            \"companyID\": 18,\r\n                            \"companyName\": \"Ahmad Tea\",\r\n                            \"details\": {\r\n                                \"detailsID\": 19,\r\n                                \"description\": \"Best i Norge\",\r\n                                \"address\": {\r\n                                    \"postalCode\": 6015,\r\n                                    \"postalPlace\": \"Ålesund\",\r\n                                    \"streetName\": \"Ålesundvegen\",\r\n                                    \"houseNumber\": 123,\r\n                                    \"country\": \"Norway\",\r\n                                    \"addressID\": 20\r\n                                }\r\n                            }\r\n                        },\r\n                        \"productID\": 47,\r\n                        \"reviews\": [\r\n                            {\r\n                                \"customerName\": \"Andrew Berry\",\r\n                                \"comment\": \"efficiantur nonumes nullam vis cetero sed adversarium sale habitant quem tantas sapien mucius falli salutatus\",\r\n                                \"dateOfReview\": \"2022-05-28\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Lena Boone\",\r\n                                \"comment\": \"erat affert sagittis at mucius docendi iusto nunc lobortis ei saperet habeo utinam sociis percipit vitae dis melius\",\r\n                                \"dateOfReview\": \"2022-05-25\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Fern Floyd\",\r\n                                \"comment\": \"delectus duis curae ultricies\",\r\n                                \"dateOfReview\": \"2022-06-02\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Deborah Patterson\",\r\n                                \"comment\": \"qui dui sea\",\r\n                                \"dateOfReview\": \"2022-06-06\",\r\n                                \"rating\": 3\r\n                            }\r\n                        ]\r\n                    }\r\n                }\r\n            ]\r\n        }\r\n    },\r\n    \"orderedProductList\": [\r\n        {\r\n            \"product\": {\r\n                \"productName\": \"Strawberry Tea\",\r\n                \"price\": 99,\r\n                \"amountOfProduct\": 9,\r\n                \"productDetails\": {\r\n                    \"description\": \"Efficianturpertinacia adipiscing vulputate quas quem pertinacia adipiscing mediocritatem.  Curabiturvarius esse gloriatur velit eum vulputate ne velit aptent dapibus feugait aliquip graeci intellegat class tantas urbanitas non.\",\r\n                    \"ingredients\": \"oporteat movet\",\r\n                    \"shortDescription\": \"salutatus voluptatum venenatis\",\r\n                    \"detailsID\": 54,\r\n                    \"tagList\": [\r\n                        {\r\n                            \"tagName\": \"White tea\",\r\n                            \"tagDescription\": \"A white tea that is white\",\r\n                            \"tagID\": 8\r\n                        }\r\n                    ]\r\n                },\r\n                \"company\": {\r\n                    \"companyID\": 18,\r\n                    \"companyName\": \"Ahmad Tea\",\r\n                    \"details\": {\r\n                        \"detailsID\": 19,\r\n                        \"description\": \"Best i Norge\",\r\n                        \"address\": {\r\n                            \"postalCode\": 6015,\r\n                            \"postalPlace\": \"Ålesund\",\r\n                            \"streetName\": \"Ålesundvegen\",\r\n                            \"houseNumber\": 123,\r\n                            \"country\": \"Norway\",\r\n                            \"addressID\": 20\r\n                        }\r\n                    }\r\n                },\r\n                \"productID\": 53,\r\n                \"reviews\": [\r\n                    {\r\n                        \"customerName\": \"Bertie Bridges\",\r\n                        \"comment\": \"dicam evertitur ridiculus debet lacinia scelerisque fabellas accusata cursus tempus dicant postea sociis voluptatum aliquet natoque elit\",\r\n                        \"dateOfReview\": \"2022-06-01\",\r\n                        \"rating\": 2\r\n                    },\r\n                    {\r\n                        \"customerName\": \"Carla Black\",\r\n                        \"comment\": \"sententiae tempor non ea ne duo omittantur malesuada quem gubergren leo noluisse cras hendrerit\",\r\n                        \"dateOfReview\": \"2022-05-27\",\r\n                        \"rating\": 1\r\n                    },\r\n                    {\r\n                        \"customerName\": \"Rachael Yates\",\r\n                        \"comment\": \"tincidunt porro ipsum\",\r\n                        \"dateOfReview\": \"2022-05-30\",\r\n                        \"rating\": 0\r\n                    }\r\n                ]\r\n            },\r\n            \"amountOfProduct\": 2,\r\n            \"orderState\": \"ORDERED\",\r\n            \"pricePerProduct\": 99\r\n        }\r\n    ],\r\n    \"orderState\": \"ORDERED\",\r\n    \"address\": {\r\n        \"addressID\": 73,\r\n        \"postalCode\": 2910,\r\n        \"postalPlace\": \"Aurdal\",\r\n        \"streetName\": \"Raskebakkin\",\r\n        \"houseNumber\": 9,\r\n        \"country\": \"Norge\"\r\n    },\r\n    \"deliveryMethod\": \"Post-Nord\",\r\n    \"dateOfOrder\": \"2022-06-05\",\r\n    \"paymentMethod\": \"Klarna\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "post /orders - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test adding order with taken ID\", function(){\r",
+											"    pm.response.to.have.status(226);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"orderID\": {{orderID}},\r\n    \"user\": {\r\n        \"firstName\": \"Bjarne\",\r\n        \"lastName\": \"Bjarnesen\",\r\n        \"email\": \"bjarne@bjarnesen.com\",\r\n        \"phoneNumber\": 12345678,\r\n        \"password\": \"$2a$10$SFuT.2dMJPZC.SdKeMwiDevC35NPbNIsgl/DXaDYNYfmTC8UEv2Xm\",\r\n        \"address\": {\r\n            \"postalCode\": 2910,\r\n            \"postalPlace\": \"Aurdal\",\r\n            \"streetName\": \"Raskebakkin\",\r\n            \"houseNumber\": 9,\r\n            \"country\": \"Norge\",\r\n            \"addressID\": 31\r\n        },\r\n        \"userId\": 30,\r\n        \"active\": true,\r\n        \"role\": \"ROLE_ADMIN\",\r\n        \"cart\": {\r\n            \"allProducts\": [\r\n                {\r\n                    \"amount\": 1,\r\n                    \"product\": {\r\n                        \"productName\": \"Green Leaf Tea\",\r\n                        \"price\": 109,\r\n                        \"amountOfProduct\": 7,\r\n                        \"productDetails\": {\r\n                            \"description\": \"Similiquedicat eu ferri feugiat deseruisse graecis potenti tota mollis mnesarchum voluptatum sapien falli atqui vero maluisset persecuti.  Deterruissetrepudiare duis voluptatum mandamus dui usu elementum nam quaerendum animal atomorum.  Queminvidunt purus magnis indoctum natum euismod leo ut constituam interpretaris.  Iuvaretposuere periculis fames consequat eum ius fastidii ridiculus consul atomorum atqui.  \\nSimiliqueconsectetuer imperdiet adversarium mi eos facilis his fringilla vivamus porro tota propriae eos quidam prompta senserit vero condimentum platea.  Equidemtation unum senserit sed voluptaria fuisset lectus.  Salesigniferumque repudiandae noster metus corrumpit dolorem sit saperet vero patrioque.\",\r\n                            \"ingredients\": \"docendi saperet ignota expetendis sententiae\",\r\n                            \"shortDescription\": \"eros venenatis ex qualisque fames\",\r\n                            \"detailsID\": 46,\r\n                            \"tagList\": [\r\n                                {\r\n                                    \"tagName\": \"Green tea\",\r\n                                    \"tagDescription\": \"A green tea that is green\",\r\n                                    \"tagID\": 6\r\n                                }\r\n                            ]\r\n                        },\r\n                        \"company\": {\r\n                            \"companyID\": 15,\r\n                            \"companyName\": \"Yogi Tea\",\r\n                            \"details\": {\r\n                                \"detailsID\": 16,\r\n                                \"description\": \"Best i Verden\",\r\n                                \"address\": {\r\n                                    \"postalCode\": 6015,\r\n                                    \"postalPlace\": \"Ålesund\",\r\n                                    \"streetName\": \"Ålesundvegen\",\r\n                                    \"houseNumber\": 123,\r\n                                    \"country\": \"Norway\",\r\n                                    \"addressID\": 17\r\n                                }\r\n                            }\r\n                        },\r\n                        \"productID\": 45,\r\n                        \"reviews\": [\r\n                            {\r\n                                \"customerName\": \"Jean Greene\",\r\n                                \"comment\": \"rhoncus meliore condimentum repudiare malorum liber placerat sociosqu lobortis omittam mel\",\r\n                                \"dateOfReview\": \"2022-05-25\",\r\n                                \"rating\": 2\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Ignacio Howell\",\r\n                                \"comment\": \"maecenas error tantas deterruisset ornare euripidis splendide electram convenire aliquam causae eloquentiam egestas possit cu idque inciderint invenire nulla\",\r\n                                \"dateOfReview\": \"2022-06-01\",\r\n                                \"rating\": 3\r\n                            }\r\n                        ]\r\n                    }\r\n                },\r\n                {\r\n                    \"amount\": 3,\r\n                    \"product\": {\r\n                        \"productName\": \"Black water Leaf Tea\",\r\n                        \"price\": 509,\r\n                        \"amountOfProduct\": 3,\r\n                        \"productDetails\": {\r\n                            \"description\": \"Docendirecteque adipisci qualisque fringilla accumsan etiam.  Fabulasgraeco dolores delectus libris ea deterruisset theophrastus mnesarchum montes condimentum tempus.  Hacest facilisi feugait corrumpit expetenda mel nostrum tristique postulant mollis mauris urna error mi efficitur autem duo.  Sedleo dictumst postulant deterruisset diam latine nam.  Reformidansquem eleifend aliquip.\",\r\n                            \"ingredients\": \"mauris agam accumsan\",\r\n                            \"shortDescription\": \"ceteros neglegentur\",\r\n                            \"detailsID\": 48,\r\n                            \"tagList\": [\r\n                                {\r\n                                    \"tagName\": \"Black tea\",\r\n                                    \"tagDescription\": \"A black tea that is black\",\r\n                                    \"tagID\": 7\r\n                                }\r\n                            ]\r\n                        },\r\n                        \"company\": {\r\n                            \"companyID\": 18,\r\n                            \"companyName\": \"Ahmad Tea\",\r\n                            \"details\": {\r\n                                \"detailsID\": 19,\r\n                                \"description\": \"Best i Norge\",\r\n                                \"address\": {\r\n                                    \"postalCode\": 6015,\r\n                                    \"postalPlace\": \"Ålesund\",\r\n                                    \"streetName\": \"Ålesundvegen\",\r\n                                    \"houseNumber\": 123,\r\n                                    \"country\": \"Norway\",\r\n                                    \"addressID\": 20\r\n                                }\r\n                            }\r\n                        },\r\n                        \"productID\": 47,\r\n                        \"reviews\": [\r\n                            {\r\n                                \"customerName\": \"Andrew Berry\",\r\n                                \"comment\": \"efficiantur nonumes nullam vis cetero sed adversarium sale habitant quem tantas sapien mucius falli salutatus\",\r\n                                \"dateOfReview\": \"2022-05-28\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Lena Boone\",\r\n                                \"comment\": \"erat affert sagittis at mucius docendi iusto nunc lobortis ei saperet habeo utinam sociis percipit vitae dis melius\",\r\n                                \"dateOfReview\": \"2022-05-25\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Fern Floyd\",\r\n                                \"comment\": \"delectus duis curae ultricies\",\r\n                                \"dateOfReview\": \"2022-06-02\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Deborah Patterson\",\r\n                                \"comment\": \"qui dui sea\",\r\n                                \"dateOfReview\": \"2022-06-06\",\r\n                                \"rating\": 3\r\n                            }\r\n                        ]\r\n                    }\r\n                }\r\n            ]\r\n        }\r\n    },\r\n    \"orderedProductList\": [\r\n        {\r\n            \"product\": {\r\n                \"productName\": \"Strawberry Tea\",\r\n                \"price\": 99,\r\n                \"amountOfProduct\": 9,\r\n                \"productDetails\": {\r\n                    \"description\": \"Efficianturpertinacia adipiscing vulputate quas quem pertinacia adipiscing mediocritatem.  Curabiturvarius esse gloriatur velit eum vulputate ne velit aptent dapibus feugait aliquip graeci intellegat class tantas urbanitas non.\",\r\n                    \"ingredients\": \"oporteat movet\",\r\n                    \"shortDescription\": \"salutatus voluptatum venenatis\",\r\n                    \"detailsID\": 54,\r\n                    \"tagList\": [\r\n                        {\r\n                            \"tagName\": \"White tea\",\r\n                            \"tagDescription\": \"A white tea that is white\",\r\n                            \"tagID\": 8\r\n                        }\r\n                    ]\r\n                },\r\n                \"company\": {\r\n                    \"companyID\": 18,\r\n                    \"companyName\": \"Ahmad Tea\",\r\n                    \"details\": {\r\n                        \"detailsID\": 19,\r\n                        \"description\": \"Best i Norge\",\r\n                        \"address\": {\r\n                            \"postalCode\": 6015,\r\n                            \"postalPlace\": \"Ålesund\",\r\n                            \"streetName\": \"Ålesundvegen\",\r\n                            \"houseNumber\": 123,\r\n                            \"country\": \"Norway\",\r\n                            \"addressID\": 20\r\n                        }\r\n                    }\r\n                },\r\n                \"productID\": 53,\r\n                \"reviews\": [\r\n                    {\r\n                        \"customerName\": \"Bertie Bridges\",\r\n                        \"comment\": \"dicam evertitur ridiculus debet lacinia scelerisque fabellas accusata cursus tempus dicant postea sociis voluptatum aliquet natoque elit\",\r\n                        \"dateOfReview\": \"2022-06-01\",\r\n                        \"rating\": 2\r\n                    },\r\n                    {\r\n                        \"customerName\": \"Carla Black\",\r\n                        \"comment\": \"sententiae tempor non ea ne duo omittantur malesuada quem gubergren leo noluisse cras hendrerit\",\r\n                        \"dateOfReview\": \"2022-05-27\",\r\n                        \"rating\": 1\r\n                    },\r\n                    {\r\n                        \"customerName\": \"Rachael Yates\",\r\n                        \"comment\": \"tincidunt porro ipsum\",\r\n                        \"dateOfReview\": \"2022-05-30\",\r\n                        \"rating\": 0\r\n                    }\r\n                ]\r\n            },\r\n            \"amountOfProduct\": 2,\r\n            \"orderState\": \"ORDERED\",\r\n            \"pricePerProduct\": 99\r\n        }\r\n    ],\r\n    \"orderState\": \"ORDERED\",\r\n    \"address\": {\r\n        \"addressID\": 73,\r\n        \"postalCode\": 2910,\r\n        \"postalPlace\": \"Aurdal\",\r\n        \"streetName\": \"Raskebakkin\",\r\n        \"houseNumber\": 9,\r\n        \"country\": \"Norge\"\r\n    },\r\n    \"deliveryMethod\": \"Post-Nord\",\r\n    \"dateOfOrder\": \"2022-06-06\",\r\n    \"paymentMethod\": \"Klarna\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "put /orders - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test alter order with id not in system\", function(){\r",
+											"    pm.response.to.have.status(204);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"orderID\": 5000000000,\r\n    \"user\": {\r\n        \"firstName\": \"Bjarne\",\r\n        \"lastName\": \"Bjarnesen\",\r\n        \"email\": \"bjarne@bjarnesen.com\",\r\n        \"phoneNumber\": 12345678,\r\n        \"password\": \"$2a$10$SFuT.2dMJPZC.SdKeMwiDevC35NPbNIsgl/DXaDYNYfmTC8UEv2Xm\",\r\n        \"address\": {\r\n            \"postalCode\": 2910,\r\n            \"postalPlace\": \"Aurdal\",\r\n            \"streetName\": \"Raskebakkin\",\r\n            \"houseNumber\": 9,\r\n            \"country\": \"Norge\",\r\n            \"addressID\": 31\r\n        },\r\n        \"userId\": 30,\r\n        \"active\": true,\r\n        \"role\": \"ROLE_ADMIN\",\r\n        \"cart\": {\r\n            \"allProducts\": [\r\n                {\r\n                    \"amount\": 1,\r\n                    \"product\": {\r\n                        \"productName\": \"Green Leaf Tea\",\r\n                        \"price\": 109,\r\n                        \"amountOfProduct\": 7,\r\n                        \"productDetails\": {\r\n                            \"description\": \"Similiquedicat eu ferri feugiat deseruisse graecis potenti tota mollis mnesarchum voluptatum sapien falli atqui vero maluisset persecuti.  Deterruissetrepudiare duis voluptatum mandamus dui usu elementum nam quaerendum animal atomorum.  Queminvidunt purus magnis indoctum natum euismod leo ut constituam interpretaris.  Iuvaretposuere periculis fames consequat eum ius fastidii ridiculus consul atomorum atqui.  \\nSimiliqueconsectetuer imperdiet adversarium mi eos facilis his fringilla vivamus porro tota propriae eos quidam prompta senserit vero condimentum platea.  Equidemtation unum senserit sed voluptaria fuisset lectus.  Salesigniferumque repudiandae noster metus corrumpit dolorem sit saperet vero patrioque.\",\r\n                            \"ingredients\": \"docendi saperet ignota expetendis sententiae\",\r\n                            \"shortDescription\": \"eros venenatis ex qualisque fames\",\r\n                            \"detailsID\": 46,\r\n                            \"tagList\": [\r\n                                {\r\n                                    \"tagName\": \"Green tea\",\r\n                                    \"tagDescription\": \"A green tea that is green\",\r\n                                    \"tagID\": 6\r\n                                }\r\n                            ]\r\n                        },\r\n                        \"company\": {\r\n                            \"companyID\": 15,\r\n                            \"companyName\": \"Yogi Tea\",\r\n                            \"details\": {\r\n                                \"detailsID\": 16,\r\n                                \"description\": \"Best i Verden\",\r\n                                \"address\": {\r\n                                    \"postalCode\": 6015,\r\n                                    \"postalPlace\": \"Ålesund\",\r\n                                    \"streetName\": \"Ålesundvegen\",\r\n                                    \"houseNumber\": 123,\r\n                                    \"country\": \"Norway\",\r\n                                    \"addressID\": 17\r\n                                }\r\n                            }\r\n                        },\r\n                        \"productID\": 45,\r\n                        \"reviews\": [\r\n                            {\r\n                                \"customerName\": \"Jean Greene\",\r\n                                \"comment\": \"rhoncus meliore condimentum repudiare malorum liber placerat sociosqu lobortis omittam mel\",\r\n                                \"dateOfReview\": \"2022-05-25\",\r\n                                \"rating\": 2\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Ignacio Howell\",\r\n                                \"comment\": \"maecenas error tantas deterruisset ornare euripidis splendide electram convenire aliquam causae eloquentiam egestas possit cu idque inciderint invenire nulla\",\r\n                                \"dateOfReview\": \"2022-06-01\",\r\n                                \"rating\": 3\r\n                            }\r\n                        ]\r\n                    }\r\n                },\r\n                {\r\n                    \"amount\": 3,\r\n                    \"product\": {\r\n                        \"productName\": \"Black water Leaf Tea\",\r\n                        \"price\": 509,\r\n                        \"amountOfProduct\": 3,\r\n                        \"productDetails\": {\r\n                            \"description\": \"Docendirecteque adipisci qualisque fringilla accumsan etiam.  Fabulasgraeco dolores delectus libris ea deterruisset theophrastus mnesarchum montes condimentum tempus.  Hacest facilisi feugait corrumpit expetenda mel nostrum tristique postulant mollis mauris urna error mi efficitur autem duo.  Sedleo dictumst postulant deterruisset diam latine nam.  Reformidansquem eleifend aliquip.\",\r\n                            \"ingredients\": \"mauris agam accumsan\",\r\n                            \"shortDescription\": \"ceteros neglegentur\",\r\n                            \"detailsID\": 48,\r\n                            \"tagList\": [\r\n                                {\r\n                                    \"tagName\": \"Black tea\",\r\n                                    \"tagDescription\": \"A black tea that is black\",\r\n                                    \"tagID\": 7\r\n                                }\r\n                            ]\r\n                        },\r\n                        \"company\": {\r\n                            \"companyID\": 18,\r\n                            \"companyName\": \"Ahmad Tea\",\r\n                            \"details\": {\r\n                                \"detailsID\": 19,\r\n                                \"description\": \"Best i Norge\",\r\n                                \"address\": {\r\n                                    \"postalCode\": 6015,\r\n                                    \"postalPlace\": \"Ålesund\",\r\n                                    \"streetName\": \"Ålesundvegen\",\r\n                                    \"houseNumber\": 123,\r\n                                    \"country\": \"Norway\",\r\n                                    \"addressID\": 20\r\n                                }\r\n                            }\r\n                        },\r\n                        \"productID\": 47,\r\n                        \"reviews\": [\r\n                            {\r\n                                \"customerName\": \"Andrew Berry\",\r\n                                \"comment\": \"efficiantur nonumes nullam vis cetero sed adversarium sale habitant quem tantas sapien mucius falli salutatus\",\r\n                                \"dateOfReview\": \"2022-05-28\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Lena Boone\",\r\n                                \"comment\": \"erat affert sagittis at mucius docendi iusto nunc lobortis ei saperet habeo utinam sociis percipit vitae dis melius\",\r\n                                \"dateOfReview\": \"2022-05-25\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Fern Floyd\",\r\n                                \"comment\": \"delectus duis curae ultricies\",\r\n                                \"dateOfReview\": \"2022-06-02\",\r\n                                \"rating\": 0\r\n                            },\r\n                            {\r\n                                \"customerName\": \"Deborah Patterson\",\r\n                                \"comment\": \"qui dui sea\",\r\n                                \"dateOfReview\": \"2022-06-06\",\r\n                                \"rating\": 3\r\n                            }\r\n                        ]\r\n                    }\r\n                }\r\n            ]\r\n        }\r\n    },\r\n    \"orderedProductList\": [\r\n        {\r\n            \"product\": {\r\n                \"productName\": \"Strawberry Tea\",\r\n                \"price\": 99,\r\n                \"amountOfProduct\": 9,\r\n                \"productDetails\": {\r\n                    \"description\": \"Efficianturpertinacia adipiscing vulputate quas quem pertinacia adipiscing mediocritatem.  Curabiturvarius esse gloriatur velit eum vulputate ne velit aptent dapibus feugait aliquip graeci intellegat class tantas urbanitas non.\",\r\n                    \"ingredients\": \"oporteat movet\",\r\n                    \"shortDescription\": \"salutatus voluptatum venenatis\",\r\n                    \"detailsID\": 54,\r\n                    \"tagList\": [\r\n                        {\r\n                            \"tagName\": \"White tea\",\r\n                            \"tagDescription\": \"A white tea that is white\",\r\n                            \"tagID\": 8\r\n                        }\r\n                    ]\r\n                },\r\n                \"company\": {\r\n                    \"companyID\": 18,\r\n                    \"companyName\": \"Ahmad Tea\",\r\n                    \"details\": {\r\n                        \"detailsID\": 19,\r\n                        \"description\": \"Best i Norge\",\r\n                        \"address\": {\r\n                            \"postalCode\": 6015,\r\n                            \"postalPlace\": \"Ålesund\",\r\n                            \"streetName\": \"Ålesundvegen\",\r\n                            \"houseNumber\": 123,\r\n                            \"country\": \"Norway\",\r\n                            \"addressID\": 20\r\n                        }\r\n                    }\r\n                },\r\n                \"productID\": 53,\r\n                \"reviews\": [\r\n                    {\r\n                        \"customerName\": \"Bertie Bridges\",\r\n                        \"comment\": \"dicam evertitur ridiculus debet lacinia scelerisque fabellas accusata cursus tempus dicant postea sociis voluptatum aliquet natoque elit\",\r\n                        \"dateOfReview\": \"2022-06-01\",\r\n                        \"rating\": 2\r\n                    },\r\n                    {\r\n                        \"customerName\": \"Carla Black\",\r\n                        \"comment\": \"sententiae tempor non ea ne duo omittantur malesuada quem gubergren leo noluisse cras hendrerit\",\r\n                        \"dateOfReview\": \"2022-05-27\",\r\n                        \"rating\": 1\r\n                    },\r\n                    {\r\n                        \"customerName\": \"Rachael Yates\",\r\n                        \"comment\": \"tincidunt porro ipsum\",\r\n                        \"dateOfReview\": \"2022-05-30\",\r\n                        \"rating\": 0\r\n                    }\r\n                ]\r\n            },\r\n            \"amountOfProduct\": 2,\r\n            \"orderState\": \"ORDERED\",\r\n            \"pricePerProduct\": 99\r\n        }\r\n    ],\r\n    \"orderState\": \"ORDERED\",\r\n    \"address\": {\r\n        \"addressID\": 73,\r\n        \"postalCode\": 2910,\r\n        \"postalPlace\": \"Aurdal\",\r\n        \"streetName\": \"Raskebakkin\",\r\n        \"houseNumber\": 9,\r\n        \"country\": \"Norge\"\r\n    },\r\n    \"deliveryMethod\": \"Post-Nord\",\r\n    \"dateOfOrder\": \"2022-06-05\",\r\n    \"paymentMethod\": \"Klarna\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete /orders",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test deletion of an exisiting order\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/orders/{{orderID}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders",
+										"{{orderID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete /orders - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test deletion of an order not in system\", function(){\r",
+											"    pm.response.to.have.status(204);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/orders/{{orderID}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders",
+										"{{orderID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get /orders/userOrders - fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test that admin-user cannot get orders of user\", function(){\r",
+											"    pm.response.to.have.status(403);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/orders/userOrders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders",
+										"userOrders"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
