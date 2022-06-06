@@ -50,7 +50,8 @@ public class WebController {
         while (it.hasNext()){
             String attributeName = it.next();
             Object object = httpSession.getAttribute(attributeName);
-            if (object instanceof List list){
+            if (object instanceof List){
+                List list = (List) object;
                 object = convertListToValues(list);
             }
             model.addAttribute(attributeName, object);

@@ -156,12 +156,21 @@ public class CartAndCheckoutController extends WebController{
      * @return the payment method as a value
      */
     private String getPaymentMethod(int paymentValue){
-        return switch (paymentValue){
-            case 1 -> "Klarna";
-            case 2 -> "Vipps";
-            case 3 -> "Your mom";
-            default -> throw new IllegalArgumentException("Invalid paymentMethod");
-        };
+        String payment = "";
+        switch (paymentValue){
+            case 1:
+                payment = "Klarna";
+                break;
+            case 2:
+                payment = "Vipps";
+                break;
+            case 3:
+                payment = "Your mom";
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid paymentMethod");
+        }
+        return payment;
     }
 
     /**
@@ -170,12 +179,21 @@ public class CartAndCheckoutController extends WebController{
      * @return the delivery method as a value
      */
     private String getDeliveryMethod(int deliveryValue){
-        return switch (deliveryValue){
-            case 1 -> "Postnord";
-            case 2 -> "Posten";
-            case 3 -> "Brevdue";
-            default -> throw new IllegalArgumentException("Invalid deliveryMethod");
-        };
+        String delivery = "";
+        switch (deliveryValue){
+            case 1:
+                delivery = "Postnord";
+                break;
+            case 2:
+                delivery = "Posten";
+                break;
+            case 3:
+                delivery = "Brevdue";
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid deliveryMethod");
+        }
+        return delivery;
     }
 
     /**
