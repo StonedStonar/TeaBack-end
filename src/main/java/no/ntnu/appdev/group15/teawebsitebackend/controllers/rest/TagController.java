@@ -100,30 +100,33 @@ public class TagController {
         return objectMapper.readValue(body, Tag.class);
     }
 
+    /**
+     * Handles the CouldNotRemoveTagException exception.
+     * @param exception the exception.
+     * @return the response entity.
+     */
     @ExceptionHandler(CouldNotRemoveTagException.class)
     private ResponseEntity<String> handleCouldNotRemoveTagException(Exception exception){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
+    /**
+     * Handles the CouldNotAddTagException exception.
+     * @param exception the exception.
+     * @return the response entity.
+     */
     @ExceptionHandler(CouldNotAddTagException.class)
     private ResponseEntity<String> handleCouldNotAddTagException(Exception exception){
         return ResponseEntity.status(HttpStatus.IM_USED).body(exception.getMessage());
     }
 
+    /**
+     * Handles the CouldNotGetTagException exception.
+     * @param exception the exception.
+     * @return the response entity.
+     */
     @ExceptionHandler(CouldNotGetTagException.class)
     private ResponseEntity<String> handleCouldNotGetTagException(Exception exception){
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(exception.getMessage());
-    }
-
-    /**
-     * Checks if an object is null.
-     * @param object the object you want to check.
-     * @param error  the error message the exception should have.
-     * @throws IllegalArgumentException gets thrown if the object is null.
-     */
-    private void checkIfObjectIsNull(Object object, String error) {
-        if (object == null) {
-            throw new IllegalArgumentException("The " + error + " cannot be null.");
-        }
     }
 }

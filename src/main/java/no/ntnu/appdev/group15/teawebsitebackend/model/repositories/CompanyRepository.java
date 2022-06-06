@@ -1,6 +1,7 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model.repositories;
 
 import no.ntnu.appdev.group15.teawebsitebackend.model.Company;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -8,5 +9,5 @@ import org.springframework.data.repository.CrudRepository;
  * @author Kenneth Johansen Misund
  * @version 0.1
  */
-public interface CompanyRepository extends CrudRepository<Company, Long> {
+public interface CompanyRepository extends JpaRepository<Company, Long> {
 }

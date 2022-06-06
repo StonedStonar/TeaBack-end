@@ -34,20 +34,13 @@ public class UserController {
 
     private final UserRegister userRegister;
 
-    private final ProductRegister productRegister;
-
-    private final OrderRegister orderRegister;
-
     /**
      * Makes an instance of the UserController class.
      * @param userJPA the service.
-     * @param productJPA the product JPA.
      */
-    public UserController(UserJPA userJPA, ProductJPA productJPA, OrderJPA orderJPA) {
+    public UserController(UserJPA userJPA) {
         checkIfObjectIsNull(userJPA, "user jpa");
         this.userRegister = userJPA;
-        this.productRegister = productJPA;
-        this.orderRegister = orderJPA;
     }
 
     /**
@@ -60,6 +53,12 @@ public class UserController {
         return userRegister.getAllUsers();
     }
 
+    /**
+     * Gets the user with the specified ID.
+     * @param userID the user ID.
+     * @return the user matching that ID.
+     * @throws CouldNotGetUserException gets thrown if the user is not in the system.
+     */
     @GetMapping("/{userID}")
     @PreAuthorize("hasRole('ADMIN')")
     public User getUserWithID(@PathVariable("userID") long userID) throws CouldNotGetUserException {
@@ -88,23 +87,31 @@ public class UserController {
         userRegister.removeUserWithID(id);
     }
 
-
-    @PostMapping("/address")
+    /**
+     * Updates the address of the user.
+     * @param body the new address as JSOn.
+     * @param authentication the authentication.
+     * @throws JsonProcessingException gets thrown if the json object is invalid format.
+     * @throws CouldNotGetUserException gets thrown if the user could not be found.
+     */
+    @PutMapping("/address")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public void updateUser(@RequestBody String body, Authentication authentication) throws JsonProcessingException, CouldNotGetUserException {
+    public void updateUserAddress(@RequestBody String body, Authentication authentication) throws JsonProcessingException, CouldNotGetUserException {
         Address address = makeAddress(body);
         AccessUser accessUser = getAccessUser(authentication);
         User user = userRegister.getUserWithUserID(accessUser.getUser().getUserId());
         Address addressToEdit = user.getAddress();
-        addressToEdit.setCountry(address.getCountry());
-        addressToEdit.setHouseNumber(address.getHouseNumber());
-        addressToEdit.setPostalCode(address.getPostalCode());
-        addressToEdit.setPostalPlace(address.getPostalPlace());
-        addressToEdit.setStreetName(address.getStreetName());
+        updateAddress(addressToEdit, address);
         userRegister.updateUser(user);
         accessUser.setUser(user);
     }
 
+    /**
+     * Gets the user object that is logged in.
+     * @param authentication the authentication.
+     * @return the user that is logged in.
+     * @throws CouldNotGetUserException gets thrown if the user could not be found.
+     */
     @GetMapping("/myUser")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public User getLoggedInUser(Authentication authentication) throws CouldNotGetUserException {
@@ -113,6 +120,12 @@ public class UserController {
         return user;
     }
 
+    /**
+     * Gets the cart of the loggedin user.
+     * @param authentication the authentication.
+     * @return the cart.
+     * @throws CouldNotGetUserException gets thrown if the user could not be found.
+     */
     @GetMapping("/cart")
     @PreAuthorize("hasRole('USER')")
     public Cart getCart(Authentication authentication) throws CouldNotGetUserException {
@@ -121,24 +134,38 @@ public class UserController {
         return user.getCart();
     }
 
+    /**
+     * Updates the logged in users details.
+     * @param authentication the authentication.
+     * @param body the JSON object.
+     * @throws JsonProcessingException gets thrown if the JSON is invalid format.
+     * @throws CouldNotGetUserException gets thrown if the user could not be located.
+     */
     @PutMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public void updateLoggedInUser(Authentication authentication, @RequestBody String body) throws JsonProcessingException, CouldNotGetUserException {
         User user = makeUser(body);
         AccessUser accessUser = getAccessUser(authentication);
-        if (user.getUserId() == accessUser.getUser().getUserId()){
-            userRegister.updateUser(user);
-            accessUser.setUser(user);
-        }else {
-            throw new CouldNotGetUserException("The user ID of the input JSON body does not match the set ID of the user");
-        }
+        User userToUpdate = userRegister.getUserWithUserID(accessUser.getUser().getUserId());
+        updateAddress(userToUpdate.getAddress(), user.getAddress());
+        userToUpdate.setPhoneNumber(user.getPhoneNumber());
+        userToUpdate.setEmail(user.getEmail());
+        userToUpdate.setLastName(user.getLastName());
+        userToUpdate.setFirstName(user.getFirstName());
+        userRegister.updateUser(userToUpdate);
+        accessUser.setUser(userToUpdate);
     }
 
-
+    /**
+     * Updates the current cart of the logged in user.
+     * @param productMap the map with all the parameters.
+     * @param authentication the authentication.
+     * @throws CouldNotGetUserException gets thrown if the user could not be found in the DB.
+     * @throws CouldNotRemoveCartProductException gets thrown if a product could not be removed in the DB.
+     */
     @PutMapping("/cart")
     @PreAuthorize("hasRole('USER')")
     public void updateCart(@RequestParam Map<String, String> productMap, Authentication authentication) throws CouldNotGetUserException, CouldNotRemoveCartProductException {
-        System.out.print("Pepegaclap");
         AccessUser accessUser = getAccessUser(authentication);
         User user = userRegister.getUserWithUserID(accessUser.getUser().getUserId());
         Cart cart = user.getCart();
@@ -156,6 +183,19 @@ public class UserController {
     }
 
     /**
+     * Updates the old address to the same values as the new.
+     * @param oldAddress the old address.
+     * @param newAddress the new address.
+     */
+    private void updateAddress(Address oldAddress, Address newAddress){
+        oldAddress.setCountry(newAddress.getCountry());
+        oldAddress.setHouseNumber(newAddress.getHouseNumber());
+        oldAddress.setPostalCode(newAddress.getPostalCode());
+        oldAddress.setPostalPlace(newAddress.getPostalPlace());
+        oldAddress.setStreetName(newAddress.getStreetName());
+    }
+
+    /**
      * Gets the access user that is using the page.
      * @param authentication the authentication object.
      * @return the access user of this session.
@@ -164,19 +204,43 @@ public class UserController {
         return (AccessUser) authentication.getPrincipal();
     }
 
-
+    /**
+     * Handles the CouldNotRemoveUserException exception.
+     * @param exception the exception.
+     * @return the response entity.
+     */
     @ExceptionHandler(CouldNotRemoveUserException.class)
     public ResponseEntity<String> handleCouldNotRemoveUserException(Exception exception){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
+    /**
+     * Handles the CouldNotAddUserException exception.
+     * @param exception the exception.
+     * @return the response entity.
+     */
     @ExceptionHandler(CouldNotAddUserException.class)
     public ResponseEntity<String> handleCouldNotAddUserException(Exception exception){
         return ResponseEntity.status(HttpStatus.IM_USED).body(exception.getMessage());
     }
 
+    /**
+     * Handles the CouldNotGetUserException exception.
+     * @param exception the exception.
+     * @return the response entity.
+     */
     @ExceptionHandler(CouldNotGetUserException.class)
     public ResponseEntity<String> handleCouldNotGetUserException(Exception exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    /**
+     * Handles the CouldNotRemoveCartProductException exception.
+     * @param exception the exception.
+     * @return the response entity.
+     */
+    @ExceptionHandler(CouldNotRemoveCartProductException.class)
+    public ResponseEntity<String> handleColdNotRemoveCartProductException(Exception exception){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
