@@ -18,6 +18,7 @@ import javax.persistence.ManyToMany;
 @Entity
 public class ProductDetails extends Details{
 
+    private String shortDescription;
     private String ingredients;
 
     @ManyToMany(targetEntity = Tag.class)
@@ -36,8 +37,10 @@ public class ProductDetails extends Details{
      * @param description the description of the tea.
      * @param ingredients the ingredients in the tea
      */
-    public ProductDetails(String description, String ingredients){
+    public ProductDetails(String description, String ingredients, String shortDescription){
         super(description);
+        checkString(shortDescription, "short card description");
+        this.shortDescription = shortDescription;
         checkString(ingredients, "ingredients");
         this.ingredients = ingredients;
         this.tagList = new ArrayList<>();
@@ -62,6 +65,14 @@ public class ProductDetails extends Details{
      */
     public String getIngredients() {
         return ingredients;
+    }
+
+    /**
+     * Gets the short description for a product.
+     * @return the description.
+     */
+    public String getShortDescription() {
+        return shortDescription;
     }
 
     /**

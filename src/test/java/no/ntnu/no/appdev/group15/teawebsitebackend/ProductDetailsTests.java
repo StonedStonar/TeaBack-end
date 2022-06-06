@@ -35,7 +35,7 @@ public class ProductDetailsTests {
   @BeforeEach
   public void setUpTestTeaDetails() {
     try {
-      productDetails = new ProductDetails("Lul", "Tea");
+      productDetails = new ProductDetails("Lul", "Tea", "p");
     } catch (IllegalArgumentException exception) {
     }
     stringBuilder = new StringBuilder();
@@ -84,7 +84,7 @@ public class ProductDetailsTests {
   public void testConstructorWorksWithValidParameters() {
     String errorPrefix = "Expected the creation to be successful since ";
     try {
-      ProductDetails productDetails = new ProductDetails("warm", "herbs");
+      ProductDetails productDetails = new ProductDetails("warm", "herbs", "p");
     } catch (IllegalArgumentException exception) {
       addError(errorPrefix, "the input is valid");
     }
@@ -99,22 +99,22 @@ public class ProductDetailsTests {
   public void testConstructorWorksWithInvalidParameters() {
     String prefix = "Expected an IllegalArgumentException  since ";
     try {
-      productDetails = new ProductDetails("", "herbs");
+      productDetails = new ProductDetails("", "herbs", "p");
       addError(prefix, "The input ingredients is empty");
     } catch (IllegalArgumentException exception) {
     }
     try {
-      productDetails = new ProductDetails(null, "herbs");
+      productDetails = new ProductDetails(null, "herbs", "p");
       addError(prefix, "The input ingredients is null");
     } catch (IllegalArgumentException exception) {
     }
     try {
-      productDetails = new ProductDetails("warm", "");
+      productDetails = new ProductDetails("warm", "", "p");
       addError(prefix, "The input herbs is empty");
     } catch (IllegalArgumentException exception) {
     }
     try {
-      productDetails = new ProductDetails("warm", null);
+      productDetails = new ProductDetails("warm", null, "p");
       addError(prefix, "The input herbs is null");
     } catch (IllegalArgumentException exception) {
     }

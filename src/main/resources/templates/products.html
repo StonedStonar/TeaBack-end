@@ -36,9 +36,8 @@
             <div id="product-filter">
                 <div id="filter" class="filterOption">
                     <span>Product type</span>
-                    <img src = "#" srcset = "svg/Arrow-for-dropdown-meny.svg" alt = "A arrow head" class = "svg logo rotatableLogo">
                 </div>
-                
+
                 <form id="hidden-filter" th:action = "@{/productsOverview}">
                     <div id="tea" class="filterOption">
                         <span>Category</span>
@@ -63,14 +62,14 @@
                     <input type="submit" value="Sort now" class="greenButton button">
                 </form>
             </div>
-    
-    
+
+
             <div class="card-container">
                 <a th:href="@{/product-info(id=${product.getProductID()})}" class="card" th:each="product:${relatedProduct}" >
                     <div class="card-header">
                         <img src="images/greentea-cropped.jpg" alt="Tea card picture">
                         <div class="card-title" th:text="${product.getProductName()}">Blackberry Leaf Tea</div>
-                        <div class="card-description" th:text="${product.getProductDetails().getDescription()}">Tea ingredients from the nature of norway</div>
+                        <div class="card-description" th:text="${product.getProductDetails().getShortDescription()}">Tea ingredients from the nature of norway</div>
                     </div>
 
                     <div class="card-body">
@@ -102,7 +101,7 @@
                 </a>
             </div>
         </div>
-        
+
     </section>
 
         <script type="text/javascript" th:src="@{/javascript/menu.js}"></script>

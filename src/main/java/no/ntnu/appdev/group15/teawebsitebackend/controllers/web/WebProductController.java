@@ -223,7 +223,7 @@ public class WebProductController extends WebController{
     @PutMapping("/editProduct")
     public RedirectView editProduct(@RequestParam("productID") long productID, @RequestParam("productName") String productName, @RequestParam("productAmount") int productAmount,
                                     @RequestParam("productPrice") int productPrice, @RequestParam("companyID") int companyID,
-                                    @RequestParam("ingredients") String ingredients, @RequestParam("tags") List<Long> tags, @RequestParam("description") String description
+                                    @RequestParam("ingredients") String ingredients, @RequestParam("tags") List<Long> tags, @RequestParam("description") String description, @RequestParam("shortDescription") String shortDescription
                                     ,@RequestParam(value = "previewProduct", required = false) Boolean preview,  HttpSession httpSession){
         ParameterBuilder parameterBuilder = new ParameterBuilder("editProduct");
         parameterBuilder.addParameter("productID", String.valueOf(productID));
@@ -231,7 +231,7 @@ public class WebProductController extends WebController{
         try {
             Product product = null;
             if (productID == 0){
-                ProductDetails productDetails = new ProductDetails(description, ingredients);
+                ProductDetails productDetails = new ProductDetails(description, ingredients, shortDescription);
                 Company company = companyRegister.getCompanyWithId(companyID);
                 product = new Product(productName, productPrice, productAmount, productDetails, company);
                 productRegister.addProduct(product);

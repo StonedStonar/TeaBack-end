@@ -42,6 +42,7 @@ public class WebTagController extends WebController{
      * @return the HTML file name of tags overview.
      */
     @GetMapping("/tagsOverview")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getTagsOverview(Model model, Authentication authentication){
         addLoggedInAttributes(authentication, model);
         List<Tag> tagList = tagsRegister.getAllTags();

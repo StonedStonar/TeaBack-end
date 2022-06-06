@@ -148,6 +148,16 @@ body {
     margin: 0.25em 0;
 }
 
+.editButton, #backButton{
+    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 12em;
+    text-decoration: none;
+    margin-bottom: 1.4em;
+}
+
 /*Menu styling under*/
 .svg,
 .logoContainer>span {

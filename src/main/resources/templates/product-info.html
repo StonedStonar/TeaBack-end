@@ -222,11 +222,11 @@
                 Related products
             </h3>
             <div class="card-container">
-                <a href="product-info.html" class="card" th:each="product:${relatedProduct}" >
+                <a th:href="@{/product-info(id=${product.getProductID()})}" class="card" th:each="product:${relatedProduct}" >
                     <div class="card-header">
                         <img src="images/greentea-cropped.jpg" alt="Tea card picture">
                         <div class="card-title" th:text="${product.getProductName()}">Blackberry Leaf Tea</div>
-                        <div class="card-description" th:text="${product.getProductDetails().getDescription()}">Tea ingredients from the nature of norway</div>
+                        <div class="card-description" th:text="${product.getProductDetails().getShortDescription()}">Tea ingredients from the nature of norway</div>
                     </div>
 
                     <div class="card-body">
@@ -235,7 +235,7 @@
                             <p class="former-price">199kr</p>
                         </div>
                         <div class="price" th:if = "${!product.isOnSale()}">
-                            <p class="now-price normal-price" th:text = "${product.getPrice()}">199kr</p>
+                            <p class="now-price normal-price"><span th:text = "${product.getPrice()}">199</span><span> kr</span></p>
                         </div>
                         <div class="rating-on-cards">
                             <span class="star">&#9734;</span>
@@ -256,7 +256,6 @@
                         </form>
                     </div>
                 </a>
-
             </div>
 
         </section>

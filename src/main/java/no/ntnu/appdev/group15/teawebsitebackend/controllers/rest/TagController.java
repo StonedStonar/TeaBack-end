@@ -61,7 +61,7 @@ public class TagController {
      * @throws CouldNotAddTagException gets thrown if the tag could not be added.
      */
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public void addTagWithDetails(@RequestBody String body) throws JsonProcessingException, CouldNotAddTagException {
         tagsRegister.addTag(getTag(body));
     }

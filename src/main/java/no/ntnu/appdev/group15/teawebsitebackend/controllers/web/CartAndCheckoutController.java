@@ -241,7 +241,7 @@ public class CartAndCheckoutController extends WebController{
     public String getConfirmPage(Authentication authentication, Model model) throws CouldNotGetUserException {
         addLoggedInAttributes(authentication, model);
         AccessUser accessUser = getAccessUser(authentication);
-        User user = userRegister.getUserWithUserID(accessUser.getUser().getUserId());
+        User user = accessUser.getUser();
         int totalPrice = user.getCart().getAllProducts().stream().mapToInt(product -> product.getProduct().getPrice() * product.getAmount()).sum();
         model.addAttribute("price", totalPrice);
         return "confirmPage";

@@ -1,8 +1,6 @@
-#hidden-filter {
-    visibility: hidden;
-    overflow: hidden;
-    max-height: 0;
-    transition: visibility 0.05s, max-height 0.20s;
+#filter {
+    font-weight: bold;
+    margin-top: 0.5em;
 }
 
 .card-body> form > button {
@@ -20,7 +18,7 @@
     visibility: hidden;
     overflow: hidden;
     max-height: 0;
-    transition: visibility 0.05s, max-height 0.20s; 
+    transition: visibility 0.05s, max-height 0.20s;
 }
 
 .closeable>div {
@@ -81,15 +79,5 @@
         border-bottom: 1px solid var(--main-border-color);
         border-top: 1px solid var(--main-border-color);
     }
-      
-}
 
-.editButton{
-    display: block;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 12em;
-    text-decoration: none;
-    margin-bottom: 1em;
 }

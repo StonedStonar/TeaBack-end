@@ -15,6 +15,7 @@ public abstract class Details {
     @GeneratedValue
     private long detailsID;
 
+    @Lob
     private String description;
 
     public Details(){
