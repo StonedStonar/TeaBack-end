@@ -56,7 +56,7 @@ public class CompanyRegisterTest {
     public void removeAllCompanies(){
         if (companyRegister instanceof CompanyJPA){
             List<Company> companies = companyRegister.getAllCompanies();
-            System.out.println("REmoiving all companies");
+            System.out.println("Removing all companies");
             try {
                 for (Company company1 : companies) {
                     companyRegister.removeCompany(company1);
