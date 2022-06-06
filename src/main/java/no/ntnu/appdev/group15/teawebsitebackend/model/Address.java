@@ -82,7 +82,6 @@ public class Address {
     this.addressID = 0;
   }
 
-  //Todo: Skriv tester på alle set metodene om vi gidder.
 
   /**
    * Sets the postal code.

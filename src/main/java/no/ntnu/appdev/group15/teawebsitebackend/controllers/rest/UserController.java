@@ -82,7 +82,8 @@ public class UserController {
 
     @PostMapping("/address")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public void updateUser(@RequestBody String body, Authentication authentication) throws JsonProcessingException {
+    public void updateUser(@RequestBody String body, Authentication authentication)
+        throws JsonProcessingException, CouldNotGetUserException {
         Address address = makeAddress(body);
         AccessUser accessUser = getAccessUser(authentication);
         User user = userRegister.getUserWithUserID(accessUser.getUser().getUserId());
