@@ -8,10 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
 /**
  * Represents a tea-details class, containing details about a specific tea.
@@ -19,6 +16,7 @@ import javax.persistence.ManyToMany;
  * @version 0.1
  */
 @Entity
+@Table(name = "productDetails")
 public class ProductDetails extends Details{
 
     private String shortDescription;

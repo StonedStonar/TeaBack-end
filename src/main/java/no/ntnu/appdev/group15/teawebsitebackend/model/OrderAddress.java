@@ -3,6 +3,7 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 
 /**
@@ -11,6 +12,7 @@ import javax.persistence.Entity;
  * @version 0.1
  */
 @Entity
+@Table(name = "orderAddress")
 public class OrderAddress extends Address {
 
     /**
