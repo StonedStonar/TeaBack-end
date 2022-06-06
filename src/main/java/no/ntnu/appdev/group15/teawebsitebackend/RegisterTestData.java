@@ -229,17 +229,17 @@ public class RegisterTestData {
             List<OrderedProduct> orders = makeListWithOrderedProducts(products.get(0));
             orders.add(new OrderedProduct(products.get(3), 10));
             Order order = new Order(123L, user1, orders, OrderState.ORDERED,
-                    user1.getAddress(), "Posten", LocalDate.now().minusDays(1), "Klarna", false);
+                    user1.getAddress(), "Posten", LocalDate.now().minusDays(1), "Klarna");
             Order order1 = new Order(124L, user2, makeListWithOrderedProducts(products.get(1)), OrderState.ORDERED,
-                    user2.getAddress(), "Posten", LocalDate.now().minusDays(1), "Visa", false);
+                    user2.getAddress(), "Posten", LocalDate.now().minusDays(1), "Visa");
             Order order2 = new Order(125L, user3, makeListWithOrderedProducts(products.get(2)), OrderState.ORDERED,
-                    user3.getAddress(), "Posten", LocalDate.now().minusDays(1), "Mastercard", false);
+                    user3.getAddress(), "Posten", LocalDate.now().minusDays(1), "Mastercard");
             Order order3 = new Order(126L, user4, makeListWithOrderedProducts(products.get(0)), OrderState.ORDERED,
-                    user4.getAddress(), "Posten", LocalDate.now().minusDays(1), "Nudes", false);
+                    user4.getAddress(), "Posten", LocalDate.now().minusDays(1), "Nudes");
             Order order4 = new Order(126L, user1, makeListWithOrderedProducts(products.get(2)), OrderState.ORDERED,
-                    user4.getAddress(), "Posten", LocalDate.now().minusDays(1), "Nudes", false);
+                    user4.getAddress(), "Posten", LocalDate.now().minusDays(1), "Nudes");
             Order order5 = new Order(123L, user1, makeListWithOrderedProducts(products.get(4)), OrderState.ORDERED,
-                    user1.getAddress(), "Post-Nord", LocalDate.now().minusDays(0), "Klarna", false);
+                    user1.getAddress(), "Post-Nord", LocalDate.now().minusDays(0), "Klarna");
             orderRegister.addOrder(order);
             orderRegister.addOrder(order1);
             orderRegister.addOrder(order2);
