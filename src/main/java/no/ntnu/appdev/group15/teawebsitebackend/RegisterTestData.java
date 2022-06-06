@@ -181,7 +181,7 @@ public class RegisterTestData {
         int maxAmountOfRandomReviews = 5;
         Lorem lorem = LoremIpsum.getInstance();
         for (Product product : products) {
-            int amountOfReveiws = random.nextInt(1 ,maxAmountOfRandomReviews);
+            int amountOfReveiws = random.nextInt(maxAmountOfRandomReviews);
             for (int i = 0; i < amountOfReveiws; i++){
                 User randomUser = users.get(random.nextInt(users.size()));
                 product.addReview(new Review(lorem.getTitle(2), lorem.getName(), randomUser, lorem.getWords(2, 20), LocalDate.now().minusDays(random.nextInt(14)), random.nextInt(6)));

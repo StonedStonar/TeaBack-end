@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents an order made by a user.
@@ -189,7 +190,7 @@ public class Order {
     @JsonIgnore
     public int getTotalPrice(){
         int totalPrice = 0;
-        List<OrderedProduct> products = this.orderedProductList.stream().filter(orderedProduct -> orderedProduct.getOrderState() != OrderState.RETURNED || orderedProduct.getOrderState() != OrderState.CANCELLED || orderedProduct.getOrderState() != OrderState.PARTIALRETURN).toList();
+        List<OrderedProduct> products = this.orderedProductList.stream().filter(orderedProduct -> orderedProduct.getOrderState() != OrderState.RETURNED || orderedProduct.getOrderState() != OrderState.CANCELLED || orderedProduct.getOrderState() != OrderState.PARTIALRETURN).collect(Collectors.toList());
         for (OrderedProduct orderedProduct : products){
             totalPrice += orderedProduct.getTotalPrice();
         }

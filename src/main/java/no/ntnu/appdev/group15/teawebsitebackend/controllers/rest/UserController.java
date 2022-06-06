@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Steinar Hjelle Midthus
@@ -169,7 +170,7 @@ public class UserController {
         AccessUser accessUser = getAccessUser(authentication);
         User user = userRegister.getUserWithUserID(accessUser.getUser().getUserId());
         Cart cart = user.getCart();
-        List<CartProduct> cartProducts = cart.getAllProducts().stream().filter(prod -> productMap.containsKey(Long.toString(prod.getProduct().getProductID()))).toList();
+        List<CartProduct> cartProducts = cart.getAllProducts().stream().filter(prod -> productMap.containsKey(Long.toString(prod.getProduct().getProductID()))).collect(Collectors.toList());
         for (CartProduct cartProduct : cartProducts){
             int amount = Integer.parseInt(productMap.get(Long.toString(cartProduct.getProduct().getProductID())));
             if (amount == 0){
