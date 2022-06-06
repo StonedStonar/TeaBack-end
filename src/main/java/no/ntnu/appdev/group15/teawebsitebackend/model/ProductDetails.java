@@ -2,6 +2,9 @@ package no.ntnu.appdev.group15.teawebsitebackend.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddTagException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveTagException;
 
@@ -37,7 +40,8 @@ public class ProductDetails extends Details{
      * @param description the description of the tea.
      * @param ingredients the ingredients in the tea
      */
-    public ProductDetails(String description, String ingredients, String shortDescription){
+    @JsonCreator
+    public ProductDetails(@JsonProperty("description") String description, @JsonProperty("ingredients") String ingredients, @JsonProperty("shortDescription") String shortDescription){
         super(description);
         checkString(shortDescription, "short card description");
         this.shortDescription = shortDescription;

@@ -22,6 +22,23 @@ public class AddressTests {
   private Address address;
   private StringBuilder stringBuilder;
   private int errors;
+  private String illegalPrefix;
+
+  /**
+   * Makes an address test instance.
+   */
+  public AddressTests(){
+    this.illegalPrefix = makeExceptionString("IllegalArgumentException");
+  }
+
+  /**
+   * Makes an exception into the wanted string.
+   * @param exceptionName the name of the exception.
+   * @return the full exception string.
+   */
+  private String makeExceptionString(String exceptionName){
+    return "Expected to get a " +  exceptionName + " since";
+  }
 
   /**
    * Sets up the test address for testing
@@ -29,7 +46,7 @@ public class AddressTests {
   @BeforeEach
   public void setUpTestAddress() {
     try {
-      address = new Address(1, 6015, "Ålesund", "Ålesundvegen", 123, "Norway");
+      this.address = new Address(1, 6015, "Ålesund", "Ålesundvegen", 123, "Norway");
     } catch (IllegalArgumentException exception) {
         fail("Expected successful creation since the input is valid. ");
     }
@@ -115,6 +132,178 @@ public class AddressTests {
       addError(prefix, "the input country is null");
     } catch (IllegalArgumentException exception) {
     }
+
+    checkIfTestsFailedAndDisplayResult();
+  }
+
+  /**
+   * Tests if PostalCode works with valid parameter.
+   */
+  @Test
+  @DisplayName("Tests if PostalCode works with valid parameter.")
+  public void testsIfSetPostalCodeWorksWithValidParameters(){
+    int parameter = 123;
+    try {
+      address.setPostalCode(parameter);
+    } catch (IllegalArgumentException e) {
+      addError(illegalPrefix, "since the input is valid. ");
+    }
+    checkIfTestsFailedAndDisplayResult();
+    assertEquals(address.getPostalCode(), parameter);
+  }
+
+  /**
+   * Tests if PostalCode works with invalid parameter.
+   */
+  @Test
+  @DisplayName("Tests if PostalCode works with invalid parameter.")
+  public void testsIfSetPostalCodeWorksWithInvalidParameters(){
+    try {
+      address.setPostalCode(0);
+      addError(illegalPrefix, " since the input is zero. ");
+    } catch (IllegalArgumentException e) {}
+    try {
+      address.setPostalCode(-34758);
+      addError(illegalPrefix, " since the input is below zero");
+    } catch (IllegalArgumentException e) {}
+
+    checkIfTestsFailedAndDisplayResult();
+  }
+
+  /**
+   * Tests if PostalPlace works with valid parameter.
+   */
+  @Test
+  @DisplayName("Tests if PostalPlace works with valid parameter.")
+  public void testsIfSetPostalPlaceWorksWithValidParameters(){
+    String parameter = "Ålesund";
+    try {
+      address.setPostalPlace(parameter);
+    } catch (IllegalArgumentException e) {
+      addError(illegalPrefix, "since the input is valid. ");
+    }
+    checkIfTestsFailedAndDisplayResult();
+    assertEquals(address.getPostalPlace(), parameter);
+  }
+
+  /**
+   * Tests if PostalPlace works with invalid parameter.
+   */
+  @Test
+  @DisplayName("Tests if PostalPlace works with invalid parameter.")
+  public void testsIfSetPostalPlaceWorksWithInvalidParameters(){
+    try {
+      address.setPostalPlace("");
+      addError(illegalPrefix, "since the input is empty. ");
+    } catch (IllegalArgumentException e) {}
+    try {
+      address.setPostalPlace(null);
+      addError(illegalPrefix, "since the input is null");
+    } catch (IllegalArgumentException e) {}
+
+    checkIfTestsFailedAndDisplayResult();
+  }
+
+  /**
+   * Tests if StreetName works with valid parameter.
+   */
+  @Test
+  @DisplayName("Tests if StreetName works with valid parameter.")
+  public void testsIfSetStreetNameWorksWithValidParameters(){
+    String parameter = "Trineveien";
+    try {
+      address.setStreetName(parameter);
+    } catch (IllegalArgumentException e) {
+      addError(illegalPrefix, "since the input is valid. ");
+    }
+    checkIfTestsFailedAndDisplayResult();
+    assertEquals(address.getStreetName(), parameter);
+  }
+
+  /**
+   * Tests if StreetName works with invalid parameter.
+   */
+  @Test
+  @DisplayName("Tests if StreetName works with invalid parameter.")
+  public void testsIfSetStreetNameWorksWithInvalidParameters(){
+    try {
+      address.setPostalPlace("");
+      addError(illegalPrefix, "since the input is empty. ");
+    } catch (IllegalArgumentException e) {}
+    try {
+      address.setPostalPlace(null);
+      addError(illegalPrefix, "since the input is null");
+    } catch (IllegalArgumentException e) {}
+
+    checkIfTestsFailedAndDisplayResult();
+  }
+
+  /**
+   * Tests if HouseNumber works with valid parameter.
+   */
+  @Test
+  @DisplayName("Tests if HouseNumber works with valid parameter.")
+  public void testsIfSetHouseNumberWorksWithValidParameters(){
+    int parameter = 123;
+    try {
+      address.setHouseNumber(parameter);
+    } catch (IllegalArgumentException e) {
+      addError(illegalPrefix, "since the input is valid. ");
+    }
+    checkIfTestsFailedAndDisplayResult();
+    assertEquals(address.getHouseNumber(), parameter);
+  }
+
+  /**
+   * Tests if  works with invalid parameter.
+   */
+  @Test
+  @DisplayName("Tests if  works with invalid parameter.")
+  public void testsIfSetHouseNumberWorksWithInvalidParameters(){
+    try {
+      address.setHouseNumber(0);
+      addError(illegalPrefix, " since the input is zero. ");
+    } catch (IllegalArgumentException e) {}
+    try {
+      address.setHouseNumber(-34758);
+      addError(illegalPrefix, " since the input is below zero");
+    } catch (IllegalArgumentException e) {}
+
+    checkIfTestsFailedAndDisplayResult();
+  }
+
+
+  /**
+   * Tests if SetCountry works with valid parameter.
+   */
+  @Test
+  @DisplayName("Tests if SetCountry works with valid parameter.")
+  public void testsIfSetCountryWorksWithValidParameters(){
+    String parameter = "Norway";
+    try {
+      address.setCountry(parameter);
+    } catch (IllegalArgumentException e) {
+      addError(illegalPrefix, "since the input is valid. ");
+    }
+    checkIfTestsFailedAndDisplayResult();
+    assertEquals(address.getCountry(), parameter);
+  }
+
+
+  /**
+   * Tests if  works with invalid parameter.
+   */
+  @Test
+  @DisplayName("Tests if  works with invalid parameter.")
+  public void testsIfSetCountryWorksWithInvalidParameters(){
+    try {
+      address.setCountry("");
+      addError(illegalPrefix, "since the input is empty. ");
+    } catch (IllegalArgumentException e) {}
+    try {
+      address.setCountry(null);
+      addError(illegalPrefix, "since the input is null");
+    } catch (IllegalArgumentException e) {}
 
     checkIfTestsFailedAndDisplayResult();
   }
