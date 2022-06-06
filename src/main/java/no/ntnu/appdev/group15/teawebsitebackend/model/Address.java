@@ -82,6 +82,52 @@ public class Address {
     this.addressID = 0;
   }
 
+
+  /**
+   * Sets the postal code.
+   * @param postalCode the new postal code.
+   */
+  public void setPostalCode(int postalCode) {
+    checkIfPostalCodeIsAboveZero(postalCode);
+    this.postalCode = postalCode;
+  }
+
+  /**
+   * Sets the postal place.
+   * @param postalPlace the new postal place.
+   */
+  public void setPostalPlace(String postalPlace) {
+    checkIfPostalPlaceIsValid(postalPlace);
+    this.postalPlace = postalPlace;
+  }
+
+  /**
+   * Sets the street name.
+   * @param streetName the new street name.
+   */
+  public void setStreetName(String streetName) {
+    checkIfStreetNameIsValid(streetName);
+    this.streetName = streetName;
+  }
+
+  /**
+   * Sets the house number.
+   * @param houseNumber the house number.
+   */
+  public void setHouseNumber(int houseNumber) {
+    checkIfHouseNumberIsAboveZero(houseNumber);
+    this.houseNumber = houseNumber;
+  }
+
+  /**
+   * Sets the country.
+   * @param country the country.
+   */
+  public void setCountry(String country) {
+    checkIfCountryIsValid(country);
+    this.country = country;
+  }
+
   /**
    * Gets the id of the address.
    * @return the id of the address.

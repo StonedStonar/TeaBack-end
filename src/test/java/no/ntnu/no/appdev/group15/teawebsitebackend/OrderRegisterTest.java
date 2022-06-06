@@ -141,7 +141,7 @@ public class OrderRegisterTest {
      */
     private Order makeOrder(){
       return new Order(123L, user, makeListWithOrderedProducts(), ORDERED,
-              user.getAddress(), "Posten", LocalDate.now().minusDays(1), "Klarna", false);
+              user.getAddress(), "Posten", LocalDate.now().minusDays(1), "Klarna");
     }
 
 

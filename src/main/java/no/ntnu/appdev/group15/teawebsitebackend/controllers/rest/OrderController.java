@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
 import no.ntnu.appdev.group15.teawebsitebackend.model.OrderedProduct;
-import no.ntnu.appdev.group15.teawebsitebackend.model.Role;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.OrderJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddOrderException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetOrderException;
@@ -18,7 +17,6 @@ import no.ntnu.appdev.group15.teawebsitebackend.security.AccessUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,8 +29,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Order controller class. User must be logged in to see orders.
- * Orders can be removed and added.
+ * Represents the oorder controller class, which is needed to connect order(s) to the database.
+ * User must be logged in to see orders.
  *
  * @author Trine Merete Staverløkk
  * @version 0.1
@@ -78,6 +76,7 @@ public class OrderController {
 
   /**
    * Makes new order.
+   *
    * @param body the body of the HTML-document.
    */
   private Order makeOrder(String body) throws JsonProcessingException {
@@ -123,6 +122,18 @@ public class OrderController {
     orderRegister.updateOrder(makeOrder(body));
   }
 
+
+  /**
+   * Gets the access-user that is using the page.
+   *
+   * @param authentication the authentication object.
+   * @return the access-user of this session.
+   */
+  private AccessUser getAccessUser(Authentication authentication) {
+    return (AccessUser) authentication.getPrincipal();
+  }
+
+
   @ExceptionHandler(CouldNotRemoveProductException.class)
   private ResponseEntity<String> handleCouldNotRemoveProductException(Exception ex) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
@@ -143,15 +154,6 @@ public class OrderController {
     return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(ex.getMessage());
   }
 
-  /**
-   * Gets the access user that is using the page.
-   *
-   * @param authentication the authentication object.
-   * @return the access user of this session.
-   */
-  private AccessUser getAccessUser(Authentication authentication) {
-    return (AccessUser) authentication.getPrincipal();
-  }
 
   /**
    * Checks if an object is null.

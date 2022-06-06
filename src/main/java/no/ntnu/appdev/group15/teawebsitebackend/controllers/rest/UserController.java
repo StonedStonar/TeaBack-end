@@ -3,10 +3,7 @@ package no.ntnu.appdev.group15.teawebsitebackend.controllers.rest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.ntnu.appdev.group15.teawebsitebackend.RegisterTestData;
-import no.ntnu.appdev.group15.teawebsitebackend.model.Cart;
-import no.ntnu.appdev.group15.teawebsitebackend.model.CartProduct;
-import no.ntnu.appdev.group15.teawebsitebackend.model.Product;
-import no.ntnu.appdev.group15.teawebsitebackend.model.User;
+import no.ntnu.appdev.group15.teawebsitebackend.model.*;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddUserException;
@@ -82,25 +79,14 @@ public class UserController {
         userRegister.removeUserWithID(id);
     }
 
-    /**
-     *
-     * @param httpServletRequest
-     */
+
     @PostMapping("/address")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public void updateAddress(HttpServletRequest httpServletRequest){
-        System.err.println("faren din");
-    }
-
-    /**
-     * Makes a new user.
-     * @param body the json object.
-     * @return the user from the json object.
-     * @throws JsonProcessingException if the json is not the right format.
-     */
-    private User makeUser(String body) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(body, User.class);
+    public void updateUser(@RequestBody String body, Authentication authentication)
+        throws JsonProcessingException, CouldNotGetUserException {
+        Address address = makeAddress(body);
+        AccessUser accessUser = getAccessUser(authentication);
+        User user = userRegister.getUserWithUserID(accessUser.getUser().getUserId());
     }
 
     private void updateUser(){
@@ -186,6 +172,28 @@ public class UserController {
     @ExceptionHandler(CouldNotAddUserException.class)
     private ResponseEntity<String> handleCouldNotAddUserException(Exception exception){
         return ResponseEntity.status(HttpStatus.IM_USED).body(exception.getMessage());
+    }
+
+    /**
+     * Makes a new address.
+     * @param body the json object.
+     * @return the user from the json object.
+     * @throws JsonProcessingException if the json is not the right format.
+     */
+    private Address makeAddress(String body) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(body, Address.class);
+    }
+
+    /**
+     * Makes a new user.
+     * @param body the json object.
+     * @return the user from the json object.
+     * @throws JsonProcessingException if the json is not the right format.
+     */
+    private User makeUser(String body) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(body, User.class);
     }
 
     /**

@@ -40,7 +40,6 @@ public class Order {
     private LocalDate dateOfOrder;
     private LocalDate shippedDate;
     private String paymentMethod;
-    private boolean cancelled;
 
     public Order(){}
 
@@ -54,13 +53,12 @@ public class Order {
      * @param deliveryMethod the method of delivery.
      * @param dateOfOrder the date of the order.
      * @param paymentMethod the payment method.
-     * @param cancelled true if order is cancelled, otherwise false.
      */
     //Todo: Skriv dokumentasjon
     @JsonCreator
     public Order(@JsonProperty("orderID")long orderID, @JsonProperty("user")User user, @JsonProperty("orderedProductList")List<OrderedProduct> orderedProductList,
                  @JsonProperty("orderState")OrderState orderState, @JsonProperty("address")Address address, @JsonProperty("deliveryMethod")String deliveryMethod,
-                 @JsonProperty("dateOfOrder")LocalDate dateOfOrder, @JsonProperty("paymentMethod")String paymentMethod, boolean cancelled) {
+                 @JsonProperty("dateOfOrder")LocalDate dateOfOrder, @JsonProperty("paymentMethod")String paymentMethod) {
 
         checkIfNumberNotNegative(orderID, "order ID");
         this.orderID = orderID;
@@ -85,8 +83,6 @@ public class Order {
 
         checkString(paymentMethod, "Payment method");
         this.paymentMethod = paymentMethod;
-
-        this.cancelled = cancelled;
     }
 
     /**

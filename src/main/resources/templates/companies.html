@@ -14,6 +14,9 @@
             <h2 class = "mainHeaderText">
                 Companies overview
             </h2>
+            <a th:href = "@{/editCompany(companyID=0)}" class = "greenButton button editButton">
+                Add new company
+            </a>
             <div class = "cardContainer">
                 <div class = "customCard" th:each="company:${companies}">
                     <p class = "headerOnCard">
@@ -49,7 +52,7 @@
                         <span th:text = "${company.getDetails().getAddress().getStreetName()}">Gåseidvika</span>
                         <span th:text = "${company.getDetails().getAddress().getHouseNumber()}">23</span>
                     </p>
-                    <a th:href="@{/editCompany(id=${company.getCompanyID()})}" class = "button greenButton editButton">
+                    <a th:href="@{/editCompany(companyID=${company.getCompanyID()})}" class = "button greenButton editButton">
                         Edit company
                     </a>
                 </div>

@@ -93,8 +93,6 @@ public class CartAndCheckoutController extends WebController{
 
 
 
-    //TODO "my info" stemmer ikke.
-
 
     /**
      * Confirms order and redirects to thankYouPage.
@@ -125,7 +123,7 @@ public class CartAndCheckoutController extends WebController{
 
         if (deliveryValue != null && paymentValue != null) {
             try {
-                Order order = new Order(Long.MAX_VALUE, user, orderedProductList, OrderState.ORDERED, user.getAddress(), getDeliveryMethod(deliveryValue), LocalDate.now(),getPaymentMethod(paymentValue), false);
+                Order order = new Order(Long.MAX_VALUE, user, orderedProductList, OrderState.ORDERED, user.getAddress(), getDeliveryMethod(deliveryValue), LocalDate.now(),getPaymentMethod(paymentValue));
                 orderRegister.addOrder(order);
                 //cart.clearAllProducts();
                 userRegister.updateUser(user);
