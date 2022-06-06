@@ -2,14 +2,15 @@ package no.ntnu.appdev.group15.teawebsitebackend.controllers.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import no.ntnu.appdev.group15.teawebsitebackend.RegisterTestData;
 import no.ntnu.appdev.group15.teawebsitebackend.model.*;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.OrderJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddUserException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetUserException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveCartProductException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveUserException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.OrderRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.security.AccessUser;
@@ -32,19 +33,23 @@ import java.util.Map;
 @RequestMapping("/users")
 public class UserController {
 
-    private UserRegister userRegister;
 
-    private ProductRegister productRegister;
+    private final UserRegister userRegister;
+
+    private final ProductRegister productRegister;
+
+    private final OrderRegister orderRegister;
 
     /**
      * Makes an instance of the UserController class.
      * @param userJPA the service.
      * @param productJPA the product JPA.
      */
-    public UserController(UserJPA userJPA, ProductJPA productJPA) {
+    public UserController(UserJPA userJPA, ProductJPA productJPA, OrderJPA orderJPA) {
         checkIfObjectIsNull(userJPA, "user jpa");
         this.userRegister = userJPA;
         this.productRegister = productJPA;
+        this.orderRegister = orderJPA;
     }
 
     /**
@@ -82,14 +87,39 @@ public class UserController {
 
     @PostMapping("/address")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public void updateUser(@RequestBody String body, Authentication authentication) throws JsonProcessingException {
+    public void updateUser(@RequestBody String body, Authentication authentication) throws JsonProcessingException, CouldNotGetUserException {
         Address address = makeAddress(body);
         AccessUser accessUser = getAccessUser(authentication);
         User user = userRegister.getUserWithUserID(accessUser.getUser().getUserId());
+        Address addressToEdit = user.getAddress();
+        addressToEdit.setCountry(address.getCountry());
+        addressToEdit.setHouseNumber(address.getHouseNumber());
+        addressToEdit.setPostalCode(address.getPostalCode());
+        addressToEdit.setPostalPlace(address.getPostalPlace());
+        addressToEdit.setStreetName(address.getStreetName());
+        userRegister.updateUser(user);
+        accessUser.setUser(user);
     }
 
-    private void updateUser(){
+    @GetMapping("/myUser")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    public User getLoggedInUser(Authentication authentication) throws CouldNotGetUserException {
+        AccessUser accessUser = getAccessUser(authentication);
+        User user = userRegister.getUserWithUserID(accessUser.getUser().getUserId());
+        return user;
+    }
 
+    @PutMapping
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public void updateUser(Authentication authentication, @RequestBody String body) throws JsonProcessingException, CouldNotGetUserException {
+        User user = makeUser(body);
+        AccessUser accessUser = getAccessUser(authentication);
+        if (user.getUserId() == accessUser.getUser().getUserId()){
+            userRegister.updateUser(user);
+            accessUser.setUser(user);
+        }else {
+            throw new CouldNotGetUserException("The user ID of the input JSON body does not match the set ID of the user");
+        }
     }
 
 
