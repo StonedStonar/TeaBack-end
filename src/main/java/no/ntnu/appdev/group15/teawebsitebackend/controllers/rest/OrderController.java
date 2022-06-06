@@ -59,7 +59,7 @@ public class OrderController {
    * @return a list with all the orders made by a user.
    */
   @GetMapping
-  public List<Order> getAllOrders() {
+  public List<Order> getALlOrders() {
       List<Order> orders = orderRegister.getAllOrders();
       return orders;
   }

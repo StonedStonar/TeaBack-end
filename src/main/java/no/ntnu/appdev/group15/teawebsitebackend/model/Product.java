@@ -41,6 +41,7 @@ public class Product {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "productReviews", joinColumns = @JoinColumn(name = "productID"))
     @Column(name = "productID")
+    @JsonIgnore
     private List<Review> reviews;
 
     /**

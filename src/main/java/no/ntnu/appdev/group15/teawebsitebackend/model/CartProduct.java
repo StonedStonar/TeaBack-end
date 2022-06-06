@@ -1,5 +1,8 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 /**
@@ -29,7 +32,8 @@ public class CartProduct {
      * @param product the product that is in the cart.
      * @param amount the amount of that product.
      */
-    public CartProduct(Product product, int amount, Cart cart) {
+    @JsonCreator
+    public CartProduct(@JsonProperty("product") Product product, @JsonProperty("amount") int amount) {
         checkIfObjectIsNull(product, "product");
         checkIfNumberNotNegative(amount, "amount");
         this.product = product;

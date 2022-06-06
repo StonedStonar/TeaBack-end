@@ -18,10 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -57,9 +55,15 @@ public class UserController {
      * @return a list with all the users.
      */
     @GetMapping
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<User> getAllUsers(){
         return userRegister.getAllUsers();
+    }
+
+    @GetMapping("/{userID}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public User getUserWithID(@PathVariable("userID") long userID) throws CouldNotGetUserException {
+        return userRegister.getUserWithUserID(userID);
     }
 
     /**
@@ -109,9 +113,17 @@ public class UserController {
         return user;
     }
 
+    @GetMapping("/cart")
+    @PreAuthorize("hasRole('USER')")
+    public Cart getCart(Authentication authentication) throws CouldNotGetUserException {
+        AccessUser accessUser = getAccessUser(authentication);
+        User user = userRegister.getUserWithUserID(accessUser.getUser().getUserId());
+        return user.getCart();
+    }
+
     @PutMapping
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public void updateUser(Authentication authentication, @RequestBody String body) throws JsonProcessingException, CouldNotGetUserException {
+    @PreAuthorize("hasRole('USER')")
+    public void updateLoggedInUser(Authentication authentication, @RequestBody String body) throws JsonProcessingException, CouldNotGetUserException {
         User user = makeUser(body);
         AccessUser accessUser = getAccessUser(authentication);
         if (user.getUserId() == accessUser.getUser().getUserId()){
@@ -148,59 +160,24 @@ public class UserController {
      * @param authentication the authentication object.
      * @return the access user of this session.
      */
-    private AccessUser getAccessUser(Authentication authentication){
+    private AccessUser getAccessUser(Authentication authentication) {
         return (AccessUser) authentication.getPrincipal();
-    }
-
-    /**
-     * Shows a page where you need to be logged in to see.
-     * @param id the id that should be shown on the page.
-     * @return string that is shown in the browser.
-     */
-    @GetMapping(value = "/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    public String userPage(@PathVariable Long id){
-        return "You just wrote " + id + ".";
-    }
-
-    /**
-     * The normal page where no-one needs to log in to see.
-     * @return a string that is displayed.
-     */
-    @GetMapping("/normal")
-    public String normal(){
-        return "Page without any permissions needed.";
-    }
-
-    /**
-     * Shows a page where users with "USER" role can see.
-     * @return a string that is displayed.
-     */
-    @GetMapping("/user")
-    @PreAuthorize("hasRole('USER')")
-    public String userPage(){
-        return "This is the user page.";
-    }
-
-    /**
-     * Shows a page where users with "ADMIN" role can see.
-     * @return a string that is displayed.
-     */
-    @GetMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String adminPage(){
-        return "This is the admin page.";
     }
 
 
     @ExceptionHandler(CouldNotRemoveUserException.class)
-    private ResponseEntity<String> handleCouldNotRemoveUserException(Exception exception){
+    public ResponseEntity<String> handleCouldNotRemoveUserException(Exception exception){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
     @ExceptionHandler(CouldNotAddUserException.class)
-    private ResponseEntity<String> handleCouldNotAddUserException(Exception exception){
+    public ResponseEntity<String> handleCouldNotAddUserException(Exception exception){
         return ResponseEntity.status(HttpStatus.IM_USED).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(CouldNotGetUserException.class)
+    public ResponseEntity<String> handleCouldNotGetUserException(Exception exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
     /**

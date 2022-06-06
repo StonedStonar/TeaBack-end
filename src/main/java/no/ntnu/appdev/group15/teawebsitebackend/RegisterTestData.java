@@ -148,11 +148,11 @@ public class RegisterTestData {
         List<User> users = userRegister.getAllUsers();
         Cart cart = users.get(0).getCart();
         List<Product> products = productRegister.getAllProducts();
-        cart.addCartProduct(new CartProduct(products.get(0), 1, cart));
-        cart.addCartProduct(new CartProduct(products.get(1), 3, cart));
-        users.get(2).getCart().addCartProduct(new CartProduct(products.get(2), 3, cart));
-        users.get(1).getCart().addCartProduct(new CartProduct(products.get(3), 5, cart));
-        users.get(1).getCart().addCartProduct(new CartProduct(products.get(0), 2, cart));
+        cart.addCartProduct(new CartProduct(products.get(0), 1));
+        cart.addCartProduct(new CartProduct(products.get(1), 3));
+        users.get(2).getCart().addCartProduct(new CartProduct(products.get(2), 3));
+        users.get(1).getCart().addCartProduct(new CartProduct(products.get(3), 5));
+        users.get(1).getCart().addCartProduct(new CartProduct(products.get(0), 2));
         for (User user : users){
             userRegister.updateUser(user);
         }
