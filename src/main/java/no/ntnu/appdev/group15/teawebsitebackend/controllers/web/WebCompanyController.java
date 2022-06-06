@@ -3,6 +3,7 @@ package no.ntnu.appdev.group15.teawebsitebackend.controllers.web;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Company;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.CompanyJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.CompanyRegister;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +37,7 @@ public class WebCompanyController extends WebController{
      * @return the HTML name of companies overview.
      */
     @GetMapping("/companyOverview")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getCompanyOverview(Model model, Authentication authentication){
         addLoggedInAttributes(authentication, model);
         List<Company> companyList = companyRegister.getAllCompanies();
