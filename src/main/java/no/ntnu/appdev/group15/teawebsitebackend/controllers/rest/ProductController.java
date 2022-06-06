@@ -9,6 +9,7 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveP
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class ProductController {
     }
 
     @PostMapping
-    //TODO PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public void addProduct(@RequestBody String body) throws JsonProcessingException, CouldNotAddProductException {
         productRegister.addProduct(getProduct(body));
     }
@@ -67,6 +68,7 @@ public class ProductController {
      * @throws CouldNotRemoveProductException gets thrown if the product could not be removed.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteProduct(@PathVariable Long id) throws CouldNotRemoveProductException {
         productRegister.removeProductWithProductID(id);
     }
@@ -78,7 +80,7 @@ public class ProductController {
      * @throws CouldNotGetProductException gets thrown if the product could not be found in the system.
      */
     @PutMapping
-    //PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public void updateProduct(@RequestBody String body) throws JsonProcessingException, CouldNotGetProductException {
         productRegister.updateProduct(getProduct(body));
     }
