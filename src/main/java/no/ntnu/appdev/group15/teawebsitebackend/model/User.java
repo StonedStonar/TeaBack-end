@@ -97,7 +97,7 @@ public class User {
      * @throws IllegalArgumentException gets thrown if the input is invalid format.
      */
     @JsonCreator
-    public User(@JsonProperty("firstName") String firstName, @JsonProperty("lastName") String lastName,
+    public User(@JsonProperty("userID") long userID, @JsonProperty("firstName") String firstName, @JsonProperty("lastName") String lastName,
                 @JsonProperty("address") Address address, @JsonProperty("email") String email,@JsonProperty("phoneNumber") long phoneNumber , @JsonProperty("password") String password) {
         setFirstName(firstName);
         setLastName(lastName);
@@ -121,7 +121,6 @@ public class User {
      * @param password the password of the user.
      * @throws IllegalArgumentException gets thrown if the input is invalid format.
      */
-    @JsonCreator
     public User(@JsonProperty("firstName") String firstName, @JsonProperty("lastName") String lastName,
                 @JsonProperty("email") String email,@JsonProperty("phoneNumber") long phoneNumber ,
                 @JsonProperty("password") String password) {

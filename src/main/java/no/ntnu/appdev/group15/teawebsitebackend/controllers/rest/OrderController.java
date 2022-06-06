@@ -2,6 +2,7 @@ package no.ntnu.appdev.group15.teawebsitebackend.controllers.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.List;
 import no.ntnu.appdev.group15.teawebsitebackend.model.Order;
 import no.ntnu.appdev.group15.teawebsitebackend.model.OrderedProduct;
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Represents the oorder controller class, which is needed to connect order(s) to the database.
+ * Represents the order controller class, which is needed to connect order(s) to the database.
  * User must be logged in to see orders.
  *
  * @author Trine Merete Staverløkk
@@ -58,7 +59,7 @@ public class OrderController {
    * @return a list with all the orders made by a user.
    */
   @GetMapping
-  public List<Order> getALlOrders(OrderedProduct orderedProduct) {
+  public List<Order> getALlOrders() {
       List<Order> orders = orderRegister.getAllOrders();
       return orders;
   }
@@ -75,14 +76,8 @@ public class OrderController {
   }
 
   /**
-   * Makes new order.
    *
-   * @param body the body of the HTML-document.
    */
-  private Order makeOrder(String body) throws JsonProcessingException {
-      ObjectMapper objectMapper = new ObjectMapper();
-      return objectMapper.readValue(body, Order.class);
-  }
 
 
   /**
@@ -154,6 +149,17 @@ public class OrderController {
     return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(ex.getMessage());
   }
 
+
+  /**
+   * Makes new order.
+   *
+   * @param body the body of the HTML-document.
+   */
+  private Order makeOrder(String body) throws JsonProcessingException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new JavaTimeModule());
+    return objectMapper.readValue(body, Order.class);
+  }
 
   /**
    * Checks if an object is null.

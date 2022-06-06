@@ -82,19 +82,19 @@ public class OrderedProductTests {
     @DisplayName("Tests if the constructor with four parameters works with invalid input.")
     public void testIfConstructorWithFourParametersWorksWithInvalidInput(){
         try {
-            OrderedProduct orderedProduct = new OrderedProduct(1, null, 2, OrderState.ORDERED);
+            OrderedProduct orderedProduct = new OrderedProduct(null, 2, OrderState.ORDERED);
             addError(prefixIllegal, "the product is null");
         }catch (IllegalArgumentException exception){}
         try {
-            OrderedProduct orderedProduct = new OrderedProduct(1, makeProduct(), -2, OrderState.ORDERED);
+            OrderedProduct orderedProduct = new OrderedProduct(makeProduct(), -2, OrderState.ORDERED);
             addError(prefixIllegal, "amount is negative");
         }catch (IllegalArgumentException exception){}
         try {
-            OrderedProduct orderedProduct = new OrderedProduct(1, makeProduct(), 0, OrderState.ORDERED);
+            OrderedProduct orderedProduct = new OrderedProduct(makeProduct(), 0, OrderState.ORDERED);
             addError(prefixIllegal, "the amount is zero");
         }catch (IllegalArgumentException exception){}
         try {
-            OrderedProduct orderedProduct = new OrderedProduct(1, makeProduct(), 3, null);
+            OrderedProduct orderedProduct = new OrderedProduct(makeProduct(), 3, null);
             addError(prefixIllegal, "the order state is null");
         }catch (IllegalArgumentException exception){}
         checkIfTestsFailedAndDisplayResult();
@@ -108,7 +108,7 @@ public class OrderedProductTests {
     public void testIfConstructorWorksWithValidParameters(){
         String worksPrefix = "Expected the constructor to work since the input of ";
         try {
-            OrderedProduct orderedProduct = new OrderedProduct(1, makeProduct(), 2, OrderState.ORDERED);
+            OrderedProduct orderedProduct = new OrderedProduct(makeProduct(), 2, OrderState.ORDERED);
         }catch (IllegalArgumentException exception){
             addError(worksPrefix, "3 parameters are valid.");
         }

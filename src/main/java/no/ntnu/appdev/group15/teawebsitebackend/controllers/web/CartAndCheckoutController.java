@@ -75,7 +75,7 @@ public class CartAndCheckoutController extends WebController{
                 amount = 1;
             }
             if (!cart.checkIfProductIsInCart(product)){
-                cart.addCartProduct(new CartProduct(product, amount, cart));
+                cart.addCartProduct(new CartProduct(product, amount));
                 parameterBuilder.addParameter("productAdded", "true");
             }else {
                 CartProduct cartProduct = cart.getCartProduct(productID);

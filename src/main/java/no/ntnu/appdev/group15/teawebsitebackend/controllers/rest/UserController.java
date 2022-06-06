@@ -2,14 +2,15 @@ package no.ntnu.appdev.group15.teawebsitebackend.controllers.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import no.ntnu.appdev.group15.teawebsitebackend.RegisterTestData;
 import no.ntnu.appdev.group15.teawebsitebackend.model.*;
+import no.ntnu.appdev.group15.teawebsitebackend.model.database.OrderJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.ProductJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.database.UserJPA;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddUserException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetUserException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveCartProductException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveUserException;
+import no.ntnu.appdev.group15.teawebsitebackend.model.registers.OrderRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.ProductRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.model.registers.UserRegister;
 import no.ntnu.appdev.group15.teawebsitebackend.security.AccessUser;
@@ -17,10 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -32,19 +31,23 @@ import java.util.Map;
 @RequestMapping("/users")
 public class UserController {
 
-    private UserRegister userRegister;
 
-    private ProductRegister productRegister;
+    private final UserRegister userRegister;
+
+    private final ProductRegister productRegister;
+
+    private final OrderRegister orderRegister;
 
     /**
      * Makes an instance of the UserController class.
      * @param userJPA the service.
      * @param productJPA the product JPA.
      */
-    public UserController(UserJPA userJPA, ProductJPA productJPA) {
+    public UserController(UserJPA userJPA, ProductJPA productJPA, OrderJPA orderJPA) {
         checkIfObjectIsNull(userJPA, "user jpa");
         this.userRegister = userJPA;
         this.productRegister = productJPA;
+        this.orderRegister = orderJPA;
     }
 
     /**
@@ -52,9 +55,15 @@ public class UserController {
      * @return a list with all the users.
      */
     @GetMapping
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<User> getAllUsers(){
         return userRegister.getAllUsers();
+    }
+
+    @GetMapping("/{userID}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public User getUserWithID(@PathVariable("userID") long userID) throws CouldNotGetUserException {
+        return userRegister.getUserWithUserID(userID);
     }
 
     /**
@@ -82,15 +91,47 @@ public class UserController {
 
     @PostMapping("/address")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public void updateUser(@RequestBody String body, Authentication authentication)
-        throws JsonProcessingException, CouldNotGetUserException {
+    public void updateUser(@RequestBody String body, Authentication authentication) throws JsonProcessingException, CouldNotGetUserException {
         Address address = makeAddress(body);
         AccessUser accessUser = getAccessUser(authentication);
         User user = userRegister.getUserWithUserID(accessUser.getUser().getUserId());
+        Address addressToEdit = user.getAddress();
+        addressToEdit.setCountry(address.getCountry());
+        addressToEdit.setHouseNumber(address.getHouseNumber());
+        addressToEdit.setPostalCode(address.getPostalCode());
+        addressToEdit.setPostalPlace(address.getPostalPlace());
+        addressToEdit.setStreetName(address.getStreetName());
+        userRegister.updateUser(user);
+        accessUser.setUser(user);
     }
 
-    private void updateUser(){
+    @GetMapping("/myUser")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    public User getLoggedInUser(Authentication authentication) throws CouldNotGetUserException {
+        AccessUser accessUser = getAccessUser(authentication);
+        User user = userRegister.getUserWithUserID(accessUser.getUser().getUserId());
+        return user;
+    }
 
+    @GetMapping("/cart")
+    @PreAuthorize("hasRole('USER')")
+    public Cart getCart(Authentication authentication) throws CouldNotGetUserException {
+        AccessUser accessUser = getAccessUser(authentication);
+        User user = userRegister.getUserWithUserID(accessUser.getUser().getUserId());
+        return user.getCart();
+    }
+
+    @PutMapping
+    @PreAuthorize("hasRole('USER')")
+    public void updateLoggedInUser(Authentication authentication, @RequestBody String body) throws JsonProcessingException, CouldNotGetUserException {
+        User user = makeUser(body);
+        AccessUser accessUser = getAccessUser(authentication);
+        if (user.getUserId() == accessUser.getUser().getUserId()){
+            userRegister.updateUser(user);
+            accessUser.setUser(user);
+        }else {
+            throw new CouldNotGetUserException("The user ID of the input JSON body does not match the set ID of the user");
+        }
     }
 
 
@@ -119,59 +160,24 @@ public class UserController {
      * @param authentication the authentication object.
      * @return the access user of this session.
      */
-    private AccessUser getAccessUser(Authentication authentication){
+    private AccessUser getAccessUser(Authentication authentication) {
         return (AccessUser) authentication.getPrincipal();
-    }
-
-    /**
-     * Shows a page where you need to be logged in to see.
-     * @param id the id that should be shown on the page.
-     * @return string that is shown in the browser.
-     */
-    @GetMapping(value = "/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    public String userPage(@PathVariable Long id){
-        return "You just wrote " + id + ".";
-    }
-
-    /**
-     * The normal page where no-one needs to log in to see.
-     * @return a string that is displayed.
-     */
-    @GetMapping("/normal")
-    public String normal(){
-        return "Page without any permissions needed.";
-    }
-
-    /**
-     * Shows a page where users with "USER" role can see.
-     * @return a string that is displayed.
-     */
-    @GetMapping("/user")
-    @PreAuthorize("hasRole('USER')")
-    public String userPage(){
-        return "This is the user page.";
-    }
-
-    /**
-     * Shows a page where users with "ADMIN" role can see.
-     * @return a string that is displayed.
-     */
-    @GetMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String adminPage(){
-        return "This is the admin page.";
     }
 
 
     @ExceptionHandler(CouldNotRemoveUserException.class)
-    private ResponseEntity<String> handleCouldNotRemoveUserException(Exception exception){
+    public ResponseEntity<String> handleCouldNotRemoveUserException(Exception exception){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
     @ExceptionHandler(CouldNotAddUserException.class)
-    private ResponseEntity<String> handleCouldNotAddUserException(Exception exception){
+    public ResponseEntity<String> handleCouldNotAddUserException(Exception exception){
         return ResponseEntity.status(HttpStatus.IM_USED).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(CouldNotGetUserException.class)
+    public ResponseEntity<String> handleCouldNotGetUserException(Exception exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
     /**
