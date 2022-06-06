@@ -41,11 +41,10 @@ public class OrderedProduct {
      * @throws IllegalArgumentException if any of the input arguments are invalid format.
      */
     @JsonCreator
-    public OrderedProduct(@JsonProperty("orderedProductID") long orderedID, @JsonProperty("product") Product product, @JsonProperty("amountOfProduct") int amountOfProduct, @JsonProperty("orderState")OrderState orderState) {
+    public OrderedProduct(@JsonProperty("product") Product product, @JsonProperty("amountOfProduct") int amountOfProduct, @JsonProperty("orderState")OrderState orderState) {
         checkIfProductIsValid(product);
         checkIfAmountIsValid(amountOfProduct);
         checkOrderState(orderState);
-        checkIfLongIsAboveZero(orderedID, "ordered id");
         this.product = product;
         this.pricePerProduct = product.getPrice();
         this.amountOfProduct = amountOfProduct;

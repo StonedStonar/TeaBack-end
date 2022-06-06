@@ -1,5 +1,6 @@
 package no.ntnu.appdev.group15.teawebsitebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotAddCartProductException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotGetCartProductException;
 import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveCartProductException;
@@ -25,12 +26,12 @@ public class Cart {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "cartProducts", joinColumns = @JoinColumn(name = "cartID"))
-    @Column(name = "cartID")
-    private final List<CartProduct> cartProductList;
+    private List<CartProduct> cartProductList;
 
     /**
      * Makes an instance of the Cart class.
      */
+    @JsonCreator
     public Cart() {
         this.cartProductList = new ArrayList<>();
     }
