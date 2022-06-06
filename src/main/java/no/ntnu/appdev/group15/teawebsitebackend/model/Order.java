@@ -21,7 +21,7 @@ public class Order {
     @GeneratedValue
     private long orderID;
 
-    @OneToOne(targetEntity = User.class)
+    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "userID")
     private User user;
 
