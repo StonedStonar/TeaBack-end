@@ -17,6 +17,7 @@ import no.ntnu.appdev.group15.teawebsitebackend.model.exceptions.CouldNotRemoveP
 import no.ntnu.appdev.group15.teawebsitebackend.security.AccessUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -59,25 +60,36 @@ public class OrderController {
    * @return a list with all the orders made by a user.
    */
   @GetMapping
+  @PreAuthorize("hasRole('ADMIN')")
   public List<Order> getALlOrders() {
       List<Order> orders = orderRegister.getAllOrders();
       return orders;
   }
 
+  /**
+   * Gets all orders to a user.
+   *
+   * @param authentication the user that is logged in.
+   * @return the orders of a user.
+   */
+  @GetMapping("/userOrders")
+  @PreAuthorize("hasRole('USER')")
+  public List<Order> getAllOrdersOfLoggedInUser(Authentication authentication){
+    AccessUser accessUser = getAccessUser(authentication);
+    return orderRegister.getAllOrdersOfUser(accessUser.getUser().getUserId());
+  }
+
+
 
   /**
    * Gets an order with a specified id. Only by admin
    */
-  //@PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/{id}")
   public Order getOrderWithSpecifiedId(@PathVariable Long id) throws CouldNotGetOrderException {
       Order order = orderRegister.getOrderWithId(id);
       return order;
   }
-
-  /**
-   *
-   */
 
 
   /**
@@ -86,6 +98,7 @@ public class OrderController {
    * @param body the json object
    */
   @PostMapping
+  @PreAuthorize("hasRole('ADMIN')")
   public void addOrderToUser(@RequestBody String body) throws JsonProcessingException, CouldNotAddOrderException {
     Order order = makeOrder(body);
     orderRegister.addOrder(order);
@@ -97,7 +110,7 @@ public class OrderController {
    *
    * @param id the id of the order to remove
    */
-  //@PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @DeleteMapping("/{id}")
   public void removeOrder(@PathVariable Long id)
       throws CouldNotGetOrderException, CouldNotRemoveOrderException {
@@ -112,8 +125,8 @@ public class OrderController {
    * @throws CouldNotGetOrderException gets thrown if the order could not be edited.
    */
   @PutMapping
-  //@PreAuthorize("hasRole('ADMIN')")
-  public void editOrder(String body) throws CouldNotGetOrderException, JsonProcessingException {
+  @PreAuthorize("hasRole('ADMIN')")
+  public void editOrder(@RequestBody String body) throws CouldNotGetOrderException, JsonProcessingException {
     orderRegister.updateOrder(makeOrder(body));
   }
 
@@ -129,17 +142,17 @@ public class OrderController {
   }
 
 
-  @ExceptionHandler(CouldNotRemoveProductException.class)
+  @ExceptionHandler(CouldNotRemoveOrderException.class)
   private ResponseEntity<String> handleCouldNotRemoveProductException(Exception ex) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
   }
 
-  @ExceptionHandler(CouldNotAddProductException.class)
+  @ExceptionHandler(CouldNotAddOrderException.class)
   private ResponseEntity<String> handleCouldNotAddProductException(Exception ex) {
     return ResponseEntity.status(HttpStatus.IM_USED).body(ex.getMessage());
   }
 
-  @ExceptionHandler(CouldNotGetProductException.class)
+  @ExceptionHandler(CouldNotGetOrderException.class)
   private ResponseEntity<String> handleCouldNotGetProductException(Exception ex) {
     return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ex.getMessage());
   }
