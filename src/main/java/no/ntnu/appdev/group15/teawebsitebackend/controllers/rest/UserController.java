@@ -136,7 +136,7 @@ public class UserController {
     }
 
     /**
-     * Updates the logged in users details.
+     * Updates the loggedin users details.
      * @param authentication the authentication.
      * @param body the JSON object.
      * @throws JsonProcessingException gets thrown if the JSON is invalid format.
