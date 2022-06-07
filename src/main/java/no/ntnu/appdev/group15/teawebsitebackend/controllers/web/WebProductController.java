@@ -21,6 +21,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.http.HttpSession;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.lang.Long.parseLong;
 import static java.lang.Long.sum;
@@ -85,25 +86,25 @@ public class WebProductController extends WebController{
             List<Tag> listOfTags = getTagsFromMap(parameters);
             if(!listOfTags.isEmpty()){
                 productList = productList.stream().filter(product ->
-                        product.getProductDetails().checkIfTagsAreFound(listOfTags)).toList();
+                        product.getProductDetails().checkIfTagsAreFound(listOfTags)).collect(Collectors.toList());
             }
             parameters.keySet().forEach(tagIdentifier -> model.addAttribute(tagIdentifier, tagIdentifier));
             List<Company> companies = getCompaniesFromMap(parameters);
             if(!companies.isEmpty()){
                 productList = productList.stream().filter(product -> companies.stream().anyMatch(company ->
-                        company.getCompanyID() == product.getCompany().getCompanyID())).toList();
+                        company.getCompanyID() == product.getCompany().getCompanyID())).collect(Collectors.toList());
             }
         }
         productList = checkIfSearch(parameters, productList, model);
         String sale = parameters.get("sale");
         boolean isSale = sale != null;
         if (isSale){
-            productList = productList.stream().filter(Product::isOnSale).toList();
+            productList = productList.stream().filter(Product::isOnSale).collect(Collectors.toList());
             if (productList.isEmpty()){
                 model.addAttribute("sale", sale);
             }
         }
-        List<Company> companies = productList.stream().map(Product::getCompany).distinct().toList();
+        List<Company> companies = productList.stream().map(Product::getCompany).distinct().collect(Collectors.toList());;
         List<Tag> tags = getTagsFromProduct(productList);
         model.addAttribute("relatedProduct", productList);
         model.addAttribute("relatedTags", tags);
@@ -177,7 +178,7 @@ public class WebProductController extends WebController{
         List<Product> products = productList;
         if (searchWord != null && !searchWord.isBlank()) {
             products = products.stream().filter(product -> product.getProductName().length() >= searchWord.length())
-                    .filter(product -> product.getProductName().toLowerCase().contains(searchWord.toLowerCase())).toList();
+                    .filter(product -> product.getProductName().toLowerCase().contains(searchWord.toLowerCase())).collect(Collectors.toList());
             if (productList.isEmpty()){
                 model.addAttribute("searchWord", searchWord);
             }
@@ -301,8 +302,8 @@ public class WebProductController extends WebController{
     private void addAndRemoveTags(ProductDetails productDetails, List<Long> tags) throws CouldNotRemoveTagException, CouldNotAddTagException, CouldNotGetTagException {
         List<Tag> tagList = getAllTagsWithIDs(tags);
         List<Tag> productTagList = productDetails.getTagList();
-        List<Tag> tagsToRemove = productTagList.stream().filter(tag -> !tagList.contains(tag)).toList();
-        List<Tag> tagsToAdd = tagList.stream().filter(tag -> !productTagList.contains(tag)).toList();
+        List<Tag> tagsToRemove = productTagList.stream().filter(tag -> !tagList.contains(tag)).collect(Collectors.toList());
+        List<Tag> tagsToAdd = tagList.stream().filter(tag -> !productTagList.contains(tag)).collect(Collectors.toList());
         for (Tag tag : tagsToRemove) {
             productDetails.removeTag(tag);
         }

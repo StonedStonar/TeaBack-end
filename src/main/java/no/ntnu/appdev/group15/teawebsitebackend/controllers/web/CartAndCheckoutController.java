@@ -156,13 +156,14 @@ public class CartAndCheckoutController extends WebController{
      * @return the payment method as a value
      */
     private String getPaymentMethod(int paymentValue){
-        String payment = null;
+        String payment = "";
         switch (paymentValue){
             case 1:
                 payment = "Klarna";
                 break;
             case 2:
                 payment = "Vipps";
+                break;
             case 3:
                 payment = "Your mom";
                 break;

@@ -106,7 +106,7 @@ public class WebController {
         if (!list.isEmpty() && list.get(0) instanceof Long){
             List<Long> longs = list;
             for(long number: longs){
-                if (!stringBuilder.isEmpty()){
+                if (stringBuilder.length() != 0){
                     stringBuilder.append(",");
                 }
                 stringBuilder.append(number);
