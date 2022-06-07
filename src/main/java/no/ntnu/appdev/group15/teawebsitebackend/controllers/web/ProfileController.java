@@ -212,7 +212,7 @@ public class ProfileController extends WebController{
      * @return the former orders HTML name.
      */
     @GetMapping("/formerOrders")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public String getFormerOrders(Model model, Authentication authentication){
         addLoggedInAttributes(authentication, model);
         User user = getAccessUser(authentication).getUser();

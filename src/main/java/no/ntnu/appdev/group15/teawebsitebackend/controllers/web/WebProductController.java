@@ -60,7 +60,8 @@ public class WebProductController extends WebController{
      * @return the product info page.
      */
     @GetMapping("/product-info")
-    public String getProductInfo(Authentication authentication, Model model, @RequestParam("id") long id) throws CouldNotGetProductException {
+    public String getProductInfo(Authentication authentication, Model model, @RequestParam("id") long id)
+            throws CouldNotGetProductException {
         addLoggedInAttributes(authentication, model);
         List<Product> productList = productRegister.getAllProducts();
         Product product = null;
@@ -112,6 +113,12 @@ public class WebProductController extends WebController{
         return "products";
     }
 
+    /**
+     * Gets the companies from the parameter map.
+     * @param parameters the map.
+     * @return the companies matching the set id's.
+     * @throws CouldNotGetCompanyException gets thrown if the company could not be found in the DB.
+     */
     private List<Company> getCompaniesFromMap(Map<String, String> parameters) throws CouldNotGetCompanyException {
         Set<String> keySetForMap = parameters.keySet();
         List<Company> companies = new ArrayList<>();
@@ -186,6 +193,14 @@ public class WebProductController extends WebController{
         return products;
     }
 
+    /**
+     * Gets the edit product page.
+     * @param authentication the authentication.
+     * @param model the model.
+     * @param httpSession the http session.
+     * @param productID the product ID.
+     * @return the url to the editProdut html.
+     */
     @GetMapping("/editProduct")
     @PreAuthorize("hasRole('ADMIN')")
     public String getEditProduct(Authentication authentication, Model model, HttpSession httpSession,
@@ -222,6 +237,21 @@ public class WebProductController extends WebController{
         return url;
     }
 
+    /**
+     * Updates the wanted product with its new details.
+     * @param productID the product id.
+     * @param productName the product name.
+     * @param productAmount the product amount.
+     * @param productPrice the product price.
+     * @param companyID the company ID.
+     * @param ingredients the ingredeints.
+     * @param tags the tags.
+     * @param description the description.
+     * @param shortDescription the short description.
+     * @param preview is here when its a preview.
+     * @param httpSession the storage medium between this method and editProduct metohd.
+     * @return a redirect to the editProduct page.
+     */
     @PutMapping("/editProduct")
     public RedirectView editProduct(@RequestParam("productID") long productID, @RequestParam("productName") String productName, @RequestParam("productAmount") int productAmount,
                                     @RequestParam("productPrice") int productPrice, @RequestParam("companyID") int companyID,

@@ -46,6 +46,9 @@ public class CartAndCheckoutController extends WebController{
 
     /**
      * Makes an instance of the CartAndCheckoutController class.
+     * @param orderJPA the order JPA.
+     * @param productJPA the product JPA.
+     * @param userJPA the user JPA.
      */
     public CartAndCheckoutController(OrderJPA orderJPA, ProductJPA productJPA, UserJPA userJPA) {
         super();
@@ -96,10 +99,10 @@ public class CartAndCheckoutController extends WebController{
 
     /**
      * Confirms order and redirects to thankYouPage.
-     * @param authentication
-     * @param deliveryValue
-     * @param paymentValue
-     * @return
+     * @param authentication the authentication.
+     * @param deliveryValue the delivery value.
+     * @param paymentValue the payment value.
+     * @return a redirect to the "thank you for your purchase" screen.
      */
     @PostMapping("/doPayment")
     public RedirectView confirmOrder(Authentication authentication, @RequestParam(value = "deliveryMethod", required = false)Integer deliveryValue, @RequestParam(value = "paymentMethod", required = false)Integer paymentValue){
@@ -227,7 +230,7 @@ public class CartAndCheckoutController extends WebController{
      * @return the html name of the page.
      */
     @GetMapping("/cart")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public String getCart(Model model, Authentication authentication){
         addLoggedInAttributes(authentication, model);
         User user = getAccessUser(authentication).getUser();
@@ -236,7 +239,7 @@ public class CartAndCheckoutController extends WebController{
     }
 
     @GetMapping("/thankYouPage")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public String getThankYouPage(Authentication authentication, Model model){
         addLoggedInAttributes(authentication, model);
 
@@ -244,7 +247,7 @@ public class CartAndCheckoutController extends WebController{
     }
 
     @GetMapping("/confirmPage")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public String getConfirmPage(Authentication authentication, Model model) throws CouldNotGetUserException {
         addLoggedInAttributes(authentication, model);
         AccessUser accessUser = getAccessUser(authentication);
