@@ -118,6 +118,13 @@ public class ProductDetailsTests {
       addError(prefix, "The input herbs is null");
     } catch (IllegalArgumentException exception) {
     }
+    try {
+      productDetails = new ProductDetails("warm", "herbs", null);
+      addError(prefix, "the input short description is null");
+    }catch (IllegalArgumentException exception){}
+    try {
+      productDetails = new ProductDetails("warm", "herbs", "");
+    }catch (IllegalArgumentException exception){}
     checkIfTestsFailedAndDisplayResult();
   }
 
@@ -158,6 +165,45 @@ public class ProductDetailsTests {
     }
     checkIfTestsFailedAndDisplayResult();
     assertEquals(productDetails.getDescription(), parameter);
+  }
+
+  /**
+   * Check if setShortDescription works with invalid parameters
+   */
+  @Test
+  @DisplayName("Check if setShortDescription works with invalid parameters")
+  public void testIfSetShortDescriptionWorksWithInvalidParameters() {
+    String errorPrefix = "Expected to get an IllegalArgumentException since,  ";
+    try {
+      productDetails.setShortDescription(null);
+      addError(errorPrefix, "the input is null");
+    } catch (IllegalArgumentException exception) {
+
+    }
+    try {
+      productDetails.setShortDescription("");
+      addError(errorPrefix, "the input is empty");
+    } catch (IllegalArgumentException exception) {
+
+    }
+    checkIfTestsFailedAndDisplayResult();
+  }
+
+  /**
+   * Check if setShortDescription works with valid parameters
+   */
+  @Test
+  @DisplayName("Check if setShortDescription works with valid parameters")
+  public void testIfSetShortDescriptionWorksWithValidParameters() {
+    String errorPrefix = "Expected the description to be set since ";
+    String parameter = "Warm";
+    try {
+      productDetails.setShortDescription(parameter);
+    } catch (IllegalArgumentException exception) {
+      addError(errorPrefix, "the input is valid.");
+    }
+    checkIfTestsFailedAndDisplayResult();
+    assertEquals(productDetails.getShortDescription(), parameter);
   }
 
 

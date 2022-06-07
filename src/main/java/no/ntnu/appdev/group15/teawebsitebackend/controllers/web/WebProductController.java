@@ -206,13 +206,14 @@ public class WebProductController extends WebController{
                 }
             }
             model.addAttribute("productID", product != null ? product.getProductID() : 0);
-            model.addAttribute("productName", product != null ? product.getProductName(): "ProductName");
+            model.addAttribute("productName", product != null ? product.getProductName(): "");
             model.addAttribute("productAmount", product != null ? product.getAmountOfProduct(): 0);
             model.addAttribute("price", product != null ? product.getPrice():0);
             model.addAttribute("companyID", product != null ? product.getCompany().getCompanyID(): 0);
-            model.addAttribute("ingredients", product != null ? product.getProductDetails().getIngredients(): "Ingredients");
-            model.addAttribute("description", product != null ? product.getProductDetails().getDescription(): "Description");
+            model.addAttribute("ingredients", product != null ? product.getProductDetails().getIngredients(): "");
+            model.addAttribute("description", product != null ? product.getProductDetails().getDescription(): "");
             model.addAttribute("tags", product != null ? convertListToValues(product.getProductDetails().getTagList()) : convertListToValues(new ArrayList<>()));
+            model.addAttribute("shortDescription", product != null ? product.getProductDetails().getShortDescription() : "");
         }
         model.addAttribute("isOnSale", false);
 
@@ -245,6 +246,7 @@ public class WebProductController extends WebController{
                 }else {
                     ProductDetails productDetails = product.getProductDetails();
                     addAndRemoveTags(productDetails, tags);
+                    productDetails.setShortDescription(shortDescription);
                     Company company = companyRegister.getCompanyWithId(companyID);
                     product.setCompany(company);
                     product.setProductName(productName);
@@ -287,6 +289,7 @@ public class WebProductController extends WebController{
             httpSession.setAttribute("ingredients", ingredients);
             httpSession.setAttribute("tags", tags);
             httpSession.setAttribute("description", description);
+            httpSession.setAttribute("shortDescription", shortDescription);
         }
         return new RedirectView(parameterBuilder.buildString(), true);
     }

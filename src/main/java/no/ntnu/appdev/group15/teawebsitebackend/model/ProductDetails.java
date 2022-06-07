@@ -106,12 +106,19 @@ public class ProductDetails extends Details{
     }
 
     /**
+     * Sets the short description
+     * @param shortDescription the new short description.
+     */
+    public void setShortDescription(String shortDescription){
+        checkString(shortDescription, "short descpriton");
+        this.shortDescription = shortDescription;
+    }
+
+    /**
      * Checks if all tag matches the tag we want to find.
      * @param tagsToFind the wanted tag.
      * @return {true} if wanted tags matches anyone the wanted tags, {false} if the tag could not be found.
      */
-
-    //TODO skriv tester.
     public boolean checkIfTagsAreFound(List<Tag> tagsToFind) {
         return tagsToFind.stream().allMatch(tag -> tagList.stream().anyMatch(tag4 -> tag4.getTagID() == tag.getTagID()));
     }

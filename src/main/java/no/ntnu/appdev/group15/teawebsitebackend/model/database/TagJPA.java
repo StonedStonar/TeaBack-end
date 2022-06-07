@@ -82,7 +82,7 @@ public class TagJPA implements TagsRegister {
     @Override
     public void updateTag(Tag tag) throws CouldNotGetTagException {
         checkIfTagIsValid(tag);
-        if (checkIfTagIsInRegister(tag.getTagID())){
+        if (checkIfTagIsInRegister(tag.getTagID()) && tagRepository.getTagWithTagName(tag.getTagName()).isEmpty()){
             tagRepository.save(tag);
         }else {
             throw new CouldNotGetTagException("The tag with id and name " + tag.getTagID() + " " + tag.getTagName() + "could not be found.");

@@ -35,8 +35,10 @@
                 <input type="number" class = "inputForm" id = "productPriceInput" placeholder="Enter product price" name = "productPrice" th:value = "${price}">
                 <label for="companyIDInput" class="formLabel">Producer ID</label>
                 <input type="number" class = "inputForm" id = "companyIDInput" placeholder="Enter company id" name = "companyID" th:value = "${companyID}">
+                <label for="shortDisc" class="formLabel">Short description</label>
+                <textarea class = "inputForm" form = "editProductForm" placeholder = "Insert short description" id = "shortDisc" name = "shortDescription" th:text = "${shortDescription}"></textarea>
                 <label for="descriptionInput" class="formLabel">Description</label>
-                <textarea class = "inputForm" form = "editProductForm" placeholder = "Insert ingredients" id = "descriptionInput" name = "description" th:text = "${description}"></textarea>
+                <textarea class = "inputForm" form = "editProductForm" placeholder = "Insert description" id = "descriptionInput" name = "description" th:text = "${description}"></textarea>
                 <label for="ingredientsInput" class="formLabel">Ingredients</label>
                 <textarea class = "inputForm" form = "editProductForm" placeholder = "Insert ingredients" id = "ingredientsInput" name = "ingredients" th:text = "${ingredients}"></textarea>
                 <p>
@@ -183,7 +185,7 @@
                         <div class="card-header">
                             <img src="images/greentea-cropped.jpg" alt="Tea card picture">
                             <div class="card-title" th:text="${productName}">Blackberry Leaf Tea</div>
-                            <div class="card-description" th:text="${description}">Tea ingredients from the nature of norway</div>
+                            <div class="card-description" th:text="${shortDescription}">Tea ingredients from the nature of norway</div>
                         </div>
 
                         <div class="card-body">

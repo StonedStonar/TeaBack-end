@@ -114,7 +114,6 @@ function openMug(event) {
 function countReviewsOnCards() {
     let cardCollection = document.getElementsByClassName("card");
     let i = 0;
-    console.log(cardCollection);
     while (i < cardCollection.length) {
         let card = cardCollection[i];
         let averageStarsSpan = card.querySelector(".average-stars");

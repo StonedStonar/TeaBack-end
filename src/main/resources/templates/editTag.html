@@ -32,7 +32,7 @@
                     All fields needs to be filled in.
                 </span>
                 <span class = "message errorMessage" th:if="${param.invalidTagID}">
-                    Invalid tagID
+                    Invalid tagID or tagname is taken
                 </span>
                 <span class = "message errorMessage" th:if="${param.takenTagID}">
                     An error has occurred when saving the new tag. A tag already has that ID.

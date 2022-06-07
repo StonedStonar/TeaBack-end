@@ -108,11 +108,9 @@ public class CartAndCheckoutController extends WebController{
         User user = accessUser.getUser();
         Cart cart = user.getCart();
         List<OrderedProduct> orderedProductList = new ArrayList<>();
-        //List<OrderedProduct> orderedProducts = null; //WOOPSIES
         boolean invalidInput = false;
 
         try {
-            //Not optimal, but in our case the system would be locked if we are going to process a cart.
             synchronized (CartAndCheckoutController.class) {
                 orderedProductList = getOrderedProducts(cart);
             }
@@ -125,28 +123,21 @@ public class CartAndCheckoutController extends WebController{
             try {
                 Order order = new Order(Long.MAX_VALUE, user, orderedProductList, OrderState.ORDERED, user.getAddress(), getDeliveryMethod(deliveryValue), LocalDate.now(),getPaymentMethod(paymentValue));
                 orderRegister.addOrder(order);
-                //cart.clearAllProducts();
                 userRegister.updateUser(user);
             } catch (IllegalArgumentException e) {
                 invalidInput = true;
                 parameterBuilder.addParameter("invalidPaymentOrDelivery", "true");
-                //her funker ikke delivery eller payment
             } catch (CouldNotAddOrderException | CouldNotGetUserException e) {
                 invalidInput = true;
                 parameterBuilder.addParameter("criticalError", "true");
-                // her har det skjedd noe critical
             }
         } else {
             invalidInput = true;
             parameterBuilder.addParameter("invalidPaymentOrDelivery", "true");
         }
-
         if (invalidInput) {
             parameterBuilder.setPageName("confirmPage");
         }
-
-
-
         return new RedirectView(parameterBuilder.buildString(), true);
     }
 
@@ -211,11 +202,9 @@ public class CartAndCheckoutController extends WebController{
                 Product product = productRegister.getProduct(productID);
                 OrderedProduct orderedProduct = new OrderedProduct(product, cartProduct.getAmount());
                 product.removeAmountOfProduct(orderedProduct.getAmountOfProduct());
-
                 orderedProductList.add(orderedProduct);
             }
         }catch (CouldNotGetProductException | IllegalArgumentException e) {
-            //TODO logic
             for(OrderedProduct orderedProduct:orderedProductList) {
                 Product product = orderedProduct.getProduct();
                 int amount = orderedProduct.getAmountOfProduct();
