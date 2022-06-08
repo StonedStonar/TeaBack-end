@@ -39,9 +39,9 @@
                 </a>
             </div>
         </section>
-        <script src = "javascript/menu.js">
+        <script th:src = "@{javascript/menu.js}">
         </script>
-        <footer id= "footerWrapper" th:replace="/components/footer :: footer">
+        <footer id= "footerWrapper" th:replace="components/footer :: footer">
         </footer>
     </body>
 </html>
