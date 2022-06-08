@@ -26,7 +26,7 @@
                             Find your herbal friend or other products
                         </span>
                 </a>
-                <a th:href="@{/productsOverview}" class="frontpageButton"> <!--Change to link to sales instead of products-->
+                <a th:href="@{/productsOverview(sale='true')}" class="frontpageButton"> <!--Change to link to sales instead of products-->
                         <span>
                             Sale
                         </span>
@@ -240,7 +240,7 @@
                                         All products
                                     </span>
                         </a>
-                        <a th:href="@{/productsOverview}" class="frontpageButton"> <!--Change to link to sales instead of products-->
+                        <a th:href="@{/productsOverview(sale='true')}" class="frontpageButton"> <!--Change to link to sales instead of products-->
                                     <span>
                                         Sale
                                     </span>

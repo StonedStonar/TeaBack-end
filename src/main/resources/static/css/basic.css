@@ -156,6 +156,7 @@ body {
     width: 12em;
     text-decoration: none;
     margin-bottom: 1.4em;
+    text-color: var(--main-font-color);
 }
 
 /*Menu styling under*/
