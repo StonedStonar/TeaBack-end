@@ -11,6 +11,7 @@ import javax.persistence.*;
 public class CompanyDetails extends Details{
 
     @OneToOne(targetEntity = Address.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "addressID")
     private Address address;
 
     /**
