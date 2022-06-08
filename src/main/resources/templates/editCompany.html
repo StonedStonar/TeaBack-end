@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit page for tags</title>
-    <link th:href="@{/css/basic.css}" rel="stylesheet" type="text/css">
-    <link th:href="@{/css/form.css}" rel="stylesheet" type="text/css">
-    <link th:href="@{/css/editCompany.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{css/basic.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{css/form.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{css/editCompany.css}" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -76,8 +76,9 @@
             </a>
         </div>
 </section>
+<script th:src="@{javascript/menu.js}"> </script>
 
-<footer id= "footerWrapper" th:replace="/components/footer :: footer">
+<footer id= "footerWrapper" th:replace="components/footer :: footer">
 </footer>
 </body>
 </html>

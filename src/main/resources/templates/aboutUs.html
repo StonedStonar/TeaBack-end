@@ -23,7 +23,7 @@
     teas to herbal wonders of Machu Picchu
             </p>
             <figure>
-                <img src="Images/teaCupImage.jpg" id= "teacupImage" alt="A rich black tea from the Yunnan province in China with hints of Cacao">
+                <img src="@{Images/teaCupImage.jpg}" id= "teacupImage" alt="A rich black tea from the Yunnan province in China with hints of Cacao">
                 <figcaption> Picture downloaded from unsplash.com, by NIKON CORPORATION </figcaption>
             </figure>
             <h2>
@@ -45,10 +45,10 @@
             </p>
         </section>
 
-    <script src="javascript/menu.js"> </script>
-    <script src="javascript/contactUs.js"></script>
+    <script th:src="@{javascript/menu.js}"> </script>
+    <script th:src="@{javascript/contactUs.js}"></script>
 
-    <footer id= "footerWrapper" th:replace="/components/footer :: footer">
+    <footer id= "footerWrapper" th:replace="components/footer :: footer">
     </footer>
 
     </body>

@@ -4,10 +4,10 @@
         <head>
             <meta charset="UTF-8">
             <title>Information for one product</title>
-            <link th:href = "@{/CSS/basic.css}" rel="stylesheet" type="text/css">
-            <link th:href = "@{/CSS/card.css}" rel="stylesheet" type="text/css">
-            <link th:href = "@{/CSS/product-info.css}" rel="stylesheet" type="text/css">
-            <link th:href = "@{/CSS/review.css}" rel="stylesheet" type="text/css">
+            <link th:href = "@{css/basic.css}" rel="stylesheet" type="text/css">
+            <link th:href = "@{css/card.css}" rel="stylesheet" type="text/css">
+            <link th:href = "@{css/product-info.css}" rel="stylesheet" type="text/css">
+            <link th:href = "@{css/review.css}" rel="stylesheet" type="text/css">
         </head>
 
         <body>
@@ -21,7 +21,7 @@
             <div id = "productContainer">
                 <div id= "product-info">
                     <figure>
-                        <img src = "Images/greentea.jpg" id = "pictureOfTeaType" alt="Troll Green Tea Picture">
+                        <img th:src = "@{Images/greentea.jpg}" id = "pictureOfTeaType" alt="Troll Green Tea Picture">
                         <figcaption>Picture taken from Nosplash</figcaption>
                     </figure>
                 </div>
@@ -224,7 +224,7 @@
             <div class="card-container">
                 <a th:href="@{/product-info(id=${product.getProductID()})}" class="card" th:each="product:${relatedProduct}" >
                     <div class="card-header">
-                        <img src="images/greentea-cropped.jpg" alt="Tea card picture">
+                        <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture">
                         <div class="card-title" th:text="${product.getProductName()}">Blackberry Leaf Tea</div>
                         <div class="card-description" th:text="${product.getProductDetails().getShortDescription()}">Tea ingredients from the nature of norway</div>
                     </div>
@@ -262,7 +262,7 @@
         <script type="text/javascript" th:src="@{/javascript/menu.js}"></script>
         <script type="text/javascript" th:src="@{/javascript/product-info.js}"></script>
         <script type="text/javascript" th:src="@{/javascript/products.js}"></script>
-        <footer id= "footerWrapper" th:replace="/components/footer :: footer">
+        <footer id= "footerWrapper" th:replace="components/footer :: footer">
         </footer>
 
         </body>

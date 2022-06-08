@@ -18,7 +18,7 @@
                         Your profile page
                     </h2>
                     <figure>
-                        <img src = "Images/handsWithTea.jpg" id = "profileStandardPicture" alt = "Two people toasting with metal cups.">
+                        <img th:src = "@{Images/handsWithTea.jpg}" id = "profileStandardPicture" alt = "Two people toasting with metal cups.">
                         <figcaption>Picture taken from Nathan Dumalo on Nosplash</figcaption>
                     </figure>
                 </div>
@@ -110,7 +110,7 @@
         </section>
         <script type="text/javascript" th:src="@{javascript/profile.js}"></script>
         <script type="text/javascript" th:src="@{javascript/menu.js}"></script>
-        <footer id= "footerWrapper" th:replace="/components/footer :: footer">
+        <footer id= "footerWrapper" th:replace="components/footer :: footer">
         </footer>
     </body>
 </html>

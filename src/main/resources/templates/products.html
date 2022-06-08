@@ -67,7 +67,7 @@
             <div class="card-container">
                 <a th:href="@{/product-info(id=${product.getProductID()})}" class="card" th:each="product:${relatedProduct}" >
                     <div class="card-header">
-                        <img src="images/greentea-cropped.jpg" alt="Tea card picture">
+                        <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture">
                         <div class="card-title" th:text="${product.getProductName()}">Blackberry Leaf Tea</div>
                         <div class="card-description" th:text="${product.getProductDetails().getShortDescription()}">Tea ingredients from the nature of norway</div>
                     </div>
@@ -106,7 +106,7 @@
 
         <script type="text/javascript" th:src="@{/javascript/menu.js}"></script>
         <script type="text/javascript" th:src="@{/javascript/products.js}"></script>
-        <footer id= "footerWrapper" th:replace="/components/footer :: footer">
+        <footer id= "footerWrapper" th:replace="components/footer :: footer">
         </footer>
 </body>
 </html>

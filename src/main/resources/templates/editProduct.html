@@ -4,18 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Information for one product</title>
-    <link th:href="@{/css/basic.css}" rel = "stylesheet" type="text/css">
-    <link th:href="@{/css/card.css}" rel="stylesheet" type="text/css">
-    <link th:href="@{/css/form.css}" rel = "stylesheet" type="text/css">
-    <link th:href="@{/css/product-info.css}" rel = "stylesheet" type="text/css">
-    <link th:href="@{/css/review.css}" rel = "stylesheet" type="text/css">
-    <link th:href="@{/css/editProduct.css}" rel = "stylesheet" type="text/css">
+    <link th:href="@{css/basic.css}" rel = "stylesheet" type="text/css">
+    <link th:href="@{css/card.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{css/form.css}" rel = "stylesheet" type="text/css">
+    <link th:href="@{css/product-info.css}" rel = "stylesheet" type="text/css">
+    <link th:href="@{css/review.css}" rel = "stylesheet" type="text/css">
+    <link th:href="@{css/editProduct.css}" rel = "stylesheet" type="text/css">
 </head>
 
 <body>
     <header id = "headerWrapper" th:replace="components/menu :: header">
     </header>
-    <script src="javascript/menu.js"></script>
 
     <section class="mainSection">
         <h2 class = "mainHeaderText">
@@ -221,10 +220,11 @@
 
     </section>
 
-    <script src="javascript/product-info.js"></script>
-    <script src="javascript/products.js"></script>
-    <script src = "javascript/editProfile.js"></script>
-    <footer id= "footerWrapper" th:replace="/components/footer :: footer">
+    <script th:src="@{javascript/menu.js}"> </script>
+    <script th:src="@{javascript/product-info.js}"></script>
+    <script th:src="@{javascript/products.js}"></script>
+    <script th:src = "@{javascript/editProfile.js}"></script>
+    <footer id= "footerWrapper" th:replace="components/footer :: footer">
     </footer>
 </body>
 

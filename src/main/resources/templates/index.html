@@ -32,7 +32,7 @@
                         </span>
                 </a>
             </div>
-            <img src="Images/cupAndPlant.jpg" class ="teacupImage"
+            <img th:src="@{Images/cupAndPlant.jpg}" class ="teacupImage"
                  alt="teacup image">
             <figcaption> Picture downloaded from unsplash.com, by Massimo Rinaldi </figcaption>
         </figure>
@@ -52,7 +52,7 @@
                     </a>
                 </div>
             </div>
-            <img src="Images/herbsInFIeld.jpg" class = "teacupImage"
+            <img th:src="@{Images/herbsInFIeld.jpg}" class = "teacupImage"
                  alt="Herbs in field">
             <figcaption> Picture downloaded from unsplash.com, by Massimo Rinaldi </figcaption>
         </figure>
@@ -70,7 +70,7 @@
             <div class="card-container">
                 <a th:href="@{/product-info(id=${product.getProductID()})}" class="card" th:each="product:${listOfProductsOne}">
                     <div class="card-header">
-                        <img src="images/greentea-cropped.jpg" alt="Tea card picture">
+                        <img th:src="@{Images/greentea-cropped.jpg}" alt="Tea card picture">
                         <div class="card-title" th:text="${product.getProductName()}">Blackberry Leaf Tea</div>
                         <div class="card-description" th:text="${product.getProductDetails().getShortDescription()}">Tea ingredients from the nature of norway</div>
                     </div>

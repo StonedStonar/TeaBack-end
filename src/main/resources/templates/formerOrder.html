@@ -6,17 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Former order</title>
-    <link th:href="@{/css/basic.css}" rel = "stylesheet" type="text/css">
-    <link th:href="@{/css/formerOrder.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{css/basic.css}" rel = "stylesheet" type="text/css">
+    <link th:href="@{css/formerOrder.css}" rel="stylesheet" type="text/css">
 </head>
 
 <body>
     <header id = "headerWrapper" th:replace="components/menu :: header">
     </header>
-    <script src="javascript/menu.js">
-    </script>
-    <script src="javascript/formerOrders.js">
-    </script>
     <section class="mainSection">
         <h2 class="mainHeaderText">
             Orders
@@ -114,7 +110,7 @@
                 </div>
                 <div class="product" th:each = "product: ${order.getOrderedProductList()}">
                     <div class="productPicture productDetails">
-                        <img src="Images/greentea.jpg" alt="GreenTea">
+                        <img th:src="@{Images/greentea.jpg}" alt="GreenTea">
                         <p class="closeText productHeader" th:text = "${product.getProduct().getProductName()}">
                             Green stoned tea
                         </p>
@@ -157,7 +153,11 @@
 
         </div>
     </section>
-    <footer id= "footerWrapper" th:replace="/components/footer :: footer">
+    <script th:src="@{javascript/menu.js}">
+    </script>
+    <script th:src="@{javascript/formerOrders.js}">
+    </script>
+    <footer id= "footerWrapper" th:replace="components/footer :: footer">
     </footer>
 </body>
 

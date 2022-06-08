@@ -21,7 +21,7 @@
 
         <div class="contactUsContainer" id = "imageContainer">
             <figure>
-                <img src="Images/teaCupImage.jpg" id="teacupImage"
+                <img th:src="@{Images/teaCupImage.jpg}" id="teacupImage"
                     alt="A rich black tea from the Yunnan province in China with hints of Cacao">
                 <figcaption> Picture downloaded from unsplash.com, by NIKON CORPORATION </figcaption>
             </figure>
@@ -61,13 +61,13 @@
                         </span>
                         <div class="socialLogoContainer">
                             <a href="https://twitter.com/">
-                                <img src="Images/twitterLogoBlack.png" alt="twitter logo">
+                                <img th:src="@{Images/twitterLogoBlack.png}" alt="twitter logo">
                             </a>
                             <a href="https://instagram.com/">
-                                <img src="Images/instagramLogo.png" alt="Instagram logo">
+                                <img th:src="@{Images/instagramLogo.png}" alt="Instagram logo">
                             </a>
                             <a href="https://facebook.com/">
-                                <img src="Images/facebookLogo.png" alt="Facebook logo">
+                                <img th:src="@{Images/facebookLogo.png}" alt="Facebook logo">
                             </a>
                         </div>
                     </div>
@@ -155,12 +155,12 @@
         </div>
 
     </section>
-    <script src="javascript/menu.js"> </script>
-    <script src="javascript/contactUs.js"></script>
+    <script th:src="@{javascript/menu.js}"> </script>
+    <script th:src="@{javascript/contactUs.js}"></script>
 
 
 
-    <footer id= "footerWrapper" th:replace="/components/footer :: footer">
+    <footer id= "footerWrapper" th:replace="components/footer :: footer">
     </footer>
 </body>
 

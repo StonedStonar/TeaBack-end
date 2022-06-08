@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Cart</title>
-    <link th:href="@{/css/basic.css}" rel = "stylesheet" type="text/css">
-    <link th:href="@{/css/cart.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{css/basic.css}" rel = "stylesheet" type="text/css">
+    <link th:href="@{css/cart.css}" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -43,7 +43,7 @@
                 </p>
                 <div class="orderedProduct" th:each = "cartProduct: ${cart.getAllProducts()}">
                     <div class = "productInfo">
-                        <img class="productImage" src="Images/greentea-cropped.jpg" alt="Picutre of greentea">
+                        <img class="productImage" th:src="@{Images/greentea-cropped.jpg}" alt="Picutre of greentea">
                         <div class="productDetails">
                             <p class="productName" th:text = "${cartProduct.getProduct().getProductName()}">
                                 Green tea
@@ -127,10 +127,10 @@
         <span class = "errorMessage message" th:if = "${param.invalidProductID}">
             The product ID is not in the system and product could not be added.
         </span>
-        <script src = "javascript/cart.js"></script>
-        <script src="javascript/menu.js"></script>
+        <script th:src = "@{javascript/cart.js}"></script>
+        <script th:src="@{javascript/menu.js}"></script>
     </section>
-    <footer id= "footerWrapper" th:replace="/components/footer :: footer"></footer>
+    <footer id= "footerWrapper" th:replace="components/footer :: footer"></footer>
 </body>
 
 </html>

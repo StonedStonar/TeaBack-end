@@ -3,8 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <title>Companies overview</title>
-        <link th:href="@{/css/basic.css}" rel = "stylesheet" type="text/css">
-        <link th:href="@{/css/editCards.css}" rel = "stylesheet" type="text/css">
+        <link th:href="@{css/basic.css}" rel = "stylesheet" type="text/css">
+        <link th:href="@{css/editCards.css}" rel = "stylesheet" type="text/css">
     </head>
 
     <body>
@@ -58,8 +58,8 @@
                 </div>
             </div>
         </section>
-        <footer id= "footerWrapper" th:replace="/components/footer :: footer">
+        <footer id= "footerWrapper" th:replace="components/footer :: footer">
         </footer>
-        <script src = "javascript/menu.js"></script>
+        <script th:src = "@{javascript/menu.js}"></script>
     </body>
 </html>
