@@ -137,10 +137,10 @@ public class AddressTests {
   }
 
   /**
-   * Tests if PostalCode works with valid parameter.
+   * Tests if setPostalCode works with valid parameter.
    */
   @Test
-  @DisplayName("Tests if PostalCode works with valid parameter.")
+  @DisplayName("Tests if setPostalCode works with valid parameter.")
   public void testsIfSetPostalCodeWorksWithValidParameters(){
     int parameter = 123;
     try {
@@ -153,10 +153,10 @@ public class AddressTests {
   }
 
   /**
-   * Tests if PostalCode works with invalid parameter.
+   * Tests if setPostalCode works with invalid parameter.
    */
   @Test
-  @DisplayName("Tests if PostalCode works with invalid parameter.")
+  @DisplayName("Tests if setPostalCode works with invalid parameter.")
   public void testsIfSetPostalCodeWorksWithInvalidParameters(){
     try {
       address.setPostalCode(0);
@@ -171,10 +171,10 @@ public class AddressTests {
   }
 
   /**
-   * Tests if PostalPlace works with valid parameter.
+   * Tests if setPostalPlace works with valid parameter.
    */
   @Test
-  @DisplayName("Tests if PostalPlace works with valid parameter.")
+  @DisplayName("Tests if setPostalPlace works with valid parameter.")
   public void testsIfSetPostalPlaceWorksWithValidParameters(){
     String parameter = "Ålesund";
     try {
@@ -187,10 +187,10 @@ public class AddressTests {
   }
 
   /**
-   * Tests if PostalPlace works with invalid parameter.
+   * Tests if setPostalPlace works with invalid parameter.
    */
   @Test
-  @DisplayName("Tests if PostalPlace works with invalid parameter.")
+  @DisplayName("Tests if setPostalPlace works with invalid parameter.")
   public void testsIfSetPostalPlaceWorksWithInvalidParameters(){
     try {
       address.setPostalPlace("");
@@ -205,10 +205,10 @@ public class AddressTests {
   }
 
   /**
-   * Tests if StreetName works with valid parameter.
+   * Tests if setStreetName works with valid parameter.
    */
   @Test
-  @DisplayName("Tests if StreetName works with valid parameter.")
+  @DisplayName("Tests if setStreetName works with valid parameter.")
   public void testsIfSetStreetNameWorksWithValidParameters(){
     String parameter = "Trineveien";
     try {
@@ -221,10 +221,10 @@ public class AddressTests {
   }
 
   /**
-   * Tests if StreetName works with invalid parameter.
+   * Tests if setStreetName works with invalid parameter.
    */
   @Test
-  @DisplayName("Tests if StreetName works with invalid parameter.")
+  @DisplayName("Tests if setStreetName works with invalid parameter.")
   public void testsIfSetStreetNameWorksWithInvalidParameters(){
     try {
       address.setPostalPlace("");
@@ -239,10 +239,10 @@ public class AddressTests {
   }
 
   /**
-   * Tests if HouseNumber works with valid parameter.
+   * Tests if setHouseNumber works with valid parameter.
    */
   @Test
-  @DisplayName("Tests if HouseNumber works with valid parameter.")
+  @DisplayName("Tests if setHouseNumber works with valid parameter.")
   public void testsIfSetHouseNumberWorksWithValidParameters(){
     int parameter = 123;
     try {
@@ -255,10 +255,10 @@ public class AddressTests {
   }
 
   /**
-   * Tests if  works with invalid parameter.
+   * Tests if setHouseNumber works with invalid parameter.
    */
   @Test
-  @DisplayName("Tests if  works with invalid parameter.")
+  @DisplayName("Tests if setHouseNumber works with invalid parameter.")
   public void testsIfSetHouseNumberWorksWithInvalidParameters(){
     try {
       address.setHouseNumber(0);
@@ -291,10 +291,10 @@ public class AddressTests {
 
 
   /**
-   * Tests if  works with invalid parameter.
+   * Tests if setCountry works with invalid parameter.
    */
   @Test
-  @DisplayName("Tests if  works with invalid parameter.")
+  @DisplayName("Tests if setCountry works with invalid parameter.")
   public void testsIfSetCountryWorksWithInvalidParameters(){
     try {
       address.setCountry("");
