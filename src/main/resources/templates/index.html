@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Frontpage</title>
-    <link th:href="@{/css/basic.css}" rel = "stylesheet" type="text/css">
-    <link th:href="@{/css/index.css}" rel="stylesheet" type="text/css">
-    <link th:href="@{/css/card.css}" rel = "stylesheet" type="text/css">
+    <link th:href="@{css/basic.css}" rel = "stylesheet" type="text/css">
+    <link th:href="@{css/index.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{css/card.css}" rel = "stylesheet" type="text/css">
 
 </head>
 <body>
@@ -256,11 +256,11 @@
 
 </section>
 
-<script src="javascript/menu.js"> </script>
-<script src="javascript/contactUs.js"></script>
-<script src="javascript/products.js"></script>
+<script th:src="@{javascript/menu.js}"> </script>
+<script th:src="@{javascript/contactUs.js}"></script>
+<script th:src="@{javascript/products.js}"></script>
 
-<footer id= "footerWrapper" th:replace="/components/footer :: footer">
+<footer id= "footerWrapper" th:replace="components/footer :: footer">
 </footer>
 
 </body>

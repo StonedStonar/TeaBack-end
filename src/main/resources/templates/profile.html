@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Account</title>
-        <link th:href = "@{/css/basic.css}" rel = "stylesheet" type="text/css">
-        <link th:href = "@{/css/profile.css}" rel = "stylesheet" type = "text/css">
+        <link th:href = "@{css/basic.css}" rel = "stylesheet" type="text/css">
+        <link th:href = "@{css/profile.css}" rel = "stylesheet" type = "text/css">
     </head>
     <body>
         <header id = "headerWrapper" th:replace="components/menu :: header">
@@ -108,8 +108,8 @@
                 </form>
             </div>
         </section>
-        <script type="text/javascript" th:src="@{/javascript/profile.js}"></script>
-        <script type="text/javascript" th:src="@{/javascript/menu.js}"></script>
+        <script type="text/javascript" th:src="@{javascript/profile.js}"></script>
+        <script type="text/javascript" th:src="@{javascript/menu.js}"></script>
         <footer id= "footerWrapper" th:replace="/components/footer :: footer">
         </footer>
     </body>
