@@ -12,3 +12,11 @@ Schoolproject with the intentions to make the logic and connections for a teasho
 To launch the project:
 Use the application template.txt file and fill in a username and password for the DB. 
 Also make a DB named teaShopDB like its specified in the file. MYSQL is used for the database. 
+
+Admin user:
+username:bjarne@bjarnesen.com
+password:pass
+
+User:
+username: arne@gmail.com
+password: password
