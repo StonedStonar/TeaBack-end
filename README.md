@@ -1,22 +1,17 @@
 # TeaBack-end
-Link to the site
-http://142.93.32.210:8080/index
-
-
 
 Intentions with the project:
-Schoolproject with the intentions to make the logic and connections for a teashop-website. It is a fullstack application. 
-
- 
+School project with the intentions to make the logic and connections for a teashop-website. 
+It is a fullstack application that uses the Spring framework combined with thymeleaf and mysql to build . 
 
 To launch the project:
-Use the application template.txt file and fill in a username and password for the DB. 
+Use the application template.txt file and fill in a username and password for the DB, this should be mysql or change it so that it works with other databases.. 
 Also make a DB named teaShopDB like its specified in the file. MYSQL is used for the database. 
 
-Admin user:
+Default admin user:
 username:bjarne@bjarnesen.com
 password:pass
 
-User:
+Default user:
 username: arne@gmail.com
 password: password
